@@ -18,7 +18,6 @@
     </el-button>
     <el-button type="primary" @click="test1">获取群组列表</el-button>
     <el-button type="primary" @click="test2"> 查询帐号 </el-button>
-    <el-button type="primary" @click="refresh"> Refresh </el-button>
 
     <div v-for="item in groupList" :key="item.groupID">
       <p @click="handleGroupClick(item.groupID)">
@@ -128,17 +127,14 @@ export default defineComponent({
       this.TAGGLE_OUE_SIDE("news");
       this.CHEC_OUT_CONVERSATION({ convId: `GROUP${groupID}` });
     },
-    refresh() {},
-    fileupload() {
-      console.log(123);
-    },
+    fileupload() {},
     async callApi() {
       console.log(process.env.VUE_APP_API_URL);
       console.log(process.env.VUE_APP_API_KEY);
     },
   },
   setup(props, { attrs, emit, expose, slots }) {
-    // const state = reactive({ text: "" });
+    const data = reactive({ text: "" });
     const { theme, setTheme } = useDataThemeChange();
     const [state, setState] = useToggle();
 
@@ -150,7 +146,7 @@ export default defineComponent({
       theme,
       setTheme,
       accountCheck,
-      // ...toRefs(state),
+      ...toRefs(data),
     };
   },
 });

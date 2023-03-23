@@ -1,9 +1,7 @@
 import http from "@/utils/http/index";
 import axios from "axios";
 import qs from "qs";
-import config from "@/config/defaultSettings";
 import { restSendMsg } from "@/api/rest-api";
-const { BASE_API } = config;
 
 export const createForData = ({
   name,
