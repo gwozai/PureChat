@@ -73,6 +73,10 @@ export const chatGpt = async (params) => {
       },
     },
   });
-  data && (await restSendMsg({ To, From, content: data }));
-  console.log(data);
+  if (data) {
+    await restSendMsg({ To, From, content: data });
+  } else {
+    await restSendMsg({ To, From, content: "待开发" });
+  }
+  // console.log(data);
 };

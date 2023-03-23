@@ -132,9 +132,6 @@ export default defineComponent({
     fileupload() {
       console.log(123);
     },
-    handleonClick(key) {
-      console.log(key);
-    },
     async callApi() {
       console.log(process.env.VUE_APP_API_URL);
       console.log(process.env.VUE_APP_API_KEY);

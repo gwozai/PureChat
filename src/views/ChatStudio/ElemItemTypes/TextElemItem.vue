@@ -1,12 +1,12 @@
 <template>
   <div class="message-view__item--text">
     <template v-if="message.conversationType == 'GROUP' || 'C2C'">
-      <!-- <ReplyElem
+      <ReplyElem
         v-if="message.cloudCustomData"
         :originalMsg="
           message.cloudCustomData && JSON.parse(message.cloudCustomData)
         "
-      /> -->
+      />
       <template v-for="item in decodeText(message.payload.text)" :key="item">
         <span
           v-if="item.name === 'text'"
@@ -42,7 +42,7 @@ const props = defineProps({
   },
 });
 const { message } = toRefs(props);
-console.log(message);
+console.log(message.value.cloudCustomData);
 // 标签转义
 function html2Escape(str) {
   return str.replace(/[<>&"]/g, function (c) {
