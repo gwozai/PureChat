@@ -49,6 +49,7 @@
               {{ item.groupProfile.name }}
             </span>
             <span v-else-if="item.type === '@TIM#SYSTEM'"> 系统通知 </span>
+            <Label :data="item.userProfile?.userID" />
           </div>
           <div class="message-time">
             {{ timeFormat(item.lastMessage.lastTime * 1000) }}
@@ -101,6 +102,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
 import { TIMpingConv, setMessageRemindType } from "@/api/im-sdk-api";
+import Label from "./components/Label.vue";
 
 const contextMenuItemInfo = ref([]);
 
