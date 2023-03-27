@@ -31,10 +31,7 @@ function checkoutNetState(state) {
       return "";
   }
 }
-/**
- * @class
- *
- */
+
 export default class TIMProxy {
   // 静态方法
   constructor() {

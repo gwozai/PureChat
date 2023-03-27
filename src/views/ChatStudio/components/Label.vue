@@ -27,11 +27,6 @@ const getLabel = (data) => {
     label = "机器人";
     className = "robot";
   }
-  // if (group_info__key == "attr_Autocreate") {
-  //   show = true;
-  //   label = "全员";
-  //   className = "all";
-  // }
   return { show, label, className };
 };
 </script>
