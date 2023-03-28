@@ -39,13 +39,9 @@ const getLabel = (data) => {
   padding: 0px 2.5px;
   margin: 1px 0 0 4px;
   text-align: center;
-  height: 17px;
   border-radius: 2px;
   font-size: 10px;
   font-weight: 400;
-  width: fit-content;
-  font-family: MicrosoftYaHei;
-  line-height: 17px;
 }
 // .all {}
 

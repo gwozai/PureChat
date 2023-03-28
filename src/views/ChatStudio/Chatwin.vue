@@ -571,6 +571,9 @@ $self-msg-color: #c2e8ff;
   overflow-x: hidden;
   padding: 0 16px 30px 16px;
   box-sizing: border-box;
+  .picture {
+    cursor: pointer;
+  }
 }
 .style-select {
   border-radius: 3px;

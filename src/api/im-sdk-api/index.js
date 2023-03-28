@@ -292,5 +292,5 @@ export const setSelfStatus = (status) => {
 };
 // 查询自己的用户状态
 export const getUserStatus = (id) => {
-  const { code, data } = tim.getUserStatus({ userIDList: [`${id}`] });
+  const { code, data } = tim.getUserStatus({ userIDList: [id] });
 };

@@ -40,23 +40,23 @@ class loaderProxy {
       .map((src) => this.loadScript(src));
     await Promise.all(promises);
   };
-  // loadScriptConcurrent = async (srcList) => {
-  //   if (!Array.isArray(srcList)) return;
-  //   const len = srcList.length;
-  //   if (len > 0) {
-  //     let count = 0;
-  //     srcList.map((src) => {
-  //       if (src) {
-  //         this.loadScript(src).then(() => {
-  //           count++;
-  //           if (count === len) {
-  //             return;
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // };
+  loadScriptConcurrentCopy = async (srcList) => {
+    if (!Array.isArray(srcList)) return;
+    const len = srcList.length;
+    if (len > 0) {
+      let count = 0;
+      srcList.map((src) => {
+        if (src) {
+          this.loadScript(src).then(() => {
+            count++;
+            if (count === len) {
+              return;
+            }
+          });
+        }
+      });
+    }
+  };
 }
 
 export const loader = new loaderProxy();
