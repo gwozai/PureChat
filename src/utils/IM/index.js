@@ -103,6 +103,8 @@ export default class TIMProxy {
     );
     // 收到好友分组列表更新通知
     tim.on(TIM.EVENT.FRIEND_GROUP_LIST_UPDATED, this.onFriendGroupListUpdated);
+    // 已订阅用户或好友的状态变更（在线状态或自定义状态）时触发。
+    tim.on(TIM.EVENT.USER_STATUS_UPDATED, this.onUserStatusUpdated);
   }
   onReadyStateUpdate({ name }) {
     const isSDKReady = name === TIM.EVENT.SDK_READY;
@@ -195,6 +197,9 @@ export default class TIMProxy {
     console.log(event);
   }
   onFriendGroupListUpdated(event) {
+    console.log(event);
+  }
+  onUserStatusUpdated(event) {
     console.log(event);
   }
   /**
