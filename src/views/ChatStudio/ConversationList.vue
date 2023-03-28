@@ -42,13 +42,7 @@
       <div class="message-item-right">
         <div class="message-item-right-top">
           <div class="message-chat-name">
-            <span v-if="item.type === 'C2C'">
-              {{ item.userProfile.nick }}
-            </span>
-            <span v-else-if="item.type === 'GROUP'">
-              {{ item.groupProfile.name }}
-            </span>
-            <span v-else-if="item.type === '@TIM#SYSTEM'"> 系统通知 </span>
+            <span>{{ chatName(item) }}</span>
             <Label :data="item.userProfile?.userID" />
           </div>
           <div class="message-time">
@@ -56,9 +50,7 @@
           </div>
         </div>
         <div class="message-item-right-bottom">
-          <span>
-            {{ fnNews(item) }}
-          </span>
+          <span>{{ fnNews(item) }}</span>
         </div>
         <!-- 未读消息红点 -->
         <template v-if="!isShowCount(item) && !isNotify(item)">
@@ -114,11 +106,27 @@ const { Selected, UserInfo, messageList, Conver } = useState({
   messageList: (state) => state.conversation.currentMessageList,
   Conver: (state) => state.conversation.currentConversation,
 });
-
+const chatName = (item) => {
+  const { type } = item;
+  switch (type) {
+    case "C2C":
+      return item.userProfile.nick;
+    case "GROUP":
+      return item.groupProfile.name;
+    case "@TIM#SYSTEM":
+      return "系统通知";
+    default:
+      return "";
+  }
+};
 const fnNews = (data) => {
   const { type, lastMessage } = data;
   const { messageForShow, fromAccount } = lastMessage;
   const { username } = UserInfo.value;
+  const isFound = fromAccount == "@TLS#NOT_FOUND";
+  if (isFound) {
+    return messageForShow;
+  }
   if (type == "GROUP" && username !== fromAccount) {
     return `${lastMessage.nick}: ${messageForShow}`;
   }

@@ -1,5 +1,8 @@
 <template>
-  <span :class="['label', getLabel(data).className]" v-if="getLabel(data).show">
+  <span
+    :class="['label', getLabel(data).className]"
+    v-show="getLabel(data).show"
+  >
     {{ getLabel(data).label }}
   </span>
 </template>
@@ -9,20 +12,20 @@ import { defineProps, toRefs } from "vue";
 
 const props = defineProps({
   data: {
-    type: Object,
-    default: () => {},
+    type: String,
+    default: "",
   },
 });
 const { data } = toRefs(props);
-console.log(data.value);
+
+const reg = /^R\d{5}$/;
 
 const getLabel = (data) => {
   let show = false;
   let label = "";
   let className = "";
-  const id = data;
-
-  if (id == "R00001") {
+  // 大写R卡头 后五位是数字
+  if (reg.test(data)) {
     show = true;
     label = "机器人";
     className = "robot";
@@ -44,14 +47,10 @@ const getLabel = (data) => {
   font-family: MicrosoftYaHei;
   line-height: 17px;
 }
-.all {
-  color: #faad14;
-  border: 0.64px solid #ffe58f;
-  background: #fffbe6;
-}
+// .all {}
+
 .robot {
-  color: #ffa39e;
-  border: 0.64px solid rgba(255, 163, 158, 1);
-  background: #fff1f0;
+  color: rgb(84, 180, 239);
+  border: 0.64px solid #c6e2ff;
 }
 </style>
