@@ -22,6 +22,7 @@ const mutations = {
       routing.forEach((item) => {
         router.addRoute(item);
       });
+      console.log(router.getRoutes());
     } catch (error) {
       console.log(error);
     }

@@ -17,6 +17,7 @@ const actions = {
     });
     let root = route.find((t) => (t.path = "/"));
     ToTree(root, route);
+    console.log(root);
     // 动态添加路由
     root.children.forEach((item) => {
       router.addRoute(item);
@@ -33,8 +34,8 @@ const actions = {
   },
   // 菜单列表
   async GET_MENU({ dispatch }) {
-    let menu = await getMenu();
-    dispatch("updateRoute", menu);
+    // let menu = await getMenu();
+    // dispatch("updateRoute", menu);
   },
   // 登录
   async LOG_IN({ state, commit, dispatch }, data) {

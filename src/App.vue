@@ -16,6 +16,7 @@ import en from "element-plus/lib/locale/lang/en";
 
 const route = useRoute();
 const router = useRouter();
+
 const { dispatch, commit } = useStore();
 const { lang } = useState({
   lang: (state) => state.settings.lang,
@@ -25,11 +26,11 @@ const currentLocale = computed(() => {
 });
 
 onMounted(async () => {
-  commit("updataRoute");
-  setTimeout(() => {
-    if (route.name == "login") return;
-    dispatch("LOG_IN_AGAIN");
-  }, 200);
+  // commit("updataRoute");
+  // setTimeout(() => {
+  //   if (route.name == "login") return;
+  //   dispatch("LOG_IN_AGAIN");
+  // }, 200);
 });
 </script>
 

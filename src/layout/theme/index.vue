@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['app-wrapper', sidebar ? '' : 'style-wrapper']"
-    :style="fnStyle(isActive)"
-  >
+  <div :class="['app-wrapper', sidebar ? '' : 'style-wrapper']" :style="fnStyle(isActive)">
     <!-- v-resize -->
     <Header />
     <main class="app-main">
@@ -10,14 +7,15 @@
         <!-- :include="['editor']" -->
         <router-view v-slot="{ Component }" :key="$route.fullPath">
           <transition name="fade-transform" mode="out-in">
-            <keep-alive v-if="$route.meta.keep" max="3">
+            <component v-if="Component" :is="Component" />
+            <!-- <keep-alive v-if="$route.meta.keep" max="3">
               <component v-if="Component" :is="Component" />
               <component v-else :is="CompMap[page.type] || error" />
             </keep-alive>
             <template v-else>
               <component v-if="Component" :is="Component" />
               <component v-else :is="CompMap[page.type] || error" />
-            </template>
+            </template> -->
           </transition>
         </router-view>
       </div>
@@ -26,13 +24,7 @@
 </template>
 
 <script setup>
-import {
-  computed,
-  onMounted,
-  watch,
-  reactive,
-  defineAsyncComponent,
-} from "vue";
+import { computed, onMounted, watch, reactive, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
@@ -74,9 +66,7 @@ const VResize = {
       if (binding?.instance) {
         emitter.emit("resize", { detail: { width, height } });
       } else {
-        vnode.el.dispatchEvent(
-          new CustomEvent("resize", { detail: { width, height } })
-        );
+        vnode.el.dispatchEvent(new CustomEvent("resize", { detail: { width, height } }));
       }
     });
   },
