@@ -29,7 +29,7 @@ import { useStore } from "vuex";
 import { ref, toRefs, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
-import Logo from "../components/Logo.vue";
+import Logo from "@/layout/components/Logo.vue";
 
 const Refelmenu = ref();
 const route = useRoute();

@@ -26,26 +26,12 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
 import Header from "./Header.vue";
-import error from "@/views/notfound/index.vue";
-import ChatStudio from "@/views/ChatStudio/index.vue";
-import welcome from "@/views/welcome/index.vue";
-import personal from "@/views/Personal/index.vue";
-import about from "@/views/about/index.vue";
 import elementResizeDetectorMaker from "element-resize-detector";
 import emitter from "@/utils/mitt-bus";
 
 const route = useRoute();
 const router = useRouter();
 const { state, dispatch, commit } = useStore();
-const CompMap = {
-  home: welcome, //首页
-  personal: personal, //个人中心
-  chatstudio: ChatStudio, //编辑器
-  about: about, //关于
-};
-const page = reactive({
-  type: "",
-});
 
 const { isActive, sidebar } = useState({
   isActive: (state) => state.settings.isCollapse,
@@ -91,17 +77,6 @@ emitter.on("resize", ({ detail }) => {
     // });
   }
 });
-
-watch(
-  () => route.name,
-  (val) => {
-    page.type = val;
-  },
-  {
-    immediate: true, //立即执行
-    // deep:true // 深度监听
-  }
-);
 
 const fnStyle = (off) => {
   return `margin-left:${off ? "64px" : "200px"}`;
