@@ -24,11 +24,7 @@
       <!-- 置顶图标 -->
       <div class="pinned-tag" v-show="item.isPinned"></div>
       <!-- 关闭按钮 -->
-      <FontIcon
-        iconName="close"
-        class="close-btn"
-        @click.stop="removeConv(item)"
-      />
+      <FontIcon iconName="close" class="close-btn" @click.stop="removeConv(item)" />
       <el-badge is-dot :hidden="isShowCount(item) || !isNotify(item)">
         <img
           v-if="item.type == 'C2C'"
@@ -78,15 +74,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
-import {
-  squareUrl,
-  RIGHT_CLICK_CHAT_LIST,
-  RIGHT_CLICK_MENU_LIST,
-} from "./utils/menu";
+import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { debounce } from "@/utils/debounce";
 import { getRoles } from "@/api/roles";
 import { generateUUID } from "@/utils/index";
-import FontIcon from "@/layout/FontIcon/indx.vue";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/timeFormat";
 import { useStore } from "vuex";

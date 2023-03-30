@@ -59,11 +59,9 @@ import { ElMessageBox } from "element-plus";
 import { computed, ref, watch, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
-import FontIcon from "@/layout/FontIcon/indx.vue";
-
-import screenfull from "@/layout/components/screenfull.vue";
-import Tags from "@/layout/components/Tags.vue";
 import SideBar from "@/views/home/SideBar/index.vue";
+import screenfull from "./screenfull.vue";
+import Tags from "./Tags.vue";
 
 const { state, dispatch, commit } = useStore();
 const router = useRouter();

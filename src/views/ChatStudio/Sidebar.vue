@@ -4,26 +4,10 @@
       <Portrait :size="40" shape="square" @click="dialogVisible = true" />
     </div>
     <ul>
-      <li
-        class="aside-item"
-        v-for="item in list"
-        :key="item.icon"
-        @click="toggle(item)"
-      >
-        <div
-          v-show="visibile(item)"
-          class="aside-list"
-          :class="{ current: outside == item.icon }"
-        >
-          <el-badge
-            :value="unreadMsg"
-            :hidden="item.icon !== 'news' || unreadMsg == 0"
-          >
-            <svg-icon
-              v-if="item.icon !== 'test'"
-              :iconClass="item.icon"
-              class="style-svg"
-            />
+      <li class="aside-item" v-for="item in list" :key="item.icon" @click="toggle(item)">
+        <div v-show="visibile(item)" class="aside-list" :class="{ current: outside == item.icon }">
+          <el-badge :value="unreadMsg" :hidden="item.icon !== 'news' || unreadMsg == 0">
+            <svg-icon v-if="item.icon !== 'test'" :iconClass="item.icon" class="style-svg" />
             <el-icon v-else><SwitchFilled /></el-icon>
           </el-badge>
           <div class="icon-title">{{ item.title }}</div>
@@ -65,7 +49,6 @@ import {
   toRefs,
 } from "vue";
 import { useStore } from "vuex";
-import SvgIcon from "@/components/SvgIcon";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 const { production } = require("@/config/vue.custom.config");
 

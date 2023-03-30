@@ -53,6 +53,9 @@ const actions = {
         commit("updateData", { key: "user", value: result });
         commit("showMessage", { message: msg });
         router.push("/home");
+        // router.push({ name: "home", params: { name: "welcome" } });
+        // router.push(`/home/${welcome}`)
+        // router.push({ path: "/home", replace: true });
       }, 1000);
     } else {
       verification(code, msg);

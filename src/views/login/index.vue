@@ -113,7 +113,6 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { user, rules } from "./utils/validation";
 import Motion from "@/utils/motion";
-import FontIcon from "@/layout/FontIcon/indx.vue";
 import ThemeSwitch from "../components/ThemeSwitch";
 import ReImageVerify from "@/views/components/ReImageVerify/index.vue";
 import emitter from "@/utils/mitt-bus";

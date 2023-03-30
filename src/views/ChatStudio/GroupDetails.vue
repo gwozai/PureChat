@@ -64,11 +64,7 @@
             >
               <CircleCloseFilled />
             </el-icon>
-            <UserAvatar
-              className="avatar-item"
-              :url="item.avatar"
-              :nickName="item.nick"
-            />
+            <UserAvatar className="avatar-item" :url="item.avatar" :nickName="item.nick" />
           </div>
           <span class="group-member--add" @click="groupMemberAdd"> </span>
         </div>
@@ -84,12 +80,8 @@
       <div class="divider"></div>
       <!-- 退出 转让 -->
       <div class="group-operator">
-        <el-button v-if="isOwner" type="danger" @click="dismissGroup">
-          解散群组
-        </el-button>
-        <el-button v-else type="danger" @click="handleQuitGroup">
-          退出群组
-        </el-button>
+        <el-button v-if="isOwner" type="danger" @click="dismissGroup"> 解散群组 </el-button>
+        <el-button v-else type="danger" @click="handleQuitGroup"> 退出群组 </el-button>
         <div class="group-operator--divider"></div>
         <el-button type="primary" plain v-show="isOwner" @click="transferGroup">
           转让群组
@@ -129,9 +121,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="close"> 取消 </el-button>
-            <el-button type="primary" @click="addGroupMemberBtn">
-              确认
-            </el-button>
+            <el-button type="primary" @click="addGroupMemberBtn"> 确认 </el-button>
           </span>
         </template>
       </el-dialog>
@@ -143,14 +133,9 @@
 import { nextTick, ref, computed } from "vue";
 import { ElMessageBox } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
-import FontIcon from "@/layout/FontIcon/indx.vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
-import {
-  updateGroupProfile,
-  addGroupMember,
-  deleteGroupMember,
-} from "@/api/im-sdk-api/group";
+import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/group";
 import { useI18n } from "vue-i18n";
 
 const { locale, t } = useI18n();
@@ -172,11 +157,7 @@ const {
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
-const { isOwner, isAdmin, toAccount } = useGetters([
-  "isOwner",
-  "isAdmin",
-  "toAccount",
-]);
+const { isOwner, isAdmin, toAccount } = useGetters(["isOwner", "isAdmin", "toAccount"]);
 const input = ref("");
 const value = ref(false);
 const Refdrawerlist = ref();

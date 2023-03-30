@@ -20,7 +20,7 @@ const app = createApp(App);
 app.directive("contextmenu", directive);
 // 自动加载组件
 loadAllassembly(app);
-// 自定义svg组件
+// 自定义SvgIcon组件
 registerSvgIcon(app);
 
 getServerConfig(app).then(async (config) => {
