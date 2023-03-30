@@ -52,12 +52,7 @@
         </el-form-item>
         <!-- 验证码 -->
         <el-form-item prop="verifyCode">
-          <el-input
-            v-model="user.verifyCode"
-            size="large"
-            placeholder="验证码"
-            clearable
-          >
+          <el-input v-model="user.verifyCode" size="large" placeholder="验证码" clearable>
             <template #prefix>
               <el-icon class="el-input__icon"><Key /></el-icon>
             </template>
@@ -72,12 +67,7 @@
           <div class="forget">忘记密码?</div>
         </div>
         <!-- 登录 -->
-        <el-button
-          type="primary"
-          class="login-btn"
-          @click="LoginBtn(ruleFormRef)"
-          :loading="false"
-        >
+        <el-button type="primary" class="login-btn" @click="LoginBtn(ruleFormRef)" :loading="false">
           <template #loading>
             <div class="custom-loading">
               <svg class="circular" viewBox="-10, -10, 50, 50">
@@ -116,14 +106,7 @@
 
 <script setup>
 import { Lock, User, Key } from "@element-plus/icons-vue";
-import {
-  reactive,
-  ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-} from "vue";
+import { reactive, ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { login, getuser } from "@/api/user";
 import { operates, thirdParty } from "./utils/enums";
 import { useRouter } from "vue-router";
@@ -149,9 +132,7 @@ const handleSelect = (item) => {
 };
 const createFilter = (queryString) => {
   return (restaurant) => {
-    return (
-      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    );
+    return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
   };
 };
 const querySearch = (queryString, cb) => {
