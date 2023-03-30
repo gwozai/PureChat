@@ -1,8 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-  createWebHashHistory,
-} from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import storage from "storejs";
 import NProgress from "@/utils/progress";
 import routes from "./routes";
@@ -14,8 +10,7 @@ import { setPageTitle } from "@/utils/common";
 // hack router push callback
 const originalPush = createRouter.prototype.push;
 createRouter.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject)
-    return originalPush.call(this, location, onResolve, onReject);
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject);
   return originalPush.call(this, location).catch((err) => err);
 };
 

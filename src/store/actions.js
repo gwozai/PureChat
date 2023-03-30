@@ -34,8 +34,8 @@ const actions = {
   },
   // 菜单列表
   async GET_MENU({ dispatch }) {
-    // let menu = await getMenu();
-    // dispatch("updateRoute", menu);
+    let menu = await getMenu();
+    dispatch("updateRoute", menu);
   },
   // 登录
   async LOG_IN({ state, commit, dispatch }, data) {

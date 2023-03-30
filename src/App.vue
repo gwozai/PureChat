@@ -10,6 +10,7 @@ import { useStore, mapState } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { ElConfigProvider } from "element-plus";
 import { useState } from "@/utils/hooks/useMapper";
+import { treeToFlat } from "@/utils/ToTree";
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
@@ -27,10 +28,10 @@ const currentLocale = computed(() => {
 
 onMounted(async () => {
   // commit("updataRoute");
-  // setTimeout(() => {
-  //   if (route.name == "login") return;
-  //   dispatch("LOG_IN_AGAIN");
-  // }, 200);
+  setTimeout(() => {
+    if (route.name == "login") return;
+    dispatch("LOG_IN_AGAIN");
+  }, 200);
 });
 </script>
 

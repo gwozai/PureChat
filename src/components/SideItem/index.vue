@@ -7,10 +7,7 @@
         v-if="fn(item)"
         :index="item.url"
       >
-        <el-badge
-          :value="unreadMsg"
-          :hidden="item.meta.icon !== 'ForkSpoon' || unreadMsg == 0"
-        >
+        <el-badge :value="unreadMsg" :hidden="item.meta.icon !== 'ForkSpoon' || unreadMsg == 0">
           <font-icon :iconName="item.meta.icon" />
         </el-badge>
         <template #title>

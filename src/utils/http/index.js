@@ -11,7 +11,8 @@ import { setCookies } from "@/utils/Cookies";
 const { formats, parse, stringify } = qs;
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_PROXY_DOMAIN_REAL, // 公共地址
+  baseURL: "https://node-admin.cn/",
+  // baseURL: process.env.VUE_APP_PROXY_DOMAIN_REAL, // 公共地址
   timeout: 6000, // 请求超时时间
   // headers: {
   //   Accept: "application/json, text/plain, */*",

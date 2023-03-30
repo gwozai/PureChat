@@ -7,15 +7,12 @@
         <!-- :include="['editor']" -->
         <router-view v-slot="{ Component }" :key="$route.fullPath">
           <transition name="fade-transform" mode="out-in">
-            <component v-if="Component" :is="Component" />
-            <!-- <keep-alive v-if="$route.meta.keep" max="3">
+            <keep-alive v-if="$route.meta.keep" max="3">
               <component v-if="Component" :is="Component" />
-              <component v-else :is="CompMap[page.type] || error" />
             </keep-alive>
             <template v-else>
               <component v-if="Component" :is="Component" />
-              <component v-else :is="CompMap[page.type] || error" />
-            </template> -->
+            </template>
           </transition>
         </router-view>
       </div>
