@@ -13,9 +13,7 @@ export const VResize = {
       if (binding?.instance) {
         emitter.emit("resize", { detail: { width, height } });
       } else {
-        vnode.el.dispatchEvent(
-          new CustomEvent("resize", { detail: { width, height } })
-        );
+        vnode.el.dispatchEvent(new CustomEvent("resize", { detail: { width, height } }));
       }
     });
   },

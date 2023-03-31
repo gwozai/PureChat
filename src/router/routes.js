@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { defineAsyncComponent } from 'vue';
 /**
  *
  * keepAlive 需要被缓存的组件
@@ -13,32 +14,36 @@ const User = () => import(/* webpackChunkName: "User" */ "@/views/system/user/in
 const Role = () => import(/* webpackChunkName: "Role" */ "@/views/system/role/index");
 const Personal = () => import(/* webpackChunkName: "Role" */ "@/views/Personal/index");
 const About = () => import(/* webpackChunkName: "Role" */ "@/views/about/index");
-// const routes = [
-//   { path: "/", redirect: "/home" },
-//   {
-//     path: "/login",
-//     name: "login",
-//     component: Login,
-//     meta: {
-//       title: "登录",
-//       icon: "Eleme",
-//     },
-//   },
-// ];
 
+// const Welcome = defineAsyncComponent(() => import('@/views/welcome/index.vue'));
 const routes = [
-  // { path: "/", redirect: "/home" },
+  { path: "/", redirect: "/home" },
   {
-    path: "/",
+    path: "/login",
+    name: "login",
+    component: Login,
+    meta: {
+      title: "登录",
+      icon: "Eleme",
+    },
+  },
+];
+
+const routescopy = [
+  {
+    path: "/home",
     name: "home",
     component: Home,
-    redirect: "/welcome",
+    meta: {
+      title: "Home",
+      icon: "Eleme",
+    },
+    redirect: "/home/welcome",
     children: [
       // 首页
       {
-        path: "/welcome",
+        path: "welcome",
         name: "welcome",
-        url: "/welcome",
         component: Welcome,
         meta: {
           title: "首页",
@@ -47,9 +52,8 @@ const routes = [
       },
       // 聊天工作室
       {
-        path: "/ChatStudio",
+        path: "ChatStudio",
         name: "ChatStudio",
-        url: "/ChatStudio",
         component: ChatStudio,
         meta: {
           keep: true,
@@ -58,21 +62,19 @@ const routes = [
         },
       },
       // 个人中心
-      {
-        path: "/personal",
-        name: "personal",
-        url: "/personal",
-        component: Personal,
-        meta: {
-          title: "个人中心",
-          icon: "User",
-        },
-      },
+      // {
+      //   path: "/personal",
+      //   name: "personal",
+      //   component: Personal,
+      //   meta: {
+      //     title: "个人中心",
+      //     icon: "User",
+      //   },
+      // },
       // 系统管理
       {
-        path: "/system",
+        path: "system",
         name: "system",
-        url: "/system",
         redirect: "/system/menu",
         meta: {
           title: "系统管理",
@@ -82,48 +84,45 @@ const routes = [
           {
             path: "/system/menu",
             name: "menu",
-            url: "/system/menu",
             component: Menu,
             meta: {
               title: "菜单列表",
               icon: "More",
             },
           },
-          {
-            path: "/system/role",
-            name: "role",
-            url: "/system/role",
-            component: Role,
-            meta: {
-              title: "角色权限",
-              icon: "User",
-            },
-          },
-          {
-            path: "/system/user",
-            name: "user",
-            url: "/system/user",
-            component: User,
-            meta: {
-              title: "用户权限",
-              icon: "CopyDocument",
-            },
-          },
+          // {
+          //   path: "/system/role",
+          //   name: "role",
+          //   component: Role,
+          //   meta: {
+          //     title: "角色权限",
+          //     icon: "User",
+          //   },
+          // },
+          // {
+          //   path: "/system/user",
+          //   name: "user",
+          //   component: User,
+          //   meta: {
+          //     title: "用户权限",
+          //     icon: "CopyDocument",
+          //   },
+          // },
         ],
       },
       // 关于
-      {
-        path: "/about",
-        name: "about",
-        url: "/about",
-        component: About,
-        meta: {
-          title: "关于",
-          icon: "Warning",
-        },
-      },
+      // {
+      //   path: "/about",
+      //   name: "about",
+      //   component: About,
+      //   meta: {
+      //     title: "关于",
+      //     icon: "Warning",
+      //   },
+      // },
     ],
   },
+  // { path: "/", redirect: "/home" },
   {
     path: "/login",
     name: "login",

@@ -6,15 +6,14 @@
       <div class="continer-theme">
         <!-- :include="['editor']" name="Welcome" route-->
         <router-view v-slot="{ Component, route }" :key="$route.fullPath">
-          <!-- {{ fn(Component, route) }} -->
           <transition name="fade-transform" mode="out-in">
             <keep-alive v-if="$route.meta.keep" max="3">
               <component v-if="Component" :is="Component" :key="route.path" />
-              <component v-else :is="fn(route)" />
+              <component v-else :is="CompMap[page.type] || error" />
             </keep-alive>
             <template v-else>
               <component v-if="Component" :is="Component" :key="route.path" />
-              <component v-else :is="fn(route)" />
+              <component v-else :is="CompMap[page.type] || error" />
             </template>
           </transition>
         </router-view>
@@ -31,9 +30,12 @@ import { useState } from "@/utils/hooks/useMapper";
 import Header from "./Header.vue";
 import elementResizeDetectorMaker from "element-resize-detector";
 import emitter from "@/utils/mitt-bus";
-import Welcome from "@/views/welcome/index";
-import ChatStudio from "@/views/ChatStudio/index";
-import About from "@/views/about/index";
+
+import error from "@/views/notfound/index.vue";
+import ChatStudio from "@/views/ChatStudio/index.vue";
+import welcome from "@/views/welcome/index.vue";
+import personal from "@/views/Personal/index.vue";
+import about from "@/views/about/index.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -43,19 +45,29 @@ const { isActive, sidebar } = useState({
   isActive: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
 });
+
+const CompMap = {
+  home: welcome, //首页
+  personal: personal, //个人中心
+  chatstudio: ChatStudio, //编辑器
+  about: about, //关于
+};
+const page = reactive({
+  type: "",
+});
 const erd = elementResizeDetectorMaker({
   strategy: "scroll",
 });
-const compMap = {
-  home: Welcome,
-  chatStudio: ChatStudio,
-  about: About,
-};
-const fn = (route) => {
-  console.log(route);
-  console.log(route.name);
-  if (route?.name) return compMap[route.name];
-};
+watch(
+  () => route.name,
+  (val) => {
+    page.type = val;
+  },
+  {
+    immediate: true, //立即执行
+    // deep:true // 深度监听
+  }
+);
 const VResize = {
   mounted(el, binding, vnode) {
     erd.listenTo(el, (elem) => {

@@ -1,11 +1,6 @@
 <template>
   <div class="mention-modal" :style="{ top: top, left: left }">
-    <input
-      class="mention-input"
-      v-model="searchVal"
-      ref="input"
-      @keyup="inputKeyupHandler"
-    />
+    <input class="mention-input" v-model="searchVal" ref="input" @keyup="inputKeyupHandler" />
     <ul class="mention-list">
       <el-scrollbar>
         <li
@@ -21,15 +16,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  computed,
-  reactive,
-  toRefs,
-  ref,
-} from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs, ref } from "vue";
 import TIM from "tim-js-sdk";
 export default defineComponent({
   name: "MentionModal",

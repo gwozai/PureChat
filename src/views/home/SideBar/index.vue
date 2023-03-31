@@ -17,7 +17,7 @@
         @open="handleOpen"
         @close="handleClose"
       >
-        <SideItem :tree="router.options.routes[0].children" />
+        <SideItem :tree="routing" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -44,15 +44,15 @@ const props = defineProps({
     default: false,
   },
 });
-
+// router.options.routes[0].children
 // cosnt routing =
 const { vislbile, collapse } = toRefs(props);
 
-const { isCollapse, sidebar, logoVal } = useState({
+const { isCollapse, sidebar, logoVal, routing } = useState({
   isCollapse: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
   logoVal: (state) => state.settings.logoIcon,
-  // routing: (state) => state.data.Routingtable,
+  routing: (state) => state.data.Routingtable,
 });
 
 const handleOpen = (key, keyPath) => {

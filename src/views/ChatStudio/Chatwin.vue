@@ -5,12 +5,7 @@
     :class="[showMsgBox ? '' : 'style-MsgBox']"
     id="svgTop"
   >
-    <el-scrollbar
-      class="scrollbar-content"
-      ref="scrollbarRef"
-      @scroll="scrollbar"
-      always
-    >
+    <el-scrollbar class="scrollbar-content" ref="scrollbarRef" @scroll="scrollbar" always>
       <div class="message-view" ref="messageViewRef">
         <div
           v-for="(item, index) in currentMessageList"
@@ -33,10 +28,7 @@
             @click="handleChecked($event, item)"
           >
             <Checkbox :item="item" @click.stop="handleCilck($event, item)" />
-            <div
-              class="picture"
-              v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'"
-            >
+            <div class="picture" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
               <el-avatar
                 :size="36"
                 shape="square"
@@ -52,11 +44,7 @@
             >
               <name-component :item="item" />
               <div :class="Megtype(item.type)" :id="item.ID">
-                <component
-                  :key="item.ID"
-                  :is="loadMsgComponents(item.type, item)"
-                  :message="item"
-                >
+                <component :key="item.ID" :is="loadMsgComponents(item.type, item)" :message="item">
                 </component>
               </div>
             </div>
@@ -93,12 +81,7 @@ import {
   toRefs,
   defineAsyncComponent,
 } from "vue";
-import {
-  squareUrl,
-  circleUrl,
-  MENU_LIST,
-  RIGHT_CLICK_MENU_LIST,
-} from "./utils/menu";
+import { squareUrl, circleUrl, MENU_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
 import { fncopy, dragControllerDiv } from "./utils/utils";

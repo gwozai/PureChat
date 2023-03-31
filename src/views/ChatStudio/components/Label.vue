@@ -1,8 +1,5 @@
 <template>
-  <span
-    :class="['label', getLabel(data).className]"
-    v-show="getLabel(data).show"
-  >
+  <span :class="['label', getLabel(data).className]" v-show="getLabel(data).show">
     {{ getLabel(data).label }}
   </span>
 </template>

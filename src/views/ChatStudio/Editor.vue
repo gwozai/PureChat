@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="Editor-style"
-    id="svgDown"
-    v-if="showMsgBox"
-    v-show="!showCheckbox"
-  >
+  <div class="Editor-style" id="svgDown" v-if="showMsgBox" v-show="!showCheckbox">
     <!-- <Toolbar
       class="toolbar"
       :editor="editorRef"
@@ -12,11 +7,7 @@
       :mode="mode"
     /> -->
     <!-- 自定义工具栏 -->
-    <RichToolbar
-      @setEmoj="setEmoj"
-      @setPicture="parsepicture"
-      @setParsefile="parsefile"
-    />
+    <RichToolbar @setEmoj="setEmoj" @setPicture="parsepicture" @setParsefile="parsefile" />
     <Editor
       class="editor-content"
       v-model="valueHtml"
@@ -37,11 +28,7 @@
       @hideMentionModal="hideMentionModal"
       @insertMention="insertMention"
     />
-    <el-tooltip
-      effect="dark"
-      content="按Enter发送消息,Ctrl+Enter换行"
-      placement="left-start"
-    >
+    <el-tooltip effect="dark" content="按Enter发送消息,Ctrl+Enter换行" placement="left-start">
       <el-button class="btn-send" @click="handleEnter()"> 发送 </el-button>
     </el-tooltip>
   </div>
@@ -74,11 +61,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 // import { generateUUID } from "@/utils/index";
 import MentionModal from "./components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
-import {
-  fileImgToBase64Url,
-  dataURLtoFile,
-  urlToBase64,
-} from "@/utils/message-input-utils";
+import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { SendMessageCd } from "@/api/index";
 import { accountCheck, restSendMsg } from "@/api/rest-api";

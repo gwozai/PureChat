@@ -3,14 +3,7 @@ import axios from "axios";
 import qs from "qs";
 import { restSendMsg } from "@/api/rest-api";
 
-export const createForData = ({
-  name,
-  type,
-  size,
-  fileName,
-  uploadedSize = 0,
-  file,
-}) => {
+export const createForData = ({ name, type, size, fileName, uploadedSize = 0, file }) => {
   const formData = new FormData();
   formData.append("name", name);
   formData.append("type", type);

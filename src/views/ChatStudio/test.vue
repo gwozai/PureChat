@@ -8,12 +8,7 @@
     <el-button type="primary" @click="setState(false)">false</el-button>
     <p>useToggle {{ state }}</p>
     <br />
-    <el-button
-      v-for="{ title, onclick } in buttons"
-      :key="title"
-      type="primary"
-      @click="onclick"
-    >
+    <el-button v-for="{ title, onclick } in buttons" :key="title" type="primary" @click="onclick">
       {{ title }}
     </el-button>
     <el-button type="primary" @click="test1">获取群组列表</el-button>
@@ -28,13 +23,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  toRefs,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-} from "vue";
+import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { getFriendList } from "@/api/im-sdk-api";
 import { getGroupList } from "@/api/im-sdk-api/group";

@@ -36,23 +36,16 @@ import test from "./test.vue";
 
 const { state, dispatch, commit } = useStore();
 
-const {
-  networkStatus,
-  conver,
-  user,
-  outside,
-  groupDrawer,
-  showMsgBox,
-  conversationList,
-} = useState({
-  outside: (state) => state.conversation.outside,
-  networkStatus: (state) => state.conversation.networkStatus,
-  user: (state) => state.data.user,
-  conver: (state) => state.conversation.currentConversation,
-  showMsgBox: (state) => state.conversation.showMsgBox,
-  groupDrawer: (state) => state.groupinfo.groupDrawer,
-  conversationList: (state) => state.conversation.conversationList,
-});
+const { networkStatus, conver, user, outside, groupDrawer, showMsgBox, conversationList } =
+  useState({
+    outside: (state) => state.conversation.outside,
+    networkStatus: (state) => state.conversation.networkStatus,
+    user: (state) => state.data.user,
+    conver: (state) => state.conversation.currentConversation,
+    showMsgBox: (state) => state.conversation.showMsgBox,
+    groupDrawer: (state) => state.groupinfo.groupDrawer,
+    conversationList: (state) => state.conversation.conversationList,
+  });
 </script>
 
 <style lang="scss" scoped>

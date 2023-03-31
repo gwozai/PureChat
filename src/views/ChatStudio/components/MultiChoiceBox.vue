@@ -16,13 +16,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  toRefs,
-  reactive,
-  onMounted,
-  onBeforeUnmount,
-} from "vue";
+import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 export default defineComponent({
   name: "Componentname",

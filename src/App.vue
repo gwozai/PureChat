@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import Home from "./views/home/index.vue";
 import { onMounted, nextTick, computed, defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
 import { useRoute, useRouter } from "vue-router";
@@ -27,7 +28,7 @@ const currentLocale = computed(() => {
 });
 
 onMounted(async () => {
-  // commit("updataRoute");
+  commit("updataRoute");
   setTimeout(() => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");

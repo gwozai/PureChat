@@ -11,22 +11,12 @@
       trigger="click"
     >
       <template #reference>
-        <span
-          class="emoticon"
-          title="选择表情"
-          ref="buttonRef"
-          v-click-outside="onClickOutside"
-        >
+        <span class="emoticon" title="选择表情" ref="buttonRef" v-click-outside="onClickOutside">
           <svg-icon iconClass="iconxiaolian" class="icon-hover" />
         </span>
       </template>
       <div class="emojis">
-        <div
-          v-for="item in emojiName"
-          class="emoji"
-          :key="item"
-          @click="SelectEmoticon(item)"
-        >
+        <div v-for="item in emojiName" class="emoji" :key="item" @click="SelectEmoticon(item)">
           <img :src="emojiUrl + emojiMap[item]" :title="item" />
         </div>
       </div>
@@ -90,13 +80,7 @@
       @change="sendImage"
       hidden
     />
-    <input
-      type="file"
-      id="filePicker"
-      ref="filePicker"
-      @change="sendFile"
-      hidden
-    />
+    <input type="file" id="filePicker" ref="filePicker" @change="sendFile" hidden />
     <!-- <input
       type="file"
       id="videoPicker"
@@ -111,12 +95,7 @@
 <script setup>
 import html2canvas from "html2canvas";
 import { ref, unref, toRefs, defineEmits } from "vue";
-import {
-  emojiName,
-  emojiUrl,
-  emojiMap,
-  localemojiUrl,
-} from "@/utils/emoji-map";
+import { emojiName, emojiUrl, emojiMap, localemojiUrl } from "@/utils/emoji-map";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { uploadFiles } from "@/api/index";
 

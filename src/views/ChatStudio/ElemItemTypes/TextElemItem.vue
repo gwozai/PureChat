@@ -3,9 +3,7 @@
     <template v-if="message.conversationType == 'GROUP' || 'C2C'">
       <ReplyElem
         v-if="message.cloudCustomData"
-        :originalMsg="
-          message.cloudCustomData && JSON.parse(message.cloudCustomData)
-        "
+        :originalMsg="message.cloudCustomData && JSON.parse(message.cloudCustomData)"
       />
       <template v-for="item in decodeText(message.payload.text)" :key="item">
         <span
@@ -17,12 +15,7 @@
         >
           <analysis-url :text="item.text" />
         </span>
-        <img
-          class="emoji"
-          v-else-if="item.name === 'img'"
-          :src="item.src"
-          alt="表情包"
-        />
+        <img class="emoji" v-else-if="item.name === 'img'" :src="item.src" alt="表情包" />
       </template>
     </template>
   </div>

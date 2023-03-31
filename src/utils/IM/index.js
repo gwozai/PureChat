@@ -97,10 +97,7 @@ export default class TIMProxy {
     // 网络监测
     tim.on(TIM.EVENT.NET_STATE_CHANGE, this.onNetStateChange);
     // 收到好友申请列表更新通知
-    tim.on(
-      TIM.EVENT.FRIEND_APPLICATION_LIST_UPDATED,
-      this.onFriendApplicationListUpdated
-    );
+    tim.on(TIM.EVENT.FRIEND_APPLICATION_LIST_UPDATED, this.onFriendApplicationListUpdated);
     // 收到好友分组列表更新通知
     tim.on(TIM.EVENT.FRIEND_GROUP_LIST_UPDATED, this.onFriendGroupListUpdated);
     // 已订阅用户或好友的状态变更（在线状态或自定义状态）时触发。
@@ -121,8 +118,7 @@ export default class TIMProxy {
     });
   }
   onReceiveMessage({ data, name }) {
-    const convId =
-      store.state.conversation?.currentConversation?.conversationID;
+    const convId = store.state.conversation?.currentConversation?.conversationID;
     const userProfile = store.state.user.currentUserProfile;
     const { atUserList } = data[0];
     console.log(convId, "当前会话ID");

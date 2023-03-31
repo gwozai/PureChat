@@ -12,12 +12,7 @@
         :key="puzzle"
         :class="puzzle == '0' ? 'cell cells' : 'cell'"
       >
-        <img
-          class="picture"
-          v-if="puzzle !== 0"
-          :src="picture(puzzle)"
-          alt=""
-        />
+        <img class="picture" v-if="puzzle !== 0" :src="picture(puzzle)" alt="" />
       </div>
     </transition-group>
   </div>
@@ -103,10 +98,7 @@ const aotoPlay = () => {
     ],
     delayTime: "500",
   };
-  const allow = autoPuzzles(Setting).canReach(
-    Setting.originalNode,
-    Setting.resultNode
-  );
+  const allow = autoPuzzles(Setting).canReach(Setting.originalNode, Setting.resultNode);
   if (allow) {
     console.log("开始拼图");
     autoPuzzles(Setting).searchPath();

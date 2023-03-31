@@ -1,10 +1,4 @@
-import {
-  ref,
-  unref,
-  shallowRef,
-  onBeforeUnmount,
-  getCurrentInstance,
-} from "vue";
+import { ref, unref, shallowRef, onBeforeUnmount, getCurrentInstance } from "vue";
 import { throttle } from "lodash";
 import { useResizeListener } from "@/utils/hooks";
 const { addResizeListener, removeResizeListener } = useResizeListener();
@@ -66,10 +60,7 @@ export function useWatermark(appendEl = ref(document.body)) {
       el.style.height = `${options.height}px`;
     }
     if (options.str !== "undefined") {
-      el.style.background = `url(${createBase64(
-        options.str,
-        options.attr
-      )}) left top repeat`;
+      el.style.background = `url(${createBase64(options.str, options.attr)}) left top repeat`;
     }
   }
 

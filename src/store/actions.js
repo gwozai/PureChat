@@ -1,4 +1,5 @@
 import storage from "storejs";
+import { nextTick } from "vue";
 import router from "@/router";
 import views from "@/utils/assembly.js";
 import { ToTree, flatToTree } from "@/utils/ToTree";
@@ -52,11 +53,17 @@ const actions = {
       setTimeout(() => {
         commit("updateData", { key: "user", value: result });
         commit("showMessage", { message: msg });
-        router.push("/");
-        // router.push({ name: "welcome", params: { name: "welcome" } });
+        router.push("/home");
+        // router.push("/");
+        // router.push({ name: "home", params: { name: "welcome" } });
         // router.push(`/home/${welcome}`)
         // router.push({ path: "/", replace: true });
-      }, 1000);
+        nextTick(() => {
+          // router.push({ name: "/home/welcome" });
+          // router.push({ path: "/home/welcome", replace: true });
+          // router.push("/home/welcome");
+        });
+      }, 500);
     } else {
       verification(code, msg);
     }
