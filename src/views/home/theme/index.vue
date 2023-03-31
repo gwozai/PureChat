@@ -6,13 +6,15 @@
       <div class="continer-theme">
         <!-- :include="['editor']" name="Welcome" route-->
         <router-view v-slot="{ Component, route }" :key="$route.fullPath">
-          {{ fn(Component, route) }}
+          <!-- {{ fn(Component, route) }} -->
           <transition name="fade-transform" mode="out-in">
             <keep-alive v-if="$route.meta.keep" max="3">
               <component v-if="Component" :is="Component" :key="route.path" />
+              <component v-else :is="fn(route)" />
             </keep-alive>
             <template v-else>
               <component v-if="Component" :is="Component" :key="route.path" />
+              <component v-else :is="fn(route)" />
             </template>
           </transition>
         </router-view>
@@ -29,6 +31,9 @@ import { useState } from "@/utils/hooks/useMapper";
 import Header from "./Header.vue";
 import elementResizeDetectorMaker from "element-resize-detector";
 import emitter from "@/utils/mitt-bus";
+import Welcome from "@/views/welcome/index";
+import ChatStudio from "@/views/ChatStudio/index";
+import About from "@/views/about/index";
 
 const route = useRoute();
 const router = useRouter();
@@ -41,8 +46,15 @@ const { isActive, sidebar } = useState({
 const erd = elementResizeDetectorMaker({
   strategy: "scroll",
 });
-const fn = (data, route) => {
-  console.log(data, route);
+const compMap = {
+  home: Welcome,
+  chatStudio: ChatStudio,
+  about: About,
+};
+const fn = (route) => {
+  console.log(route);
+  console.log(route.name);
+  if (route?.name) return compMap[route.name];
 };
 const VResize = {
   mounted(el, binding, vnode) {

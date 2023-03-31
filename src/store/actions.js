@@ -55,7 +55,7 @@ const actions = {
         router.push("/");
         // router.push({ name: "welcome", params: { name: "welcome" } });
         // router.push(`/home/${welcome}`)
-        // router.push({ path: "/home", replace: true });
+        // router.push({ path: "/", replace: true });
       }, 1000);
     } else {
       verification(code, msg);

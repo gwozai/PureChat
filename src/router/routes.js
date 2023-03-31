@@ -27,18 +27,9 @@ const About = () => import(/* webpackChunkName: "Role" */ "@/views/about/index")
 // ];
 
 const routes = [
-  { path: "/", redirect: "/home" },
+  // { path: "/", redirect: "/home" },
   {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: {
-      title: "登录",
-      icon: "Eleme",
-    },
-  },
-  {
-    path: "/:name",
+    path: "/",
     name: "home",
     component: Home,
     redirect: "/welcome",
@@ -132,6 +123,15 @@ const routes = [
         },
       },
     ],
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+    meta: {
+      title: "登录",
+      icon: "Eleme",
+    },
   },
 ];
 
