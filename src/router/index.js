@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory, START_LOCATION } from "vue-router";
 import storage from "storejs";
 import NProgress from "@/utils/progress";
 import routes from "./routes";
@@ -34,6 +34,10 @@ router.beforeEach(async (to, from, next) => {
   // console.log(to, "to")
   // console.log(from,"from")
   if (from.path === to.path) return;
+  if (from === START_LOCATION) {
+    // 初始导航
+    console.log(to, from);
+  }
   setPageTitle(to.meta.title);
   const token = storage.get(ACCESS_TOKEN);
 

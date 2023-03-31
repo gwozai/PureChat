@@ -2,7 +2,7 @@
 /**
  *
  * keepAlive 需要被缓存的组件
- *
+ * requiresAuth
  */
 const Login = () => import(/* webpackChunkName: "Login" */ "@/views/login/index");
 const Home = () => import(/* webpackChunkName: "Home" */ "@/views/home/index");
@@ -47,7 +47,7 @@ const routes = [
       {
         path: "/welcome",
         name: "welcome",
-        url: '/welcome',
+        url: "/welcome",
         component: Welcome,
         meta: {
           title: "首页",
@@ -58,9 +58,10 @@ const routes = [
       {
         path: "/ChatStudio",
         name: "ChatStudio",
-        url: '/ChatStudio',
+        url: "/ChatStudio",
         component: ChatStudio,
         meta: {
+          keep: true,
           title: "聊天工作室",
           icon: "ForkSpoon",
         },
@@ -69,7 +70,7 @@ const routes = [
       {
         path: "/personal",
         name: "personal",
-        url: '/personal',
+        url: "/personal",
         component: Personal,
         meta: {
           title: "个人中心",
@@ -80,7 +81,7 @@ const routes = [
       {
         path: "/system",
         name: "system",
-        url: '/system',
+        url: "/system",
         redirect: "/system/menu",
         meta: {
           title: "系统管理",
@@ -90,7 +91,7 @@ const routes = [
           {
             path: "/system/menu",
             name: "menu",
-            url: '/system/menu',
+            url: "/system/menu",
             component: Menu,
             meta: {
               title: "菜单列表",
@@ -100,7 +101,7 @@ const routes = [
           {
             path: "/system/role",
             name: "role",
-            url: '/system/role',
+            url: "/system/role",
             component: Role,
             meta: {
               title: "角色权限",
@@ -110,7 +111,7 @@ const routes = [
           {
             path: "/system/user",
             name: "user",
-            url: '/system/user',
+            url: "/system/user",
             component: User,
             meta: {
               title: "用户权限",
@@ -123,7 +124,7 @@ const routes = [
       {
         path: "/about",
         name: "about",
-        url: '/about',
+        url: "/about",
         component: About,
         meta: {
           title: "关于",

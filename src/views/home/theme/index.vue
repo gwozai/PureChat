@@ -4,14 +4,15 @@
     <Header />
     <main class="app-main">
       <div class="continer-theme">
-        <!-- :include="['editor']" -->
-        <router-view v-slot="{ Component }" :key="$route.fullPath">
+        <!-- :include="['editor']" name="Welcome" route-->
+        <router-view v-slot="{ Component, route }" :key="$route.fullPath">
+          {{ fn(Component, route) }}
           <transition name="fade-transform" mode="out-in">
             <keep-alive v-if="$route.meta.keep" max="3">
-              <component v-if="Component" :is="Component" />
+              <component v-if="Component" :is="Component" :key="route.path" />
             </keep-alive>
             <template v-else>
-              <component v-if="Component" :is="Component" />
+              <component v-if="Component" :is="Component" :key="route.path" />
             </template>
           </transition>
         </router-view>
@@ -40,7 +41,9 @@ const { isActive, sidebar } = useState({
 const erd = elementResizeDetectorMaker({
   strategy: "scroll",
 });
-
+const fn = (data, route) => {
+  console.log(data, route);
+};
 const VResize = {
   mounted(el, binding, vnode) {
     erd.listenTo(el, (elem) => {

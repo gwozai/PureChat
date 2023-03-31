@@ -52,8 +52,8 @@ const actions = {
       setTimeout(() => {
         commit("updateData", { key: "user", value: result });
         commit("showMessage", { message: msg });
-        router.push("/home");
-        // router.push({ name: "home", params: { name: "welcome" } });
+        router.push("/");
+        // router.push({ name: "welcome", params: { name: "welcome" } });
         // router.push(`/home/${welcome}`)
         // router.push({ path: "/home", replace: true });
       }, 1000);
