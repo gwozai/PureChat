@@ -61,7 +61,6 @@ const user = {
     },
   },
   actions: {
-    // state, commit, dispatch, getters, rootGetters, rootState
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
       const { userID, userSig } = user;

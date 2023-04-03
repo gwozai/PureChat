@@ -55,6 +55,7 @@ export const SendMessageCd = async (params) => {
 export const chatGpt = async (params) => {
   const { From, To, content } = params;
   if (To !== "R00001") return;
+  // console.log(process.env.VUE_APP_API_URL);
   const { data } = await axios({
     url: process.env.VUE_APP_API_URL ?? "",
     method: "post",

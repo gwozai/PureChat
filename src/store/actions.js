@@ -7,6 +7,8 @@ import { login, logout } from "@/api/user";
 import { getMenu } from "@/api/menu";
 import { verification } from "@/utils/message/index";
 import emitter from "@/utils/mitt-bus";
+import { tree } from "@/utils/ToTree";
+import { USER_DATA, SET_UP } from "@/store/mutation-types";
 
 const actions = {
   // 更新路由
@@ -18,12 +20,26 @@ const actions = {
     });
     let root = route.find((t) => (t.path = "/"));
     ToTree(root, route);
-    console.log(root);
     // 动态添加路由
     root.children.forEach((item) => {
+      console.log(item);
       router.addRoute(item);
     });
     commit("updateData", { key: "Routingtable", value: root.children });
+  },
+  // 添加动态路由
+  updataRoute() {
+    try {
+      const routing = storage.get(USER_DATA)?.Routingtable;
+      if (!routing) return;
+      tree(routing);
+      routing.forEach((item) => {
+        router.addRoute(item);
+      });
+      console.log(router.getRoutes());
+    } catch (error) {
+      console.log(error);
+    }
   },
   // 设置验证码
   SET_VERIFYCODE({ state }, verifyCode) {
@@ -58,11 +74,10 @@ const actions = {
         // router.push({ name: "home", params: { name: "welcome" } });
         // router.push(`/home/${welcome}`)
         // router.push({ path: "/", replace: true });
-        nextTick(() => {
-          // router.push({ name: "/home/welcome" });
-          // router.push({ path: "/home/welcome", replace: true });
-          // router.push("/home/welcome");
-        });
+        // nextTick(() => { });
+        // router.push({ name: "/home/welcome" });
+        // router.push({ path: "/home/welcome", replace: true });
+        // router.push("/home/welcome");
       }, 500);
     } else {
       verification(code, msg);
