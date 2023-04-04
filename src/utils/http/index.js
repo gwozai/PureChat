@@ -97,7 +97,6 @@ const errorHandler = (error) => {
 
 // 请求拦截器
 service.interceptors.request.use((config) => {
-  // console.log(config)
   // 开启进度条动画
   NProgress.start();
   const token = storage.get(ACCESS_TOKEN);
@@ -112,7 +111,6 @@ service.interceptors.response.use((response) => {
   const { code, msg } = data;
   // 关闭进度条动画
   NProgress.done();
-  // console.log(response, "response");
   if (status === 200) {
     const ToKen = response.headers["x-token"];
     if (ToKen) {

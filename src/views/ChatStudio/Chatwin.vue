@@ -25,9 +25,10 @@
               'is-other': !ISown(item),
               'style-choice': showCheckbox,
             }"
-            @click="handleChecked($event, item)"
+            @click="handleChecked($event, item, 'outside')"
+            :id="`choice${item.ID}`"
           >
-            <Checkbox :item="item" @click.stop="handleCilck($event, item)" />
+            <Checkbox :item="item" @click.stop="handleChecked($event, item, 'initial')" />
             <div class="picture" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
               <el-avatar
                 :size="36"
@@ -112,7 +113,6 @@ const isRight = ref(true);
 const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
 const messageViewRef = ref(null);
-// const cardData = ref(null);
 const watermarkText = ref("pure-admin");
 const { state, dispatch, commit } = useStore();
 const { setWatermark, clear } = useWatermark();
@@ -176,18 +176,15 @@ const updateLoadMore = (newValue) => {
   });
 };
 // 多选框
-const handleCilck = (e, item) => {
-  // 处理触发两次bug
-  if (e.target.tagName == "INPUT") return;
-  const el = document.getElementById(`${item.ID}`);
-  el.parentNode.classList.toggle("style-select");
-};
-
-const handleChecked = (e, item) => {
+const handleChecked = (e, item, type = "initial") => {
   if (!showCheckbox.value) return;
   if (item.type == "TIMGroupTipElem") return;
   if (item.isRevoked) return;
-  const _el = document.getElementById(`${item.ID}`);
+  if (e.target.tagName !== "INPUT" && type == "initial") {
+    const el = document.getElementById(`choice${item.ID}`);
+    el.parentNode.classList.toggle("style-select");
+  }
+  const _el = document.getElementById(`choice${item.ID}`);
   const el = _el.getElementsByTagName("input")[0];
   _el.parentNode.classList.toggle("style-select");
   if (el.checked) {
@@ -215,7 +212,6 @@ const ISown = (item) => {
 const onclickavatar = (e, item) => {
   const isSelf = ISown(item);
   if (isSelf) return;
-  // cardData.value = item;
   commit("setPopoverStatus", {
     status: true,
     seat: e,

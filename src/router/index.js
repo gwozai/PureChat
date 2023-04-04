@@ -26,6 +26,18 @@ const router = createRouter({
   history: production ? createWebHashHistory() : createWebHistory(),
   routes,
   strict: true,
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve) => {
+      if (savedPosition) {
+        return savedPosition;
+      } else {
+        if (from.meta.saveSrollTop) {
+          const top = document.documentElement.scrollTop || document.body.scrollTop;
+          resolve({ left: 0, top });
+        }
+      }
+    });
+  },
 });
 // 默认是  Hash  模式, 手动设置为  History  模式
 // 更新视图但不重新请求页面是前端路由原理的核心之一
