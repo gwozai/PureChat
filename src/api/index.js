@@ -1,6 +1,7 @@
 import http from "@/utils/http/index";
 import axios from "axios";
 import qs from "qs";
+import { Cloud } from "laf-client-sdk";
 import { restSendMsg } from "@/api/rest-api";
 
 export const createForData = ({ name, type, size, fileName, uploadedSize = 0, file }) => {
@@ -72,3 +73,16 @@ export const chatGpt = async (params) => {
   }
   // console.log(data);
 };
+
+const cloud = new Cloud({
+  baseUrl: `https://${process.env.VUE_APP_APP_ID}.laf.dev`,
+  // dbProxyUrl: "/proxy/app",
+  // getAccessToken: () => localStorage.getItem("access_token"),
+});
+function getList() {
+  cloud.invoke("getUser").then((res) => {
+    console.log(res);
+  });
+}
+
+getList();
