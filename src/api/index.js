@@ -74,15 +74,13 @@ export const chatGpt = async (params) => {
   // console.log(data);
 };
 
-const cloud = new Cloud({
+export const cloud = new Cloud({
   baseUrl: `https://${process.env.VUE_APP_APP_ID}.laf.dev`,
   // dbProxyUrl: "/proxy/app",
   // getAccessToken: () => localStorage.getItem("access_token"),
 });
-function getList() {
-  cloud.invoke("getUser").then((res) => {
-    console.log(res);
-  });
-}
 
-getList();
+export const getUser = async () => {
+  const res = await cloud.invoke("getUser");
+  return res;
+};

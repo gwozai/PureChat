@@ -32,7 +32,7 @@ import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { setCookies, getCookies } from "@/utils/Cookies";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
 import { useToggle } from "@/utils/hooks/index";
-import { chatGpt } from "@/api/index";
+import { chatGpt, cloud, getUser } from "@/api/index";
 import io from "socket.io-client";
 
 export default defineComponent({
@@ -120,6 +120,7 @@ export default defineComponent({
     async callApi() {
       console.log(process.env.VUE_APP_API_URL);
       console.log(process.env.VUE_APP_API_KEY);
+      await getUser();
     },
   },
   setup(props, { attrs, emit, expose, slots }) {
