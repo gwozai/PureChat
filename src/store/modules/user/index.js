@@ -7,18 +7,18 @@ import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
 let tim = new TIMProxy();
-// new Proxy(tim, {
-//   set(target, key, val) {
-//     console.log(val);
-//     return Reflect.set(target, key, val);
-//   },
-//   get(target, key) {
-//     const value = Reflect.get(target, key);
-//     console.log(value);
-//     return value;
-//   },
-// });
-// console.log(tim);
+new Proxy(tim, {
+  set(target, key, val) {
+    console.log(val);
+    return Reflect.set(target, key, val);
+  },
+  get(target, key) {
+    const value = Reflect.get(target, key);
+    console.log(value);
+    return value;
+  },
+});
+console.log(tim);
 const user = {
   state: {
     currentUserProfile: {}, // IM用户信息

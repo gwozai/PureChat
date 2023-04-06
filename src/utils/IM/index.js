@@ -40,6 +40,7 @@ export default class TIMProxy {
     this.userSig = "";
     this.tim = null; // TIM实例
     this.TIM = null; // TIM命名空间
+    this.test = "";
     /**
      * value:属性的值
      * writable:如果为false 属性的值就不能被重写,只能为只读了
