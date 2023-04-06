@@ -25,7 +25,6 @@ function checkoutNetState(state) {
       return { message: "当前网络不稳定", type: "warning" };
     case TIM.TYPES.NET_STATE_DISCONNECTED:
       store.dispatch("LOG_OUT");
-      store.dispatch("TIM_LOG_OUT");
       return { message: "当前网络不可用", type: "error" };
     default:
       return "";
@@ -175,7 +174,6 @@ export default class TIMProxy {
       type: "error",
     });
     store.dispatch("LOG_OUT");
-    store.dispatch("TIM_LOG_OUT");
   }
   onError({ data }) {
     console.log(data);

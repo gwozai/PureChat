@@ -22,13 +22,12 @@ const actions = {
     ToTree(root, route);
     // 动态添加路由
     root.children.forEach((item) => {
-      console.log(item);
       router.addRoute(item);
     });
     commit("updateData", { key: "Routingtable", value: root.children });
   },
-  // 添加动态路由
-  updataRoute() {
+  // 页面刷新重新加载路由
+  reloadRoute({ commit, state }, route) {
     try {
       const routing = storage.get(USER_DATA)?.Routingtable;
       if (!routing) return;
@@ -36,7 +35,6 @@ const actions = {
       routing.forEach((item) => {
         router.addRoute(item);
       });
-      console.log(router.getRoutes());
     } catch (error) {
       console.log(error);
     }
@@ -91,6 +89,7 @@ const actions = {
     commit("SET_HISTORYMESSAGE", { type: "CLEAR_HISTORY" });
     // 清除 eltag 标签
     dispatch("CLEAR_EL_TAG");
+    dispatch("TIM_LOG_OUT");
   },
 };
 

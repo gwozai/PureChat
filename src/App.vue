@@ -27,8 +27,7 @@ const currentLocale = computed(() => {
 });
 
 onMounted(async () => {
-  dispatch("updataRoute");
-  // commit("OverloadRouting");
+  dispatch("reloadRoute");
   setTimeout(() => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");

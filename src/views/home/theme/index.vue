@@ -4,10 +4,10 @@
     <Header />
     <main class="app-main">
       <div class="continer-theme">
-        <!-- :include="['editor']" name="Welcome" route-->
-        <router-view v-slot="{ Component, route }" :key="$route.fullPath">
-          <transition name="fade-transform" mode="out-in">
-            <keep-alive v-if="$route.meta.keep" max="3">
+        <!-- :include="['editor']" route :key="route.fullPath"-->
+        <router-view v-slot="{ Component, route }">
+          <transition name="fade-slide" :appear="true" mode="out-in">
+            <keep-alive v-if="route.meta.keep" max="3">
               <component v-if="Component" :is="Component" :key="route.path" />
               <component v-else :is="CompMap[page.type] || error" />
             </keep-alive>

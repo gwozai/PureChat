@@ -42,7 +42,6 @@ const errorHandler = (error) => {
       case 401:
         ElMessage("未授权,请重新登录!");
         store.dispatch("LOG_OUT");
-        store.dispatch("TIM_LOG_OUT");
         break;
       case 403:
         console.log("拒绝访问");

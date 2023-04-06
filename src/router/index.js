@@ -47,10 +47,10 @@ router.beforeEach(async (to, from, next) => {
   // console.log(to, "to")
   // console.log(from,"from")
   if (from.path === to.path) return;
-  if (from === START_LOCATION) {
-    // 初始导航
-    console.log(to, from);
-  }
+  // if (from === START_LOCATION) {
+  //   // 初始导航
+  //   console.log(to, from);
+  // }
   setPageTitle(to.meta.title);
   const token = storage.get(ACCESS_TOKEN);
 
