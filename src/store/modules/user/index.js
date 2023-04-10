@@ -6,19 +6,8 @@ import { ElMessage } from "element-plus";
 import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
-let tim = new TIMProxy();
-new Proxy(tim, {
-  set(target, key, val) {
-    console.log(val);
-    return Reflect.set(target, key, val);
-  },
-  get(target, key) {
-    const value = Reflect.get(target, key);
-    console.log(value);
-    return value;
-  },
-});
-console.log(tim);
+const timProxy = new TIMProxy();
+
 const user = {
   state: {
     currentUserProfile: {}, // IM用户信息
@@ -27,14 +16,17 @@ const user = {
     userSig: "", // 密钥
     message: null,
     showload: false, // 登录按钮加载状态
+    timProxy,
   },
   getters: {},
   mutations: {
     toggleIsSDKReady(state, isSDKReady) {
       state.isSDKReady = isSDKReady;
+      state.timProxy.isSDKReady = isSDKReady;
     },
     updateCurrentUserProfile(state, userProfile) {
       state.currentUserProfile = userProfile;
+      state.timProxy.userProfile = userProfile;
     },
     getUserInfo(state, payload) {
       state.userID = payload.userID;

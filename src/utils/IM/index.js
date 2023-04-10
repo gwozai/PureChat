@@ -40,7 +40,7 @@ export default class TIMProxy {
     this.userSig = "";
     this.tim = null; // TIM实例
     this.TIM = null; // TIM命名空间
-    this.test = "";
+    this.test = {};
     /**
      * value:属性的值
      * writable:如果为false 属性的值就不能被重写,只能为只读了
@@ -48,9 +48,19 @@ export default class TIMProxy {
      * enumerable:是否能在for...in循环中遍历出来或在Object.keys中列举出来。
      * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
      */
-    Object.defineProperty(this, "tim", { enumerable: false });
+    Object.defineProperty(this, "test", { enumerable: false });
     // 暴露给全局
-    window.TIMProxy = this;
+    window.TIMProxy = new Proxy(this, {
+      set(target, key, val) {
+        console.log(key, val);
+        return Reflect.set(target, key, val);
+      },
+      get(target, key) {
+        const value = Reflect.get(target, key);
+        console.log(value);
+        return value;
+      },
+    });
   }
   // 保存IM信息
   saveSelfToLocalStorage() {

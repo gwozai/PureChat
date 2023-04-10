@@ -42,6 +42,7 @@ export default defineComponent({
   computed: {
     ...mapState({
       groupList: (state) => state.groupinfo.groupList,
+      timProxy: (state) => state.user.timProxy,
     }),
   },
   props: {},
@@ -75,6 +76,8 @@ export default defineComponent({
         {
           title: "环境变量",
           onclick: () => {
+            // this.timProxy.saveSelfToLocalStorage();
+            console.log(this.timProxy);
             console.log(process.env);
           },
         },
