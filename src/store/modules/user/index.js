@@ -22,15 +22,17 @@ const user = {
   mutations: {
     toggleIsSDKReady(state, isSDKReady) {
       state.isSDKReady = isSDKReady;
-      state.timProxy.isSDKReady = isSDKReady;
     },
     updateCurrentUserProfile(state, userProfile) {
       state.currentUserProfile = userProfile;
-      state.timProxy.userProfile = userProfile;
+      window.TIMProxy.userProfile = userProfile;
     },
     getUserInfo(state, payload) {
-      state.userID = payload.userID;
-      state.userSig = payload.userSig;
+      const { userID, userSig } = payload;
+      state.userID = userID;
+      state.userSig = userSig;
+      window.TIMProxy.userID = userID;
+      window.TIMProxy.userSig = userSig;
     },
     reset(state) {
       Object.assign(state, {

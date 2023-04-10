@@ -34,6 +34,7 @@ function checkoutNetState(state) {
 export default class TIMProxy {
   // 静态方法
   constructor() {
+    this.version = TIM.VERSION; // im版本号
     this.userProfile = {}; // IM用户信息
     this.isSDKReady = false; // TIM SDK 是否 ready
     this.userID = "";
@@ -52,17 +53,17 @@ export default class TIMProxy {
     // 暴露给全局
     window.TIMProxy = new Proxy(this, {
       set(target, key, val) {
-        console.log(key, val);
+        // console.log(key, val);
         return Reflect.set(target, key, val);
       },
       get(target, key) {
         const value = Reflect.get(target, key);
-        console.log(value);
+        // console.log(value);
         return value;
       },
     });
   }
-  // 保存IM信息
+  // 缓存IM信息
   saveSelfToLocalStorage() {
     const player = {};
     for (const [key, value] of Object.entries(this)) {
@@ -71,7 +72,7 @@ export default class TIMProxy {
     console.log(player);
     // storage.set("player", player);
   }
-  // 设置IM信息
+  // 更新IM信息
   loadSelfFromLocalStorage() {
     const player = storage.get("player");
     if (!player) return;
@@ -176,7 +177,7 @@ export default class TIMProxy {
   }
   onUpdateGroupList({ data, name }) {
     console.log(data, "群组列表更新");
-    // commit('updateGroupList', data)
+    // store.commit("updateGroupList", data[0]);
   }
   onKickOut({ data }) {
     const message = kickedOutReason(data.type);

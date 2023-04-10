@@ -76,7 +76,7 @@ export default defineComponent({
         {
           title: "环境变量",
           onclick: () => {
-            // this.timProxy.saveSelfToLocalStorage();
+            this.timProxy.saveSelfToLocalStorage();
             console.log(this.timProxy);
             console.log(process.env);
           },

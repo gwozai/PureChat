@@ -6,6 +6,8 @@ import {
   getConversationProfile,
   setMessageRead,
   getUnreadMsg,
+  TIMpingConv,
+  setMessageRemindType,
 } from "@/api/im-sdk-api";
 import { deepClone } from "@/utils/clone";
 
@@ -34,6 +36,7 @@ const conversation = {
     currentReplyUser: null,
     activetab: "whole",
     outside: "news", // 侧边栏初始状态
+    isNotify: false, // 是否免打扰
   },
   mutations: {
     // 设置历史消息
@@ -219,6 +222,9 @@ const conversation = {
           break;
       }
     },
+    SET_IS_NOTIFY(state, flag) {
+      state.isNotify = flag;
+    },
     // 设置多选框状态
     SET_CHEC_BOX(state, flag) {
       state.showCheckbox = flag;
@@ -309,6 +315,16 @@ const conversation = {
       const { isSDKReady } = rootState.user || {};
       if (!isSDKReady) return;
       state.totalUnreadMsg = await getUnreadMsg();
+    },
+    // 消息免打扰
+    async SET_MESSAGE_REMIND_TYPE({ state, commit }, action) {
+      const { type, toAccount, remindType } = action;
+      if (type == "@TIM#SYSTEM") return;
+      await setMessageRemindType({
+        userID: toAccount,
+        RemindType: remindType,
+        type,
+      });
     },
   },
   getters: {

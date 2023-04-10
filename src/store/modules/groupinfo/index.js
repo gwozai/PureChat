@@ -15,7 +15,7 @@ export default {
     seat: null,
     groupDrawer: false, // 群聊开关
     groupList: [], //群组列表
-    groupProfile: null,
+    groupProfile: null, // 群聊数据
     currentMemberList: [], // 当前群组成员列表
   },
   getters: {
@@ -39,6 +39,10 @@ export default {
     },
   },
   mutations: {
+    updateGroupList({ state }, payload) {
+      console.log(payload);
+      state.groupProfile = payload;
+    },
     setGroupProfile(state, payload) {
       const { type } = payload;
       if (type == "GROUP") {

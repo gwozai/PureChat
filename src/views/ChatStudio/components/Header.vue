@@ -26,12 +26,14 @@ import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { useStore } from "vuex";
 
 const { state, commit, dispatch } = useStore();
-const { Conver, groupDrawer } = useState({
+const { Conver, groupDrawer, groupProfile } = useState({
   groupDrawer: (state) => state.groupinfo.groupDrawer,
+  groupProfile: (state) => state.groupinfo.groupProfile,
   Conver: (state) => state.conversation.currentConversation,
 });
 const openSetup = () => {
   commit("setGroupStatus", true);
+  console.log(groupProfile.value);
 };
 
 const HeaderView = (props) => {

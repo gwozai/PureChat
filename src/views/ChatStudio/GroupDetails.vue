@@ -74,7 +74,7 @@
       <div class="group-flag-message">
         <div class="group-flag-message--title">
           <span class="group-flag-message--title__text"> 消息免打扰 </span>
-          <el-switch v-model="value" />
+          <el-switch v-model="isNotify" @change="notify" />
         </div>
       </div>
       <div class="divider"></div>
@@ -134,12 +134,13 @@ import { nextTick, ref, computed } from "vue";
 import { ElMessageBox } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
+import { useToggle } from "@/utils/hooks/index";
 import { useStore } from "vuex";
 import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/group";
 import { useI18n } from "vue-i18n";
 
 const { locale, t } = useI18n();
-const { state, commit, dispatch } = useStore();
+const { commit, dispatch } = useStore();
 const {
   user,
   userProfile,
@@ -159,10 +160,21 @@ const {
 });
 const { isOwner, isAdmin, toAccount } = useGetters(["isOwner", "isAdmin", "toAccount"]);
 const input = ref("");
-const value = ref(false);
+const isNotify = ref(false);
 const Refdrawerlist = ref();
 const dialogVisible = ref(false);
 const groupMember = ref([]);
+
+const notify = (val) => {
+  // const { type, toAccount, messageRemindType: remindType } = currentConversation.value;
+  // dispatch("SET_MESSAGE_REMIND_TYPE", {
+  //   type,
+  //   toAccount,
+  //   remindType,
+  // });
+};
+
+// const [state, toggle] = useToggle();
 
 const visible = computed({
   get() {

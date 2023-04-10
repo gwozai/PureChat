@@ -91,9 +91,8 @@ const contextMenuItemInfo = ref([]);
 
 const { state, getters, dispatch, commit } = useStore();
 const { tabList } = useGetters(["tabList"]);
-const { Selected, UserInfo, messageList, Conver } = useState({
+const { UserInfo, messageList, Conver } = useState({
   UserInfo: (state) => state.data.user,
-  Selected: (state) => state.conversation.currentConversation,
   messageList: (state) => state.conversation.currentMessageList,
   Conver: (state) => state.conversation.currentConversation,
 });
@@ -132,7 +131,7 @@ const isShowCount = (item) => {
 };
 
 const fnClass = (item) => {
-  let current = Selected.value;
+  let current = Conver.value;
   let select = item?.conversationID == current?.conversationID;
   if (select) {
     return "is-active";
@@ -162,6 +161,7 @@ const dragleaveHandler = (e) => {};
 
 // 会话点击
 const handleConvListClick = (data) => {
+  console.log(data, "会话点击");
   if (Conver.value) {
     const { conversationID: id } = Conver.value;
     const newId = data?.conversationID;
@@ -199,11 +199,10 @@ const handleClickMenuItem = (item) => {
 // 消息免打扰
 const disableRecMsg = async (data, off) => {
   const { type, toAccount, messageRemindType: remindType } = data;
-  if (type == "@TIM#SYSTEM") return;
-  await setMessageRemindType({
-    userID: toAccount,
-    RemindType: remindType,
+  dispatch("SET_MESSAGE_REMIND_TYPE", {
     type,
+    toAccount,
+    remindType,
   });
 };
 // 删除会话
