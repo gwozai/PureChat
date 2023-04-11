@@ -20,6 +20,10 @@ const MENU_LIST = [
     text: "撤回",
   },
   {
+    id: "reply",
+    text: "回复",
+  },
+  {
     id: "multiSelect",
     text: "多选",
   },
@@ -29,24 +33,7 @@ const MENU_LIST = [
   },
 ];
 
-const RIGHT_CLICK_MENU_LIST = ref([
-  {
-    id: "copy",
-    text: "复制",
-  },
-  {
-    id: "revoke",
-    text: "撤回",
-  },
-  {
-    id: "multiSelect",
-    text: "多选",
-  },
-  {
-    id: "delete",
-    text: "删除",
-  },
-]);
+const RIGHT_CLICK_MENU_LIST = ref([]);
 
 const state = reactive({
   circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",

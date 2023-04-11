@@ -41,7 +41,7 @@
             <div
               :class="msgOne(item)"
               v-contextmenu:contextmenu
-              @contextmenu.prevent="ContextMenuEvent($event, item)"
+              @contextmenu.prevent="handleContextMenuEvent($event, item)"
             >
               <name-component :item="item" />
               <div :class="Megtype(item.type)" :id="item.ID">
@@ -58,7 +58,7 @@
       <contextmenu-item
         v-for="item in RIGHT_CLICK_MENU_LIST"
         :key="item.id"
-        @click="ClickMenuItem(item)"
+        @click="handlRightClick(item)"
         v-show="isRight"
       >
         {{ item.text }}
@@ -85,7 +85,7 @@ import {
 import { squareUrl, circleUrl, MENU_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
-import { fncopy, dragControllerDiv } from "./utils/utils";
+import { handleCopyMsg, dragControllerDiv } from "./utils/utils";
 
 import { timeFormat } from "@/utils/timeFormat";
 import { debounce, delay } from "@/utils/debounce";
@@ -263,8 +263,7 @@ const getMoreMsg = async () => {
     const Conv = currentConversation.value;
     const msglist = currentMessageList.value;
     const { conversationID, toAccount } = Conv;
-    const msg = validatelastMessage(msglist);
-    const { ID } = msg;
+    const { ID } = validatelastMessage(msglist);
     const result = await getMsgList({
       conversationID: conversationID,
       nextReqMessageID: ID,
@@ -389,8 +388,7 @@ const msgOne = (item) => {
     return "message-view__item--index";
   }
 };
-
-const ContextMenuEvent = (event, item) => {
+const handleContextMenuEvent = (event, item) => {
   const { isRevoked, time, type } = item;
   console.log(item, "右键菜单数据");
   const isTip = type == "TIMGroupTipElem";
@@ -412,27 +410,33 @@ const ContextMenuEvent = (event, item) => {
     RIGHT_CLICK_MENU_LIST.value = MENU_LIST.filter((t) => t.id !== "revoke");
   }
 };
-
-const ClickMenuItem = (data) => {
-  const Info = MenuItemInfo.value;
+const handlRightClick = (data) => {
+  const info = MenuItemInfo.value;
   const { id, text } = data;
   switch (id) {
     case "copy": //复制
-      fncopy(Info);
+      handleCopyMsg(info);
       break;
     case "revoke": //撤回
-      revokes(Info);
+      handleRevokeMsg(info);
+      break;
+    case "reply": // 回复
+      handleReplyMsg(info);
       break;
     case "multiSelect": //多选
-      multiSelect(Info);
+      handleMultiSelectMsg();
       break;
     case "delete": //删除
-      fndelete(Info);
+      handleDeleteMsg(info);
       break;
   }
 };
+// 回复消息
+const handleReplyMsg = (data) => {
+  commit("setReplyMsg", data);
+};
 // 删除消息
-const fndelete = async (data) => {
+const handleDeleteMsg = async (data) => {
   try {
     const formEl = await ElMessageBox.confirm("确定删除?", "提示", {
       confirmButtonText: "确定",
@@ -455,11 +459,11 @@ const fndelete = async (data) => {
   }
 };
 // 多选
-const multiSelect = (data) => {
+const handleMultiSelectMsg = () => {
   commit("SET_CHEC_BOX", true);
 };
 // 撤回消息
-const revokes = (data) => {
+const handleRevokeMsg = (data) => {
   const { code, message } = revokeMsg(data);
 };
 

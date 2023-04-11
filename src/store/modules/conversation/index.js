@@ -112,6 +112,13 @@ const conversation = {
           state.currentMessageList = newHistoryList;
           break;
         }
+        // 回复消息
+        case CONVERSATIONTYPE.SET_CURRENT_REPLY_MSG: {
+          // const { convId, message } = payload;
+          state.currentReplyMsg = payload;
+          // console.log(state.currentReplyMsg);
+          break;
+        }
         // 清除历史记录
         case CONVERSATIONTYPE.CLEAR_HISTORY: {
           state.historyMessageList = new Map();
@@ -236,6 +243,10 @@ const conversation = {
     // 切换侧边栏
     TAGGLE_OUE_SIDE(state, item) {
       state.outside = item;
+    },
+    setReplyMsg(state, payload) {
+      state.currentReplyMsg = payload;
+      console.log(state.currentReplyMsg);
     },
   },
   actions: {
