@@ -1,6 +1,5 @@
 <template>
-  <div :class="['app-wrapper', sidebar ? '' : 'style-wrapper']" :style="fnStyle(isActive)">
-    <!-- v-resize -->
+  <div :class="['app-wrapper', sidebar ? '' : 'style-wrapper']" :style="fnStyle(isActive)" v-resize>
     <Header />
     <main class="app-main">
       <div class="continer-theme">
@@ -28,7 +27,6 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
 import Header from "./Header.vue";
-import elementResizeDetectorMaker from "element-resize-detector";
 import emitter from "@/utils/mitt-bus";
 
 import error from "@/views/notfound/index.vue";
@@ -55,9 +53,7 @@ const CompMap = {
 const page = reactive({
   type: "",
 });
-const erd = elementResizeDetectorMaker({
-  strategy: "scroll",
-});
+
 watch(
   () => route.name,
   (val) => {
@@ -68,22 +64,7 @@ watch(
     // deep:true // 深度监听
   }
 );
-const VResize = {
-  mounted(el, binding, vnode) {
-    erd.listenTo(el, (elem) => {
-      const width = elem.offsetWidth;
-      const height = elem.offsetHeight;
-      if (binding?.instance) {
-        emitter.emit("resize", { detail: { width, height } });
-      } else {
-        vnode.el.dispatchEvent(new CustomEvent("resize", { detail: { width, height } }));
-      }
-    });
-  },
-  unmounted(el) {
-    erd.uninstall(el);
-  },
-};
+
 emitter.on("resize", ({ detail }) => {
   const { width } = detail;
   /** width app-wrapper类容器宽度

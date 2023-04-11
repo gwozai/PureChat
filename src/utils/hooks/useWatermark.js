@@ -75,7 +75,6 @@ export function useWatermark(appendEl = ref(document.body)) {
       });
     }
   }
-  // 防抖处理
   const func = throttle(function () {
     const el = unref(appendEl);
     if (!el) return;

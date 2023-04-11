@@ -42,18 +42,16 @@ export default class TIMProxy {
     this.tim = null; // TIM实例
     this.TIM = null; // TIM命名空间
     this.test = {};
-    /**
-     * value:属性的值
-     * writable:如果为false 属性的值就不能被重写,只能为只读了
-     * configurable:总开关,一旦为false,就不能再设置他的（value，writable，configurable）
-     * enumerable:是否能在for...in循环中遍历出来或在Object.keys中列举出来。
-     * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
-     */
-    Object.defineProperty(this, "test", { enumerable: false });
+    Object.defineProperty(this, "test", {
+      configurable: true, // 可配置
+      enumerable: false, // 不可枚举
+      value: 1, // 赋值
+      writable: true, // 可写
+    });
     // 暴露给全局
     window.TIMProxy = new Proxy(this, {
       set(target, key, val) {
-        // console.log(key, val);
+        console.log(key, val);
         return Reflect.set(target, key, val);
       },
       get(target, key) {

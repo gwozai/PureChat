@@ -8,6 +8,7 @@ import "@/styles/index.scss";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "v-contextmenu/dist/themes/default.css";
 
+import * as directives from "@/directives";
 import { useI18n } from "./plugins/i18n";
 import { useElIcons } from "./plugins/icons";
 import { loadAllassembly } from "./components";
@@ -16,7 +17,10 @@ import { MotionPlugin } from "@vueuse/motion";
 import { registerSvgIcon } from "./assets/icons/index";
 
 const app = createApp(App);
-
+// 自定义指令
+Object.keys(directives).forEach((key) => {
+  app.directive(key, directives[key]);
+});
 app.directive("contextmenu", directive);
 // 自动加载组件
 loadAllassembly(app);
