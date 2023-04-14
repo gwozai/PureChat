@@ -45,7 +45,7 @@ const conversation = {
       switch (type) {
         // 添加消息 首次进入会话是调用
         case CONVERSATIONTYPE.ADD_MESSAGE: {
-          console.log("添加消息");
+          console.log(payload, "添加消息");
           const { convId, message } = payload;
           state.historyMessageList.set(convId, message);
           if (state.currentConversation) {
@@ -54,16 +54,13 @@ const conversation = {
             state.currentMessageList = [];
           }
           // 当前会话少于历史条数关闭loading
-          if (state.currentMessageList?.length < HISTORY_MESSAGE_COUNT) {
-            state.noMore = true;
-          } else {
-            state.noMore = false;
-          }
+          const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
+          state.noMore = isMore;
           break;
         }
-        // 添加更多消息
+        // 添加更多消息 拉取历史消息时触发
         case CONVERSATIONTYPE.ADD_MORE_MESSAGE: {
-          console.log("添加更多消息");
+          console.log(payload, "添加更多消息");
           const { convId, messages } = payload;
           let history = state.historyMessageList.get(convId);
           let baseTime = getBaseTime(history);
@@ -75,21 +72,42 @@ const conversation = {
           state.currentMessageList = state.historyMessageList.get(convId);
           break;
         }
-        // 更新消息
+        // 更新消息 收到新消息 或 发送消息后 触发
         case CONVERSATIONTYPE.UPDATE_MESSAGES: {
-          console.log("更新消息");
+          console.log(payload, "更新消息");
           const { convId, message } = payload;
+          let matched = false;
           let newMessageList = [];
-          newMessageList = state.currentMessageList;
-          let baseTime = getBaseTime(newMessageList);
-          let timeDividerResult = addTimeDivider([message], baseTime).reverse();
-          newMessageList.unshift(...timeDividerResult);
-          state.currentMessageList = newMessageList;
-          state.needScrollDown = 0;
+          let oldMessageList = state.historyMessageList.get(convId);
+          if (oldMessageList) {
+            newMessageList = oldMessageList.map((oldMessage) => {
+              if (oldMessage.ID === payload.message.ID) {
+                matched = true;
+                return payload.message;
+              } else {
+                return oldMessage;
+              }
+            });
+          }
+          // newMessageList = state.currentMessageList;
+          // 新消息
+          if (!matched) {
+            let baseTime = getBaseTime(newMessageList);
+            let timeDividerResult = addTimeDivider([message], baseTime).reverse();
+            newMessageList.unshift(...timeDividerResult);
+          }
+          // 更新历史消息
+          state.historyMessageList.set(convId, newMessageList);
+          // 当前会有列表有值
+          if (state.currentConversation) {
+            state.currentMessageList = newMessageList;
+            state.needScrollDown = 0;
+          }
           break;
         }
         // 删除消息
         case CONVERSATIONTYPE.DELETE_MESSAGE: {
+          console.log(payload, "删除消息");
           const { convId, message } = payload;
           const history = state.historyMessageList.get(convId);
           if (!history) return;
@@ -101,6 +119,7 @@ const conversation = {
         }
         // 撤回消息
         case CONVERSATIONTYPE.RECALL_MESSAGE: {
+          console.log(payload, "撤回消息");
           const { convId, message } = payload;
           let oldConvId = state.currentConversation?.conversationID;
           let history = state.historyMessageList.get(convId);
@@ -147,7 +166,7 @@ const conversation = {
         }
         // 更新缓存数据
         case CONVERSATIONTYPE.UPDATE_CACHE: {
-          console.log("更新缓存数据");
+          console.log(payload, "更新缓存数据");
           const { convId, message } = payload;
           let history = state.historyMessageList.get(convId);
           if (!history) return;

@@ -326,7 +326,7 @@ const sendMsgBefore = () => {
 const sendMessage = async () => {
   let flag = true;
   let TextMsg = null;
-  const { type, toAccount } = currentConversation.value;
+  const { type, toAccount, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files } = sendMsgBefore();
   // return
   if (files) {
@@ -381,7 +381,7 @@ const sendMessage = async () => {
     commit("SET_HISTORYMESSAGE", {
       type: "UPDATE_MESSAGES",
       payload: {
-        convId: "",
+        convId: conversationID,
         message: message,
       },
     });

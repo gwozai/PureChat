@@ -420,6 +420,12 @@ const handlRightClick = (data) => {
     case "revoke": //撤回
       handleRevokeMsg(info);
       break;
+    case "forward": // 转发
+      handleForward(info);
+      break;
+    case "saveAs": //另存为
+      console.log(info);
+      break;
     case "reply": // 回复
       handleReplyMsg(info);
       break;
@@ -431,6 +437,8 @@ const handlRightClick = (data) => {
       break;
   }
 };
+// 转发
+const handleForward = () => {};
 // 回复消息
 const handleReplyMsg = (data) => {
   commit("setReplyMsg", data);
