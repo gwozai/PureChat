@@ -99,6 +99,7 @@ import MyPopover from "@/views/components/MyPopover/index.vue";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { deleteMsgList, revokeMsg, getMsgList } from "@/api/im-sdk-api";
 import emitter from "@/utils/mitt-bus";
+import { download } from "@/utils/message-input-utils";
 import { useWatermark } from "@/utils/hooks/useWatermark";
 
 import TextElemItem from "./ElemItemTypes/TextElemItem.vue";
@@ -424,7 +425,7 @@ const handlRightClick = (data) => {
       handleForward(info);
       break;
     case "saveAs": //另存为
-      console.log(info);
+      handleSave(info);
       break;
     case "reply": // 回复
       handleReplyMsg(info);
@@ -436,6 +437,30 @@ const handlRightClick = (data) => {
       handleDeleteMsg(info);
       break;
   }
+};
+function downloadFile(url, name) {
+  download(url, name);
+  // // 创建一个虚拟的a标签进行下载
+  // const link = document.createElement("a");
+  // // 设置下载链接和文件名
+  // link.href = url;
+  // link.download = name;
+  // // 触发a标签点击事件进行下载
+  // link.click();
+  // const element = document.createElement("a");
+  // const event = new MouseEvent("click");
+  // element.download = name;
+  // element.href = url;
+  // element.dispatchEvent(event);
+}
+// 另存为
+const handleSave = (data) => {
+  const {
+    payload: { fileName, fileUrl },
+  } = data;
+  console.log(data);
+  // downloadFile1(fileUrl, fileName);
+  downloadFile(fileUrl, fileName);
 };
 // 转发
 const handleForward = () => {};

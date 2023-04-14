@@ -21,7 +21,7 @@ const getLabel = (data) => {
   let show = false;
   let label = "";
   let className = "";
-  // 大写R卡头 后五位是数字
+  // 大写R开头 后五位是数字
   if (reg.test(data)) {
     show = true;
     label = "机器人";

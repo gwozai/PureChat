@@ -115,3 +115,51 @@ export const dataURLtoFile = (dataUrl, fileName = "image.png") => {
   }
   return new File([u8arr], fileName, { type: mime });
 };
+
+export function getBlob(url) {
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        resolve(xhr.response);
+      }
+    };
+    xhr.send();
+  });
+}
+
+/**
+ * 保存
+ * @param  {Blob} blob
+ * @param  {String} filename 想要保存的文件名称
+ */
+export function saveAs(blob, filename) {
+  if (window.navigator.msSaveOrOpenBlob) {
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    let link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+  }
+}
+
+/**
+ * 下载
+ * @param  {String} url 目标文件地址
+ * @param  {String} filename 想要保存的文件名称
+ */
+export function download(url, filename) {
+  console.log(url, filename);
+  getBlob(url)
+    .then((blob) => {
+      console.log(blob);
+      saveAs(blob, filename);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}

@@ -23,3 +23,10 @@ import AddressBook from "@/views/components/AddressBook/index.vue";
 // const router = useRouter();
 // router.replace("/welcome");
 </script>
+<style lang="scss" scoped>
+.css {
+  background-image: radial-gradient(transparent 1px, #fff 1px);
+  backdrop-filter: saturate(50%) blur(4px);
+  background-size: 4px 4px;
+}
+</style>

@@ -20,6 +20,10 @@ const MENU_LIST = [
     text: "撤回",
   },
   {
+    id: "saveAs",
+    text: "另存为",
+  },
+  {
     id: "reply",
     text: "回复",
   },

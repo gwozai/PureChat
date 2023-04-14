@@ -19,7 +19,7 @@
 import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 export default defineComponent({
-  name: "Componentname",
+  name: "MultiChoiceBox",
   computed: {
     ...mapState({
       showMsgBox: (state) => state.conversation.showMsgBox,
