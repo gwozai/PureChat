@@ -171,3 +171,20 @@ export function download(url, filename) {
       console.error(`An error occurred while downloading file '${filename}': ${err}`);
     });
 }
+/**
+ * 下载指定 url 的文件，并设置文件名
+ * @param  {String} url - 文件地址
+ * @param  {String} filename - 文件名
+ */
+export function downloadCopy(url, filename) {
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+}
