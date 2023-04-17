@@ -152,7 +152,8 @@ export const CreateFiletMsg = async (params) => {
     payload: {
       file: files,
     },
-    onProgress: function (event) {
+    // 文件上传进度
+    onProgress: (event) => {
       console.log("file uploading:", event);
     },
   });

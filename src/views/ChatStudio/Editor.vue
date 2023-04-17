@@ -371,6 +371,14 @@ const sendMessage = async () => {
   }
   console.log(TextMsg);
   // return;
+  commit("SET_HISTORYMESSAGE", {
+    type: "UPDATE_MESSAGES",
+    payload: {
+      convId: conversationID,
+      message: TextMsg,
+    },
+  });
+  commit("updataScroll");
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
   chatGpt({ To: toAccount, From: message.from, content: message.payload.text });

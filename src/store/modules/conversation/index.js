@@ -175,6 +175,10 @@ const conversation = {
           history.unshift(...timeDivider);
           break;
         }
+        case CONVERSATIONTYPE.UPDATE_MESSAGE_ELEM_PROGRESS: {
+          // let { messageId, } = payload;
+          // state.uploadProgress.set(``, {});
+        }
       }
     },
     // 设置会话
