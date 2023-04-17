@@ -1,12 +1,15 @@
 import storage from "storejs";
 import { useRouter, useRoute } from "vue-router";
 import { nextTick } from "vue";
+import router from "@/router";
 import { getMyProfile, TIM_logout, TIM_login } from "@/api/im-sdk-api";
 import { ElMessage } from "element-plus";
 import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
+import TLSSigAPIv2 from "tls-sig-api-v2";
 const timProxy = new TIMProxy();
+const api = new TLSSigAPIv2.Api(process.env.VUE_APP_SDK_APPID, process.env.VUE_APP_IM_IDK_KEY);
 
 const user = {
   state: {
