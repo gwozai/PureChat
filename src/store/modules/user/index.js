@@ -69,10 +69,14 @@ const user = {
       }
     },
     // 退出im
-    async TIM_LOG_OUT({ commit }) {
+    async TIM_LOG_OUT({ commit, dispatch }) {
       const result = await TIM_logout();
       console.log(result, "TIM_LOG_OUT");
+      // 清除消息记录
+      commit("SET_HISTORYMESSAGE", { type: "CLEAR_HISTORY" });
       commit("reset");
+      // 清除 eltag 标签
+      dispatch("CLEAR_EL_TAG");
     },
     // 获取个人资料
     async GET_MY_PROFILE({ commit }) {

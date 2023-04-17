@@ -50,21 +50,22 @@ export const getGroupProfile = async (params) => {
 //登录
 export const TIM_login = async (params) => {
   const { userID, userSig } = params;
-  const result = await tim.login({
+  const { code, data } = await tim.login({
     userID,
     userSig,
   });
-  return result;
+  return {
+    code,
+    data,
+  };
 };
 //退出登录
 export const TIM_logout = async () => {
-  try {
-    const { code, data } = await tim.logout();
-    // tim.destroy();
-    if (code == 0) return data;
-  } catch (e) {
-    console.log(e);
-  }
+  const { code, data } = await tim.logout();
+  return {
+    code,
+    data,
+  };
 };
 // 销毁 SDK 实例
 export const TIM_Destroy = async () => {

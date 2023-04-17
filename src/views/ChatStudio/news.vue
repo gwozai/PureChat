@@ -82,6 +82,9 @@ const { networkStatus, conver, user, outside, groupDrawer, showMsgBox, conversat
     groupDrawer: (state) => state.groupinfo.groupDrawer,
     conversationList: (state) => state.conversation.conversationList,
   });
+const toBottom = () => {
+  commit("updataScroll");
+};
 const handleClick = ({ props }, event) => {
   const { label, name } = props;
   commit("TOGGLE_LIST", name);

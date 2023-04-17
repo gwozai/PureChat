@@ -5,7 +5,8 @@
 </template>
 
 <script setup>
-import { onMounted, nextTick, computed, defineComponent } from "vue";
+import { onMounted, nextTick, ref, onBeforeUnmount, computed, defineComponent } from "vue";
+import { useWatermark } from "@/utils/hooks/useWatermark";
 import { useStore, mapState } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { ElConfigProvider } from "element-plus";
@@ -14,9 +15,10 @@ import { treeToFlat } from "@/utils/ToTree";
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
-
+const watermarkText = ref("pure-admin");
 const route = useRoute();
 const router = useRouter();
+const { setWatermark, clear } = useWatermark();
 
 const { dispatch, commit } = useStore();
 const { lang } = useState({
@@ -32,6 +34,12 @@ onMounted(async () => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");
   }, 200);
+  nextTick(() => {
+    setWatermark(watermarkText.value);
+  });
+});
+onBeforeUnmount(() => {
+  clear();
 });
 </script>
 

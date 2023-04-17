@@ -68,14 +68,6 @@ const actions = {
         commit("updateData", { key: "user", value: result });
         commit("showMessage", { message: msg });
         router.push("/home");
-        // router.push("/");
-        // router.push({ name: "home", params: { name: "welcome" } });
-        // router.push(`/home/${welcome}`)
-        // router.push({ path: "/", replace: true });
-        // nextTick(() => { });
-        // router.push({ name: "/home/welcome" });
-        // router.push({ path: "/home/welcome", replace: true });
-        // router.push("/home/welcome");
       }, 500);
     } else {
       verification(code, msg);
@@ -83,13 +75,10 @@ const actions = {
   },
   // 退出登录
   LOG_OUT({ state, commit, dispatch }) {
+    dispatch("TIM_LOG_OUT");
+    emitter.all.clear();
     logout();
     router.push("/login");
-    // 清除消息记录
-    commit("SET_HISTORYMESSAGE", { type: "CLEAR_HISTORY" });
-    // 清除 eltag 标签
-    dispatch("CLEAR_EL_TAG");
-    dispatch("TIM_LOG_OUT");
   },
 };
 
