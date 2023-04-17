@@ -175,6 +175,20 @@ export const createMergerMsg = async (params) => {
     // cloudCustomData: 'your cloud custom data'
   });
 };
+// 转发消息
+export const createForwardMsg = async (params) => {
+  const { convId, convType, message } = params;
+  const forwardMsg = await tim.createForwardMessage({
+    to: convId,
+    conversationType: convType,
+    payload: message,
+  });
+  const { code, message: data } = await sendMsg(forwardMsg);
+  return {
+    code,
+    data,
+  };
+};
 // 发送消息
 export const sendMsg = async (params) => {
   try {
@@ -295,4 +309,17 @@ export const setSelfStatus = (status) => {
 // 查询自己的用户状态
 export const getUserStatus = (id) => {
   const { code, data } = tim.getUserStatus({ userIDList: [id] });
+};
+// 将英文翻译成中文
+export const translateText = (params) => {
+  const { textList } = params;
+  const { code, data } = tim.translateText({
+    sourceTextList: textList,
+    sourceLanguage: "auto",
+    targetLanguage: "zh",
+  });
+  return {
+    code,
+    data,
+  };
 };

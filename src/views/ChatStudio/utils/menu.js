@@ -28,6 +28,10 @@ const MENU_LIST = [
     text: "回复",
   },
   {
+    id: "forward",
+    text: "转发",
+  },
+  {
     id: "multiSelect",
     text: "多选",
   },

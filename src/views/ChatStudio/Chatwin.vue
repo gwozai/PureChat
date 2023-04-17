@@ -64,6 +64,24 @@
         {{ item.text }}
       </contextmenu-item>
     </contextmenu>
+    <el-dialog
+      v-model="dialogVisible"
+      :title="$t('common.createGroupChat')"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <div>
+        <el-input v-model="input" placeholder="请输入联系人id或者群主id" clearable />
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">{{ $t("el.messagebox.cancel") }}</el-button>
+          <el-button type="primary" @click="createGroupBtn">
+            {{ $t("el.messagebox.confirm") }}
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </section>
 </template>
 
@@ -109,6 +127,8 @@ import CustomElemItem from "./ElemItemTypes/CustomElemItem.vue";
 import groupTipElement from "./ElemItemTypes/groupTipElement.vue";
 import GroupSystemNoticeElem from "./ElemItemTypes/GroupSystemNoticeElem.vue";
 
+const input = ref("");
+const dialogVisible = ref(false);
 const isRight = ref(true);
 const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
@@ -133,7 +153,16 @@ const {
   currentMessageList: (state) => state.conversation.currentMessageList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
-
+const opendialog = () => {
+  dialogVisible.value = true;
+};
+const createGroupBtn = () => {
+  dialogVisible.value = false;
+  input.value = "";
+};
+const handleClose = (done) => {
+  done();
+};
 const NameComponent = (props) => {
   const { item } = props;
   const { isRevoked, type, from, nick, conversationType } = item;
@@ -449,7 +478,9 @@ const handleSave = (data) => {
   download(fileUrl, fileName);
 };
 // 转发
-const handleForward = () => {};
+const handleForward = (data) => {
+  opendialog();
+};
 // 回复消息
 const handleReplyMsg = (data) => {
   commit("setReplyMsg", data);
