@@ -100,7 +100,6 @@ import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { deleteMsgList, revokeMsg, getMsgList } from "@/api/im-sdk-api";
 import emitter from "@/utils/mitt-bus";
 import { download } from "@/utils/message-input-utils";
-import { useWatermark } from "@/utils/hooks/useWatermark";
 
 import TextElemItem from "./ElemItemTypes/TextElemItem.vue";
 import TipsElemItem from "./ElemItemTypes/TipsElemItem.vue";
@@ -114,9 +113,7 @@ const isRight = ref(true);
 const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
 const messageViewRef = ref(null);
-const watermarkText = ref("pure-admin");
 const { state, dispatch, commit } = useStore();
-const { setWatermark, clear } = useWatermark();
 const {
   noMore,
   userInfo,
@@ -393,6 +390,7 @@ const handleContextMenuEvent = (event, item) => {
   const { isRevoked, time, type } = item;
   console.log(item, "右键菜单数据");
   const isTip = type == "TIMGroupTipElem";
+  const isFile = type == "TIMFileElem";
   // 撤回消息 提示类型消息
   if (isRevoked || isTip) {
     isRight.value = false;
@@ -409,6 +407,11 @@ const handleContextMenuEvent = (event, item) => {
   }
   if (!relinquish) {
     RIGHT_CLICK_MENU_LIST.value = MENU_LIST.filter((t) => t.id !== "revoke");
+  }
+  if (!isFile) {
+    RIGHT_CLICK_MENU_LIST.value = RIGHT_CLICK_MENU_LIST.value.filter((t) => t.id !== "saveAs");
+  } else {
+    RIGHT_CLICK_MENU_LIST.value = RIGHT_CLICK_MENU_LIST.value.filter((t) => t.id !== "copy");
   }
 };
 const handlRightClick = (data) => {
@@ -438,29 +441,12 @@ const handlRightClick = (data) => {
       break;
   }
 };
-function downloadFile(url, name) {
-  download(url, name);
-  // // 创建一个虚拟的a标签进行下载
-  // const link = document.createElement("a");
-  // // 设置下载链接和文件名
-  // link.href = url;
-  // link.download = name;
-  // // 触发a标签点击事件进行下载
-  // link.click();
-  // const element = document.createElement("a");
-  // const event = new MouseEvent("click");
-  // element.download = name;
-  // element.href = url;
-  // element.dispatchEvent(event);
-}
 // 另存为
 const handleSave = (data) => {
   const {
     payload: { fileName, fileUrl },
   } = data;
-  console.log(data);
-  // downloadFile1(fileUrl, fileName);
-  downloadFile(fileUrl, fileName);
+  download(fileUrl, fileName);
 };
 // 转发
 const handleForward = () => {};
@@ -515,17 +501,11 @@ emitter.on("updataScroll", (e) => {
   updateScrollBarHeight();
 });
 
-onMounted(() => {
-  nextTick(() => {
-    setWatermark(watermarkText.value);
-  });
-});
+onMounted(() => {});
 onUnmounted(() => {});
 onUpdated(() => {});
 onBeforeUpdate(() => {});
-onBeforeUnmount(() => {
-  clear();
-});
+onBeforeUnmount(() => {});
 
 // eslint-disable-next-line no-undef
 defineExpose({ updateScrollbar, updateScrollBarHeight });
