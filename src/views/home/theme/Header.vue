@@ -98,9 +98,8 @@ watch(
   }
 );
 
-const { isActive, userProfile, tags, sidebar, setswitch, userInfo } = useState({
+const { isActive, userProfile, tags, sidebar, setswitch } = useState({
   userProfile: (state) => state.user.currentUserProfile,
-  userInfo: (state) => state.data.user,
   tags: (state) => state.data.elTag,
   sidebar: (state) => !state.settings.sidebar,
   isActive: (state) => state.settings.isCollapse,

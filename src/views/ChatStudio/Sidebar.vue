@@ -61,14 +61,14 @@ const list = [
     icon: "news",
     title: "消息",
   },
-  {
-    icon: "mail_list",
-    title: "通讯录",
-  },
-  {
-    icon: "application",
-    title: "应用",
-  },
+  // {
+  //   icon: "mail_list",
+  //   title: "通讯录",
+  // },
+  // {
+  //   icon: "application",
+  //   title: "应用",
+  // },
   {
     icon: "test",
     title: "测试",

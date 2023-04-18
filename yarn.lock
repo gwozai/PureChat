@@ -10385,6 +10385,11 @@ tiny-warning@^1.0.3:
   resolved "https://registry.npmmirror.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
+tls-sig-api-v2@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmmirror.com/tls-sig-api-v2/-/tls-sig-api-v2-1.0.2.tgz#f185f96180c01cd412fbe621da0e9c5d23bd552e"
+  integrity sha512-LJjc3pFJMv45eoEnY7qv/ZdMg06Rb+8zZtyM5inTlteA3KkMIw5buJmFtZFmkmQQAaLXOjFHAfY+S4giaoTpDw==
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.npmmirror.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"

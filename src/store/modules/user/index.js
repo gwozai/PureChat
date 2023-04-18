@@ -8,8 +8,14 @@ import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
 import TLSSigAPIv2 from "tls-sig-api-v2";
+import { login, logout } from "@/api/user";
+import { getMenu } from "@/api/menu";
+import emitter from "@/utils/mitt-bus";
+import { verification } from "@/utils/message/index";
 const timProxy = new TIMProxy();
-const api = new TLSSigAPIv2.Api(process.env.VUE_APP_SDK_APPID, process.env.VUE_APP_IM_IDK_KEY);
+const tim_sdk_appid = process.env.VUE_APP_SDK_APPID;
+const tim_sdk_key = process.env.VUE_APP_IM_SDK_KEY;
+const api = new TLSSigAPIv2.Api(tim_sdk_appid, tim_sdk_key);
 
 const user = {
   state: {
@@ -58,18 +64,45 @@ const user = {
     },
   },
   actions: {
+    // 登录
+    async LOG_IN({ state, commit, dispatch }, data) {
+      const { username, password } = data;
+      const { code, msg, result } = await login({ username, password });
+      console.log({ code, msg, result }, "登录信息");
+      if (code == 200) {
+        window.TIMProxy.init();
+        dispatch("TIM_LOG_IN", {
+          userID: username,
+          userSig: result.userSig,
+        });
+        dispatch("GET_MENU");
+        commit("updateData", { key: "user", value: result });
+        setTimeout(() => {
+          router.push("/home");
+        }, 300);
+      } else {
+        verification(code, msg);
+      }
+    },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
       const { userID, userSig } = user;
       const { code, data } = await TIM_login({ userID, userSig });
       console.log({ code, data }, "TIM_LOG_IN");
       if (code == 0) {
-        commit("showMessage", { message: "IM初始化成功!" });
+        commit("showMessage", { message: "登录成功!" });
         commit("getUserInfo", { userID, userSig });
         console.log({ userID, userSig }, "getUserInfo");
       } else {
         console.log("err");
       }
+    },
+    // 退出登录
+    async LOG_OUT({ state, commit, dispatch }) {
+      dispatch("TIM_LOG_OUT");
+      emitter.all.clear();
+      logout();
+      router.push("/login");
     },
     // 退出im
     async TIM_LOG_OUT({ commit, dispatch }) {
@@ -99,6 +132,11 @@ const user = {
         window.TIMProxy.init();
         dispatch("TIM_LOG_IN", { userID, userSig });
       }, 500);
+    },
+    // 菜单列表
+    async GET_MENU({ dispatch }) {
+      let menu = await getMenu();
+      dispatch("updateRoute", menu);
     },
   },
 };

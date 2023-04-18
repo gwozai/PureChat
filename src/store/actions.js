@@ -1,12 +1,7 @@
 import storage from "storejs";
-import { nextTick } from "vue";
 import router from "@/router";
 import views from "@/utils/assembly.js";
 import { ToTree, flatToTree } from "@/utils/ToTree";
-import { login, logout } from "@/api/user";
-import { getMenu } from "@/api/menu";
-import { verification } from "@/utils/message/index";
-import emitter from "@/utils/mitt-bus";
 import { tree } from "@/utils/ToTree";
 import { USER_DATA, SET_UP } from "@/store/mutation-types";
 
@@ -46,39 +41,6 @@ const actions = {
   // 清除 eltag 标签
   CLEAR_EL_TAG({ state }) {
     state.data.elTag = [];
-  },
-  // 菜单列表
-  async GET_MENU({ dispatch }) {
-    let menu = await getMenu();
-    dispatch("updateRoute", menu);
-  },
-  // 登录
-  async LOG_IN({ state, commit, dispatch }, data) {
-    const { username, password } = data;
-    const { code, msg, result } = await login({ username, password });
-    console.log({ code, msg, result }, "登录信息");
-    if (code == 200) {
-      window.TIMProxy.init();
-      dispatch("TIM_LOG_IN", {
-        userID: username,
-        userSig: result.userSig,
-      });
-      dispatch("GET_MENU");
-      setTimeout(() => {
-        commit("updateData", { key: "user", value: result });
-        commit("showMessage", { message: msg });
-        router.push("/home");
-      }, 500);
-    } else {
-      verification(code, msg);
-    }
-  },
-  // 退出登录
-  LOG_OUT({ state, commit, dispatch }) {
-    dispatch("TIM_LOG_OUT");
-    emitter.all.clear();
-    logout();
-    router.push("/login");
   },
 };
 

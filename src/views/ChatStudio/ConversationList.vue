@@ -91,8 +91,8 @@ const contextMenuItemInfo = ref([]);
 
 const { state, getters, dispatch, commit } = useStore();
 const { tabList } = useGetters(["tabList"]);
-const { UserInfo, messageList, Conver } = useState({
-  UserInfo: (state) => state.data.user,
+const { messageList, Conver, currentUserProfile } = useState({
+  currentUserProfile: (state) => state.user.currentUserProfile,
   messageList: (state) => state.conversation.currentMessageList,
   Conver: (state) => state.conversation.currentConversation,
 });
@@ -112,12 +112,12 @@ const chatName = (item) => {
 const fnNews = (data) => {
   const { type, lastMessage } = data;
   const { messageForShow, fromAccount } = lastMessage;
-  const { username } = UserInfo.value;
+  const { userID } = currentUserProfile.value;
   const isFound = fromAccount == "@TLS#NOT_FOUND";
   if (isFound) {
     return messageForShow;
   }
-  if (type == "GROUP" && username !== fromAccount) {
+  if (type == "GROUP" && userID !== fromAccount) {
     return `${lastMessage.nick}: ${messageForShow}`;
   }
   return messageForShow;

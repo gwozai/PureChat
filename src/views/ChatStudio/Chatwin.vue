@@ -66,7 +66,7 @@
     </contextmenu>
     <el-dialog
       v-model="dialogVisible"
-      :title="$t('common.createGroupChat')"
+      :title="$t('common.forward')"
       width="30%"
       :before-close="handleClose"
     >
@@ -136,7 +136,8 @@ const messageViewRef = ref(null);
 const { state, dispatch, commit } = useStore();
 const {
   noMore,
-  userInfo,
+  // userInfo,
+  currentUserProfile,
   showMsgBox,
   forwardData,
   showCheckbox,
@@ -144,12 +145,12 @@ const {
   currentMessageList,
   currentConversation,
 } = useState({
-  userInfo: (state) => state.data.user,
   noMore: (state) => state.conversation.noMore,
   showMsgBox: (state) => state.conversation.showMsgBox,
   forwardData: (state) => state.conversation.forwardData,
   showCheckbox: (state) => state.conversation.showCheckbox,
   needScrollDown: (state) => state.conversation.needScrollDown,
+  currentUserProfile: (state) => state.user.currentUserProfile,
   currentMessageList: (state) => state.conversation.currentMessageList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
@@ -233,7 +234,7 @@ const isTime = (item) => {
   return item?.isTimeDivider;
 };
 const ISown = (item) => {
-  return item.from == userInfo.value.username;
+  return item.from == currentUserProfile.value.userID;
 };
 
 const onclickavatar = (e, item) => {

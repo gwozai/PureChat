@@ -142,7 +142,6 @@ import { useI18n } from "vue-i18n";
 const { locale, t } = useI18n();
 const { commit, dispatch } = useStore();
 const {
-  user,
   userProfile,
   groupDrawer,
   showMsgBox,
@@ -150,7 +149,6 @@ const {
   currentMemberList,
   currentConversation,
 } = useState({
-  user: (state) => state.data.user,
   userProfile: (state) => state.user.currentUserProfile,
   showMsgBox: (state) => state.conversation.showMsgBox,
   groupDrawer: (state) => state.groupinfo.groupDrawer,

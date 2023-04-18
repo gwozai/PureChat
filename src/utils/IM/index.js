@@ -4,32 +4,11 @@ import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
 import emitter from "@/utils/mitt-bus";
-
-function kickedOutReason(type) {
-  switch (type) {
-    case TIM.TYPES.KICKED_OUT_MULT_ACCOUNT:
-      return "由于多实例登录";
-    case TIM.TYPES.KICKED_OUT_MULT_DEVICE:
-      return "由于多设备登录";
-    case TIM.TYPES.KICKED_OUT_USERSIG_EXPIRED:
-      return "由于 userSig 过期";
-    default:
-      return "";
-  }
-}
-function checkoutNetState(state) {
-  switch (state) {
-    case TIM.TYPES.NET_STATE_CONNECTED:
-      return { message: "已接入网络", type: "success" };
-    case TIM.TYPES.NET_STATE_CONNECTING:
-      return { message: "当前网络不稳定", type: "warning" };
-    case TIM.TYPES.NET_STATE_DISCONNECTED:
-      store.dispatch("LOG_OUT");
-      return { message: "当前网络不可用", type: "error" };
-    default:
-      return "";
-  }
-}
+import { throttle } from "@/utils/throttle";
+import { kickedOutReason, checkoutNetState } from "./utils/index";
+const fnCheckoutNetState = throttle((state) => {
+  checkoutNetState(state);
+}, 3000);
 
 export default class TIMProxy {
   // 静态方法
@@ -198,7 +177,7 @@ export default class TIMProxy {
     }
   }
   onNetStateChange({ data }) {
-    store.commit("showMessage", checkoutNetState(data.state));
+    store.commit("showMessage", fnCheckoutNetState(data.state));
   }
   onFriendApplicationListUpdated(event) {
     console.log(event);
