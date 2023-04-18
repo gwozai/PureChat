@@ -41,6 +41,7 @@ export default class TIMProxy {
     this.userSig = "";
     this.tim = null; // TIM实例
     this.TIM = null; // TIM命名空间
+    this.once = false;
     this.test = {};
     Object.defineProperty(this, "test", {
       configurable: true, // 可配置
@@ -80,7 +81,9 @@ export default class TIMProxy {
   }
   // 初始化
   init() {
+    if (this.once) return;
     console.log("TIMProxy init");
+    this.once = true;
     this.tim = tim;
     this.TIM = TIM;
     // 监听SDK
