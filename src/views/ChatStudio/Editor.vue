@@ -407,6 +407,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .Editor-style {
+  word-break: break-all;
   height: 206px;
   .toolbar {
     // 表情包
