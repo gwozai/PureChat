@@ -114,7 +114,8 @@ const fnNews = (data) => {
   const { messageForShow, fromAccount } = lastMessage;
   const { userID } = currentUserProfile.value;
   const isFound = fromAccount == "@TLS#NOT_FOUND";
-  if (isFound) {
+  const isSystem = "@TIM#SYSTEM";
+  if (isFound || isSystem) {
     return messageForShow;
   }
   if (type == "GROUP" && userID !== fromAccount) {

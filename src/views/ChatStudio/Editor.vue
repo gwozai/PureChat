@@ -66,6 +66,7 @@ import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { SendMessageCd } from "@/api/index";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { chatGpt } from "@/api/index";
+import { debounce } from "lodash";
 import {
   CreateTextMsg,
   CreateTextAtMsg,
@@ -123,9 +124,17 @@ const insertMention = (id, name) => {
 const hideMentionModal = () => {
   commit("SET_MENTION_MODAL", false);
 };
+// 更新草稿
+const updateDraft = (data) => {
+  console.log(data);
+};
+const fnUpdateDraft = debounce((data) => {
+  updateDraft(data);
+}, 300);
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
+  fnUpdateDraft(content);
   // console.log(messages.value, "编辑器内容");
 };
 
@@ -376,7 +385,10 @@ const sendMessage = async () => {
       message: TextMsg,
     },
   });
-  commit("updataScroll");
+  nextTick(() => {
+    commit("updataScroll");
+    clearInputInfo();
+  });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
   chatGpt({ To: toAccount, From: message.from, content: message.payload.text });
