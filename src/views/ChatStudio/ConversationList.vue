@@ -63,6 +63,7 @@
       <contextmenu-item
         v-for="item in RIGHT_CLICK_CHAT_LIST"
         :key="item.id"
+        v-show="isShowMenu"
         @click="handleClickMenuItem(item)"
       >
         {{ item.text }}
@@ -87,6 +88,7 @@ import { addTimeDivider } from "@/utils/addTimeDivider";
 import { TIMpingConv, setMessageRemindType } from "@/api/im-sdk-api";
 import Label from "./components/Label.vue";
 
+const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
 
 const { state, getters, dispatch, commit } = useStore();
@@ -141,6 +143,10 @@ const fnClass = (item) => {
 
 // 消息列表 右键菜单
 const handleContextMenuEvent = (e, item) => {
+  const { type } = item;
+  const isStystem = type == "@TIM#SYSTEM";
+  // 系统通知屏蔽右键菜单
+  isShowMenu.value = isStystem ? false : true;
   contextMenuItemInfo.value = item;
   // 会话
   RIGHT_CLICK_CHAT_LIST.map((t) => {
