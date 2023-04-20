@@ -191,6 +191,7 @@ export const createForwardMsg = async (params) => {
 };
 // 发送消息
 export const sendMsg = async (params) => {
+  const { messageElementObject, callback } = params || {};
   try {
     const {
       code,

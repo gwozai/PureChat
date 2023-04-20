@@ -27,9 +27,9 @@ export default defineComponent({
       const userName = message.nick || message.payload.userIDList.join(",");
       switch (message.payload.operationType) {
         case TIM.TYPES.GRP_TIP_MBR_JOIN:
-          return `${userName} 加入群组`;
+          return `${userName} 加入群聊`;
         case TIM.TYPES.GRP_TIP_MBR_QUIT:
-          return `群成员：${userName} 退出群组`;
+          return `群成员：${userName} 退出群聊`;
         case TIM.TYPES.GRP_TIP_MBR_KICKED_OUT:
           return `${nick || ""} 将 ${userName} 移出群聊`;
         case TIM.TYPES.GRP_TIP_MBR_SET_ADMIN:

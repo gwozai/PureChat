@@ -79,7 +79,7 @@ const user = {
         commit("updateData", { key: "user", value: result });
         setTimeout(() => {
           router.push("/home");
-        }, 300);
+        }, 450);
       } else {
         verification(code, msg);
       }
