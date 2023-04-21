@@ -418,6 +418,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/mixin.scss";
 .Editor-style {
   word-break: break-all;
   height: 206px;
@@ -460,6 +461,9 @@ onBeforeUnmount(() => {
     }
     :deep(.w-e-text-placeholder) {
       top: 2px;
+    }
+    :deep(.w-e-scroll) {
+      @include scrollBar;
     }
   }
 }
