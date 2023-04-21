@@ -24,14 +24,15 @@ const actions = {
   // 页面刷新重新加载路由
   reloadRoute({ commit, state }, route) {
     try {
-      const routing = storage.get(USER_DATA)?.Routingtable;
+      const routing = state.data.Routingtable;
+      // const routing = storage.get(USER_DATA)?.Routingtable;
       if (!routing) return;
       tree(routing);
       routing.forEach((item) => {
         router.addRoute(item);
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   },
   // 设置验证码

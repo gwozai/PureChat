@@ -49,15 +49,16 @@ export const getGroupProfile = async (params) => {
 };
 //登录
 export const TIM_login = async (params) => {
-  const { userID, userSig } = params;
-  const { code, data } = await tim.login({
-    userID,
-    userSig,
-  });
-  return {
-    code,
-    data,
-  };
+  try {
+    const { userID, userSig } = params;
+    const { code, data } = await tim.login({
+      userID,
+      userSig,
+    });
+    return { code, data };
+  } catch (error) {
+    return { code: 404, data: null };
+  }
 };
 //退出登录
 export const TIM_logout = async () => {

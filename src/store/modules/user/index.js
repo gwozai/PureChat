@@ -79,13 +79,14 @@ const user = {
         commit("updateData", { key: "user", value: result });
         setTimeout(() => {
           router.push("/home");
-        }, 450);
+        }, 500);
       } else {
         verification(code, msg);
       }
     },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
+      console.log(user);
       const { userID, userSig } = user;
       const { code, data } = await TIM_login({ userID, userSig });
       console.log({ code, data }, "TIM_LOG_IN");
@@ -123,6 +124,7 @@ const user = {
     LOG_IN_AGAIN({ state, rootState, dispatch }) {
       const { username: userID, userSig } = rootState.data.user || {};
       console.log({ userID, userSig }, "LOG_IN_AGAIN");
+      if (!userID || !userSig) dispatch("LOG_OUT");
       setTimeout(() => {
         const token = getCookies(ACCESS_TOKEN);
         if (!token) {
