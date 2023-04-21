@@ -113,14 +113,20 @@ const chatName = (item) => {
 };
 const fnNews = (data) => {
   const { type, lastMessage } = data;
-  const { messageForShow, fromAccount } = lastMessage;
+  const { messageForShow, fromAccount, isRevoked } = lastMessage;
   const { userID } = currentUserProfile.value;
+  const isOther = userID !== fromAccount;
   const isFound = fromAccount == "@TLS#NOT_FOUND";
-  const isSystem = "@TIM#SYSTEM";
+  const isSystem = "@TIM#SYSTEM"; //系统消息
+  // 是否为撤回消息
+  if (isRevoked) {
+    const nick = isOther ? lastMessage.nick : "你";
+    return `${nick}撤回了一条消息`;
+  }
   if (isFound || isSystem) {
     return messageForShow;
   }
-  if (type == "GROUP" && userID !== fromAccount) {
+  if (type == "GROUP" && isOther) {
     return `${lastMessage.nick}: ${messageForShow}`;
   }
   return messageForShow;
