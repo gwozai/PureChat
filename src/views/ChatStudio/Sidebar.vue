@@ -65,10 +65,10 @@ const list = [
   //   icon: "mail_list",
   //   title: "通讯录",
   // },
-  // {
-  //   icon: "application",
-  //   title: "应用",
-  // },
+  {
+    icon: "application",
+    title: "应用",
+  },
   {
     icon: "test",
     title: "测试",

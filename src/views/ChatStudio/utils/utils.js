@@ -127,3 +127,21 @@ export const getMsgElemItem = (type, data, videoInfoList) => {
     }
   }
 };
+
+/**
+ * 将字符串中的特殊字符进行 HTML 转义
+ * @param {string} str - 待转义的字符串
+ * @returns {string} - 转义后的字符串
+ */
+export const html2Escape = (str) => {
+  // 使用对象映射，避免多个 if/else 分支
+  const map = {
+    "<": "&lt;",
+    ">": "&gt;",
+    "&": "&amp;",
+    '"': "&quot;",
+  };
+  return str.replace(/[<>&"]/g, function (c) {
+    return map[c];
+  });
+};

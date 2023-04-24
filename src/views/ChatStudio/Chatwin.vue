@@ -174,6 +174,8 @@ const NameComponent = (props) => {
   const isFound = from == "@TLS#NOT_FOUND";
   // 非单聊消息
   const isGroup = conversationType !== "C2C" && !isFound;
+  const isSingle = conversationType == "C2C";
+  if (isSingle) return null;
   return h(
     "div",
     {
@@ -275,14 +277,20 @@ const updateScrollbar = () => {
 };
 
 const validatelastMessage = (msglist) => {
-  let msg = null;
-  for (let i = msglist.length - 1; i > -1; i--) {
-    if (msglist[i].ID) {
-      msg = msglist[i];
-      break;
-    }
-  }
-  return msg;
+  // let msg = null;
+  // for (let i = msglist.length - 1; i > -1; i--) {
+  //   if (msglist[i].ID) {
+  //     msg = msglist[i];
+  //     break;
+  //   }
+  // }
+  // return msg;
+  return (
+    msglist
+      .slice()
+      .reverse()
+      .find((msg) => msg.ID) || null
+  );
 };
 
 const getMoreMsg = async () => {

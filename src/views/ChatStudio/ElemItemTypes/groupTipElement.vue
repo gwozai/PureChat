@@ -22,7 +22,7 @@ export default defineComponent({
     const operatorID = payload.operatorID;
     const memberList = store.state.groupinfo.currentMemberList;
     const state = reactive({ text: "wewe" });
-    const { nick } = memberList.filter((t) => t.userID == operatorID)[0];
+    const { nick } = memberList.filter((t) => t.userID == operatorID)?.[0] || {};
     const getGroupTipContent = (message) => {
       const userName = message.nick || message.payload.userIDList.join(",");
       switch (message.payload.operationType) {

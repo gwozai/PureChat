@@ -28,7 +28,7 @@
           </el-input> -->
           <el-autocomplete
             clearable
-            debounce
+            :debounce="200"
             size="large"
             :prefix-icon="User"
             v-model="user.username"
