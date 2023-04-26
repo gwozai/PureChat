@@ -49,9 +49,9 @@
                 </component>
               </div>
             </div>
-            <div class="err-style" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
+            <!-- <div class="err-style" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
               <el-icon><WarningFilled /></el-icon>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -649,7 +649,7 @@ $self-msg-color: #c2e8ff;
     margin-right: 8px;
   }
   .message-view__img {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     width: fit-content;
     :deep(.image_preview) {
       background: $other-msg-color;
@@ -688,7 +688,7 @@ $self-msg-color: #c2e8ff;
   .message-view__img {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     align-items: center;
     :deep(.image_preview) {
       background: $self-msg-color;
