@@ -33,7 +33,8 @@
       <div class="group-accountecment">
         <div class="group-accountecment--title">
           <span>群公告</span>
-          <span class="edit-icon"></span>
+          <FontIcon class="style-editPen" iconName="EditPen" />
+          <!-- <span class="edit-icon"></span> -->
         </div>
         <div class="group-accountecment--info">
           {{ groupProfile.notification }}
@@ -279,6 +280,10 @@ const handleQuitGroup = () => {
 </script>
 
 <style lang="scss" scoped>
+.style-editPen {
+  vertical-align: bottom;
+  margin-left: 5px;
+}
 .avatar:hover .style-close {
   visibility: visible;
 }
