@@ -49,6 +49,9 @@
                 </component>
               </div>
             </div>
+            <div class="err-style" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
+              <el-icon><WarningFilled /></el-icon>
+            </div>
           </div>
         </div>
       </div>
@@ -555,6 +558,14 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 @import "@/styles/mixin.scss";
 $other-msg-color: #f0f2f5;
 $self-msg-color: #c2e8ff;
+.err-style {
+  margin: 0 8px 0 0;
+  display: flex;
+  align-items: center;
+  :deep(.el-icon) {
+    color: #f44336;
+  }
+}
 .scrollbar-content {
   height: 100%;
 }
@@ -629,6 +640,10 @@ $self-msg-color: #c2e8ff;
   position: relative;
 }
 .is-other {
+  .err-style {
+    padding-top: 18.79px;
+    margin: 0 0 0 8px;
+  }
   .picture {
     margin-left: 0;
     margin-right: 8px;
@@ -647,7 +662,7 @@ $self-msg-color: #c2e8ff;
 
   .message-view__text {
     width: fit-content;
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     :deep(.message-view__item--text) {
       background: $other-msg-color;
     }
@@ -683,12 +698,12 @@ $self-msg-color: #c2e8ff;
   .message-view__file {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     align-items: center;
   }
 
   .message-view__text {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     display: flex;
     justify-content: flex-end;
     align-items: center;

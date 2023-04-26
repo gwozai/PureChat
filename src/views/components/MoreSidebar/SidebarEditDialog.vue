@@ -3,7 +3,7 @@
     ref="editRef"
     :modal="false"
     v-model="showdialog"
-    append-to-body="true"
+    :append-to-body="true"
     title="导航栏编辑"
     width="450px"
   >

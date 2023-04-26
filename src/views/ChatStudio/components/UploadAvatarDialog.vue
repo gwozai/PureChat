@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" append-to-body="true" title="上传头像" width="30%" draggable>
+  <el-dialog v-model="dialogVisible" :append-to-body="true" title="上传头像" width="30%" draggable>
     <div>待开发</div>
     <template #footer>
       <span class="dialog-footer">
