@@ -377,6 +377,7 @@ const sendMessage = async () => {
     });
   }
   console.log(TextMsg);
+  TextMsg.status = "unSend";
   // return;
   commit("SET_HISTORYMESSAGE", {
     type: "UPDATE_MESSAGES",

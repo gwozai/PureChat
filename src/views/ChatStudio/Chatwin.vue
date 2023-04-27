@@ -49,9 +49,8 @@
                 </component>
               </div>
             </div>
-            <!-- <div class="err-style" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
-              <el-icon><WarningFilled /></el-icon>
-            </div> -->
+            <!-- 消息发送加载状态 -->
+            <Stateful :item="item" :status="item.status" :isown="ISown(item)" />
           </div>
         </div>
       </div>
@@ -115,6 +114,7 @@ import { useEventListener } from "@/utils/hooks/index";
 import { useState } from "@/utils/hooks/useMapper";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import Checkbox from "./components/Checkbox.vue";
+import Stateful from "./components/Stateful.vue";
 import LoadMore from "./components/LoadMore.vue";
 import MyPopover from "@/views/components/MyPopover/index.vue";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
@@ -558,14 +558,6 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 @import "@/styles/mixin.scss";
 $other-msg-color: #f0f2f5;
 $self-msg-color: #c2e8ff;
-.err-style {
-  margin: 0 8px 0 0;
-  display: flex;
-  align-items: center;
-  :deep(.el-icon) {
-    color: #f44336;
-  }
-}
 .scrollbar-content {
   height: 100%;
 }
@@ -640,10 +632,6 @@ $self-msg-color: #c2e8ff;
   position: relative;
 }
 .is-other {
-  .err-style {
-    padding-top: 18.79px;
-    margin: 0 0 0 8px;
-  }
   .picture {
     margin-left: 0;
     margin-right: 8px;

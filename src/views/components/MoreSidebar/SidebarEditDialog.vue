@@ -47,12 +47,6 @@ import {
   nextTick,
 } from "vue";
 import emitter from "@/utils/mitt-bus";
-
-// let idGlobal = 8;
-// const dragging = ref(false);
-// const enabled = ref(true);
-// const editRef = ref();
-// const showdialog = ref(false);
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { VueDraggableNext } from "vue-draggable-next";
 export default defineComponent({
