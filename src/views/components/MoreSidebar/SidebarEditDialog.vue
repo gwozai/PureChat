@@ -18,8 +18,10 @@
             @change="log"
           >
             <template v-for="element in outsideList" :key="element.icon">
-              <div class="list-group-item">
+              <div class="list-group-item" :class="element?.class">
+                <el-icon><RemoveFilled /></el-icon>
                 {{ element.title }}
+                <el-icon><Rank /></el-icon>
               </div>
             </template>
           </draggable>
@@ -111,11 +113,19 @@ export default defineComponent({
   .edit-area {
     background-color: #f5f5f5;
   }
+  .fixed {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   .list-group-item {
     margin: 0 20px;
     display: flex;
     height: 45px;
     align-items: center;
+    .el-icon {
+      font-size: 17px;
+      margin-right: 5px;
+    }
   }
 }
 </style>
