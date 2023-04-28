@@ -64,9 +64,6 @@ function visibile(item) {
     return true;
   }
 }
-function onClick() {
-  console.log("Only triggered once when clicked many times quickly");
-}
 function openUploadAvatarDialog() {
   emitter.emit("uploadAvatarDialog", true);
 }
@@ -77,32 +74,6 @@ function toggle(item) {
     commit("TAGGLE_OUE_SIDE", item.icon);
   }
 }
-function Debounce(fn, delay, immediate) {
-  let timer = null;
-  return function () {
-    const context = this,
-      args = arguments;
-    if (timer) clearTimeout(timer);
-    if (immediate) {
-      const execute = !timer;
-      setTimeout(() => {
-        timer = null;
-      }, delay);
-      if (execute) fn.apply(context, args);
-    } else {
-      timer = setTimeout(() => {
-        fn.apply(context, args);
-      }, delay);
-    }
-  };
-}
-// v-debounce-click:200="onClick"
-const VDebounceClick = {
-  mounted(el, binding) {
-    const { arg, value } = binding;
-    el.addEventListener("click", Debounce(value, arg), false);
-  },
-};
 </script>
 
 <style lang="scss" scoped>

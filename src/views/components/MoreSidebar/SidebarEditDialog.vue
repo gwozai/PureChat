@@ -1,27 +1,40 @@
 <template>
   <el-dialog
     ref="editRef"
-    :modal="false"
+    :modal="true"
     v-model="showdialog"
     :append-to-body="true"
     title="导航栏编辑"
     width="450px"
   >
     <div class="draggable">
-      <div class="container" v-for="(item, index) in list" :key="item.title">
+      <div class="container" v-for="item in list" :key="item.title">
         <p class="text left-text">{{ item.title }}</p>
-        <div class="edit-area" :class="item.class">
+        <div class="edit-area" :class="item.class" v-if="item.class == 'left-edit-area'">
           <draggable
             class="dragArea list-group w-full"
             :list="outsideList"
             tag="transition-group"
-            @change="log"
+            filter=".fixed"
+            :move="onMove"
+            @start="onStart"
+            @end="onEnd"
+            ghostClass="ghost"
+            dragClass="chosen"
+            animation="300"
           >
             <template v-for="element in outsideList" :key="element.icon">
               <div class="list-group-item" :class="element?.class">
-                <el-icon><RemoveFilled /></el-icon>
+                <el-icon class="reduce"><RemoveFilled /></el-icon>
+                <el-icon class="add"><CirclePlusFilled /></el-icon>
+                <svg-icon
+                  v-if="element.icon !== 'test'"
+                  :iconClass="element.icon"
+                  class="style-svg"
+                />
+                <el-icon class="style-svg" v-else><SwitchFilled /></el-icon>
                 {{ element.title }}
-                <el-icon><Rank /></el-icon>
+                <el-icon class="rank"><Rank /></el-icon>
               </div>
             </template>
           </draggable>
@@ -61,10 +74,12 @@ export default defineComponent({
         {
           class: "left-edit-area",
           title: "显示在导航栏上",
+          button: "reduce",
         },
         {
           class: "right-edit-area",
           title: "更多",
+          button: "add",
         },
       ],
       showdialog: false,
@@ -76,15 +91,6 @@ export default defineComponent({
     ...mapState({
       outsideList: (state) => state.sidebar.outsideList,
     }),
-    myList: {
-      get() {
-        return this.outsideList;
-      },
-      set(value) {
-        console.log(value);
-        // this.$store.dispatch("updateOutsideList", value);
-      },
-    },
   },
   mounted() {
     emitter.on("SidebarEditDialog", (val) => {
@@ -92,6 +98,12 @@ export default defineComponent({
     });
   },
   methods: {
+    onStart() {},
+    onEnd() {},
+    onMove(e) {
+      if (e.relatedContext.element.if_fixed == 1) return false;
+      return true;
+    },
     handleConfirm() {
       this.showdialog = false;
     },
@@ -103,6 +115,25 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.left-edit-area {
+  .add {
+    display: none;
+  }
+  .reduce {
+    color: #f44336;
+  }
+}
+.right-edit-area {
+  .reduce {
+    display: none;
+  }
+  .add {
+    color: #1890ff;
+  }
+}
+.style-svg {
+  margin-right: 10px;
+}
 .draggable {
   display: flex;
   justify-content: space-between;
@@ -112,19 +143,29 @@ export default defineComponent({
   }
   .edit-area {
     background-color: #f5f5f5;
+    .chosen {
+      background-color: white;
+      color: black;
+    }
+    .ghost {
+      opacity: 0 !important;
+    }
   }
   .fixed {
     opacity: 0.5;
     cursor: not-allowed;
   }
   .list-group-item {
-    margin: 0 20px;
+    padding: 0 20px;
     display: flex;
     height: 45px;
     align-items: center;
     .el-icon {
       font-size: 17px;
       margin-right: 5px;
+    }
+    .rank {
+      margin-left: auto;
     }
   }
 }

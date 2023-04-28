@@ -6,6 +6,7 @@ const sidebar = {
         icon: "news",
         title: "消息",
         class: "fixed",
+        if_fixed: 1,
       },
       {
         icon: "mail_list",

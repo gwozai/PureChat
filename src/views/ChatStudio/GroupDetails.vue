@@ -21,10 +21,10 @@
             <span class="group-base-info--text__name">
               {{ groupProfile.name }}
             </span>
-            <span class="edit-icon"></span>
+            <FontIcon class="style-editPen" iconName="EditPen" />
           </div>
           <span class="group-base-info--text__type">
-            {{ groupProfile.type }}
+            {{ GROUP_TYPE_MAP[groupProfile.type] }}
           </span>
         </div>
       </div>
@@ -34,7 +34,6 @@
         <div class="group-accountecment--title">
           <span>群公告</span>
           <FontIcon class="style-editPen" iconName="EditPen" />
-          <!-- <span class="edit-icon"></span> -->
         </div>
         <div class="group-accountecment--info">
           {{ groupProfile.notification }}
@@ -140,6 +139,12 @@ import { useStore } from "vuex";
 import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/group";
 import { useI18n } from "vue-i18n";
 
+const GROUP_TYPE_MAP = {
+  Public: "陌生人社交群(Public)",
+  Private: "好友工作群(Work)",
+  ChatRoom: "临时会议群(Meeting)",
+  AVChatRoom: "直播群(AVChatRoom)",
+};
 const { locale, t } = useI18n();
 const { commit, dispatch } = useStore();
 const {
@@ -280,6 +285,8 @@ const handleQuitGroup = () => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/mixin.scss";
+
 .style-editPen {
   vertical-align: bottom;
   margin-left: 5px;
@@ -313,6 +320,7 @@ const handleQuitGroup = () => {
     color: #999999;
     line-height: 16px;
     min-height: 12px;
+    @include ellipsisBasic(5);
   }
 }
 .group-base-info {
@@ -324,10 +332,14 @@ const handleQuitGroup = () => {
     flex-direction: column;
     margin-left: 8px;
     .group-base-info--text__name {
+      display: inline-block;
+      vertical-align: bottom;
+      max-width: 150px;
       font-size: 14px;
       font-weight: 400;
       color: #000000;
       margin-right: 8px;
+      @include text-ellipsis;
     }
     .group-base-info--text__type {
       font-size: 12px;
