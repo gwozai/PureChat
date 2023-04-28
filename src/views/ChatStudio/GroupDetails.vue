@@ -36,7 +36,7 @@
           <FontIcon class="style-editPen" iconName="EditPen" />
         </div>
         <div class="group-accountecment--info">
-          {{ groupProfile.notification }}
+          <AnalysisUrl :text="groupProfile.notification" />
         </div>
       </div>
       <div class="divider"></div>
@@ -138,6 +138,7 @@ import { useToggle } from "@/utils/hooks/index";
 import { useStore } from "vuex";
 import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/group";
 import { useI18n } from "vue-i18n";
+import AnalysisUrl from "./components/AnalysisUrl.vue";
 
 const GROUP_TYPE_MAP = {
   Public: "陌生人社交群(Public)",
