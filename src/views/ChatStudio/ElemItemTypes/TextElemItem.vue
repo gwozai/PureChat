@@ -20,7 +20,7 @@
 import { decodeText } from "@/utils/decodeText";
 import { toRefs, h, defineProps } from "vue";
 import ReplyElem from "./ReplyElem.vue";
-import { html2Escape } from "../utils/utils";
+import AnalysisUrl from "../components/AnalysisUrl.vue";
 // const reg = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
 
 const props = defineProps({
@@ -30,21 +30,6 @@ const props = defineProps({
   },
 });
 const { message } = toRefs(props);
-
-function shellOne(e) {
-  console.log(e);
-}
-function AnalysisUrl(props) {
-  const { text } = props;
-  let str = html2Escape(text);
-  let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-|:|;|\+|%|#)+)/g;
-  let flag = reg.test(str);
-  let htmlStr = str.replace(
-    reg,
-    `<a data-link="$1$2" href="$1$2" class="linkUrl" target="_blank"> $1$2 </a>`
-  );
-  return flag ? h("span", { innerHTML: htmlStr, onClick: () => {} }) : text;
-}
 </script>
 
 <style lang="scss" scoped>
@@ -57,12 +42,6 @@ function AnalysisUrl(props) {
   border-radius: 3px;
   word-break: break-all;
   white-space: pre-wrap;
-  :deep(.linkUrl) {
-    color: blue;
-    cursor: pointer;
-    text-decoration: underline;
-    word-wrap: break-word;
-  }
 }
 .emoji {
   width: 24px;

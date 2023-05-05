@@ -153,13 +153,17 @@ export default defineComponent({
   }
   .fixed {
     opacity: 0.5;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
+    .svg-icon {
+      cursor: not-allowed;
+    }
   }
   .list-group-item {
     padding: 0 20px;
     display: flex;
     height: 45px;
     align-items: center;
+    cursor: pointer;
     .el-icon {
       font-size: 17px;
       margin-right: 5px;

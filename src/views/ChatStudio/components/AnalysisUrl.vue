@@ -26,4 +26,11 @@ function AnalysisUrl(props) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.linkUrl) {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  word-wrap: break-word;
+}
+</style>
