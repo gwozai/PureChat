@@ -21,7 +21,7 @@
             <span class="group-base-info--text__name">
               {{ groupProfile.name }}
             </span>
-            <FontIcon class="style-editPen" iconName="EditPen" />
+            <FontIcon class="style-editPen" iconName="EditPen" @click="openNamePopup" />
           </div>
           <span class="group-base-info--text__type">
             {{ GROUP_TYPE_MAP[groupProfile.type] }}
@@ -33,7 +33,7 @@
       <div class="group-accountecment">
         <div class="group-accountecment--title">
           <span>群公告</span>
-          <FontIcon class="style-editPen" iconName="EditPen" />
+          <FontIcon class="style-editPen" iconName="EditPen" @click="openNoticePopup" />
         </div>
         <div class="group-accountecment--info">
           <AnalysisUrl :text="groupProfile.notification" />
@@ -131,7 +131,7 @@
 
 <script setup>
 import { nextTick, ref, computed } from "vue";
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox, ElMessage } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { useToggle } from "@/utils/hooks/index";
@@ -190,6 +190,27 @@ const visible = computed({
   },
 });
 
+const openNamePopup = () => {
+  ElMessageBox.prompt("输入群名", "Tip", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+  })
+    .then(({ value }) => {
+      notification(value);
+    })
+    .catch(() => {});
+};
+const openNoticePopup = () => {
+  ElMessageBox.prompt("输入群公告", "Tip", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+  })
+    .then(({ value }) => {
+      notification(value, "notification");
+    })
+    .catch(() => {});
+};
+
 const openDetails = () => {
   // Refdrawerlist.value.handleOpen();
 };
@@ -229,12 +250,12 @@ const updataGroup = () => {
     dispatch("getGroupMemberList");
   }, 500);
 };
-const onclick = () => {
+const notification = (value, modify) => {
   const { groupID } = groupProfile.value;
   updateGroupProfile({
     convId: groupID,
-    modify: "notification",
-    value: "公告12",
+    modify: modify,
+    value: value,
   });
 };
 const navigate = (item) => {
