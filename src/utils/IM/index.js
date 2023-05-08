@@ -6,6 +6,7 @@ import store from "@/store";
 import emitter from "@/utils/mitt-bus";
 import { throttle } from "@/utils/throttle";
 import { kickedOutReason, checkoutNetState } from "./utils/index";
+import { ElNotification } from "element-plus";
 const fnCheckoutNetState = throttle((state) => {
   checkoutNetState(state);
 }, 3000);
@@ -208,6 +209,14 @@ export default class TIMProxy {
         }
       });
     }
+    // 用户选择是未知的，因此浏览器的行为类似于值是 denied
+    if (window.Notification.permission == "default") {
+      this.handleElNotification(message);
+    }
+    // 用户拒绝显示通知
+    if (window.Notification.permission == "denied") {
+      this.handleElNotification(message);
+    }
   }
   handleNotify(message) {
     const notification = new window.Notification("有人提到了你", {
@@ -215,8 +224,17 @@ export default class TIMProxy {
       body: message.payload.text,
     });
     notification.onclick = () => {
+      // 定位到指定会话
+      store.dispatch("CHEC_OUT_CONVERSATION", { convId: message.conversationID });
       window.focus();
       notification.close();
     };
+  }
+  handleElNotification(message) {
+    ElNotification({
+      title: "有人提到了你",
+      message: message.payload.text,
+      duration: 3000,
+    });
   }
 }
