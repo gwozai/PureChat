@@ -17,6 +17,8 @@
 
 <script>
 import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs, ref } from "vue";
+import { mapState } from "vuex";
+import store from "@/store";
 import TIM from "tim-js-sdk";
 export default defineComponent({
   name: "MentionModal",
@@ -33,6 +35,9 @@ export default defineComponent({
     },
   },
   computed: {
+    // ...mapState({
+    //   currentUserProfile: (state) => state.user.currentUserProfile,
+    // }),
     // 根据 <input> value 筛选 list
     searchedList() {
       const searchVal = this.searchVal.trim().toLowerCase();
@@ -70,6 +75,9 @@ export default defineComponent({
   setup(props, { attrs, emit, expose, slots }) {
     const input = ref(null);
     const { memberlist, isOwner } = toRefs(props);
+    const filterList = memberlist.value.filter(
+      (t) => t.userID !== store.state.user.currentUserProfile.userID
+    );
     const state = reactive({
       // 定位信息
       top: "",
@@ -78,12 +86,13 @@ export default defineComponent({
       searchVal: "",
       list: [
         { joinTime: 0, userID: TIM.TYPES.MSG_AT_ALL, nick: "全体成员" },
-        ...memberlist.value,
+        ...filterList,
         // { id: "a", name: "A张三" },
       ],
     });
 
     onMounted(() => {
+      // 仅群主支持@全员
       if (!isOwner) {
         state.list.shift();
       }

@@ -71,6 +71,7 @@ export default {
       const { memberList, code } = await getGroupMemberList({ groupID });
       state.currentMemberList = memberList;
     },
+    // 获取群列表数据
     async getGroupList({ state }, payload) {
       const { code, groupList } = await getGroupList();
       if (code !== 0) return;

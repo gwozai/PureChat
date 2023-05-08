@@ -28,7 +28,7 @@
           </span>
         </div>
       </div>
-      <div class="divider"></div>
+      <el-divider />
       <!-- 群公告 -->
       <div class="group-accountecment">
         <div class="group-accountecment--title">
@@ -39,7 +39,7 @@
           <AnalysisUrl :text="groupProfile.notification" />
         </div>
       </div>
-      <div class="divider"></div>
+      <el-divider />
       <!-- 群成员 -->
       <div class="group-member">
         <div class="group-member--title">
@@ -69,7 +69,7 @@
           <span class="group-member--add" @click="groupMemberAdd"> </span>
         </div>
       </div>
-      <div class="divider"></div>
+      <el-divider />
       <!-- 免打扰 -->
       <div class="group-flag-message">
         <div class="group-flag-message--title">
@@ -77,7 +77,7 @@
           <el-switch v-model="isNotify" @change="notify" />
         </div>
       </div>
-      <div class="divider"></div>
+      <el-divider />
       <!-- 退出 转让 -->
       <div class="group-operator">
         <el-button v-if="isOwner" type="danger" @click="dismissGroup"> 解散群组 </el-button>
@@ -309,6 +309,9 @@ const handleQuitGroup = () => {
 <style lang="scss" scoped>
 @import "@/styles/mixin.scss";
 
+:deep(.el-divider) {
+  margin: 0;
+}
 .style-editPen {
   vertical-align: bottom;
   margin-left: 5px;
@@ -422,11 +425,5 @@ const handleQuitGroup = () => {
   .group-operator--divider {
     width: 12px;
   }
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background: #eeeeee;
 }
 </style>
