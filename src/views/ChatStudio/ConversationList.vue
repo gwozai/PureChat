@@ -3,10 +3,7 @@
     <!-- <transition-group name="fade-transform">
     </transition-group> -->
     <div class="no-msg" v-if="tabList.length == 0">
-      <img src="@/assets/images/wushuju.png" alt="" />
-      <p>
-        <span>暂无会话。</span>
-      </p>
+      <el-empty description="暂无会话。" :image-size="150" />
     </div>
     <div
       draggable="true"
@@ -248,14 +245,7 @@ onMounted(() => {});
 }
 .no-msg {
   color: rgba(0, 0, 0, 0.45);
-  text-align: center;
-  font-size: 14px;
   margin-top: 50%;
-  transform: translate(0px, 50%);
-  img {
-    width: 160px;
-    height: 100px;
-  }
 }
 .close-btn {
   font-size: 12px !important;

@@ -20,7 +20,7 @@ export default class TIMProxy {
     this.userSig = "";
     this.tim = null; // TIM实例
     this.TIM = null; // TIM命名空间
-    this.once = false;
+    this.once = false; // 防止重复初始化
     this.test = {};
     Object.defineProperty(this, "test", {
       configurable: true, // 可配置
