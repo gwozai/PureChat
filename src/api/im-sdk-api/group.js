@@ -141,17 +141,16 @@ export const deleteGroupMember = async (params) => {
     // reason: '你违规了，我要踢你！'
   };
   try {
-    const {
-      code,
-      data: { group, userIDList },
-    } = tim.deleteGroupMember(parameter);
+    const { code, data } = await tim.deleteGroupMember(parameter);
     return {
       code,
-      group,
-      userIDList,
+      data,
     };
   } catch (error) {
-    return {};
+    console.log(error);
+    return {
+      code: -1,
+    };
   }
 };
 // 获取群组列表

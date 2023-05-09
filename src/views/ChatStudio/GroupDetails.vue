@@ -234,7 +234,7 @@ const RemovePeople = (item) => {
     type: "warning",
   })
     .then(async () => {
-      const { code, group } = await deleteGroupMember({
+      const { code } = await deleteGroupMember({
         groupID: toAccount.value,
         user: item.userID,
       });
