@@ -233,11 +233,12 @@ const RemovePeople = (item) => {
     cancelButtonText: `${t("el.datepicker.cancel")}`,
     type: "warning",
   })
-    .then(() => {
-      deleteGroupMember({
+    .then(async () => {
+      const { code, group } = await deleteGroupMember({
         groupID: toAccount.value,
         user: item.userID,
       });
+      if (code !== 0) return;
       updataGroup();
     })
     .catch((err) => {

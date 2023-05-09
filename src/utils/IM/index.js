@@ -111,7 +111,7 @@ export default class TIMProxy {
   }
   // 收到新消息
   onReceiveMessage({ data, name }) {
-    this.handleQuitGroupTip(data);
+    window.TIMProxy.handleQuitGroupTip(data);
     const convId = store.state.conversation?.currentConversation?.conversationID;
     const userProfile = store.state.user.currentUserProfile;
     const { atUserList } = data[0];
@@ -238,24 +238,26 @@ export default class TIMProxy {
    */
   handleQuitGroupTip(messageList) {
     console.log(messageList, "handleQuitGroupTip");
+    const convId = store.state.conversation?.currentConversation?.conversationID;
     // return;
     // 筛选出当前会话的退群/被踢群的 groupTip
-    // const groupTips = messageList.filter((message) => {
-    //   return (
-    //     this.currentConversation.conversationID === message.conversationID &&
-    //     message.type === this.TIM.TYPES.MSG_GRP_TIP &&
-    //     (message.payload.operationType === this.TIM.TYPES.GRP_TIP_MBR_QUIT ||
-    //       message.payload.operationType === this.TIM.TYPES.GRP_TIP_MBR_KICKED_OUT)
-    //   );
-    // });
+    const groupTips = messageList.filter((message) => {
+      return (
+        convId === message.conversationID &&
+        message.type === TIM.TYPES.MSG_GRP_TIP &&
+        (message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_QUIT ||
+          message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_KICKED_OUT)
+      );
+    });
+    console.log(groupTips);
     // 清理当前会话的群成员列表
-    // if (groupTips.length > 0) {
-    //   groupTips.forEach((groupTip) => {
-    //     if (Array.isArray(groupTip.payload.userIDList) || groupTip.payload.userIDList.length > 0) {
-    //       // commit("deleteGroupMemberList", groupTip.payload.userIDList);
-    //     }
-    //   });
-    // }
+    if (groupTips.length > 0) {
+      groupTips.forEach((groupTip) => {
+        if (Array.isArray(groupTip.payload.userIDList) || groupTip.payload.userIDList.length > 0) {
+          // store.commit("deleteGroupMemberList", groupTip.payload.userIDList);
+        }
+      });
+    }
   }
   handleElNotification(message) {
     ElNotification({
