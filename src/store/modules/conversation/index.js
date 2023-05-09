@@ -1,5 +1,6 @@
 import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
+import TIM from "tim-js-sdk";
 import {
   getMsgList,
   deleteConversation,
@@ -133,20 +134,27 @@ const conversation = {
         }
         // 回复消息
         case CONVERSATIONTYPE.SET_CURRENT_REPLY_MSG: {
-          // const { convId, message } = payload;
           state.currentReplyMsg = payload;
-          // console.log(state.currentReplyMsg);
           break;
         }
         // 清除历史记录
         case CONVERSATIONTYPE.CLEAR_HISTORY: {
-          state.historyMessageList = new Map();
-          state.currentConversation = null;
-          state.currentMessageList = [];
-          state.showMsgBox = false;
-          state.showCheckbox = false;
-          state.currentReplyUser = null;
-          state.currentReplyMsg = null;
+          Object.assign(state, {
+            historyMessageList: new Map(),
+            currentConversation: null,
+            currentMessageList: [],
+            showMsgBox: false,
+            showCheckbox: false,
+            currentReplyUser: null,
+            currentReplyMsg: null,
+          });
+          // state.historyMessageList = new Map();
+          // state.currentConversation = null;
+          // state.currentMessageList = [];
+          // state.showMsgBox = false;
+          // state.showCheckbox = false;
+          // state.currentReplyUser = null;
+          // state.currentReplyMsg = null;
           break;
         }
         // 加载更多状态
@@ -384,6 +392,28 @@ const conversation = {
         default:
           return state.conversationList;
       }
+    },
+    currentConversationType(state) {
+      if (!state.currentConversation || !state.currentConversation.type) {
+        return "";
+      }
+      return state.currentConversation.type;
+    },
+    totalUnreadCount: (state) => {
+      const result = state.conversationList.reduce((count, conversation) => {
+        // 当前会话不计算总未读
+        if (state.currentConversation.conversationID === conversation.conversationID) {
+          return count;
+        }
+        return count + conversation.unreadCount;
+      }, 0);
+      return result;
+    },
+    // 用于当前会话的图片预览
+    imgUrlList: (state) => {
+      return state.currentMessageList
+        .filter((message) => message.type === TIM.TYPES.MSG_IMAGE && !message.isRevoked) // 筛选出没有撤回并且类型是图片类型的消息
+        .map((message) => message.payload.imageInfoArray[0].url);
     },
   },
 };

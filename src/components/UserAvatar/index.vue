@@ -60,6 +60,7 @@ export default defineComponent({
   color: #ffffff;
   font-weight: 400;
 }
+
 .default {
   width: 40px;
   height: 40px;

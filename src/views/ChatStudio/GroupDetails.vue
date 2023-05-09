@@ -65,6 +65,9 @@
               <CircleCloseFilled />
             </el-icon>
             <UserAvatar className="avatar-item" :url="item.avatar" :nickName="item.nick" />
+            <div class="admin" :class="item.role" v-if="item.role !== 'Member'">
+              {{ item.role == "Owner" ? "群主" : "管理员" }}
+            </div>
           </div>
           <span class="group-member--add" @click="groupMemberAdd"> </span>
         </div>
@@ -169,7 +172,9 @@ const isNotify = ref(false);
 const Refdrawerlist = ref();
 const dialogVisible = ref(false);
 const groupMember = ref([]);
-
+// const identity = (item) => {
+//   return item.role;
+// };
 const notify = (val) => {
   // const { type, toAccount, messageRemindType: remindType } = currentConversation.value;
   // dispatch("SET_MESSAGE_REMIND_TYPE", {
@@ -250,15 +255,20 @@ const updataGroup = () => {
     dispatch("getGroupMemberList");
   }, 500);
 };
-const notification = (value, modify) => {
+const notification = async (value, modify) => {
   const { groupID } = groupProfile.value;
-  updateGroupProfile({
+  const { code, group } = await updateGroupProfile({
     convId: groupID,
     modify: modify,
     value: value,
   });
+  if (code !== 0) return;
+  nextTick(() => {
+    commit("updateGroupProfile", group);
+  });
 };
 const navigate = (item) => {
+  console.log(item);
   dispatch("CHEC_OUT_CONVERSATION", { convId: `C2C${item.userID}` });
   commit("setGroupStatus", false);
 };
@@ -308,6 +318,24 @@ const handleQuitGroup = () => {
 
 <style lang="scss" scoped>
 @import "@/styles/mixin.scss";
+
+.admin {
+  width: 40px;
+  height: 14px;
+  text-align: center;
+  line-height: 14px;
+  font-size: 8.64px;
+  position: absolute;
+  top: 30px;
+  border-radius: 2px;
+  background: #fffbe6;
+  color: #4ab017b3;
+  border: 0.64px solid rgb(191, 232, 158);
+}
+.Owner {
+  color: #faad14;
+  border: 0.64px solid rgba(255, 229, 143, 1);
+}
 
 :deep(.el-divider) {
   margin: 0;

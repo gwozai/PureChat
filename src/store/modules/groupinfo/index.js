@@ -7,6 +7,11 @@ import {
   dismissGroup,
 } from "@/api/im-sdk-api/group";
 
+function compareByRole(a, b) {
+  const roles = { Owner: 1, Admin: 2, Member: 3 };
+  return roles[a.role] - roles[b.role];
+}
+
 export default {
   // namespaced: true,
   state: {
@@ -19,6 +24,9 @@ export default {
     currentMemberList: [], // 当前群组成员列表
   },
   getters: {
+    hasGroupList(state) {
+      return state.groupList.length > 0;
+    },
     // 群主
     isOwner(state) {
       if (state.groupProfile) {
@@ -39,15 +47,20 @@ export default {
     },
   },
   mutations: {
-    updateGroupList({ state }, payload) {
+    // 更新群详情
+    updateGroupProfile(state, payload) {
       console.log(payload);
       state.groupProfile = payload;
     },
+    // updateGroupList(state, payload) {
+    //   state.groupProfile = payload;
+    // },
     setGroupProfile(state, payload) {
       const { type } = payload;
       if (type == "GROUP") {
         const { groupID } = payload.groupProfile;
         getGroupProfile({ groupID }).then((data) => {
+          console.log(data);
           state.groupProfile = data;
         });
       }
@@ -69,7 +82,9 @@ export default {
     async getGroupMemberList({ state, commit, getters }, payload) {
       const groupID = getters.toAccount;
       const { memberList, code } = await getGroupMemberList({ groupID });
-      state.currentMemberList = memberList;
+      let sortlist = memberList;
+      sortlist.sort(compareByRole);
+      state.currentMemberList = sortlist;
     },
     // 获取群列表数据
     async getGroupList({ state }, payload) {
