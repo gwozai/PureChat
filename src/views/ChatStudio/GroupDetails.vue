@@ -309,6 +309,7 @@ const handleQuitGroup = () => {
         convId: conversationID,
         groupId: toAccount.value,
       });
+      commit("setGroupStatus", false);
     })
     .catch((err) => {
       console.log(err);

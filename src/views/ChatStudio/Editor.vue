@@ -237,6 +237,8 @@ const parsetext = (item) => {
 const setEmoj = (data, item) => {
   const node = { text: item };
   editorRef.value.insertNode(node);
+  editorRef.value.focus(true);
+  // editorRef.value.showProgressBar(100); // 进度条
 };
 const setPicture = (data) => {
   parsepicture(data);

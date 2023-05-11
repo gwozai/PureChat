@@ -39,7 +39,7 @@ export const dismissGroup = async (params) => {
  * @param {GroupType} type - 群组类型
  * @returns {Promise<{ code: number, group: any }>} - 返回一个 Promise，包含创建结果和群组对象
  */
-export const createGroup = async (params, type = GroupType.GRP_MEETING) => {
+export const createGroup = async (params, type = GroupType.GRP_WORK) => {
   const { groupName } = params;
   const {
     code,
