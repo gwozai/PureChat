@@ -1,5 +1,6 @@
-import { ElMessage } from "element-plus";
-
+import { ElMessage, ElMessageBox } from "element-plus";
+// import { useI18n } from "vue-i18n";
+// const { locale, t } = useI18n();
 // 消息
 const Message = (message) => {
   return ElMessage({
@@ -46,6 +47,36 @@ const verification = (code, msg) => {
     case 400:
       warnMessage(msg);
       break;
+  }
+};
+
+/**
+ * 弹出确认框
+ * @param {object} data - 对话框配置选项
+ * @param {string} data.message - 对话框显示内容
+ * @param {string} [data.confirmText="确定"] - 确认按钮文本
+ * @param {string} [data.cancelText="取消"] - 取消按钮文本
+ * @param {string} [data.tip="提示"] - 对话框标题
+ * @return {string} - cancel | confirm
+ */
+export const showConfirmationBox = async (data, Type = "confirm") => {
+  const {
+    message,
+    confirmText = "确认", //`${t("el.datepicker.confirm")}`,
+    cancelText = "取消", //`${t("el.datepicker.cancel")}`,
+    tip = "提示",
+    iconType = "", // warning
+  } = data;
+  try {
+    const formEl = await ElMessageBox[Type](message, tip, {
+      confirmButtonText: confirmText,
+      cancelButtonText: cancelText,
+      type: iconType,
+    });
+    return formEl;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 };
 
