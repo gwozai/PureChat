@@ -12,7 +12,7 @@
     :show-close="true"
     :with-header="true"
   >
-    <div class="group-details">
+    <div class="group-details" v-if="currentType === TIM.TYPES.CONV_GROUP">
       <!-- info -->
       <div class="group-base-info">
         <UserAvatar :nickName="groupProfile.groupID" />
@@ -83,12 +83,13 @@
       <el-divider />
       <!-- 退出 转让 -->
       <div class="group-operator">
-        <el-button v-if="isOwner" type="danger" @click="dismissGroup"> 解散群组 </el-button>
+        <el-button v-if="isOwner" type="danger" @click="handleDismissGroup"> 解散群组 </el-button>
         <el-button v-else type="danger" @click="handleQuitGroup"> 退出群组 </el-button>
         <div class="group-operator--divider"></div>
-        <el-button type="primary" plain v-show="isOwner" @click="transferGroup">
+        <el-button type="primary" plain v-show="isOwner" @click="handleTransferGroup">
           转让群组
         </el-button>
+        <el-button type="primary" plain @click="groupTest"> 测试按钮 </el-button>
       </div>
       <!-- 添加成员弹框 -->
       <el-dialog v-model="dialogVisible" title="添加成员" width="30%" draggable>
@@ -107,7 +108,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref, computed } from "vue";
+import { nextTick, ref, computed, defineProps, toRefs } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -117,6 +118,7 @@ import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-
 import { useI18n } from "vue-i18n";
 import AnalysisUrl from "./components/AnalysisUrl.vue";
 import { showConfirmationBox } from "@/utils/message";
+import TIM from "tim-js-sdk";
 
 const GROUP_TYPE_MAP = {
   Public: "陌生人社交群(Public)",
@@ -141,15 +143,15 @@ const {
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
-const { isOwner, isAdmin, toAccount } = useGetters(["isOwner", "isAdmin", "toAccount"]);
+const { isOwner, isAdmin, toAccount, currentType } = useGetters([
+  "isOwner",
+  "isAdmin",
+  "toAccount",
+  "currentType",
+]);
 const input = ref("");
 const isNotify = ref(false);
-const Refdrawerlist = ref();
 const dialogVisible = ref(false);
-const groupMember = ref([]);
-// const identity = (item) => {
-//   return item.role;
-// };
 const notify = (val) => {
   // const { type, toAccount, messageRemindType: remindType } = currentConversation.value;
   // dispatch("SET_MESSAGE_REMIND_TYPE", {
@@ -158,46 +160,56 @@ const notify = (val) => {
   //   remindType,
   // });
 };
-
-// const [state, toggle] = useToggle();
-
+const groupTest = async () => {
+  // console.log(groupProfile.value.groupID);
+  // const data = {
+  //   type: "GROUP",
+  //   groupProfile: { groupID: groupProfile.value.groupID },
+  // };
+  // dispatch("getGroupProfile", data);
+  console.log(currentConversation.value);
+};
 const visible = computed({
   get() {
+    // console.log(props.groupProfile);
     return groupDrawer.value;
   },
   set() {
     commit("setGroupStatus", false);
   },
 });
-
 const openNamePopup = async () => {
   const data = { message: "输入群名" };
   const result = await showConfirmationBox(data, "prompt");
   if (result == "cancel") return;
   const { value, action } = result;
-  notification(value);
+  modifyGroupInfo(value);
 };
 const openNoticePopup = async () => {
   const data = { message: "输入群公告" };
   const result = await showConfirmationBox(data, "prompt");
   if (result == "cancel") return;
   const { value, action } = result;
-  notification(value, "notification");
+  modifyGroupInfo(value, "notification");
 };
-
-const openDetails = () => {
-  // Refdrawerlist.value.handleOpen();
-};
+const openDetails = () => {};
 const handleClose = (done) => {
   done();
 };
-
+const groupMemberAdd = () => {
+  dialogVisible.value = true;
+};
 const close = () => {
   input.value = "";
   dialogVisible.value = false;
 };
+const navigate = (item) => {
+  console.log(item);
+  dispatch("CHEC_OUT_CONVERSATION", { convId: `C2C${item.userID}` });
+  commit("setGroupStatus", false);
+};
 const RemovePeople = async (item) => {
-  const data = { message: `确定将 ${item.nick} 移出群聊?` };
+  const data = { message: `确定将 ${item.nick} 移出群聊?`, iconType: "warning" };
   const result = await showConfirmationBox(data);
   if (result == "cancel") return;
   const params = { groupID: toAccount.value, user: item.userID };
@@ -216,7 +228,8 @@ const updataGroup = () => {
     dispatch("getGroupMemberList");
   }, 500);
 };
-const notification = async (value, modify) => {
+// 修改群资料
+const modifyGroupInfo = async (value, modify) => {
   const { groupID } = groupProfile.value;
   const { code, group } = await updateGroupProfile({
     convId: groupID,
@@ -225,18 +238,14 @@ const notification = async (value, modify) => {
   });
   if (code !== 0) return;
   nextTick(() => {
-    commit("updateGroupProfile", group);
+    const data = {
+      type: "GROUP",
+      groupProfile: { groupID },
+    };
+    // dispatch("getGroupProfile", data);
   });
 };
-const navigate = (item) => {
-  console.log(item);
-  dispatch("CHEC_OUT_CONVERSATION", { convId: `C2C${item.userID}` });
-  commit("setGroupStatus", false);
-};
-const groupMemberAdd = () => {
-  dialogVisible.value = true;
-};
-const dismissGroup = async () => {
+const handleDismissGroup = async () => {
   const data = { message: "确定解散群聊?", iconType: "warning" };
   const result = await showConfirmationBox(data);
   if (result == "cancel") return;
@@ -245,44 +254,22 @@ const dismissGroup = async () => {
     convId: conversationID,
     groupId: toAccount.value,
   });
-  // ElMessageBox.confirm("确定解散群聊?", "提示", {
-  //   confirmButtonText: `${t("el.datepicker.confirm")}`,
-  //   cancelButtonText: `${t("el.datepicker.cancel")}`,
-  //   type: "warning",
-  // })
-  //   .then(() => {
-  //     const { conversationID } = currentConversation.value;
-  //     dispatch("DISMISS_GROUP", {
-  //       convId: conversationID,
-  //       groupId: toAccount.value,
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
 };
-const transferGroup = () => {
-  console.log();
+const handleTransferGroup = async () => {
+  const data = { message: "确定转让群聊?", iconType: "warning" };
+  const result = await showConfirmationBox(data);
+  if (result == "cancel") return;
 };
-
-const handleQuitGroup = () => {
-  ElMessageBox.confirm("确定退出群聊?", "提示", {
-    confirmButtonText: `${t("el.datepicker.confirm")}`,
-    cancelButtonText: `${t("el.datepicker.cancel")}`,
-    type: "warning",
-  })
-    .then(() => {
-      const { conversationID } = currentConversation.value;
-      dispatch("QUIT_GROUP", {
-        convId: conversationID,
-        groupId: toAccount.value,
-      });
-      commit("setGroupStatus", false);
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log(groupProfile.value);
-    });
+const handleQuitGroup = async () => {
+  const data = { message: "确定退出群聊?", iconType: "warning" };
+  const result = await showConfirmationBox(data);
+  if (result == "cancel") return;
+  const { conversationID } = currentConversation.value;
+  dispatch("QUIT_GROUP", {
+    convId: conversationID,
+    groupId: toAccount.value,
+  });
+  commit("setGroupStatus", false);
 };
 </script>
 

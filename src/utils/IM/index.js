@@ -137,6 +137,7 @@ export default class TIMProxy {
       });
       return;
     }
+    // store.dispatch("CHEC_OUT_CONVERSATION", { convId: data?.[0].conversationID });
     // 更新当前会话消息
     store.commit("SET_HISTORYMESSAGE", {
       type: "UPDATE_MESSAGES",

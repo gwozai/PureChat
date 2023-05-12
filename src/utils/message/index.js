@@ -1,6 +1,5 @@
 import { ElMessage, ElMessageBox } from "element-plus";
-// import { useI18n } from "vue-i18n";
-// const { locale, t } = useI18n();
+import { $t } from "@/plugins/i18n";
 // 消息
 const Message = (message) => {
   return ElMessage({
@@ -62,8 +61,8 @@ const verification = (code, msg) => {
 export const showConfirmationBox = async (data, Type = "confirm") => {
   const {
     message,
-    confirmText = "确认", //`${t("el.datepicker.confirm")}`,
-    cancelText = "取消", //`${t("el.datepicker.cancel")}`,
+    confirmText = `${$t("el.datepicker.confirm")}`, //"确认",
+    cancelText = `${$t("el.datepicker.cancel")}`, //"取消",
     tip = "提示",
     iconType = "", // warning
   } = data;

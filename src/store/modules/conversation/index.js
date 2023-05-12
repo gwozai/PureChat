@@ -335,7 +335,7 @@ const conversation = {
         payload: conversation,
       });
       // 群详情信息
-      commit("setGroupProfile", conversation);
+      dispatch("getGroupProfile", conversation);
       // 获取会话列表
       dispatch("GET_MESSAGE_LIST", conversation);
     },
@@ -393,7 +393,7 @@ const conversation = {
           return state.conversationList;
       }
     },
-    currentConversationType(state) {
+    currentType(state) {
       if (!state.currentConversation || !state.currentConversation.type) {
         return "";
       }

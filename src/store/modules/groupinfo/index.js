@@ -30,7 +30,7 @@ export default {
     // 群主
     isOwner(state) {
       if (state.groupProfile) {
-        const { role } = state.groupProfile.selfInfo;
+        const { role } = state.groupProfile?.selfInfo;
         return role == "Owner";
       } else {
         return "";
@@ -39,7 +39,7 @@ export default {
     // 管理员
     isAdmin(state) {
       if (state.groupProfile) {
-        const { role } = state.groupProfile.selfInfo;
+        const { role } = state.groupProfile?.selfInfo;
         return role == "Admin";
       } else {
         return "";
@@ -48,23 +48,13 @@ export default {
   },
   mutations: {
     // 更新群详情
-    updateGroupProfile(state, payload) {
-      console.log(payload);
+    updateGroupInfo(state, payload) {
       state.groupProfile = payload;
     },
-    // updateGroupList(state, payload) {
-    //   state.groupProfile = payload;
-    // },
     setGroupProfile(state, payload) {
-      const { type } = payload;
-      if (type == "GROUP") {
-        const { groupID } = payload.groupProfile;
-        getGroupProfile({ groupID }).then((data) => {
-          console.log(data);
-          state.groupProfile = data;
-        });
-      }
+      state.groupProfile = payload;
     },
+    // 打开地址本
     setAddbookStatus(state, status) {
       state.isShowAddBook = status;
     },
@@ -110,6 +100,15 @@ export default {
       const { code, groupID } = await dismissGroup(groupId);
       if (code !== 0) return;
       dispatch("DELETE_SESSION", { convId });
+    },
+    // 获取群详细资料
+    async getGroupProfile({ state, commit }, payload) {
+      const { type } = payload;
+      if (type !== "GROUP") return;
+      const { groupID } = payload.groupProfile;
+      const { code, data } = await getGroupProfile({ groupID });
+      if (code !== 0) return;
+      commit("setGroupProfile", data);
     },
   },
 };

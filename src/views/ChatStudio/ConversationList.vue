@@ -183,7 +183,7 @@ const handleConvListClick = (data) => {
     payload: data,
   });
   // 群详情信息
-  commit("setGroupProfile", data);
+  dispatch("getGroupProfile", data);
   // 获取会话列表
   dispatch("GET_MESSAGE_LIST", data);
   commit("updataScroll");

@@ -39,13 +39,26 @@ export const getMyProfile = async () => {
     console.log(e);
   }
 };
+// 获取群详细资料
 export const getGroupProfile = async (params) => {
-  const { groupID } = params;
-  const { data, code } = await tim.getGroupProfile({
-    groupID: groupID,
-    // groupCustomFieldFilter: ["key1", "key2"],
-  });
-  return data.group;
+  try {
+    const { groupID } = params;
+    const {
+      data: { group },
+      code,
+    } = await tim.getGroupProfile({
+      groupID: groupID,
+    });
+    return {
+      code,
+      data: group,
+    };
+  } catch (error) {
+    return {
+      code: -1,
+      data: error,
+    };
+  }
 };
 //登录
 export const TIM_login = async (params) => {
