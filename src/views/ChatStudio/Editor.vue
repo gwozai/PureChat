@@ -41,6 +41,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import RichToolbar from "./components/RichToolbar.vue";
 import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 import { toolbarConfig, editorConfig } from "./utils/configure";
+import { emojiUrl, emojiMap } from "@/utils/emoji-map";
 import {
   onBeforeUnmount,
   ref,
@@ -54,7 +55,7 @@ import {
   nextTick,
 } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
-import { getMsgElemItem } from "./utils/utils";
+import { getMsgElemItem, sendChatMessage } from "./utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -235,10 +236,23 @@ const parsetext = (item) => {
   console.log(item);
 };
 const setEmoj = (data, item) => {
+  let url = emojiUrl + emojiMap[item];
+  console.log(url);
   const node = { text: item };
   editorRef.value.insertNode(node);
   editorRef.value.focus(true);
   // editorRef.value.showProgressBar(100); // 进度条
+
+  // const ImageElement = {
+  //   type: "image",
+  //   class: "img",
+  //   src: url,
+  //   alt: "",
+  //   href: "",
+  //   style: { width: "25px" },
+  //   children: [{ text: "" }],
+  // };
+  // editorRef.value.insertNode(ImageElement);
 };
 const setPicture = (data) => {
   parsepicture(data);
@@ -320,7 +334,7 @@ const sendMsgBefore = () => {
   // console.log(text);
   // console.log(link);
   // console.log(image);
-  // console.log(HtmlText);
+  console.log(HtmlText);
   // console.log(innHTML);
   // console.log(aitStr);
   return {
@@ -333,53 +347,13 @@ const sendMsgBefore = () => {
 };
 // 发送消息
 const sendMessage = async () => {
-  let flag = true;
   let TextMsg = null;
   const { type, toAccount, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files } = sendMsgBefore();
-  // return
-  if (files) {
-    const { fileName, src } = files;
-    let file = dataURLtoFile(src, fileName);
-    console.log(file);
-    TextMsg = await CreateFiletMsg({
-      convId: toAccount,
-      convType: type,
-      files: file,
-    });
-    flag = false;
-  }
-  // 图片消息
-  if (image) {
-    console.log(image);
-    // let file = await urlToBase64(image[0].src);
-    let file = dataURLtoFile(image[0].src);
-    console.log(file);
-    TextMsg = await CreateImgtMsg({
-      convId: toAccount,
-      convType: type,
-      image: file,
-    });
-    flag = false;
-  }
-  if (aitStr) {
-    // @消息
-    TextMsg = await CreateTextAtMsg({
-      convId: toAccount,
-      convType: type,
-      textMsg: aitStr,
-      atUserList: aitlist,
-    });
-  } else if (flag) {
-    // 文本消息
-    TextMsg = await CreateTextMsg({
-      convId: toAccount,
-      convType: type,
-      textMsg: text,
-    });
-  }
+  console.log(text);
+  const data = { textMsg: text, aitStr, image, aitlist, files };
+  TextMsg = await sendChatMessage(toAccount, type, data);
   console.log(TextMsg);
-  TextMsg.status = "unSend";
   // return;
   commit("SET_HISTORYMESSAGE", {
     type: "UPDATE_MESSAGES",
