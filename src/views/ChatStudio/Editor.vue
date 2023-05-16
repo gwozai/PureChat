@@ -6,8 +6,7 @@
       :defaultConfig="toolbarConfig"
       :mode="mode"
     /> -->
-    <!-- 自定义工具栏 -->
-    <RichToolbar @setEmoj="setEmoj" @setPicture="parsepicture" @setParsefile="parsefile" />
+    <RichToolbar @setToolbar="setToolbar" />
     <Editor
       class="editor-content"
       v-model="valueHtml"
@@ -41,7 +40,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import RichToolbar from "./components/RichToolbar.vue";
 import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 import { toolbarConfig, editorConfig } from "./utils/configure";
-import { emojiUrl, emojiMap } from "@/utils/emoji-map";
+// import { emojiUrl, emojiMap } from "@/utils/emoji-map";
 import {
   onBeforeUnmount,
   ref,
@@ -59,7 +58,6 @@ import { getMsgElemItem, sendChatMessage } from "./utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-// import { generateUUID } from "@/utils/index";
 import MentionModal from "./components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
@@ -75,12 +73,11 @@ import {
   CreateImgtMsg,
   sendMsg,
 } from "@/api/im-sdk-api";
+
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
 const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
-// eslint-disable-next-line no-undef
-// const emit = defineEmits(["sendMsgCallback"]);
 
 const { state, getters, dispatch, commit } = useStore();
 const { isOwner } = useGetters(["isOwner"]);
@@ -103,11 +100,12 @@ const {
 });
 
 const handleCreated = (editor) => {
-  editorRef.value = editor; // 记录 editor 实例，重要！
+  editorRef.value = editor;
 
-  // console.log(editor, "实例");
-  // console.log(editor.getAllMenuKeys());// 查看所有工具栏key
-  // console.log(editor.getConfig());
+  console.log(editor.getConfig());
+  // editor.enable(); //
+  // editor.disable(); // 只读
+  // editor.hidePanelOrModal();
 };
 const insertMention = (id, name) => {
   const editor = editorRef.value;
@@ -125,9 +123,24 @@ const insertMention = (id, name) => {
 const hideMentionModal = () => {
   commit("SET_MENTION_MODAL", false);
 };
+const setToolbar = (item) => {
+  const { data, key } = item;
+  switch (key) {
+    case "setEmoj":
+      setEmoj(data.url, data.item);
+      break;
+    case "setPicture":
+      setPicture(data.files);
+      break;
+    case "setParsefile":
+      setParsefile(data.files);
+      break;
+  }
+};
 // 更新草稿
 const updateDraft = (data) => {
   console.log(data);
+  console.log(editorRef.value);
 };
 const fnUpdateDraft = debounce((data) => {
   updateDraft(data);
@@ -235,24 +248,22 @@ const parsefile = async (file) => {
 const parsetext = (item) => {
   console.log(item);
 };
-const setEmoj = (data, item) => {
-  let url = emojiUrl + emojiMap[item];
-  console.log(url);
-  const node = { text: item };
-  editorRef.value.insertNode(node);
-  editorRef.value.focus(true);
+const setEmoj = (url, item) => {
+  // const node = { text: item };
+  // editorRef.value.insertNode(node);
+  // editorRef.value.focus(true);
   // editorRef.value.showProgressBar(100); // 进度条
 
-  // const ImageElement = {
-  //   type: "image",
-  //   class: "img",
-  //   src: url,
-  //   alt: "",
-  //   href: "",
-  //   style: { width: "25px" },
-  //   children: [{ text: "" }],
-  // };
-  // editorRef.value.insertNode(ImageElement);
+  const ImageElement = {
+    type: "image",
+    class: "img",
+    src: url,
+    alt: "",
+    href: "",
+    style: { width: "25px" },
+    children: [{ text: "" }],
+  };
+  editorRef.value.insertNode(ImageElement);
 };
 const setPicture = (data) => {
   parsepicture(data);
@@ -334,7 +345,7 @@ const sendMsgBefore = () => {
   // console.log(text);
   // console.log(link);
   // console.log(image);
-  console.log(HtmlText);
+  // console.log(HtmlText);
   // console.log(innHTML);
   // console.log(aitStr);
   return {
@@ -350,8 +361,8 @@ const sendMessage = async () => {
   let TextMsg = null;
   const { type, toAccount, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files } = sendMsgBefore();
-  console.log(text);
   const data = { textMsg: text, aitStr, image, aitlist, files };
+  // console.log(data);
   TextMsg = await sendChatMessage(toAccount, type, data);
   console.log(TextMsg);
   // return;

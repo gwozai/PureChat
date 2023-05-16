@@ -111,7 +111,13 @@ const onClickOutside = () => {
 };
 const SelectEmoticon = (item) => {
   let url = emojiUrl + emojiMap[item];
-  emit("setEmoj", url, item);
+  emit("setToolbar", {
+    data: {
+      url,
+      item,
+    },
+    key: "setEmoj",
+  });
   unref(popoverRef).hide();
 };
 const SendImageClick = () => {
@@ -123,34 +129,23 @@ const SendFileClick = () => {
   let $el = filePicker.value;
   $el.click();
 };
-const clickCscreenshot = () => {
-  // screenshot
-  // html2canvas(document.body, {
-  //   allowTaint: true,
-  //   // useCORS: true,
-  //   dpi: 150,
-  //   scale: 2,
-  // }).then((canvas) => {
-  //   console.log(canvas);
-  //   // let dataURL = canvas.toDataURL("image/png");
-  //   // console.log(dataURL);
-  //   // document.body.appendChild(canvas);
-  // });
-};
+const clickCscreenshot = () => {};
 
 async function sendImage(e) {
-  // console.log(e.target.files[0]);
-  emit("setPicture", e.target.files[0]);
-  // const res = await uploadFiles({
-  //   files: e.target.files[0],
-  // });
+  emit("setToolbar", {
+    data: {
+      files: e.target.files[0],
+    },
+    key: "setPicture",
+  });
 }
 async function sendFile(e) {
-  // console.log(e.target.files[0]);
-  emit("setParsefile", e.target.files[0]);
-  // const res = await uploadFiles({
-  //   files: e.target.files[0],
-  // });
+  emit("setToolbar", {
+    data: {
+      files: e.target.files[0],
+    },
+    key: "setParsefile",
+  });
 }
 </script>
 <style>
