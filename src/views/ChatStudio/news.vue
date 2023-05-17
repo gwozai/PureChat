@@ -22,12 +22,12 @@
       <!-- 聊天窗口 -->
       <Chatwin ref="ChatRef" />
       <div id="svgResize" @mouseover="dragControllerDiv(ChatRef)" v-if="showMsgBox">
-        <div class="back-to-the-bottom" @click="toBottom">
+        <!-- <div class="back-to-the-bottom" @click="toBottom">
           <el-icon class="svg-left">
             <DArrowLeft />
           </el-icon>
           <span>回到底部</span>
-        </div>
+        </div> -->
       </div>
       <!-- 多选框 -->
       <MultiChoiceBox />

@@ -55,7 +55,7 @@
         </div>
       </div>
     </el-scrollbar>
-    <MyPopover />
+    <!-- <MyPopover /> -->
     <contextmenu ref="contextmenu">
       <contextmenu-item
         v-for="item in RIGHT_CLICK_MENU_LIST"
@@ -245,11 +245,11 @@ const ISown = (item) => {
 const onclickavatar = (e, item) => {
   const isSelf = ISown(item);
   if (isSelf) return;
-  commit("setPopoverStatus", {
-    status: true,
-    seat: e,
-    cardData: item,
-  });
+  // commit("setPopoverStatus", {
+  //   status: true,
+  //   seat: e,
+  //   cardData: item,
+  // });
 };
 
 const loadMoreFn = () => {
@@ -579,7 +579,6 @@ $self-msg-color: #c2e8ff;
 .style-MsgBox {
   height: calc(100% - 60px) !important;
 }
-
 .scrollbar-item {
   display: flex;
   align-items: center;
@@ -637,7 +636,7 @@ $self-msg-color: #c2e8ff;
     margin-right: 8px;
   }
   .message-view__img {
-    // margin-bottom: 5px;
+    margin-bottom: 5px;
     width: fit-content;
     :deep(.image_preview) {
       background: $other-msg-color;
@@ -650,7 +649,7 @@ $self-msg-color: #c2e8ff;
 
   .message-view__text {
     width: fit-content;
-    // margin-bottom: 5px;
+    margin-bottom: 5px;
     :deep(.message-view__item--text) {
       background: $other-msg-color;
     }

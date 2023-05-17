@@ -6,6 +6,7 @@
       :defaultConfig="toolbarConfig"
       :mode="mode"
     /> -->
+    <!-- 自定义工具栏 -->
     <RichToolbar @setToolbar="setToolbar" />
     <Editor
       class="editor-content"
@@ -38,9 +39,7 @@ import "./utils/custom-menu";
 import "@wangeditor/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import RichToolbar from "./components/RichToolbar.vue";
-import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 import { toolbarConfig, editorConfig } from "./utils/configure";
-// import { emojiUrl, emojiMap } from "@/utils/emoji-map";
 import {
   onBeforeUnmount,
   ref,
@@ -174,7 +173,6 @@ const customAlert = (s, t) => {
 };
 // 粘贴事件
 const customPaste = (editor, event, callback) => {
-  // console.log(editor,"编辑器实例");
   console.log("ClipboardEvent 粘贴事件对象", event);
   // const html = event.clipboardData.getData("text/html"); // 获取粘贴的 html
   const text = event.clipboardData.getData("text/plain"); // 获取粘贴的纯文本
@@ -249,21 +247,21 @@ const parsetext = (item) => {
   console.log(item);
 };
 const setEmoj = (url, item) => {
-  // const node = { text: item };
-  // editorRef.value.insertNode(node);
-  // editorRef.value.focus(true);
+  const node = { text: item };
+  editorRef.value.insertNode(node);
+  editorRef.value.focus(true);
   // editorRef.value.showProgressBar(100); // 进度条
 
-  const ImageElement = {
-    type: "image",
-    class: "img",
-    src: url,
-    alt: "",
-    href: "",
-    style: { width: "25px" },
-    children: [{ text: "" }],
-  };
-  editorRef.value.insertNode(ImageElement);
+  // const ImageElement = {
+  //   type: "image",
+  //   class: "img",
+  //   src: url,
+  //   alt: "",
+  //   href: "",
+  //   style: { width: "25px" },
+  //   children: [{ text: "" }],
+  // };
+  // editorRef.value.insertNode(ImageElement);
 };
 const setPicture = (data) => {
   parsepicture(data);
@@ -292,22 +290,11 @@ const handleEnter = () => {
   const editor = editorRef.value;
   const isEmpty = editor.isEmpty(); // 判断当前编辑器内容是否为空
   const { text, aitStr, files, image } = sendMsgBefore();
-  // 获取包含数据属性的元素
-  // const attachmentElem = document.querySelector(
-  //   'span[data-w-e-type="attachment"]'
-  // );
-  // 获取数据属性的值
-  // const link = attachmentElem?.getAttribute("data-link");
 
-  if ((!isEmpty && !empty(text)) || image) {
+  if ((!isEmpty && !empty(text)) || image || aitStr || files) {
     sendMessage();
   } else {
-    if (aitStr || files) {
-      sendMessage();
-    } else {
-      console.log("请输入内容");
-      clearInputInfo();
-    }
+    clearInputInfo();
   }
 };
 // 清空输入框
@@ -326,8 +313,8 @@ const sendMsgBefore = () => {
   let str = valueHtml.value;
   let content = messages.value[0].children;
   const editor = editorRef.value;
-  const text = editorRef.value.getText(); // 纯文本内容
-  const HtmlText = editorRef.value.getHtml(); // 非格式化的 html
+  const text = editor.getText(); // 纯文本内容
+  const HtmlText = editor.getHtml(); // 非格式化的 html
   const image = editor.getElemsByType("image"); // 所有图片
 
   if (str.includes("mention")) {

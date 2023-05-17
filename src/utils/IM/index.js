@@ -10,6 +10,13 @@ import { ElNotification } from "element-plus";
 const fnCheckoutNetState = throttle((state) => {
   checkoutNetState(state);
 }, 3000);
+// commit("SET_HISTORYMESSAGE", {
+//   type: "MARKE_MESSAGE_AS_READED",
+//   payload: {
+//     convId: conversationID,
+//     message: action,
+//   },
+// });
 
 export default class TIMProxy {
   // 静态方法

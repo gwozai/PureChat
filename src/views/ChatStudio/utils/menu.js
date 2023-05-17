@@ -23,14 +23,14 @@ const MENU_LIST = [
     id: "saveAs",
     text: "另存为",
   },
-  {
-    id: "reply",
-    text: "回复",
-  },
-  {
-    id: "forward",
-    text: "转发",
-  },
+  // {
+  //   id: "reply",
+  //   text: "回复",
+  // },
+  // {
+  //   id: "forward",
+  //   text: "转发",
+  // },
   {
     id: "multiSelect",
     text: "多选",

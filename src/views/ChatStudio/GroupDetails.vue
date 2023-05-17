@@ -89,7 +89,7 @@
         <el-button type="primary" plain v-show="isOwner" @click="handleTransferGroup">
           转让群组
         </el-button>
-        <el-button type="primary" plain @click="groupTest"> 测试按钮 </el-button>
+        <!-- <el-button type="primary" plain @click="groupTest"> 测试按钮 </el-button> -->
       </div>
       <!-- 添加成员弹框 -->
       <el-dialog v-model="dialogVisible" title="添加成员" width="30%" draggable>

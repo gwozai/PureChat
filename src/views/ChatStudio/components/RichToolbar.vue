@@ -54,7 +54,7 @@
       <svg-icon iconClass="iconwenjianjia" class="icon-hover" />
     </span>
     <!-- 截图 -->
-    <span class="" title="截图" @click="clickCscreenshot">
+    <span class="" title="截图" @click="clickCscreenshot" v-if="false">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
     <!-- 更多 -->

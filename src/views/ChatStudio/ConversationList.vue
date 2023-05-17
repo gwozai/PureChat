@@ -6,7 +6,6 @@
       <el-empty description="暂无会话。" :image-size="150" />
     </div>
     <div
-      draggable="true"
       class="message-item"
       v-for="item in tabList"
       :key="item.conversationID"
