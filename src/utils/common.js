@@ -63,3 +63,13 @@ export function bytesToSize(bytes) {
 export function setPageTitle(routerTitle) {
   document.title = routerTitle ? `${routerTitle} | ${title}` || title : title;
 }
+
+export const scrollToDomPostion = (msgid) => {
+  const dom = document.getElementById(`${msgid}`);
+  if (!dom) return;
+  dom.scrollIntoView({ behavior: "smooth", block: "center" });
+  dom.classList.add("shrink-style");
+  setTimeout(() => {
+    dom.classList.remove("shrink-style");
+  }, 2000);
+};

@@ -10,6 +10,7 @@
 
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick, defineProps } from "vue";
+import { scrollToDomPostion } from "@/utils/common";
 const props = defineProps({
   originalMsg: {
     type: Object,
@@ -18,22 +19,11 @@ const props = defineProps({
 });
 // getRef, convId, convType
 const { originalMsg } = toRefs(props);
-// const { messageID } = originalMsg
-const scrollToDomPostion = (dom) => {
-  dom.scrollIntoView({ behavior: "smooth", block: "center" });
-  dom.classList.add("shrink-style");
-  setTimeout(() => {
-    dom.classList.remove("shrink-style");
-  }, 2000);
-};
-const getRef = (id) => {
-  return document.getElementById(`${id}`);
-};
+
 const hanldeItemClick = async () => {
-  console.log(originalMsg);
   const { messageReply } = originalMsg.value;
   if (!originalMsg) return;
-  const ref = getRef(messageReply.messageID);
+  const ref = messageReply.messageID;
   if (ref) {
     scrollToDomPostion(ref);
   }
