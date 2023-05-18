@@ -17,7 +17,7 @@
 
 <script>
 import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs, ref } from "vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import store from "@/store";
 import TIM from "tim-js-sdk";
 export default defineComponent({
@@ -35,9 +35,6 @@ export default defineComponent({
     },
   },
   computed: {
-    // ...mapState({
-    //   currentUserProfile: (state) => state.user.currentUserProfile,
-    // }),
     // 根据 <input> value 筛选 list
     searchedList() {
       const searchVal = this.searchVal.trim().toLowerCase();
@@ -84,16 +81,12 @@ export default defineComponent({
       left: "",
       // list 信息
       searchVal: "",
-      list: [
-        { joinTime: 0, userID: TIM.TYPES.MSG_AT_ALL, nick: "全体成员" },
-        ...filterList,
-        // { id: "a", name: "A张三" },
-      ],
+      list: [{ joinTime: 0, userID: TIM.TYPES.MSG_AT_ALL, nick: "全体成员" }, ...filterList],
     });
 
     onMounted(() => {
       // 仅群主支持@全员
-      if (!isOwner) {
+      if (!isOwner.value) {
         state.list.shift();
       }
       // 获取光标位置，定位 modal
