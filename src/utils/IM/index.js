@@ -284,10 +284,16 @@ export default class TIMProxy {
     });
   }
   handleElNotification(message) {
-    ElNotification({
-      title: "有人提到了你",
-      message: message.payload.text,
-      duration: 3000,
+    const { nick, payload, conversationID } = message;
+    const Notification = ElNotification({
+      title: `${nick}提到了你`,
+      message: payload.text,
+      duration: 6000,
+      type: "info",
+      onClick: () => {
+        store.dispatch("CHEC_OUT_CONVERSATION", { convId: conversationID });
+        Notification.close();
+      },
     });
   }
 }
