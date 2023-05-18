@@ -71,22 +71,21 @@ const user = {
       console.log({ code, msg, result }, "登录信息");
       if (code == 200) {
         window.TIMProxy.init();
+        dispatch("GET_MENU");
         dispatch("TIM_LOG_IN", {
           userID: username,
           userSig: result.userSig,
         });
-        dispatch("GET_MENU");
         commit("updateData", { key: "user", value: result });
         setTimeout(() => {
           router.push("/home");
-        }, 500);
+        }, 1000);
       } else {
         verification(code, msg);
       }
     },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
-      console.log(user);
       const { userID, userSig } = user;
       const { code, data } = await TIM_login({ userID, userSig });
       console.log({ code, data }, "TIM_LOG_IN");
