@@ -116,6 +116,10 @@ export default class TIMProxy {
       payload: data,
     });
   }
+  // 判断浏览器窗口是否在前台可见状态
+  isWindowFocused() {
+    return window.document.hasFocus();
+  }
   // 收到新消息
   onReceiveMessage({ data, name }) {
     window.TIMProxy.handleQuitGroupTip(data);
@@ -144,7 +148,7 @@ export default class TIMProxy {
       });
       return;
     }
-    // store.dispatch("CHEC_OUT_CONVERSATION", { convId: data?.[0].conversationID });
+    window.TIMProxy.ReportedMessageRead(data);
     // 更新当前会话消息
     store.commit("SET_HISTORYMESSAGE", {
       type: "UPDATE_MESSAGES",
@@ -266,6 +270,18 @@ export default class TIMProxy {
         }
       });
     }
+  }
+  // 上报消息已读
+  ReportedMessageRead(data) {
+    const isFocused = this.isWindowFocused();
+    if (!isFocused) return;
+    store.commit("SET_HISTORYMESSAGE", {
+      type: "MARKE_MESSAGE_AS_READED",
+      payload: {
+        convId: data?.[0].conversationID,
+        message: data,
+      },
+    });
   }
   handleElNotification(message) {
     ElNotification({

@@ -11,9 +11,9 @@
                 <el-button size="small" plain @click="Putall(isExpand)">
                   {{ isExpand ? "全部展开" : " 全部收起" }}
                 </el-button>
-                <el-button size="small" type="danger" @click="delMenuBtn" v-show="showDelBtn">
+                <!-- <el-button size="small" type="danger" @click="delMenuBtn" v-show="showDelBtn">
                   删除
-                </el-button>
+                </el-button> -->
               </div>
             </template>
             <el-skeleton animated :rows="12" :loading="loading">

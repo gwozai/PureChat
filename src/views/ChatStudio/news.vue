@@ -95,11 +95,7 @@ const {
 const fnTotalUnreadMsg = () => {
   const unreadCount = totalUnreadMsg.value;
   const isUnread = unreadCount > 0;
-  if (isUnread) {
-    unread.value = `未读(${unreadCount})`;
-  } else {
-    unread.value = "未读";
-  }
+  unread.value = isUnread ? `未读(${unreadCount})` : "未读";
 };
 const toBottom = () => {
   commit("updataScroll");
@@ -114,20 +110,23 @@ useEventListener(window, "online", () => {
 useEventListener(window, "offline", () => {
   commit("SET_NETWORK_STATUS", false);
 });
+useEventListener(window, "focus", () => {
+  if (!conver.value) return;
+  const { conversationID } = conver?.value;
+  commit("SET_HISTORYMESSAGE", {
+    type: "MARKE_MESSAGE_AS_READED",
+    payload: {
+      convId: conversationID,
+      message: conver.value,
+    },
+  });
+});
 onActivated(() => {
-  // console.log("onActivated");
   commit("updataScroll");
 });
-onDeactivated(() => {
-  // console.log("onDeactivated");
-  // commit("setgroupDrawer", false);
-});
-onMounted(() => {
-  // console.log("onMounted");
-});
-onUnmounted(() => {
-  // console.log("onUnmounted");
-});
+onDeactivated(() => {});
+onMounted(() => {});
+onUnmounted(() => {});
 watchEffect(() => {
   fnTotalUnreadMsg();
 });
