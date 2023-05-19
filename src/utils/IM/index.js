@@ -279,7 +279,7 @@ export default class TIMProxy {
       title: `${nick}提到了你`,
       message: payload.text,
       duration: 6000,
-      type: "info",
+      // type: "info",
       onClick: () => {
         store.dispatch("CHEC_OUT_CONVERSATION", { convId: conversationID });
         scrollToDomPostion(ID);

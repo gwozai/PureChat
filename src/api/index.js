@@ -52,23 +52,17 @@ export const uploadFiles = async (params) => {
 export const SendMessageCd = async (params) => {
   const { sender, receiver, message } = params;
 };
+
+export const restSendmsg = (params) => {
+  return http({
+    url: "/restSendmsg",
+    method: "get",
+    params,
+  });
+};
 // chatGpt
 export const chatGpt = async (params) => {
-  const { From, To, content } = params;
+  const { From, To, content, userID } = params;
   if (To !== "R00001") return;
-  // console.log(process.env.VUE_APP_API_URL);
-  const { data } = await axios({
-    url: process.env.VUE_APP_API_URL ?? "",
-    method: "post",
-    data: {
-      text: {
-        content: content,
-      },
-    },
-  });
-  if (data) {
-    await restSendMsg({ To, From, content: data });
-  } else {
-    await restSendMsg({ To, From, content: "待开发" });
-  }
+  await restSendmsg(params);
 };

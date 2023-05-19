@@ -366,7 +366,12 @@ const sendMessage = async () => {
   });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
-  chatGpt({ To: toAccount, From: message.from, content: message.payload.text });
+  chatGpt({
+    To: toAccount,
+    From: message.from,
+    content: message.payload.text,
+    userID: userProfile.value.userID,
+  });
   // restSendMsg({ To: toAccount, From: message.from });
   console.log(message, "sendMsg");
   if (code == 0) {
