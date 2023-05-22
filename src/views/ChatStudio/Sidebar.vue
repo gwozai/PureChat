@@ -20,7 +20,7 @@
       </li>
     </ul>
     <!-- 上传头像弹框 -->
-    <UploadAvatarDialog />
+    <!-- <UploadAvatarDialog /> -->
     <!-- 侧边栏拖拽排序弹框 -->
     <SidebarEditDialog />
   </el-aside>
@@ -65,7 +65,7 @@ function visibile(item) {
   }
 }
 function openUploadAvatarDialog() {
-  emitter.emit("uploadAvatarDialog", true);
+  // emitter.emit("uploadAvatarDialog", true);
 }
 function toggle(item) {
   if (item.icon == "icondiandiandian") {

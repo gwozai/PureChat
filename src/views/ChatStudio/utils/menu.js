@@ -41,6 +41,17 @@ const MENU_LIST = [
   },
 ];
 
+const AVATAR_LIST = [
+  {
+    id: "send",
+    text: "发送消息",
+  },
+  {
+    id: "ait",
+    text: "@TA",
+  },
+];
+
 const RIGHT_CLICK_MENU_LIST = ref([]);
 
 const state = reactive({
@@ -49,4 +60,11 @@ const state = reactive({
 });
 const { circleUrl, squareUrl } = toRefs(state);
 
-export { squareUrl, circleUrl, RIGHT_CLICK_CHAT_LIST, MENU_LIST, RIGHT_CLICK_MENU_LIST };
+export {
+  squareUrl,
+  circleUrl,
+  RIGHT_CLICK_CHAT_LIST,
+  MENU_LIST,
+  AVATAR_LIST,
+  RIGHT_CLICK_MENU_LIST,
+};

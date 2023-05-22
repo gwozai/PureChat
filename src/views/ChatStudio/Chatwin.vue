@@ -35,6 +35,8 @@
                 shape="square"
                 @click.stop="onclickavatar($event, item)"
                 :src="item.avatar || circleUrl"
+                v-contextmenu:contextmenu
+                @contextmenu.prevent="handleContextAvatarMenuEvent($event, item)"
               >
               </el-avatar>
             </div>
@@ -102,7 +104,7 @@ import {
   toRefs,
   defineAsyncComponent,
 } from "vue";
-import { squareUrl, circleUrl, MENU_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
+import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
 import { handleCopyMsg, dragControllerDiv } from "./utils/utils";
@@ -111,7 +113,7 @@ import { timeFormat } from "@/utils/timeFormat";
 import { debounce, delay } from "@/utils/debounce";
 import { throttle } from "@/utils/throttle";
 import { useEventListener } from "@/utils/hooks/index";
-import { useState } from "@/utils/hooks/useMapper";
+import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import Checkbox from "./components/Checkbox.vue";
 import Stateful from "./components/Stateful.vue";
@@ -137,6 +139,7 @@ const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
 const messageViewRef = ref(null);
 const { state, dispatch, commit } = useStore();
+const { currentType } = useGetters(["currentType"]);
 const {
   noMore,
   // userInfo,
@@ -427,6 +430,17 @@ const msgOne = (item) => {
     return "message-view__item--index";
   }
 };
+const handleContextAvatarMenuEvent = (event, item) => {
+  const { flow } = item;
+  const type = currentType.value;
+  if (type == "C2C" || flow == "out") {
+    isRight.value = false;
+    return;
+  }
+  isRight.value = true;
+  MenuItemInfo.value = item;
+  RIGHT_CLICK_MENU_LIST.value = AVATAR_LIST;
+};
 const handleContextMenuEvent = (event, item) => {
   const { isRevoked, time, type } = item;
   console.log(item, "右键菜单数据");
@@ -459,6 +473,12 @@ const handlRightClick = (data) => {
   const info = MenuItemInfo.value;
   const { id, text } = data;
   switch (id) {
+    case "send":
+      handleSendMessage(info);
+      break;
+    case "ait":
+      handleAt(info);
+      break;
     case "copy": //复制
       handleCopyMsg(info);
       break;
@@ -481,6 +501,15 @@ const handlRightClick = (data) => {
       handleDeleteMsg(info);
       break;
   }
+};
+const handleAt = (data) => {
+  const { from, nick } = data;
+  emitter.emit("handleAt", { id: from, name: nick });
+  console.log(data);
+};
+const handleSendMessage = (data) => {
+  const { from } = data;
+  dispatch("CHEC_OUT_CONVERSATION", { convId: `C2C${from}` });
 };
 // 另存为
 const handleSave = (data) => {

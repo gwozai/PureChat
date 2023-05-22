@@ -65,6 +65,7 @@ export default defineComponent({
       }
     },
     insertMentionHandler(id, name) {
+      console.log(id, name);
       this.$emit("insertMention", id, name);
       this.$emit("hideMentionModal"); // 隐藏 modal
     },

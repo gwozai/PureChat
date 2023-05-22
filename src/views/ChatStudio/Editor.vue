@@ -40,6 +40,7 @@ import "@wangeditor/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import RichToolbar from "./components/RichToolbar.vue";
 import { toolbarConfig, editorConfig } from "./utils/configure";
+import emitter from "@/utils/mitt-bus";
 import {
   onBeforeUnmount,
   ref,
@@ -388,6 +389,10 @@ const sendMessage = async () => {
     console.log(message);
   }
 };
+
+emitter.on("handleAt", ({ id, name }) => {
+  insertMention(id, name);
+});
 
 // 组件销毁时，及时销毁编辑器
 onBeforeUnmount(() => {
