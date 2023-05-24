@@ -188,3 +188,21 @@ export function downloadCopy(url, filename) {
       document.body.removeChild(link);
     });
 }
+
+/**
+ * 将查询字符串转换为对象
+ * @param {string} String - 查询字符串，例如 "?name=John&age=30"
+ * @return {object} - 转换后的对象，例如 { name: "John", age: "30" }
+ */
+export function queryStringToObject(String) {
+  let params = {};
+  // 从查询字符串中获取参数部分并去掉问号
+  let queryString = String.match(/\?(.*)/)[1];
+  queryString = queryString.substring(1);
+  // 对每个参数进行处理，将其分割为键值对，并将键值对加入到params对象中
+  queryString.split("&").forEach(function (param) {
+    var keyValue = param.split("=");
+    params[keyValue[0]] = decodeURIComponent(keyValue[1] || "");
+  });
+  return params;
+}

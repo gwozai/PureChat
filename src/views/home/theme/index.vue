@@ -74,15 +74,18 @@ emitter.on("resize", ({ detail }) => {
    */
   console.log(detail);
   if (width > 0 && width <= 760) {
-    // toggle("mobile", false);
+    commit("updateSettings", {
+      key: "sidebar",
+      value: false,
+    });
   } else if (width > 760 && width <= 990) {
     // toggle("desktop", false);
   } else if (width > 990) {
     // toggle("desktop", true);
-    // commit("updateSettings", {
-    //   key: "sidebar",
-    //   value: true,
-    // });
+    commit("updateSettings", {
+      key: "sidebar",
+      value: true,
+    });
   }
 });
 
