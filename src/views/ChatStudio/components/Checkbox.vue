@@ -5,32 +5,26 @@
   </label>
 </template>
 
-<script>
-import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
-import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
-export default defineComponent({
-  name: "Checkbox",
-  components: {},
-  computed: {
-    ...mapState({
-      showCheckbox: (state) => state.conversation.showCheckbox,
-    }),
-    isShowCheck() {
-      return this.showCheckbox && !this.item.isRevoked && this.item.type !== "TIMGroupTipElem";
-    },
+<script setup>
+import { toRefs, defineProps, computed } from "vue";
+import { useState } from "@/utils/hooks/useMapper";
+
+const props = defineProps({
+  item: {
+    type: Object,
+    default: null,
   },
-  props: {
-    item: {
-      type: Object,
-      default: null,
-    },
+  isRevoked: {
+    type: Boolean,
+    default: false,
   },
-  methods: {},
-  setup(props, { attrs, emit, expose, slots }) {
-    onMounted(() => {});
-    onBeforeUnmount(() => {});
-    return {};
-  },
+});
+const { item, isRevoked } = toRefs(props);
+const { showCheckbox } = useState({
+  showCheckbox: (state) => state.conversation.showCheckbox,
+});
+const isShowCheck = computed(() => {
+  return showCheckbox.value && !isRevoked.value && item.value.type !== "TIMGroupTipElem";
 });
 </script>
 

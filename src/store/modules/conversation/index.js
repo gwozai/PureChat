@@ -26,7 +26,7 @@ const conversation = {
     noMore: false, // 加载更多  false ? 显示loading : 没有更多
     networkStatus: true, // 网络状态
     needScrollDown: -1, // 是否向下滚动 true ? 0 : -1
-    forwardData: new Map(),
+    forwardData: new Map(), // 多选数据
     uploadProgress: new Map(), //上传进度
     downloadProgress: new Map(), //下载进度
     historyMessageList: new Map(), //历史消息
@@ -250,13 +250,16 @@ const conversation = {
     },
     SET_FORWARD_DATA(state, action) {
       const { type, payload } = action;
-      const { ID } = payload;
+      const { ID } = payload || {};
       switch (type) {
         case "set":
           state.forwardData.set(ID, payload);
           break;
         case "del":
           state.forwardData.delete(ID);
+          break;
+        case "clear":
+          state.forwardData.clear();
           break;
       }
     },
