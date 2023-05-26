@@ -388,7 +388,7 @@ const conversation = {
         case "unread":
           return state.conversationList.filter((t) => t.unreadCount > 0);
         case "mention":
-          return state.conversationList.filter((t) => t?.text);
+          return state.conversationList.filter((t) => t.groupAtInfoList.length > 0);
         default:
           return state.conversationList;
       }
