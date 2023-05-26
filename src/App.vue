@@ -18,7 +18,7 @@ import en from "element-plus/lib/locale/lang/en";
 const watermarkText = ref("pure-admin");
 const route = useRoute();
 const router = useRouter();
-const { setWatermark, clear } = useWatermark();
+// const { setWatermark, clear } = useWatermark();
 
 const { dispatch, commit } = useStore();
 const { lang } = useState({
@@ -34,12 +34,12 @@ onMounted(async () => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");
   }, 200);
-  nextTick(() => {
-    setWatermark(watermarkText.value);
-  });
+  // nextTick(() => {
+  //   setWatermark(watermarkText.value);
+  // });
 });
 onBeforeUnmount(() => {
-  clear();
+  // clear();
 });
 </script>
 
