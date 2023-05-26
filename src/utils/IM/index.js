@@ -236,27 +236,31 @@ export default class TIMProxy {
     };
   }
   /**
-   * 收到有群成员退群/被踢出的groupTip时，需要将相关群成员从当前会话的群成员列表中移除
+   * 收到有群成员/退群/被踢出/入群/的groupTip时,更新群成员列表
    * @param {Message[]} messageList
    */
   handleQuitGroupTip(messageList) {
     console.log(messageList, "handleQuitGroupTip");
     const convId = store.state.conversation?.currentConversation?.conversationID;
-    // 筛选出当前会话的退群/被踢群的 groupTip
+    // MSG_GRP_TIP '"TIMGroupTipElem"' 群提示消息
+    // GRP_TIP_MBR_QUIT 2 有群成员退群
+    // GRP_TIP_MBR_JOIN 1 有成员加群
+    // GRP_TIP_MBR_KICKED_OUT 3 有群成员被踢出群
+    // 筛选出当前会话的/退群/被踢群/入群/的 groupTip
     const groupTips = messageList.filter((message) => {
       return (
         convId === message.conversationID &&
         message.type === TIM.TYPES.MSG_GRP_TIP &&
-        (message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_QUIT ||
+        (message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_JOIN ||
+          message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_QUIT ||
           message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_KICKED_OUT)
       );
     });
-    console.log(groupTips);
-    // 清理当前会话的群成员列表
+    // 更新当前会话的群成员列表
     if (groupTips.length > 0) {
       groupTips.forEach((groupTip) => {
         if (Array.isArray(groupTip.payload.userIDList) || groupTip.payload.userIDList.length > 0) {
-          // store.commit("deleteGroupMemberList", groupTip.payload.userIDList);
+          store.dispatch("getGroupMemberList");
         }
       });
     }

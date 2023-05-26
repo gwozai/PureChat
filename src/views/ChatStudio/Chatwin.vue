@@ -10,7 +10,7 @@
         <div
           v-for="(item, index) in currentMessageList"
           :key="item.ID"
-          :class="{ 'reset-select': !showCheckbox }"
+          :class="{ 'reset-select': item.isRevoked }"
         >
           <LoadMore :index="index" />
           <div class="message-view__item--blank"></div>
@@ -23,12 +23,16 @@
             :class="{
               'is-self': ISown(item),
               'is-other': !ISown(item),
-              'style-choice': showCheckbox,
+              'style-choice': showCheckbox && !item.isRevoked,
             }"
-            @click="handleChecked($event, item, 'outside')"
+            @click="handleSelect($event, item, 'outside')"
             :id="`choice${item.ID}`"
           >
-            <Checkbox :item="item" @click.stop="handleChecked($event, item, 'initial')" />
+            <Checkbox
+              :item="item"
+              :isRevoked="item.isRevoked"
+              @click.stop="handleSelect($event, item)"
+            />
             <div class="picture" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
               <el-avatar
                 :size="36"
@@ -211,28 +215,30 @@ const updateLoadMore = (newValue) => {
     }
   });
 };
-// 多选框
-const handleChecked = (e, item, type = "initial") => {
-  if (!showCheckbox.value) return;
-  if (item.type == "TIMGroupTipElem") return;
-  if (item.isRevoked) return;
-  if (e.target.tagName !== "INPUT" && type == "initial") {
-    const el = document.getElementById(`choice${item.ID}`);
-    el.parentNode.classList.toggle("style-select");
+
+const handleSelect = (e, item, type = "initial") => {
+  if (!showCheckbox.value || item.type == "TIMGroupTipElem" || item.isRevoked) {
+    return;
   }
   const _el = document.getElementById(`choice${item.ID}`);
   const el = _el.getElementsByTagName("input")[0];
   _el.parentNode.classList.toggle("style-select");
-  if (el.checked) {
-    el.checked = false;
-    commit("SET_FORWARD_DATA", {
-      type: "del",
-      payload: item,
-    });
-  } else {
+  // 点击input框
+  if (type == "initial" && e.target.tagName !== "INPUT") {
+    const el = document.getElementById(`choice${item.ID}`);
+    el.parentNode.classList.toggle("style-select");
+  }
+  // 多选
+  if (type == "choice") {
     el.checked = true;
     commit("SET_FORWARD_DATA", {
       type: "set",
+      payload: item,
+    });
+  } else {
+    el.checked = !el.checked;
+    commit("SET_FORWARD_DATA", {
+      type: el.checked ? "set" : "del",
       payload: item,
     });
   }
@@ -495,7 +501,7 @@ const handlRightClick = (data) => {
       handleReplyMsg(info);
       break;
     case "multiSelect": //多选
-      handleMultiSelectMsg();
+      handleMultiSelectMsg(info);
       break;
     case "delete": //删除
       handleDeleteMsg(info);
@@ -550,8 +556,9 @@ const handleDeleteMsg = async (data) => {
   }
 };
 // 多选
-const handleMultiSelectMsg = () => {
+const handleMultiSelectMsg = (item) => {
   commit("SET_CHEC_BOX", true);
+  handleSelect(null, item, "choice");
 };
 // 撤回消息
 const handleRevokeMsg = (data) => {
@@ -636,7 +643,7 @@ $self-msg-color: #c2e8ff;
   height: 100%;
   overflow-y: overlay;
   overflow-x: hidden;
-  padding: 0 16px 30px 16px;
+  padding: 0 16px 16px 16px;
   box-sizing: border-box;
   .picture {
     cursor: pointer;
@@ -656,7 +663,8 @@ $self-msg-color: #c2e8ff;
 .message-view__item {
   display: flex;
   flex-direction: row;
-  margin-top: 12px;
+  // margin-top: 12px;
+  margin: 8px 0;
   position: relative;
 }
 .is-other {

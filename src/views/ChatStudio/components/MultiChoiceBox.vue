@@ -2,7 +2,7 @@
   <div class="checkbox-style" id="svgDown" v-if="showCheckbox">
     <el-icon class="close" @click="onClose"><CircleCloseFilled /></el-icon>
     <div v-for="item in buttonList" :key="item.icon">
-      <div class="icon" @click="onClock(item)">
+      <div class="icon" :class="disabled ? 'disabled' : ''" @click="onClock(item)">
         <svg-icon :iconClass="item.icon" />
       </div>
       <span class="text">
@@ -15,6 +15,7 @@
 <script>
 import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
+import { deleteMsgList } from "@/api/im-sdk-api";
 export default defineComponent({
   name: "MultiChoiceBox",
   data() {
@@ -44,6 +45,9 @@ export default defineComponent({
       forwardData: (state) => state.conversation.forwardData,
       showCheckbox: (state) => state.conversation.showCheckbox,
     }),
+    disabled() {
+      return this.forwardData.size == 0;
+    },
   },
   methods: {
     ...mapMutations(["SET_CHEC_BOX"]),
@@ -56,14 +60,28 @@ export default defineComponent({
           console.log("ForwardItemByItem");
           break;
         case "removalMsg":
-          console.log("removalMsg");
+          this.deleteMessage();
           break;
       }
     },
     onClose() {
       this.shutdown();
     },
-    // this.shutdown();
+    async deleteMessage() {
+      let myObj = Object.fromEntries(this.forwardData);
+      const obj = Object.values(myObj).map((item) => item);
+      console.log(obj);
+      // const { code } = await deleteMsgList(obj);
+      // if (code !== 0) return;
+      // const { conversationID, toAccount, to } = data;
+      // this.$store.commit("SET_HISTORYMESSAGE", {
+      //   type: "DELETE_MESSAGE",
+      //   payload: {
+      //     convId: conversationID,
+      //     message: data,
+      //   },
+      // });
+    },
     mergeForward() {
       console.log(this.forwardData);
     },
@@ -71,11 +89,25 @@ export default defineComponent({
       console.log(this.forwardData);
     },
     shutdown() {
+      // 清空多选数据
+      this.$store.commit("SET_FORWARD_DATA", {
+        type: "clear",
+        payload: null,
+      });
+      // 关闭多选框
       this.SET_CHEC_BOX(false);
-      const el = document.getElementsByClassName("check-btn");
-      for (let i = 0; i < el.length; i++) {
-        el[i].checked = false;
-      }
+      this.closedState();
+    },
+    closedState() {
+      const checkBoxElements = Array.from(document.querySelectorAll(".check-btn"));
+      const messageElement = document.querySelector(".message-view");
+      const childElements = Array.from(messageElement.children);
+      checkBoxElements.forEach((element) => {
+        element.checked = false;
+      });
+      childElements.forEach((element) => {
+        element.classList.remove("style-select");
+      });
     },
   },
 });
@@ -114,6 +146,11 @@ export default defineComponent({
   .svg-icon {
     font-size: 22px;
   }
+}
+.disabled {
+  cursor: not-allowed !important;
+  opacity: 0.25;
+  pointer-events: none;
 }
 .text {
   margin-top: 8px;
