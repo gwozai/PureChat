@@ -179,14 +179,16 @@ const visible = computed({
   },
 });
 const openNamePopup = async () => {
-  const data = { message: "输入群名" };
+  const { name } = groupProfile.value;
+  const data = { message: "输入群名", inputValue: name };
   const result = await showConfirmationBox(data, "prompt");
   if (result == "cancel") return;
   const { value, action } = result;
   modifyGroupInfo(value);
 };
 const openNoticePopup = async () => {
-  const data = { message: "输入群公告" };
+  const { notification } = groupProfile.value;
+  const data = { message: "输入群公告", inputValue: notification };
   const result = await showConfirmationBox(data, "prompt");
   if (result == "cancel") return;
   const { value, action } = result;
