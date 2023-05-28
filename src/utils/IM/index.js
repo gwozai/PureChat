@@ -105,11 +105,20 @@ export default class TIMProxy {
   }
   onUpdateConversationList({ data, name }) {
     console.log(data, "会话列表更新");
-    store.dispatch("GET_TOTAL_UNREAD_MSG");
+    const convId = store.state.conversation?.currentConversation?.conversationID;
+    const conv = data.filter((t) => t.conversationID == convId);
+    // 当前跳转窗口的属性
+    store.commit("SET_CONVERSATION", {
+      type: "UPDATE_CURRENT_SESSION",
+      payload: conv[0],
+    });
+    // 更新会话列表
     store.commit("SET_CONVERSATION", {
       type: "REPLACE_CONV_LIST",
       payload: data,
     });
+    // 未读消息
+    store.dispatch("GET_TOTAL_UNREAD_MSG");
   }
   // 判断浏览器窗口是否在前台可见状态
   isWindowFocused() {

@@ -90,7 +90,6 @@ const conversation = {
               }
             });
           }
-          // newMessageList = state.currentMessageList;
           // 新消息
           if (!matched) {
             let baseTime = getBaseTime(newMessageList);
@@ -148,13 +147,6 @@ const conversation = {
             currentReplyUser: null,
             currentReplyMsg: null,
           });
-          // state.historyMessageList = new Map();
-          // state.currentConversation = null;
-          // state.currentMessageList = [];
-          // state.showMsgBox = false;
-          // state.showCheckbox = false;
-          // state.currentReplyUser = null;
-          // state.currentReplyMsg = null;
           break;
         }
         // 加载更多状态
@@ -220,6 +212,10 @@ const conversation = {
               state.noMore = false;
             }
           }
+          break;
+        }
+        case CONVERSATIONTYPE.UPDATE_CURRENT_SESSION: {
+          state.currentConversation = action;
           break;
         }
         // 获取会话列表数据
