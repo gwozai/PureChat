@@ -252,24 +252,24 @@ export default class TIMProxy {
     console.log(messageList, "handleQuitGroupTip");
     const convId = store.state.conversation?.currentConversation?.conversationID;
     // MSG_GRP_TIP '"TIMGroupTipElem"' 群提示消息
-    // GRP_TIP_MBR_QUIT 2 有群成员退群
-    // GRP_TIP_MBR_JOIN 1 有成员加群
-    // GRP_TIP_MBR_KICKED_OUT 3 有群成员被踢出群
     // 筛选出当前会话的/退群/被踢群/入群/的 groupTip
+    const list = [
+      TIM.TYPES.GRP_TIP_MBR_JOIN, // 1 有成员加群
+      TIM.TYPES.GRP_TIP_MBR_QUIT, // 2 有群成员退群
+      TIM.TYPES.GRP_TIP_MBR_KICKED_OUT, // 3 有群成员被踢出群
+    ];
     const groupTips = messageList.filter((message) => {
       return (
         convId === message.conversationID &&
         message.type === TIM.TYPES.MSG_GRP_TIP &&
-        (message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_JOIN ||
-          message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_QUIT ||
-          message.payload.operationType === TIM.TYPES.GRP_TIP_MBR_KICKED_OUT)
+        list.includes(message.payload.operationType)
       );
     });
     // 更新当前会话的群成员列表
     if (groupTips.length > 0) {
       groupTips.forEach((groupTip) => {
         if (Array.isArray(groupTip.payload.userIDList) || groupTip.payload.userIDList.length > 0) {
-          store.dispatch("getGroupMemberList");
+          // store.dispatch("getGroupMemberList");
         }
       });
     }
