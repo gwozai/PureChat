@@ -119,7 +119,13 @@ import { useI18n } from "vue-i18n";
 import AnalysisUrl from "./components/AnalysisUrl.vue";
 import { showConfirmationBox } from "@/utils/message";
 import TIM from "tim-js-sdk";
-
+const props = defineProps({
+  groupProfile: {
+    type: Object,
+    default: () => {},
+  },
+});
+const { groupProfile } = toRefs(props);
 const GROUP_TYPE_MAP = {
   Public: "陌生人社交群(Public)",
   Private: "好友工作群(Work)",
@@ -132,14 +138,14 @@ const {
   userProfile,
   groupDrawer,
   showMsgBox,
-  groupProfile,
+  // groupProfile,
   currentMemberList,
   currentConversation,
 } = useState({
   userProfile: (state) => state.user.currentUserProfile,
   showMsgBox: (state) => state.conversation.showMsgBox,
   groupDrawer: (state) => state.groupinfo.groupDrawer,
-  groupProfile: (state) => state.groupinfo.groupProfile,
+  // groupProfile: (state) => state.groupinfo.groupProfile,
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
 });

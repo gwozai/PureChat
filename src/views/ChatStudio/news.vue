@@ -35,7 +35,7 @@
       <Editor />
     </div>
     <!-- 群详情 -->
-    <GroupDetails />
+    <GroupDetails v-if="currentType === TIM.TYPES.CONV_GROUP" :groupProfile="conver.groupProfile" />
   </div>
 </template>
 
@@ -52,6 +52,7 @@ import {
   watchEffect,
   nextTick,
 } from "vue";
+import TIM from "tim-js-sdk";
 import { useEventListener } from "@/utils/hooks/index";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv } from "./utils/utils";
@@ -73,7 +74,7 @@ const showGroup = ref(false);
 const activeName = ref("whole");
 const { state, dispatch, commit } = useStore();
 
-const { toAccount } = useGetters(["toAccount"]);
+const { toAccount, currentType } = useGetters(["toAccount", "currentType"]);
 const {
   networkStatus,
   conver,
