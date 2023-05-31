@@ -15,7 +15,8 @@
 <script>
 import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
-import { deleteMsgList } from "@/api/im-sdk-api";
+import { deleteMsgList, createForwardMsg } from "@/api/im-sdk-api";
+import { showConfirmationBox } from "@/utils/message";
 export default defineComponent({
   name: "MultiChoiceBox",
   data() {
@@ -40,6 +41,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters(["currentType"]),
     ...mapState({
       showMsgBox: (state) => state.conversation.showMsgBox,
       forwardData: (state) => state.conversation.forwardData,
@@ -54,10 +56,10 @@ export default defineComponent({
     onClock(item) {
       switch (item.type) {
         case "MergeForward":
-          console.log("MergeForward");
+          this.mergeForward();
           break;
         case "ForwardItemByItem":
-          console.log("ForwardItemByItem");
+          this.aQuickForward();
           break;
         case "removalMsg":
           this.deleteMessage();
@@ -68,9 +70,6 @@ export default defineComponent({
       this.shutdown();
     },
     async deleteMessage() {
-      let myObj = Object.fromEntries(this.forwardData);
-      const obj = Object.values(myObj).map((item) => item);
-      console.log(obj);
       // const { code } = await deleteMsgList(obj);
       // if (code !== 0) return;
       // const { conversationID, toAccount, to } = data;
@@ -82,11 +81,32 @@ export default defineComponent({
       //   },
       // });
     },
+    // 合并转发
     mergeForward() {
-      console.log(this.forwardData);
+      console.log(this.filterate());
     },
-    aQuickForward() {
-      console.log(this.forwardData);
+    // 逐条转发
+    async aQuickForward() {
+      const msg = this.filterate();
+      console.log(msg);
+      const data1 = { message: "请选择转发人员", inputValue: "" };
+      const result = await showConfirmationBox(data1, "prompt");
+      if (result == "cancel") return;
+      const { value, action } = result;
+      console.log(value);
+      const { code, data } = await createForwardMsg({
+        convId: value,
+        convType: this.currentType,
+        message: msg[0],
+      });
+      if (code == 0) {
+        this.shutdown();
+      }
+    },
+    filterate() {
+      let myObj = Object.fromEntries(this.forwardData);
+      const obj = Object.values(myObj).map((item) => item);
+      return obj;
     },
     shutdown() {
       // 清空多选数据
