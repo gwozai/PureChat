@@ -17,6 +17,7 @@ import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "v
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { deleteMsgList, createForwardMsg } from "@/api/im-sdk-api";
 import { showConfirmationBox } from "@/utils/message";
+import TIM from "tim-js-sdk";
 export default defineComponent({
   name: "MultiChoiceBox",
   data() {
@@ -88,7 +89,6 @@ export default defineComponent({
     // 逐条转发
     async aQuickForward() {
       const msg = this.filterate();
-      console.log(msg);
       const data1 = { message: "请选择转发人员", inputValue: "" };
       const result = await showConfirmationBox(data1, "prompt");
       if (result == "cancel") return;
@@ -96,11 +96,26 @@ export default defineComponent({
       console.log(value);
       const { code, data } = await createForwardMsg({
         convId: value,
-        convType: this.currentType,
+        convType: TIM.TYPES.CONV_C2C, // this.currentType,
         message: msg[0],
       });
       if (code == 0) {
         this.shutdown();
+        console.log(data);
+        // this.$store.commit("SET_HISTORYMESSAGE", {
+        //   type: "UPDATE_MESSAGES",
+        //   payload: {
+        //     convId: data.conversationID,
+        //     message: data,
+        //   },
+        // });
+        // this.$store.commit("SET_HISTORYMESSAGE", {
+        //   type: "UPDATE_CACHE",
+        //   payload: {
+        //     convId: data?.conversationID,
+        //     message: data,
+        //   },
+        // });
       }
     },
     filterate() {
