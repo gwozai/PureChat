@@ -35,6 +35,7 @@
         <div class="message-item-right-top">
           <div class="message-chat-name">
             <span>{{ chatName(item) }}</span>
+            {{ state.conversation.conversationList }}
             <Label :data="item.userProfile?.userID" />
           </div>
           <div class="message-time">
@@ -69,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
 import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { debounce } from "@/utils/debounce";
@@ -92,11 +93,15 @@ const { tabList } = useGetters(["tabList"]);
 const { messageList, Conver, currentUserProfile } = useState({
   currentUserProfile: (state) => state.user.currentUserProfile,
   messageList: (state) => state.conversation.currentMessageList,
+  conversationList: (state) => state.conversation.conversationList,
   Conver: (state) => state.conversation.currentConversation,
 });
+const conversationList = computed(() => {
+  return state.conversation.conversationList;
+});
 const chatName = (item) => {
-  const { type } = item;
-  switch (type) {
+  console.log(item);
+  switch (item.type) {
     case "C2C":
       return item.userProfile.nick;
     case "GROUP":
@@ -171,6 +176,7 @@ const dragleaveHandler = (e) => {};
 // 会话点击
 const handleConvListClick = (data) => {
   console.log(data, "会话点击");
+  // return;
   if (Conver.value) {
     const { conversationID: id } = Conver.value;
     const newId = data?.conversationID;

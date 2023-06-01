@@ -2,6 +2,7 @@ import { createApp, version } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import { setupStore } from "./pinia";
 import { getServerConfig } from "./config";
 
 import "@/styles/index.scss";

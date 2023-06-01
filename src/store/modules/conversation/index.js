@@ -218,9 +218,10 @@ const conversation = {
           state.currentConversation = action;
           break;
         }
-        // 获取会话列表数据
+        // 更新会话列表
         case CONVERSATIONTYPE.REPLACE_CONV_LIST: {
           state.conversationList = payload;
+          console.log(state.conversationList);
           break;
         }
         // 更新滚动条位置
@@ -365,6 +366,13 @@ const conversation = {
         userID: toAccount,
         RemindType: remindType,
         type,
+      });
+    },
+    //
+    async REPLACE_CONV_LIST({ state, commit }, action) {
+      commit("SET_CONVERSATION", {
+        type: "REPLACE_CONV_LIST",
+        payload: action,
       });
     },
   },

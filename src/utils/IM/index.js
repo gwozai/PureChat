@@ -113,10 +113,11 @@ export default class TIMProxy {
     //   payload: conv[0],
     // });
     // 更新会话列表
-    store.commit("SET_CONVERSATION", {
-      type: "REPLACE_CONV_LIST",
-      payload: data,
-    });
+    store.dispatch("REPLACE_CONV_LIST", data);
+    // store.commit("SET_CONVERSATION", {
+    //   type: "REPLACE_CONV_LIST",
+    //   payload: data,
+    // });
     // 未读消息
     store.dispatch("GET_TOTAL_UNREAD_MSG");
   }
