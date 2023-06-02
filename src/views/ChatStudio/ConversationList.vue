@@ -35,7 +35,6 @@
         <div class="message-item-right-top">
           <div class="message-chat-name">
             <span>{{ chatName(item) }}</span>
-            {{ state.conversation.conversationList }}
             <Label :data="item.userProfile?.userID" />
           </div>
           <div class="message-time">
@@ -96,9 +95,7 @@ const { messageList, Conver, currentUserProfile } = useState({
   conversationList: (state) => state.conversation.conversationList,
   Conver: (state) => state.conversation.currentConversation,
 });
-const conversationList = computed(() => {
-  return state.conversation.conversationList;
-});
+
 const chatName = (item) => {
   console.log(item);
   switch (item.type) {

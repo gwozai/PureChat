@@ -1,5 +1,6 @@
 import { createPinia } from "pinia";
+const store = createPinia();
 export function setupStore(app) {
-  const store = createPinia();
   app.use(store);
 }
+export * from "./modules";
