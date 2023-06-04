@@ -51,7 +51,4 @@ onBeforeUnmount(() => {
   padding: 24px;
   height: calc(100vh - 86px);
 }
-[data-w-e-type="attachment"] {
-  background: #ccc;
-}
 </style>

@@ -32,10 +32,10 @@ const conversation = {
     historyMessageList: new Map(), //历史消息
     currentMessageList: [], //当前消息列表(窗口聊天消息)
     currentConversation: null, //跳转窗口的属性
-    conversationList: [], //会话列表数据
-    currentReplyMsg: null,
+    conversationList: [], // 会话列表数据
+    currentReplyMsg: null, // 回复数据
     currentReplyUser: null,
-    activetab: "whole",
+    activetab: "whole", // 全部 未读 提及我
     outside: "news", // 侧边栏初始状态
     isNotify: false, // 是否免打扰
   },
@@ -221,7 +221,6 @@ const conversation = {
         // 更新会话列表
         case CONVERSATIONTYPE.REPLACE_CONV_LIST: {
           state.conversationList = payload;
-          console.log(state.conversationList);
           break;
         }
         // 更新滚动条位置

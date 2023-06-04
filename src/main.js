@@ -27,6 +27,8 @@ app.directive("contextmenu", directive);
 loadAllassembly(app);
 // 自定义SvgIcon组件
 registerSvgIcon(app);
+// store plugin
+setupStore(app);
 
 getServerConfig(app).then(async (config) => {
   app.use(router);
