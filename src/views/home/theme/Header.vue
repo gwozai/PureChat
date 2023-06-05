@@ -60,6 +60,7 @@ import { computed, ref, watch, toRefs } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
 import SideBar from "@/views/home/SideBar/index.vue";
+import { showConfirmationBox } from "@/utils/message";
 import screenfull from "./screenfull.vue";
 import Tags from "./Tags.vue";
 
@@ -122,17 +123,21 @@ const opensetup = (val) => {
 };
 // 退出登录
 const Logout = async () => {
-  ElMessageBox.confirm("确定退出登录?", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  })
-    .then(() => {
-      dispatch("LOG_OUT");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const message = { message: "确定退出登录?", iconType: "warning" };
+  const result = await showConfirmationBox(message);
+  if (result == "cancel") return;
+  dispatch("LOG_OUT");
+  // ElMessageBox.confirm("确定退出登录?", "提示", {
+  //   confirmButtonText: "确定",
+  //   cancelButtonText: "取消",
+  //   type: "warning",
+  // })
+  //   .then(() => {
+  //     dispatch("LOG_OUT");
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 };
 // 侧边栏 展开 折叠
 const toggleClick = (val) => {

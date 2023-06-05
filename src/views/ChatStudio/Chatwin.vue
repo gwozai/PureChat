@@ -112,6 +112,7 @@ import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } f
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
 import { handleCopyMsg, dragControllerDiv } from "./utils/utils";
+import { showConfirmationBox } from "@/utils/message";
 
 import { timeFormat } from "@/utils/timeFormat";
 import { debounce, delay } from "@/utils/debounce";
@@ -452,8 +453,9 @@ const handleContextMenuEvent = (event, item) => {
   console.log(item, "右键菜单数据");
   const isTip = type == "TIMGroupTipElem";
   const isFile = type == "TIMFileElem";
+  const isCheckStatus = showCheckbox.value;
   // 撤回消息 提示类型消息
-  if (isRevoked || isTip) {
+  if (isRevoked || isTip || isCheckStatus) {
     isRight.value = false;
     return;
   }
@@ -511,7 +513,6 @@ const handlRightClick = (data) => {
 const handleAt = (data) => {
   const { from, nick } = data;
   emitter.emit("handleAt", { id: from, name: nick });
-  console.log(data);
 };
 const handleSendMessage = (data) => {
   const { from } = data;
@@ -535,21 +536,16 @@ const handleReplyMsg = (data) => {
 // 删除消息
 const handleDeleteMsg = async (data) => {
   try {
-    const formEl = await ElMessageBox.confirm("确定删除?", "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning",
-    });
-    if (formEl == "cancel") return;
+    const message = { message: "确定删除?", iconType: "warning" };
+    const result = await showConfirmationBox(message);
+    if (result == "cancel") return;
     const { code } = await deleteMsgList(data);
     if (code !== 0) return;
     const { conversationID, toAccount, to } = data;
+    const payload = { convId: conversationID, message: data };
     commit("SET_HISTORYMESSAGE", {
       type: "DELETE_MESSAGE",
-      payload: {
-        convId: conversationID,
-        message: data,
-      },
+      payload,
     });
   } catch (error) {
     console.log(error);

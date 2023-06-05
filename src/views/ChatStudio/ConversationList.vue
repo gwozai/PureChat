@@ -97,7 +97,6 @@ const { messageList, Conver, currentUserProfile } = useState({
 });
 
 const chatName = (item) => {
-  console.log(item);
   switch (item.type) {
     case "C2C":
       return item.userProfile.nick;

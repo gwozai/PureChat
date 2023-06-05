@@ -56,14 +56,14 @@ export default defineComponent({
     ...mapMutations(["SET_CHEC_BOX"]),
     onClock(item) {
       switch (item.type) {
-        case "MergeForward":
+        case "MergeForward": // 合并转发
           this.mergeForward();
           break;
-        case "ForwardItemByItem":
+        case "ForwardItemByItem": // 逐条转发
           this.aQuickForward();
           break;
         case "removalMsg":
-          this.deleteMessage();
+          this.deleteMessage(); // 删除消息
           break;
       }
     },
@@ -89,8 +89,8 @@ export default defineComponent({
     // 逐条转发
     async aQuickForward() {
       const msg = this.filterate();
-      const data1 = { message: "请选择转发人员", inputValue: "" };
-      const result = await showConfirmationBox(data1, "prompt");
+      const message = { message: "请选择转发人员", inputValue: "" };
+      const result = await showConfirmationBox(message, "prompt");
       if (result == "cancel") return;
       const { value, action } = result;
       console.log(value);
@@ -100,22 +100,16 @@ export default defineComponent({
         message: msg[0],
       });
       if (code == 0) {
-        this.shutdown();
         console.log(data);
-        // this.$store.commit("SET_HISTORYMESSAGE", {
-        //   type: "UPDATE_MESSAGES",
-        //   payload: {
-        //     convId: data.conversationID,
-        //     message: data,
-        //   },
-        // });
-        // this.$store.commit("SET_HISTORYMESSAGE", {
-        //   type: "UPDATE_CACHE",
-        //   payload: {
-        //     convId: data?.conversationID,
-        //     message: data,
-        //   },
-        // });
+        this.shutdown();
+        const { conversationID } = data || "";
+        this.$store.commit("SET_HISTORYMESSAGE", {
+          type: "UPDATE_CACHE",
+          payload: {
+            convId: conversationID,
+            message: [data],
+          },
+        });
       }
     },
     filterate() {

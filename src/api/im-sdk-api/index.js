@@ -192,6 +192,7 @@ export const createMergerMsg = async (params) => {
 // 转发消息
 export const createForwardMsg = async (params) => {
   const { convId, convType, message } = params;
+  console.log(params);
   const forwardMsg = await tim.createForwardMessage({
     to: convId,
     conversationType: convType,
