@@ -7,7 +7,7 @@ const RIGHT_CLICK_CHAT_LIST = [
   { id: "pinged", text: "会话置顶" },
   { id: "disable", text: "消息免打扰" },
   { id: "remove", text: "移除会话" },
-  { id: "clean", text: "清除消息" },
+  // { id: "clean", text: "清除消息" },
 ];
 
 const MENU_LIST = [

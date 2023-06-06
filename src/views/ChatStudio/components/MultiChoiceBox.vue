@@ -3,9 +3,9 @@
     <el-icon class="close" @click="onClose"><CircleCloseFilled /></el-icon>
     <div v-for="item in buttonList" :key="item.icon">
       <div class="icon" :class="disabled ? 'disabled' : ''" @click="onClock(item)">
-        <svg-icon :iconClass="item.icon" />
+        <svg-icon :class="item.class" :iconClass="item.icon" />
       </div>
-      <span class="text">
+      <span class="text select-none">
         {{ item.value }}
       </span>
     </div>
@@ -27,16 +27,19 @@ export default defineComponent({
           type: "MergeForward",
           value: "合并转发",
           icon: "mergeForward",
+          class: "noDrop",
         },
         {
           type: "ForwardItemByItem",
           value: "逐条转发",
           icon: "aQuickForward",
+          class: "",
         },
         {
           type: "removalMsg",
           value: "删除消息",
           icon: "delete",
+          class: "noDrop",
         },
       ],
     };
@@ -151,7 +154,9 @@ export default defineComponent({
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
   .close {
+    cursor: pointer;
     position: absolute;
     top: 20px;
     right: 20px;
@@ -180,6 +185,9 @@ export default defineComponent({
   cursor: not-allowed !important;
   opacity: 0.25;
   pointer-events: none;
+}
+.noDrop {
+  cursor: no-drop;
 }
 .text {
   margin-top: 8px;

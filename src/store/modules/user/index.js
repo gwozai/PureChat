@@ -78,7 +78,7 @@ const user = {
         });
         commit("updateData", { key: "user", value: result });
         setTimeout(() => {
-          router.push("/home");
+          router.push("/chatstudio");
         }, 1000);
       } else {
         verification(code, msg);
