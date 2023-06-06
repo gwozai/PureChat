@@ -198,12 +198,12 @@ export const createForwardMsg = async (params) => {
     conversationType: convType,
     payload: message,
   });
-  console.log(forwardMsg);
-  const { code, message: data } = await sendMsg(forwardMsg);
-  return {
-    code,
-    data,
-  };
+  // const { code, message: data } = await sendMsg(forwardMsg);
+  // return {
+  //   code,
+  //   data,
+  // };
+  return forwardMsg;
 };
 // 发送消息
 export const sendMsg = async (params) => {

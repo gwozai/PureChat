@@ -37,6 +37,28 @@ export default defineComponent({
         tip = "未知消息";
         break;
     }
+    // 自定义消息解析
+    const translateCustomMessage = (payload) => {
+      let videoPayload = {};
+      try {
+        videoPayload = JSON.parse(payload.data);
+      } catch (e) {
+        videoPayload = {};
+      }
+      if (payload.data === "group_create") {
+        return `${payload.extension}`;
+      }
+      if (videoPayload.roomId) {
+        videoPayload.roomId = videoPayload.roomId.toString();
+        videoPayload.isFromGroupLive = 1;
+        return videoPayload;
+      }
+      if (payload.text) {
+        return payload.text;
+      } else {
+        return "[自定义消息]";
+      }
+    };
     onMounted(() => {});
     onBeforeUnmount(() => {});
     return {

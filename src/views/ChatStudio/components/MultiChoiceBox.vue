@@ -15,7 +15,7 @@
 <script>
 import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
-import { deleteMsgList, createForwardMsg } from "@/api/im-sdk-api";
+import { deleteMsgList, createForwardMsg, sendMsg } from "@/api/im-sdk-api";
 import { showConfirmationBox } from "@/utils/message";
 import TIM from "tim-js-sdk";
 export default defineComponent({
@@ -91,20 +91,29 @@ export default defineComponent({
     },
     // 逐条转发
     async aQuickForward() {
-      const msg = this.filterate();
+      const forwardData = this.filterate();
       const message = { message: "请选择转发人员", inputValue: "" };
       const result = await showConfirmationBox(message, "prompt");
       if (result == "cancel") return;
       const { value, action } = result;
       console.log(value);
-      const { code, data } = await createForwardMsg({
-        convId: value,
-        convType: TIM.TYPES.CONV_C2C, // this.currentType,
-        message: msg[0],
+      console.log(forwardData);
+      forwardData.map(async (t) => {
+        await this.sendSingleMessage({
+          convId: value,
+          message: t,
+        });
       });
+      this.shutdown();
+    },
+    async sendSingleMessage({ convId, type, message }) {
+      const forwardMsg = await createForwardMsg({
+        convId: convId,
+        convType: type || TIM.TYPES.CONV_C2C, // this.currentType,
+        message: message,
+      });
+      const { code, message: data } = await sendMsg(forwardMsg);
       if (code == 0) {
-        console.log(data);
-        this.shutdown();
         const { conversationID } = data || "";
         this.$store.commit("SET_HISTORYMESSAGE", {
           type: "UPDATE_CACHE",
