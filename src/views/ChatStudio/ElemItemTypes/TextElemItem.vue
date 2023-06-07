@@ -1,10 +1,11 @@
 <template>
-  <div class="message-view__item--text">
+  <div class="message-view__item--text" @click="onClick(message)">
     <template v-if="message.conversationType == 'GROUP' || 'C2C'">
-      <!-- <ReplyElem
+      <!-- 回复消息 -->
+      <ReplyElem
         v-if="message.cloudCustomData"
         :originalMsg="message.cloudCustomData && JSON.parse(message.cloudCustomData)"
-      /> -->
+      />
       <template v-for="item in decodeText(message.payload.text)" :key="item">
         <!-- // linkUrl: verifyLink(item.text) -->
         <span v-if="item.name === 'text'" class="text">
@@ -30,6 +31,9 @@ const props = defineProps({
   },
 });
 const { message } = toRefs(props);
+const onClick = (data) => {
+  console.log(data);
+};
 </script>
 
 <style lang="scss" scoped>

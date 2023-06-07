@@ -276,7 +276,6 @@ const conversation = {
     },
     setReplyMsg(state, payload) {
       state.currentReplyMsg = payload;
-      console.log(state.currentReplyMsg);
     },
   },
   actions: {

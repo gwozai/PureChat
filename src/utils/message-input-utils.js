@@ -206,3 +206,17 @@ export function queryStringToObject(String) {
   });
   return params;
 }
+
+export function getReplyMsgContent(reply) {
+  if (!reply) return "";
+  const replyMsgContent = JSON.stringify({
+    messageReply: {
+      messageID: reply.ID,
+      messageAbstract: reply.payload.text,
+      messageSender: reply.nick,
+      messageType: 0,
+      version: "1",
+    },
+  });
+  return replyMsgContent;
+}

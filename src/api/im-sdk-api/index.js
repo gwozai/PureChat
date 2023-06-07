@@ -1,6 +1,7 @@
 import TIM from "tim-js-sdk";
 import tim from "@/utils/im-sdk/tim";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
+import { getReplyMsgContent } from "@/utils/message-input-utils";
 
 // 未读总数
 export const getUnreadMsg = async () => {
@@ -106,17 +107,8 @@ export const createCustomMsg = async (params) => {
 };
 // 创建文本消息
 export const CreateTextMsg = async (params) => {
-  const { convId, convType, textMsg } = params;
-  const replyMsgContent = JSON.stringify({
-    messageReply: {
-      messageAbstract: "测试",
-      messageSender: "admin",
-      messageID: "144115242233827587-1679310905-82892940",
-      messageType: 1,
-      version: 1,
-      messageRootID: "144115242233827587-1679310905-82892940",
-    },
-  });
+  const { convId, convType, textMsg, reply } = params;
+  const replyMsgContent = getReplyMsgContent(reply);
   let message = await tim.createTextMessage({
     to: convId, // 接受放ID
     conversationType: convType, // 会话类型 TIM.TYPES.CONV_C2C
@@ -124,14 +116,15 @@ export const CreateTextMsg = async (params) => {
       text: textMsg,
     },
     // needReadReceipt: true,
-    // cloudCustomData: replyMsgContent,
+    cloudCustomData: replyMsgContent,
   });
   return message;
 };
 
 // 创建@ 提醒功能的文本消息
 export const CreateTextAtMsg = async (params) => {
-  const { convId, convType, textMsg, atUserList } = params;
+  const { convId, convType, textMsg, atUserList, reply } = params;
+  const replyMsgContent = getReplyMsgContent(reply);
   let message = await tim.createTextAtMessage({
     to: convId,
     conversationType: convType || TIM.TYPES.CONV_GROUP,
@@ -139,6 +132,7 @@ export const CreateTextAtMsg = async (params) => {
       text: textMsg, // '@denny @lucy @所有人 今晚聚餐，收到的请回复',
       atUserList: atUserList, // ['denny', 'lucy', TIM.TYPES.MSG_AT_ALL] // 'denny' 'lucy' 都是 userID，而非昵称
     },
+    cloudCustomData: replyMsgContent,
   });
   return message;
 };

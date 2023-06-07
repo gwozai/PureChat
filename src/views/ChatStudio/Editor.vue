@@ -89,6 +89,7 @@ const {
   userProfile,
   isShowModal,
   currentMemberList,
+  currentReplyMsg,
 } = useState({
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
@@ -97,6 +98,7 @@ const {
   showCheckbox: (state) => state.conversation.showCheckbox,
   showMsgBox: (state) => state.conversation.showMsgBox,
   isShowModal: (state) => state.conversation.isShowModal,
+  currentReplyMsg: (state) => state.conversation.currentReplyMsg,
 });
 
 const handleCreated = (editor) => {
@@ -300,6 +302,7 @@ const handleEnter = () => {
 };
 // 清空输入框
 const clearInputInfo = () => {
+  commit("setReplyMsg", null);
   const editor = editorRef.value;
   // valueHtml.value = "";
   // editor.setHtml("<p></p>");
@@ -349,7 +352,7 @@ const sendMessage = async () => {
   let TextMsg = null;
   const { type, toAccount, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files } = sendMsgBefore();
-  const data = { textMsg: text, aitStr, image, aitlist, files };
+  const data = { textMsg: text, aitStr, image, aitlist, files, reply: currentReplyMsg.value };
   // console.log(data);
   TextMsg = await sendChatMessage(toAccount, type, data);
   console.log(TextMsg);

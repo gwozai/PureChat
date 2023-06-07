@@ -21,6 +21,8 @@
       <Header />
       <!-- 聊天窗口 -->
       <Chatwin ref="ChatRef" />
+      <!-- 消息回复框 -->
+      <ReplyBox />
       <div id="svgResize" @mouseover="dragControllerDiv(ChatRef)" v-if="showMsgBox">
         <!-- <div class="back-to-the-bottom" @click="toBottom">
           <el-icon class="svg-left">
@@ -58,6 +60,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv } from "./utils/utils";
 import { useStore } from "vuex";
 
+import ReplyBox from "./ReplyBox.vue";
 import Editor from "./Editor.vue";
 import Sidebar from "./Sidebar.vue";
 import Search from "./components/Search.vue";
@@ -82,6 +85,7 @@ const {
   groupDrawer,
   showMsgBox,
   conversationList,
+  currentReplyMsg,
   totalUnreadMsg,
 } = useState({
   outside: (state) => state.conversation.outside,
@@ -90,6 +94,7 @@ const {
   conver: (state) => state.conversation.currentConversation,
   showMsgBox: (state) => state.conversation.showMsgBox,
   groupDrawer: (state) => state.groupinfo.groupDrawer,
+  currentReplyMsg: (state) => state.conversation.currentReplyMsg,
   conversationList: (state) => state.conversation.conversationList,
 });
 

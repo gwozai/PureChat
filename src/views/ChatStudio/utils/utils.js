@@ -48,6 +48,23 @@ export const dragControllerDiv = (node) => {
   };
 };
 
+export const validatelastMessage = (msglist) => {
+  // let msg = null;
+  // for (let i = msglist.length - 1; i > -1; i--) {
+  //   if (msglist[i].ID) {
+  //     msg = msglist[i];
+  //     break;
+  //   }
+  // }
+  // return msg;
+  return (
+    msglist
+      .slice()
+      .reverse()
+      .find((msg) => msg.ID) || null
+  );
+};
+
 // 复制
 export const handleCopyMsg = async (data) => {
   const { elements } = data;
@@ -147,18 +164,6 @@ export const html2Escape = (str) => {
   });
 };
 
-// 这个函数是一个异步函数，接受三个参数：会话ID(convId)、会话类型(convType)和消息选项(options)，返回一个聊天消息对象(Object)。
-// 消息选项(options)是一个对象，其中可以包含以下属性：
-// - textMsg：文本消息内容(string)
-//   - aitlist：艾特用户列表(Array)
-//     - files：文件对象(Object)
-//       - fileName：文件名(string)
-//         - src：文件数据URL(string)
-//           - image：图片对象(Array)
-//             - src：图片数据URL(string)
-
-// 如果消息选项中包含files，则会创建相应的文件消息；如果包含image，则会创建相应的图片消息；如果包含aitlist，则会创建相应的艾特消息；否则就会创建文本消息。
-
 /**
  * 发送聊天消息
  * @param {string} convId - 会话ID
@@ -173,13 +178,11 @@ export const html2Escape = (str) => {
  * @param {string} [options.image.src] - 图片数据URL（可选）
  * @returns {Promise<Object>} - 返回聊天消息对象
  *
- *
- *
  */
 export async function sendChatMessage(convId, convType, options) {
   let TextMsg;
   let flag = true;
-  const { textMsg, aitStr, aitlist, files, image } = options;
+  const { textMsg, aitStr, aitlist, files, image, reply } = options;
   // 如果包含文件，则创建相应的文件消息
   if (files) {
     const { fileName, src } = files;
@@ -208,6 +211,7 @@ export async function sendChatMessage(convId, convType, options) {
       convType: convType,
       textMsg: aitStr,
       atUserList: aitlist,
+      reply,
     });
   }
   // 否则创建文本消息
@@ -216,6 +220,7 @@ export async function sendChatMessage(convId, convType, options) {
       convId: convId,
       convType: convType,
       textMsg: textMsg,
+      reply,
     });
   }
   TextMsg.status = "unSend";

@@ -188,6 +188,7 @@ const handleConvListClick = (data) => {
   // 获取会话列表
   dispatch("GET_MESSAGE_LIST", data);
   commit("updataScroll");
+  commit("setReplyMsg", null);
 };
 
 const handleClickMenuItem = (item) => {

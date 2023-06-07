@@ -2,7 +2,7 @@
   <section
     class="message-info-view-content"
     v-show="currentConversation"
-    :class="[showMsgBox ? '' : 'style-MsgBox']"
+    :class="{ 'style-MsgBox': !showMsgBox, 'stlyle-Reply': currentReplyMsg }"
     id="svgTop"
   >
     <el-scrollbar class="scrollbar-content" ref="scrollbarRef" @scroll="scrollbar" always>
@@ -111,7 +111,7 @@ import {
 import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
-import { handleCopyMsg, dragControllerDiv } from "./utils/utils";
+import { handleCopyMsg, dragControllerDiv, validatelastMessage } from "./utils/utils";
 import { showConfirmationBox } from "@/utils/message";
 
 import { timeFormat } from "@/utils/timeFormat";
@@ -153,6 +153,7 @@ const {
   forwardData,
   showCheckbox,
   needScrollDown,
+  currentReplyMsg,
   currentMessageList,
   currentConversation,
 } = useState({
@@ -162,6 +163,7 @@ const {
   showCheckbox: (state) => state.conversation.showCheckbox,
   needScrollDown: (state) => state.conversation.needScrollDown,
   currentUserProfile: (state) => state.user.currentUserProfile,
+  currentReplyMsg: (state) => state.conversation.currentReplyMsg,
   currentMessageList: (state) => state.conversation.currentMessageList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
@@ -286,24 +288,9 @@ const updateScrollBarHeight = () => {
 };
 
 const updateScrollbar = () => {
-  scrollbarRef.value.update();
-};
-
-const validatelastMessage = (msglist) => {
-  // let msg = null;
-  // for (let i = msglist.length - 1; i > -1; i--) {
-  //   if (msglist[i].ID) {
-  //     msg = msglist[i];
-  //     break;
-  //   }
-  // }
-  // return msg;
-  return (
-    msglist
-      .slice()
-      .reverse()
-      .find((msg) => msg.ID) || null
-  );
+  nextTick(() => {
+    scrollbarRef.value.update();
+  });
 };
 
 const getMoreMsg = async () => {
@@ -453,7 +440,7 @@ const handleContextMenuEvent = (event, item) => {
   console.log(item, "右键菜单数据");
   const isTip = type == "TIMGroupTipElem";
   const isFile = type == "TIMFileElem";
-  const isCheckStatus = showCheckbox.value;
+  const isCheckStatus = showCheckbox.value; // 多选状态
   // 撤回消息 提示类型消息
   if (isRevoked || isTip || isCheckStatus) {
     isRight.value = false;
@@ -511,7 +498,8 @@ const handlRightClick = (data) => {
   }
 };
 const handleAt = (data) => {
-  const { from, nick } = data;
+  const { from, nick, conversationType: type } = data;
+  if (type == "C2C") return;
   emitter.emit("handleAt", { id: from, name: nick });
 };
 const handleSendMessage = (data) => {
@@ -532,6 +520,7 @@ const handleForward = (data) => {
 // 回复消息
 const handleReplyMsg = (data) => {
   commit("setReplyMsg", data);
+  handleAt(data);
 };
 // 删除消息
 const handleDeleteMsg = async (data) => {
@@ -571,6 +560,9 @@ watch(
     immediate: true,
   }
 );
+watch(currentReplyMsg, (data) => {
+  updateScrollbar();
+});
 
 emitter.on("updataScroll", (e) => {
   updateScrollBarHeight();
@@ -610,6 +602,9 @@ $self-msg-color: #c2e8ff;
 }
 .style-MsgBox {
   height: calc(100% - 60px) !important;
+}
+.stlyle-Reply {
+  height: calc(100% - 70px - 206px - 60px) !important;
 }
 .scrollbar-item {
   display: flex;
