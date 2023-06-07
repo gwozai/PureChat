@@ -263,7 +263,17 @@ const onclickavatar = (e, item) => {
   //   cardData: item,
   // });
 };
-
+const scrollBottom = () => {
+  try {
+    const { scrollTop, clientHeight, scrollHeight } = scrollbarRef.value?.wrapRef;
+    const height = scrollTop + clientHeight;
+    const isbot = scrollHeight - height < 1;
+    isbot && console.log("到底部");
+    return isbot;
+  } catch (error) {
+    return false;
+  }
+};
 const loadMoreFn = () => {
   if (!noMore.value) {
     const current = currentMessageList.value?.length - 1;
@@ -273,8 +283,10 @@ const loadMoreFn = () => {
     const canLoadData = top > 50; //滚动到顶部
     canLoadData && getMoreMsg();
   }
+  scrollBottom();
 };
 const debouncedFunc = debounce(loadMoreFn, 250); //防抖处理
+
 const scrollbar = ({ scrollLeft, scrollTop }) => {
   debouncedFunc();
 };
@@ -564,8 +576,14 @@ watch(currentReplyMsg, (data) => {
   updateScrollbar();
 });
 
-emitter.on("updataScroll", (e) => {
-  updateScrollBarHeight();
+emitter.on("updataScroll", (data) => {
+  const off = data == "bottom";
+  if (off) {
+    const isbot = scrollBottom();
+    isbot && updateScrollBarHeight();
+  } else {
+    updateScrollBarHeight();
+  }
 });
 
 onMounted(() => {});

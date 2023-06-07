@@ -144,7 +144,7 @@ export default class TIMProxy {
       },
     });
     // 更新滚动条位置到底部
-    // store.commit("updataScroll");
+    store.commit("updataScroll", "bottom");
   }
   onMessageRevoked({ data, name }) {
     console.log(data, "撤回消息");

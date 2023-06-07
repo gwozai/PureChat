@@ -13,8 +13,8 @@ const mutations = {
   updateData(state, { key, value }) {
     state.data[key] = value;
   },
-  updataScroll() {
-    emitter.emit("updataScroll", true);
+  updataScroll(state, value) {
+    emitter.emit("updataScroll", value);
   },
 };
 
