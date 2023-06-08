@@ -42,7 +42,8 @@
           </div>
         </div>
         <div class="message-item-right-bottom">
-          <span>{{ fnNews(item) }}</span>
+          <CustomMention :item="item" v-if="isMention(item)" />
+          <span v-else>{{ fnNews(item) }}</span>
         </div>
         <!-- 未读消息红点 -->
         <template v-if="!isShowCount(item) && !isNotify(item)">
@@ -69,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, h } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
 import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { debounce } from "@/utils/debounce";
@@ -109,16 +110,20 @@ const chatName = (item) => {
   }
 };
 const fnNews = (data) => {
-  const { type, lastMessage } = data;
+  const { type, lastMessage, unreadCount, groupAtInfoList } = data;
   const { messageForShow, fromAccount, isRevoked } = lastMessage;
   const { userID } = currentUserProfile.value;
-  const isOther = userID !== fromAccount;
-  const isFound = fromAccount == "@TLS#NOT_FOUND";
-  const isSystem = "@TIM#SYSTEM"; //系统消息
+  const isOther = userID !== fromAccount; // 其他人消息
+  const isFound = fromAccount == "@TLS#NOT_FOUND"; // 未知消息
+  const isSystem = type == "@TIM#SYSTEM"; //系统消息
+  const isCount = unreadCount > 0 && isNotify(data); // 未读消息计数
   // 是否为撤回消息
   if (isRevoked) {
     const nick = isOther ? lastMessage.nick : "你";
     return `${nick}撤回了一条消息`;
+  }
+  if (isCount) {
+    return `[${unreadCount}条] ${messageForShow}`;
   }
   if (isFound || isSystem) {
     return messageForShow;
@@ -128,7 +133,17 @@ const fnNews = (data) => {
   }
   return messageForShow;
 };
+const CustomMention = (props) => {
+  const { item } = props;
+  const { type, lastMessage, unreadCount, groupAtInfoList } = item;
+  const { messageForShow, fromAccount, isRevoked } = lastMessage;
+  const element = `<span style="color:#f44336;">[有人@我]</span>`;
+  return h("span", { innerHTML: `${element}${lastMessage.nick}: ${messageForShow}` });
+};
 
+const isMention = (item) => {
+  return item.groupAtInfoList.length > 0;
+};
 const isNotify = (item) => {
   return item.messageRemindType == "AcceptNotNotify";
 };
@@ -149,7 +164,7 @@ const handleContextMenuEvent = (e, item) => {
   const { type } = item;
   const isStystem = type == "@TIM#SYSTEM";
   // 系统通知屏蔽右键菜单
-  isShowMenu.value = isStystem ? false : true;
+  isShowMenu.value = !isStystem;
   contextMenuItemInfo.value = item;
   // 会话
   RIGHT_CLICK_CHAT_LIST.map((t) => {

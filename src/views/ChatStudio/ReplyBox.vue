@@ -29,6 +29,9 @@ const onClose = () => {
   height: 60px;
   position: relative;
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
   .reply-box-content {
     border-left: 3px solid #ccc;
     padding-left: 10px;
@@ -37,7 +40,9 @@ const onClose = () => {
   }
 
   .close {
+    color: rgb(140, 140, 140);
     position: absolute;
+    cursor: pointer;
     right: 20px;
     top: 20px;
   }

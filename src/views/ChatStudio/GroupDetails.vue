@@ -21,7 +21,12 @@
             <span class="group-base-info--text__name">
               {{ groupProfile.name }}
             </span>
-            <FontIcon class="style-editPen" iconName="EditPen" @click="openNamePopup" />
+            <FontIcon
+              v-show="isOwner"
+              class="style-editPen"
+              iconName="EditPen"
+              @click="openNamePopup"
+            />
           </div>
           <span class="group-base-info--text__type">
             {{ GROUP_TYPE_MAP[groupProfile.type] }}
@@ -33,7 +38,12 @@
       <div class="group-accountecment">
         <div class="group-accountecment--title">
           <span>群公告</span>
-          <FontIcon class="style-editPen" iconName="EditPen" @click="openNoticePopup" />
+          <FontIcon
+            v-show="isOwner"
+            class="style-editPen"
+            iconName="EditPen"
+            @click="openNoticePopup"
+          />
         </div>
         <div class="group-accountecment--info">
           <AnalysisUrl :text="groupProfile.notification" />
