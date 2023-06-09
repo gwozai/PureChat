@@ -77,9 +77,9 @@ const conversation = {
         case CONVERSATIONTYPE.UPDATE_MESSAGES: {
           console.log(payload, "更新消息");
           const { convId, message } = payload;
+          let oldMessageList = state.historyMessageList.get(convId);
           let matched = false;
           let newMessageList = [];
-          let oldMessageList = state.historyMessageList.get(convId);
           if (oldMessageList) {
             newMessageList = oldMessageList.map((oldMessage) => {
               if (oldMessage.ID === payload.message.ID) {
@@ -90,6 +90,18 @@ const conversation = {
               }
             });
           }
+          // 使用reduce()方法来代替map()
+          // 并在reduce过程中判断是否匹配到了消息。
+          // 避免在检查完所有旧消息之后仍需要再次遍历新消息数组来判断是否添加新消息的情况
+          // const newMessageList = oldMessageList.reduce((acc, item) => {
+          //   if (item.message_msg_id === message.message_msg_id) {
+          //     matched = true;
+          //     acc.push(message);
+          //   } else {
+          //     acc.push(item);
+          //   }
+          //   return acc;
+          // }, []);
           // 新消息
           if (!matched) {
             let baseTime = getBaseTime(newMessageList);
@@ -214,6 +226,7 @@ const conversation = {
           }
           break;
         }
+        // 更新当前窗口数据
         case CONVERSATIONTYPE.UPDATE_CURRENT_SESSION: {
           state.currentConversation = action;
           break;
@@ -274,6 +287,7 @@ const conversation = {
     TAGGLE_OUE_SIDE(state, item) {
       state.outside = item;
     },
+    // 回复消息
     setReplyMsg(state, payload) {
       state.currentReplyMsg = payload;
     },
@@ -366,7 +380,7 @@ const conversation = {
         type,
       });
     },
-    //
+    // 更新会话列表
     async REPLACE_CONV_LIST({ state, commit }, action) {
       commit("SET_CONVERSATION", {
         type: "REPLACE_CONV_LIST",
