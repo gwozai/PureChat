@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from "vue";
 /**
  *
  * keepAlive 需要被缓存的组件
@@ -30,6 +30,16 @@ const routes = [
 ];
 
 const routescopy = [
+  { path: "/", redirect: "/home" },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+    meta: {
+      title: "登录",
+      icon: "Eleme",
+    },
+  },
   {
     path: "/home",
     name: "home",
@@ -38,7 +48,7 @@ const routescopy = [
       title: "Home",
       icon: "Eleme",
     },
-    redirect: "/home/welcome",
+    redirect: "/home",
     children: [
       // 首页
       {
@@ -122,16 +132,6 @@ const routescopy = [
       // },
     ],
   },
-  // { path: "/", redirect: "/home" },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: {
-      title: "登录",
-      icon: "Eleme",
-    },
-  },
 ];
 
-export default routes;
+export default routescopy;

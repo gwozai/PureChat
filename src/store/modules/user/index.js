@@ -71,7 +71,7 @@ const user = {
       console.log({ code, msg, result }, "登录信息");
       if (code == 200) {
         window.TIMProxy.init();
-        dispatch("GET_MENU");
+        // dispatch("GET_MENU");
         dispatch("TIM_LOG_IN", {
           userID: username,
           userSig: result.userSig,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-for="item in tree" :key="item.id">
+    <template v-for="item in treefilter" :key="item.id">
       <!-- 一级菜单 -->
       <el-menu-item
         :class="{ 'active-item': $route.name === item.name }"
@@ -27,11 +27,15 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from "vue";
+import { computed, toRefs, defineProps } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
+const route = useRoute();
+const router = useRouter();
+console.log(route, router);
 
 const props = defineProps({
   tree: {
@@ -44,6 +48,11 @@ const props = defineProps({
   },
 });
 const { tree } = toRefs(props);
+
+const treefilter = tree.value.filter((t) => {
+  return t.name !== "system" && t.name !== "assembly";
+});
+console.log(tree);
 
 const { unreadMsg } = useState({
   unreadMsg: (state) => state.conversation.totalUnreadMsg,
