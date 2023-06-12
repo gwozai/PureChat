@@ -23,7 +23,11 @@
   </p>
 </p>
 
-[![GitHub license](https://img.shields.io/github/license/Hyk260/PureAdmin)](https://github.com/Hyk260/PureAdmin/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Hyk260/PureAdmin)](https://github.com/Hyk260/PureAdmin/blob/master/LICENSE)[![Stars](https://img.shields.io/github/stars/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/stargazers)[![Forks](https://img.shields.io/github/forks/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/network/members)
+
+## 简介
+
+[Pure Admin](https://github.com/Hyk260/PureAdmin) 是一个基于 Vue3、Element-Plus 的清新优雅的中后台模版，内置了 i18n 国际化，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件 聊天工作室 (腾讯IM即时通讯)  用于学习参考。
 
 ### 🎉 特性
 
@@ -31,14 +35,13 @@
 - 📃 RBAC 模型 + JWT 权限控制
 
   - 后端路由动态渲染 `express`
+
 - ☁️ 聊天工作室 `基于IM即时通讯sdk`
 
   - 群聊支持@好友功能
   - 消息免打扰 红点提示
   - 支持消息撤回
-  - 截图功能 (开发中)
-  - 动态水印
-  - 支持浏览器原生Notification提示(点击可定位到指定消息)
+  - 支持浏览器原生 Notification 提示(点击可定位到指定消息)
   - 富文本框高度可自由上下调整
   - 文本链接识别 (点击跳转新窗口打开)
   - 检查当前网络环境 (断网提示)
@@ -48,12 +51,14 @@
   - 消息输入框使用富文本框 `wangEditor 5`开发(后续支持多类型消息混发)。
   - 接入 ChatGpt 机器人
   - 切换会话列表时 输入框草稿保存与回填功能(开发中)
+  
 - 🎮 九宫格拼图游戏(自动拼图)
 - 🌚 光明/黑暗 模式切换`自动根据系统主题改变`(完善中)
 - ⚡️ 自定义 SVG 图标组件`svg-sprite-loader`
 - 🔴 国际化`vue-i18n`(开发中)
 
   - vscode 扩展插件 `i18n-ally`自动翻译
+
 - ⚙️ vscode 配置文件
   - vue3.0 vue3.2 快速度生成模板语法配置 `code-snippets`
   - vscode 扩展插件推荐 `extensions`
@@ -63,7 +68,9 @@
 
 ### 按需引入 element-plus 组件
 
-全量引入组件库太过臃肿，项目中使用 `unplugin-vue-components` 插件进行按需自动引入组件，可通过[官方文档](https://element-plus.org/zh-CN/guide/quickstart.html#按需导入)了解更多。
+全量引入组件库太过臃肿，项目中使用 `unplugin-vue-components` 插件进行按需自动引入组件，
+
+可通过[官方文档](https://element-plus.org/zh-CN/guide/quickstart.html#按需导入)了解更多。
 
 ### SVG 图标使用
 
@@ -75,7 +82,15 @@
 
 本项目由 [node-admin](https://gitee.com/H260788/node-admin) 提供 API。本地运行 node-admin，或者将 API [部署至 Vercel](https://vercel.com)
 
-Clone 这个 project
+（暂时因密钥安全不能公开 需要测试可以联系我）
+
+环境配置
+
+```
+本地环境需要安装 Node.js 14.18+ 和 Git
+```
+
+克隆代码
 
 ```bash
 git clone https://github.com/Hyk260/PureAdmin.git
@@ -85,12 +100,6 @@ git clone https://github.com/Hyk260/PureAdmin.git
 
 ```
 yarn install
-```
-
-运行服务器 需全局安装 `nodemon` 或者 `node app`
-
-```
-yarn app
 ```
 
 启动项目
@@ -152,3 +161,18 @@ yarn build
 <img src="./images/about.png">
 
 <img src="./images/chatstudio.png">
+
+### 浏览器支持
+
+本地开发推荐使用`Chrome 90+` 浏览器
+
+支持现代浏览器, 不支持 IE
+
+
+
+
+
+
+
+
+
