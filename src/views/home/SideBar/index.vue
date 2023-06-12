@@ -46,16 +46,16 @@ const props = defineProps({
 });
 // const routing = router.options.routes[0].children;
 
-const routing = router.options.routes.filter((t) => t.name == "home")[0].children;
-console.log(routing);
+// const routing = router.options.routes.filter((t) => t.name == "home")[0].children;
+// console.log(routing);
 // cosnt routing =
 const { vislbile, collapse } = toRefs(props);
 
-const { isCollapse, sidebar, logoVal } = useState({
+const { isCollapse, sidebar, logoVal, routing } = useState({
   isCollapse: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
   logoVal: (state) => state.settings.logoIcon,
-  // routing: (state) => state.data.Routingtable,
+  routing: (state) => state.data.Routingtable,
 });
 
 const handleOpen = (key, keyPath) => {

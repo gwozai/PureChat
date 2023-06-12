@@ -17,7 +17,7 @@ const About = () => import(/* webpackChunkName: "About" */ "@/views/about/index"
 
 // const Welcome = defineAsyncComponent(() => import('@/views/welcome/index.vue'));
 const routes = [
-  { path: "/", redirect: "/home" },
+  { path: "/", redirect: "/chatstudio" },
   {
     path: "/login",
     name: "login",
@@ -134,4 +134,4 @@ const routescopy = [
   },
 ];
 
-export default routescopy;
+export default routes;

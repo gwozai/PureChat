@@ -30,7 +30,8 @@ const currentLocale = computed(() => {
 });
 
 onMounted(async () => {
-  // dispatch("reloadRoute");
+  dispatch("reloadRoute");
+  // dispatch("GET_MENU");
   setTimeout(() => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");

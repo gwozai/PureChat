@@ -24,7 +24,7 @@ export function ToTree(node, Menu) {
 }
 
 export function tree(arr) {
-  arr.forEach((item) => {
+  arr.map((item) => {
     if (item.componentName) {
       item.component = views[item.componentName];
     }
