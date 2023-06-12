@@ -26,7 +26,7 @@
 <script setup>
 import storage from "storejs";
 import { useStore } from "vuex";
-import { ref, toRefs, computed } from "vue";
+import { ref, toRefs, computed, defineProps } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
 import Logo from "./Logo.vue";
@@ -44,22 +44,25 @@ const props = defineProps({
     default: false,
   },
 });
-// router.options.routes[0].children
+// const routing = router.options.routes[0].children;
+
+const routing = router.options.routes.filter((t) => t.name == "home")[0].children;
+console.log(routing);
 // cosnt routing =
 const { vislbile, collapse } = toRefs(props);
 
-const { isCollapse, sidebar, logoVal, routing } = useState({
+const { isCollapse, sidebar, logoVal } = useState({
   isCollapse: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
   logoVal: (state) => state.settings.logoIcon,
-  routing: (state) => state.data.Routingtable,
+  // routing: (state) => state.data.Routingtable,
 });
 
 const handleOpen = (key, keyPath) => {
-  // console.log(key, keyPath)
+  // console.log(key, keyPath);
 };
 const handleClose = (key, keyPath) => {
-  // console.log(key, keyPath)
+  // console.log(key, keyPath);
 };
 </script>
 

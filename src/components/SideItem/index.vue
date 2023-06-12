@@ -1,11 +1,11 @@
 <template>
   <div>
-    <template v-for="item in treefilter" :key="item.id">
+    <template v-for="item in tree" :key="item.path">
       <!-- 一级菜单 -->
       <el-menu-item
         :class="{ 'active-item': $route.name === item.name }"
         v-if="fn(item)"
-        :index="item.url"
+        :index="item.path"
       >
         <el-badge :value="unreadMsg" :hidden="item.meta.icon !== 'ForkSpoon' || unreadMsg == 0">
           <font-icon :iconName="item.meta.icon" />
@@ -15,7 +15,7 @@
         </template>
       </el-menu-item>
       <!-- 二级菜单 -->
-      <el-sub-menu v-else :index="item.url">
+      <el-sub-menu v-else :index="item.path">
         <template #title>
           <font-icon :iconName="item.meta.icon" />
           <span>{{ item.meta.title }}</span>
@@ -32,11 +32,6 @@ import { useState } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
-const store = useStore();
-const route = useRoute();
-const router = useRouter();
-console.log(route, router);
-
 const props = defineProps({
   tree: {
     type: Object,
@@ -48,11 +43,6 @@ const props = defineProps({
   },
 });
 const { tree } = toRefs(props);
-
-const treefilter = tree.value.filter((t) => {
-  return t.name !== "system" && t.name !== "assembly";
-});
-console.log(tree);
 
 const { unreadMsg } = useState({
   unreadMsg: (state) => state.conversation.totalUnreadMsg,

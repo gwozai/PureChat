@@ -5,7 +5,9 @@
         <FontIcon iconName="arrow-left" class="cursor-w" />
       </div>
       <div class="scroll-container">
-        <el-tag :type="CurTitle === '首页' ? '' : 'info'" @click="tagClick('/home')"> 首页 </el-tag>
+        <el-tag :type="CurTitle === '首页' ? '' : 'info'" @click="tagClick('/welcome')">
+          首页
+        </el-tag>
         <el-tag
           v-show="tags"
           v-for="tag in tags"

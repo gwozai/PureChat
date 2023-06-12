@@ -12,8 +12,8 @@ const ChatStudio = () => import(/* webpackChunkName: "ChatStudio" */ "@/views/Ch
 const Menu = () => import(/* webpackChunkName: "Menu" */ "@/views/system/menu/index");
 const User = () => import(/* webpackChunkName: "User" */ "@/views/system/user/index");
 const Role = () => import(/* webpackChunkName: "Role" */ "@/views/system/role/index");
-const Personal = () => import(/* webpackChunkName: "Role" */ "@/views/Personal/index");
-const About = () => import(/* webpackChunkName: "Role" */ "@/views/about/index");
+const Personal = () => import(/* webpackChunkName: "Personal" */ "@/views/Personal/index");
+const About = () => import(/* webpackChunkName: "About" */ "@/views/about/index");
 
 // const Welcome = defineAsyncComponent(() => import('@/views/welcome/index.vue'));
 const routes = [
@@ -30,7 +30,7 @@ const routes = [
 ];
 
 const routescopy = [
-  { path: "/", redirect: "/home" },
+  { path: "/", redirect: "/chatstudio" },
   {
     path: "/login",
     name: "login",
@@ -41,18 +41,18 @@ const routescopy = [
     },
   },
   {
-    path: "/home",
+    path: "/",
     name: "home",
     component: Home,
     meta: {
       title: "Home",
       icon: "Eleme",
     },
-    redirect: "/home",
+    redirect: "/chatstudio",
     children: [
       // 首页
       {
-        path: "welcome",
+        path: "/welcome",
         name: "welcome",
         component: Welcome,
         meta: {
@@ -62,8 +62,8 @@ const routescopy = [
       },
       // 聊天工作室
       {
-        path: "ChatStudio",
-        name: "ChatStudio",
+        path: "/chatstudio",
+        name: "chatstudio",
         component: ChatStudio,
         meta: {
           keep: true,
@@ -72,15 +72,15 @@ const routescopy = [
         },
       },
       // 个人中心
-      // {
-      //   path: "/personal",
-      //   name: "personal",
-      //   component: Personal,
-      //   meta: {
-      //     title: "个人中心",
-      //     icon: "User",
-      //   },
-      // },
+      {
+        path: "/personal",
+        name: "personal",
+        component: Personal,
+        meta: {
+          title: "个人中心",
+          icon: "User",
+        },
+      },
       // 系统管理
       {
         path: "system",
@@ -91,15 +91,15 @@ const routescopy = [
           icon: "Setting",
         },
         children: [
-          {
-            path: "/system/menu",
-            name: "menu",
-            component: Menu,
-            meta: {
-              title: "菜单列表",
-              icon: "More",
-            },
-          },
+          // {
+          //   path: "/system/menu",
+          //   name: "menu",
+          //   component: Menu,
+          //   meta: {
+          //     title: "菜单列表",
+          //     icon: "More",
+          //   },
+          // },
           // {
           //   path: "/system/role",
           //   name: "role",
@@ -109,27 +109,27 @@ const routescopy = [
           //     icon: "User",
           //   },
           // },
-          // {
-          //   path: "/system/user",
-          //   name: "user",
-          //   component: User,
-          //   meta: {
-          //     title: "用户权限",
-          //     icon: "CopyDocument",
-          //   },
-          // },
+          {
+            path: "/system/user",
+            name: "user",
+            component: User,
+            meta: {
+              title: "用户权限",
+              icon: "CopyDocument",
+            },
+          },
         ],
       },
       // 关于
-      // {
-      //   path: "/about",
-      //   name: "about",
-      //   component: About,
-      //   meta: {
-      //     title: "关于",
-      //     icon: "Warning",
-      //   },
-      // },
+      {
+        path: "/about",
+        name: "about",
+        component: About,
+        meta: {
+          title: "关于",
+          icon: "Warning",
+        },
+      },
     ],
   },
 ];

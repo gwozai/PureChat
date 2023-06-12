@@ -4,7 +4,7 @@
     <main class="app-main">
       <div class="continer-theme">
         <!-- :include="['editor']" route :key="route.fullPath"-->
-        <router-view v-slot="{ Component, route }">
+        <!-- <router-view v-slot="{ Component, route }">
           <transition name="fade-slide" :appear="true" mode="out-in">
             <keep-alive v-if="route.meta.keep" max="3">
               <component v-if="Component" :is="Component" :key="route.path" />
@@ -14,6 +14,11 @@
               <component v-if="Component" :is="Component" :key="route.path" />
               <component v-else :is="CompMap[page.type] || error" />
             </template>
+          </transition>
+        </router-view> -->
+        <router-view v-slot="{ Component, route }">
+          <transition name="fade-slide" :appear="true" mode="out-in">
+            <component v-if="Component" :is="Component" :key="route.path" />
           </transition>
         </router-view>
       </div>
@@ -82,10 +87,10 @@ emitter.on("resize", ({ detail }) => {
     // toggle("desktop", false);
   } else if (width > 990) {
     // toggle("desktop", true);
-    commit("updateSettings", {
-      key: "sidebar",
-      value: true,
-    });
+    // commit("updateSettings", {
+    //   key: "sidebar",
+    //   value: true,
+    // });
   }
 });
 

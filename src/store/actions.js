@@ -1,13 +1,31 @@
 import storage from "storejs";
 import router from "@/router";
 import views from "@/utils/assembly.js";
-import { ToTree, flatToTree } from "@/utils/ToTree";
+// import { ToTree, flatToTree } from "@/utils/ToTree";
 import { tree } from "@/utils/ToTree";
 import { USER_DATA, SET_UP } from "@/store/mutation-types";
+
+function flatToTree(flatData, parentId = null) {
+  console.log(flatData);
+  return flatData.reduce((tree, item) => {
+    if (item.parentId === parentId) {
+      const children = flatToTree(flatData, item.id);
+      if (children.length > 0) {
+        item.children = children;
+      }
+      tree.push(item);
+    }
+    return tree;
+  }, []);
+}
 
 const actions = {
   // 更新路由
   updateRoute({ commit, state }, route) {
+    console.log(route);
+    const treeData = flatToTree(route, "d17d701b-6257-40bd-a6c3-a4672d4823d4");
+
+    console.log(treeData);
     // route.map((t) => {
     //   if (t.componentName) {
     //     t.component = views[t.componentName];

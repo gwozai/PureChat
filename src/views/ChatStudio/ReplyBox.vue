@@ -2,9 +2,9 @@
   <div class="reply-box" v-show="currentReplyMsg">
     <el-icon class="close" @click="onClose"><CircleCloseFilled /></el-icon>
     <div class="reply-box-content">
-      <div>{{ currentReplyMsg.nick }} :</div>
+      <div>{{ currentReplyMsg?.nick }} :</div>
       <div>
-        {{ currentReplyMsg.payload.text }}
+        {{ currentReplyMsg?.payload?.text }}
       </div>
     </div>
   </div>
