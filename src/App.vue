@@ -15,11 +15,11 @@ import { treeToFlat } from "@/utils/ToTree";
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";
-const watermarkText = ref("pure-admin");
+
+const { setWatermark, clear } = useWatermark();
+const watermarkText = ref("Pure Admin");
 const route = useRoute();
 const router = useRouter();
-
-// const { setWatermark, clear } = useWatermark();
 
 const { dispatch, commit } = useStore();
 const { lang } = useState({
@@ -31,17 +31,16 @@ const currentLocale = computed(() => {
 
 onMounted(async () => {
   dispatch("reloadRoute");
-  // dispatch("GET_MENU");
   setTimeout(() => {
     if (route.name == "login") return;
     dispatch("LOG_IN_AGAIN");
   }, 200);
-  // nextTick(() => {
-  //   setWatermark(watermarkText.value);
-  // });
+  nextTick(() => {
+    setWatermark(watermarkText.value);
+  });
 });
 onBeforeUnmount(() => {
-  // clear();
+  clear();
 });
 </script>
 

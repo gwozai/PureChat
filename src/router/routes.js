@@ -91,24 +91,24 @@ const routescopy = [
           icon: "Setting",
         },
         children: [
-          // {
-          //   path: "/system/menu",
-          //   name: "menu",
-          //   component: Menu,
-          //   meta: {
-          //     title: "菜单列表",
-          //     icon: "More",
-          //   },
-          // },
-          // {
-          //   path: "/system/role",
-          //   name: "role",
-          //   component: Role,
-          //   meta: {
-          //     title: "角色权限",
-          //     icon: "User",
-          //   },
-          // },
+          {
+            path: "/system/menu",
+            name: "menu",
+            component: Menu,
+            meta: {
+              title: "菜单列表",
+              icon: "More",
+            },
+          },
+          {
+            path: "/system/role",
+            name: "role",
+            component: Role,
+            meta: {
+              title: "角色权限",
+              icon: "User",
+            },
+          },
           {
             path: "/system/user",
             name: "user",

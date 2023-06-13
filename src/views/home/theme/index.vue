@@ -3,22 +3,14 @@
     <Header />
     <main class="app-main">
       <div class="continer-theme">
-        <!-- :include="['editor']" route :key="route.fullPath"-->
-        <!-- <router-view v-slot="{ Component, route }">
+        <router-view v-slot="{ Component, route }">
           <transition name="fade-slide" :appear="true" mode="out-in">
-            <keep-alive v-if="route.meta.keep" max="3">
+            <keep-alive v-if="route.meta.keep" max="1">
               <component v-if="Component" :is="Component" :key="route.path" />
-              <component v-else :is="CompMap[page.type] || error" />
             </keep-alive>
             <template v-else>
               <component v-if="Component" :is="Component" :key="route.path" />
-              <component v-else :is="CompMap[page.type] || error" />
             </template>
-          </transition>
-        </router-view> -->
-        <router-view v-slot="{ Component, route }">
-          <transition name="fade-slide" :appear="true" mode="out-in">
-            <component v-if="Component" :is="Component" :key="route.path" />
           </transition>
         </router-view>
       </div>
@@ -34,12 +26,6 @@ import { useState } from "@/utils/hooks/useMapper";
 import Header from "./Header.vue";
 import emitter from "@/utils/mitt-bus";
 
-import error from "@/views/notfound/index.vue";
-import ChatStudio from "@/views/ChatStudio/index.vue";
-import welcome from "@/views/welcome/index.vue";
-import personal from "@/views/Personal/index.vue";
-import about from "@/views/about/index.vue";
-
 const route = useRoute();
 const router = useRouter();
 const { state, dispatch, commit } = useStore();
@@ -48,27 +34,6 @@ const { isActive, sidebar } = useState({
   isActive: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
 });
-
-const CompMap = {
-  home: welcome, //首页
-  personal: personal, //个人中心
-  chatstudio: ChatStudio, //编辑器
-  about: about, //关于
-};
-const page = reactive({
-  type: "",
-});
-
-watch(
-  () => route.name,
-  (val) => {
-    page.type = val;
-  },
-  {
-    immediate: true, //立即执行
-    // deep:true // 深度监听
-  }
-);
 
 emitter.on("resize", ({ detail }) => {
   const { width } = detail;

@@ -208,12 +208,10 @@ const updateLoadMore = (newValue) => {
     const ViewRef = messageViewRef.value;
     const elRef = ViewRef?.children?.[newValue - 1];
     if (newValue > 0) {
-      // console.log(elRef);
       elRef?.scrollIntoView({
         block: "start",
       });
     } else {
-      // console.log(elRef);
       elRef?.scrollIntoViewIfNeeded();
     }
   });
@@ -348,7 +346,6 @@ const getMoreMsg = async () => {
       type: "UPDATE_NOMORE",
       payload: true,
     });
-    // console.log(e, "err更多消息");
   }
 };
 
@@ -393,7 +390,6 @@ const loadMsgComponents = (elem_type, item) => {
       resp = "";
       break;
   }
-  // console.log(resp);
   return CompMap[resp];
 };
 // 动态class

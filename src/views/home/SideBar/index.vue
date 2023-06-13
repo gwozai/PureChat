@@ -17,7 +17,7 @@
         @open="handleOpen"
         @close="handleClose"
       >
-        <SideItem :tree="routing" />
+        <SideItem :tree="routing[0].children" />
       </el-menu>
     </el-scrollbar>
   </div>

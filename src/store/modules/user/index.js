@@ -77,10 +77,10 @@ const user = {
           userSig: result.userSig,
         });
         commit("updateData", { key: "user", value: result });
-        // setTimeout(() => {
-        //   router.push("/chatstudio");
-        // }, 1000);
-        router.push("/chatstudio");
+        setTimeout(() => {
+          router.push("/chatstudio");
+        }, 1000);
+        // router.push("/chatstudio");
       } else {
         verification(code, msg);
       }
