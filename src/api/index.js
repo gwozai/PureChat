@@ -60,9 +60,23 @@ export const restSendmsg = (params) => {
     params,
   });
 };
+
+// 钉钉机器人接口
+export const dingTalk = async (params) => {
+  return http({
+    url: "/dingTalk",
+    method: "post",
+    data: params,
+  });
+};
+
 // chatGpt
 export const chatGpt = async (params) => {
   const { From, To, content, userID } = params;
+  if (To == "R00002") {
+    const data = await dingTalk({ text: content });
+    console.log(data);
+  }
   if (To !== "R00001") return;
   await restSendmsg(params);
 };

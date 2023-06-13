@@ -12,9 +12,9 @@ import { errorHandler } from "./tools";
 const { formats, parse, stringify } = qs;
 
 const service = axios.create({
-  baseURL: "https://node-admin.cn/",
-  // baseURL: process.env.VUE_APP_PROXY_DOMAIN_REAL, // 公共地址
-  timeout: 10000, // 请求超时时间
+  // baseURL: "https://node-admin.cn/",
+  baseURL: process.env.VUE_APP_PROXY_DOMAIN_REAL, // 公共地址
+  timeout: 50000, // 请求超时时间
   // headers: {
   //   Accept: "application/json, text/plain, */*",
   //   "Content-Type": "application/json",
