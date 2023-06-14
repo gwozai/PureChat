@@ -48,11 +48,6 @@ export const uploadFiles = async (params) => {
   }
 };
 
-// 发送消息回调
-export const SendMessageCd = async (params) => {
-  const { sender, receiver, message } = params;
-};
-
 export const restSendmsg = (params) => {
   return http({
     url: "/restSendmsg",

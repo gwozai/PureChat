@@ -62,7 +62,6 @@ import MentionModal from "./components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
-import { SendMessageCd } from "@/api/index";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { chatGpt } from "@/api/index";
 import { debounce } from "lodash";
