@@ -110,8 +110,7 @@ import {
 } from "vue";
 import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
-import { ElMessageBox } from "element-plus";
-import { handleCopyMsg, dragControllerDiv, validatelastMessage } from "./utils/utils";
+import { handleCopyMsg, dragControllerDiv, validatelastMessage, Megtype } from "./utils/utils";
 import { showConfirmationBox } from "@/utils/message";
 
 import { timeFormat } from "@/utils/timeFormat";
@@ -391,35 +390,6 @@ const loadMsgComponents = (elem_type, item) => {
       break;
   }
   return CompMap[resp];
-};
-// 动态class
-const Megtype = (elem_type) => {
-  // console.log(elem_type);
-  let resp = "";
-  switch (elem_type) {
-    case "TIMTextElem":
-      resp = "message-view__text"; // 文本
-      break;
-    case "TIMGroupTipElem":
-      resp = "message-view__tips-elem"; // 群消息提示
-      break;
-    case "TIMImageElem":
-      resp = "message-view__img"; // 图片消息
-      break;
-    case "TIMFileElem":
-      resp = "message-view__file"; // 文件消息
-      break;
-    case "TIMGroupSystemNoticeElem":
-      resp = "message-view__system"; // 系统通知
-      break;
-    case "TIMCustomElem":
-      resp = "message-view__text message-view__custom"; // 自定义消息
-      break;
-    default:
-      resp = "";
-      break;
-  }
-  return resp;
 };
 
 const msgOne = (item) => {

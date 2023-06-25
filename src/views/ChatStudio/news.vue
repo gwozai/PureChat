@@ -4,6 +4,7 @@
     <div class="message-left">
       <!-- 搜索框 -->
       <Search />
+      <!-- tabs切换 -->
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane label="全部" name="whole"></el-tab-pane>
         <el-tab-pane :label="unread" name="unread"></el-tab-pane>

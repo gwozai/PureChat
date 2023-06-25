@@ -146,6 +146,35 @@ export const getMsgElemItem = (type, data, videoInfoList) => {
   }
 };
 
+// 动态class
+export const Megtype = (elem_type) => {
+  let resp = "";
+  switch (elem_type) {
+    case "TIMTextElem":
+      resp = "message-view__text"; // 文本
+      break;
+    case "TIMGroupTipElem":
+      resp = "message-view__tips-elem"; // 群消息提示
+      break;
+    case "TIMImageElem":
+      resp = "message-view__img"; // 图片消息
+      break;
+    case "TIMFileElem":
+      resp = "message-view__file"; // 文件消息
+      break;
+    case "TIMGroupSystemNoticeElem":
+      resp = "message-view__system"; // 系统通知
+      break;
+    case "TIMCustomElem":
+      resp = "message-view__text message-view__custom"; // 自定义消息
+      break;
+    default:
+      resp = "";
+      break;
+  }
+  return resp;
+};
+
 /**
  * 将字符串中的特殊字符进行 HTML 转义
  * @param {string} str - 待转义的字符串

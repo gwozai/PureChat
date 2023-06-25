@@ -8295,6 +8295,11 @@ pinkie@^2.0.0:
   resolved "https://registry.npmmirror.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==
 
+pinyin-pro@^3.15.2:
+  version "3.15.2"
+  resolved "https://registry.npmmirror.com/pinyin-pro/-/pinyin-pro-3.15.2.tgz#513e4d334ac592226820d6a710055e30ede2a8a7"
+  integrity sha512-kvbPYwTzz3mXZj7OLheB6LysDi/lIPRFvSXX6fCko03l4joruzrn+2GfO9BqIsHSjqipeH6qPB3jIfl8iRUQWA==
+
 pkg-dir@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/pkg-dir/-/pkg-dir-1.0.0.tgz#7a4b508a8d5bb2d629d447056ff4e9c9314cf3d4"
