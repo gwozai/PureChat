@@ -4,14 +4,10 @@ import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
 import emitter from "@/utils/mitt-bus";
-import { throttle } from "@/utils/throttle";
 import { scrollToDomPostion } from "@/utils/common";
-import { kickedOutReason, checkoutNetState } from "./utils/index";
+import { kickedOutReason, fnCheckoutNetState } from "./utils/index";
 import { ElNotification } from "element-plus";
 import { h, nextTick } from "vue";
-const fnCheckoutNetState = throttle((state) => {
-  checkoutNetState(state);
-}, 3000);
 
 export default class TIMProxy {
   // 静态方法

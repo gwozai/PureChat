@@ -7,7 +7,6 @@
         <span class="style-text">{{ greetings }}</span>
       </div>
     </el-card>
-
     <el-row :gutter="16" class="style-row">
       <el-col>
         <el-card>
