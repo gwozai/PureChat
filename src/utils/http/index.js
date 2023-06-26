@@ -30,7 +30,7 @@ const service = axios.create({
   //   console.log(persent);
   // },
 });
-const whiteList = ["/restSendmsg"];
+const whiteList = ["/restSendmsg", "/imCallback"];
 // 请求拦截器
 service.interceptors.request.use((config) => {
   const { url } = config;

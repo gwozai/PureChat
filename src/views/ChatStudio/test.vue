@@ -32,7 +32,6 @@ import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { setCookies, getCookies } from "@/utils/Cookies";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
 import { useToggle } from "@/utils/hooks/index";
-import { chatGpt } from "@/api/index";
 import { cloud, getUser } from "@/api/laf-sdk-api";
 import io from "socket.io-client";
 

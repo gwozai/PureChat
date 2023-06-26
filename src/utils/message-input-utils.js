@@ -220,3 +220,17 @@ export function getReplyMsgContent(reply) {
   });
   return replyMsgContent;
 }
+
+/**
+ * 匹配不包含 <img src= 的字符串
+ * @param {string[]} arr - 包含字符串和图片链接的数组
+ * @returns {string} - 返回第一个匹配到的不含图片链接的字符串，如果都含有图片链接则返回 undefined
+ * const arr = ['<img src="image.png">', "some string", '<img src="image3.png">'];
+ * const result = findNonImageString(arr);
+ * console.log(result); // 输出 "some string"
+ */
+export function findNonImageString(arr) {
+  const regex = /^((?!<img src=).)*$/;
+  const result = arr.find((element) => regex.test(element));
+  return result;
+}

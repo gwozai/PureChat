@@ -107,7 +107,7 @@
 <script setup>
 import { Lock, User, Key } from "@element-plus/icons-vue";
 import { reactive, ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
-import { login, getuser } from "@/api/user";
+import { login, getuser } from "@/api/node-admin-api/user";
 import { operates, thirdParty } from "./utils/enums";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

@@ -63,7 +63,7 @@ import { bytesToSize } from "@/utils/common";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
-import { chatGpt } from "@/api/index";
+import { chatGpt, imCallback } from "@/api/node-admin-api/index";
 import { debounce } from "lodash";
 import {
   CreateTextMsg,
@@ -369,12 +369,13 @@ const sendMessage = async () => {
   });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
-  chatGpt({
-    To: toAccount,
-    From: message.from,
-    content: message.payload.text,
-    userID: userProfile.value.userID,
-  });
+  imCallback({ Text: message.payload.text, From: message.from, To: toAccount, type: message.type });
+  // chatGpt({
+  //   To: toAccount,
+  //   From: message.from,
+  //   content: message.payload.text,
+  //   userID: userProfile.value.userID,
+  // });
   // restSendMsg({ To: toAccount, From: message.from });
   console.log(message, "sendMsg");
   if (code == 0) {

@@ -12,8 +12,10 @@
             v-for="item in groupList"
             :key="item.groupID"
           >
-            <img :src="item.avatar || squareUrl" alt="" />
-            <span>{{ item.name }}</span>
+            <div>
+              <img :src="item.avatar || squareUrl" alt="" />
+              <span>{{ item.name }}</span>
+            </div>
           </div>
         </div>
       </el-tab-pane>
@@ -49,7 +51,8 @@ const handleClick = (tab, event) => {
 };
 const handleGroupClick = (item) => {
   console.log(item);
-  // dispatch("CHEC_OUT_CONVERSATION", { convId: `GROUP${item.groupID}` });
+  setModal(false);
+  dispatch("CHEC_OUT_CONVERSATION", { convId: `GROUP${item.groupID}` });
 };
 const data = [
   { label: "综合", name: "comprehensive" },
@@ -73,9 +76,16 @@ defineExpose({ setModal });
 }
 .item-list {
   // height: 36px;
-  padding: 0 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
+  &:hover {
+    background: #d9ecff;
+  }
+  & > div {
+    cursor: pointer;
+    width: 100%;
+  }
   img {
     height: 36px;
   }

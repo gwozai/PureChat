@@ -14,7 +14,6 @@ export const createForData = ({ name, type, size, fileName, uploadedSize = 0, fi
   formData.append("file", file);
   return formData;
 };
-
 // 文件上传
 export const uploadFiles = async (params) => {
   const { files } = params || {};
@@ -47,7 +46,7 @@ export const uploadFiles = async (params) => {
     console.log(error);
   }
 };
-
+// 单发单聊消息
 export const restSendmsg = (params) => {
   return http({
     url: "/restSendmsg",
@@ -55,7 +54,6 @@ export const restSendmsg = (params) => {
     params,
   });
 };
-
 // 钉钉机器人接口
 export const dingTalk = async (params) => {
   return http({
@@ -64,7 +62,6 @@ export const dingTalk = async (params) => {
     data: params,
   });
 };
-
 // chatGpt
 export const chatGpt = async (params) => {
   const { From, To, content, userID } = params;
@@ -74,4 +71,35 @@ export const chatGpt = async (params) => {
   }
   if (To !== "R00001") return;
   await restSendmsg(params);
+};
+// im消息回调
+export const imCallback = (params) => {
+  const { Text, From, To, type } = params;
+  const data = {
+    MsgBody: [
+      {
+        MsgType: type,
+        MsgContent: {
+          Text: Text,
+        },
+      },
+    ],
+    CallbackCommand: "C2C.CallbackAfterSendMsg",
+    From_Account: From,
+    To_Account: To,
+    MsgRandom: 707438945,
+    MsgSeq: 350821200,
+    MsgTime: 1686709194,
+    SupportMessageExtension: 0,
+    MsgKey: "350821200_707438945_1686709194",
+    OnlineOnlyFlag: 0,
+    SendMsgResult: 0,
+    ErrorInfo: "send msg succeed",
+    UnreadMsgNum: 1,
+  };
+  return http({
+    url: "/imCallback",
+    method: "post",
+    data: data,
+  });
 };

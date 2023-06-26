@@ -38,7 +38,6 @@ const onClose = () => {
     color: #666;
     margin-bottom: 10px;
   }
-
   .close {
     color: rgb(140, 140, 140);
     position: absolute;
