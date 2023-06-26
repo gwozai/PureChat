@@ -20,7 +20,7 @@
 
 <script setup>
 import { reactive, ref, onMounted, computed } from "vue";
-import _ from "lodash";
+import _ from "lodash-es";
 import { throttle } from "@/utils/throttle";
 
 function picture(i) {

@@ -64,7 +64,7 @@ import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { chatGpt, imCallback } from "@/api/node-admin-api/index";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import {
   CreateTextMsg,
   CreateTextAtMsg,

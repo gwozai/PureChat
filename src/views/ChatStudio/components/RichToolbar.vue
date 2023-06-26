@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 import { ref, unref, toRefs, defineEmits } from "vue";
 import { emojiName, emojiUrl, emojiMap, localemojiUrl } from "@/utils/emoji-map";
 import { ClickOutside as vClickOutside } from "element-plus";

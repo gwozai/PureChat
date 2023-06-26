@@ -1,5 +1,5 @@
 import { ref, unref, shallowRef, onBeforeUnmount, getCurrentInstance } from "vue";
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 import { useResizeListener } from "@/utils/hooks";
 const { addResizeListener, removeResizeListener } = useResizeListener();
 

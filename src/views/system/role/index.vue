@@ -126,7 +126,7 @@ import { getRoles, addRoles, deleteRoles, updateRoles } from "@/api/node-admin-a
 import { successMessage } from "@/utils/message";
 import { warnMessage } from "@/utils/message";
 import { formatTime } from "@/utils/filter";
-import { chunk } from "lodash";
+import { chunk } from "lodash-es";
 // import WrapDialog from "@/views/components/WrapDialog/index.vue";
 
 const ruleFormRef = ref();
