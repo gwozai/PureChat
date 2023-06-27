@@ -41,17 +41,6 @@ const conversation = {
     isNotify: false, // 是否免打扰
   },
   mutations: {
-    // 设置会话草稿
-    SET_SESSION_DRAFT(state, action) {
-      const { ID, payload } = action
-      const length = payload?.[0]?.children.length == 1
-      const text = payload?.[0]?.children[0].text == ''
-      if (length && text) {
-        state.sessionDraftMap.delete(ID)
-      } else {
-        state.sessionDraftMap.set(ID, payload);
-      }
-    },
     // 设置历史消息
     SET_HISTORYMESSAGE(state, action) {
       const { type, payload } = action;
@@ -163,6 +152,7 @@ const conversation = {
         // 清除历史记录
         case CONVERSATIONTYPE.CLEAR_HISTORY: {
           Object.assign(state, {
+            sessionDraftMap: new Map(),
             historyMessageList: new Map(),
             currentConversation: null,
             currentMessageList: [],
@@ -302,6 +292,17 @@ const conversation = {
     // 回复消息
     setReplyMsg(state, payload) {
       state.currentReplyMsg = payload;
+    },
+    // 设置会话草稿
+    SET_SESSION_DRAFT(state, action) {
+      const { ID, payload } = action;
+      const length = payload?.[0]?.children.length == 1;
+      const text = payload?.[0]?.children[0].text == "";
+      if (length && text) {
+        state.sessionDraftMap.delete(ID);
+      } else {
+        state.sessionDraftMap.set(ID, payload);
+      }
     },
   },
   actions: {

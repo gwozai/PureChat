@@ -13,7 +13,7 @@ function buildURL(baseURL) {
   const searchParams = new URLSearchParams(params);
   return `${baseURL}?${searchParams.toString()}`;
 }
-// 查询帐号 只有管理员身份才能调用
+// 查询帐号
 export const accountCheck = async (params) => {
   const { userid } = params;
   const url = "v4/im_open_login_svc/account_check";

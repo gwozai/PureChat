@@ -126,7 +126,6 @@ const fnNews = (data) => {
   const isFound = fromAccount == "@TLS#NOT_FOUND"; // 未知消息
   const isSystem = type == "@TIM#SYSTEM"; //系统消息
   const isCount = unreadCount > 0 && isNotify(data); // 未读消息计数
-  console.log(data);
   // 是否为撤回消息
   if (isRevoked) {
     const nick = isOther ? lastMessage.nick : "你";
