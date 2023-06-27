@@ -51,16 +51,7 @@
 </template>
 
 <script>
-import {
-  ref,
-  defineComponent,
-  reactive,
-  toRefs,
-  defineProps,
-  computed,
-  watch,
-  nextTick,
-} from "vue";
+import { ref, defineComponent, reactive, toRefs, computed, watch, nextTick } from "vue";
 import emitter from "@/utils/mitt-bus";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { VueDraggableNext } from "vue-draggable-next";

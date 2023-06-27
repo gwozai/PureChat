@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { toRefs, defineProps } from "vue";
+import { toRefs } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 
 const props = defineProps({

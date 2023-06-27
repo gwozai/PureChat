@@ -64,7 +64,6 @@ import { useState } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
 import { changeAppearance } from "@/utils/common";
 import { CircleCloseFilled } from "@element-plus/icons-vue";
-import { useDark, useToggle } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 
 const { locale, t } = useI18n();

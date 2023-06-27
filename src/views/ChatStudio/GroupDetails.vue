@@ -118,11 +118,10 @@
 </template>
 
 <script setup>
-import { nextTick, ref, computed, defineProps, toRefs } from "vue";
+import { nextTick, ref, computed, toRefs } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-import { useToggle } from "@/utils/hooks/index";
 import { useStore } from "vuex";
 import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/group";
 import { useI18n } from "vue-i18n";

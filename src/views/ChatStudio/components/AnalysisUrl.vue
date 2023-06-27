@@ -4,7 +4,7 @@
 
 <script setup>
 import { html2Escape } from "../utils/utils";
-import { ref, defineProps, toRefs, computed, watch, h } from "vue";
+import { ref, toRefs, computed, watch, h } from "vue";
 const props = defineProps({
   text: {
     type: String,

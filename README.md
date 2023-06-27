@@ -23,11 +23,11 @@
   </p>
 </p>
 
-[![GitHub license](https://img.shields.io/github/license/Hyk260/PureAdmin)](https://github.com/Hyk260/PureAdmin/blob/master/LICENSE)[![Stars](https://img.shields.io/github/stars/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/stargazers)[![Forks](https://img.shields.io/github/forks/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/network/members)
+[![GitHub license](https://img.shields.io/github/license/Hyk260/PureAdmin)](https://github.com/Hyk260/PureAdmin/blob/master/LICENSE) [![Stars](https://img.shields.io/github/stars/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/stargazers) [![Forks](https://img.shields.io/github/forks/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/network/members)
 
 ## 简介
 
-[Pure Admin](https://github.com/Hyk260/PureAdmin) 是一个基于 Vue3、Element-Plus 的清新优雅的中后台模版，内置了 i18n 国际化，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件 聊天工作室 (腾讯IM即时通讯)  用于学习参考。
+[Pure Admin](https://github.com/Hyk260/PureAdmin) 是一个基于 Vue3、Element-Plus 的清新优雅的中后台模版，内置了 i18n 国际化，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件 聊天工作室 (腾讯 IM 即时通讯) 用于学习参考。
 
 ### 🎉 特性
 
@@ -51,7 +51,7 @@
   - 消息输入框使用富文本框 `wangEditor 5`开发(后续支持多类型消息混发)。
   - 接入 ChatGpt 机器人
   - 切换会话列表时 输入框草稿保存与回填功能(开发中)
-  
+
 - 🎮 九宫格拼图游戏(自动拼图)
 - 🌚 光明/黑暗 模式切换`自动根据系统主题改变`(完善中)
 - ⚡️ 自定义 SVG 图标组件`svg-sprite-loader`
@@ -167,6 +167,3 @@ yarn build
 本地开发推荐使用`Chrome 90+` 浏览器
 
 支持现代浏览器, 不支持 IE
-
-
-

@@ -26,7 +26,7 @@
 <script setup>
 import storage from "storejs";
 import { useStore } from "vuex";
-import { ref, toRefs, computed, defineProps } from "vue";
+import { ref, toRefs, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
 import Logo from "./Logo.vue";

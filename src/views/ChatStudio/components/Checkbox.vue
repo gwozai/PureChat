@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { toRefs, defineProps, computed } from "vue";
+import { toRefs, computed } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 
 const props = defineProps({

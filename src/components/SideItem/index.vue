@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed, toRefs, defineProps } from "vue";
+import { computed, toRefs } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";

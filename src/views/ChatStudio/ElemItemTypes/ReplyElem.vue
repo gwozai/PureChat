@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, computed, watch, nextTick, defineProps } from "vue";
+import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import { scrollToDomPostion } from "@/utils/common";
 const props = defineProps({
   originalMsg: {

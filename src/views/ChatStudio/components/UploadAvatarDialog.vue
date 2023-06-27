@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, defineProps, computed, watch, nextTick } from "vue";
+import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import emitter from "@/utils/mitt-bus";
 
 const dialogVisible = ref(false);

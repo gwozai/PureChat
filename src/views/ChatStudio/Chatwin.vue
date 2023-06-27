@@ -116,7 +116,6 @@ import { showConfirmationBox } from "@/utils/message";
 import { timeFormat } from "@/utils/timeFormat";
 import { debounce, delay } from "@/utils/debounce";
 import { throttle } from "@/utils/throttle";
-import { useEventListener } from "@/utils/hooks/index";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import Checkbox from "./components/Checkbox.vue";
