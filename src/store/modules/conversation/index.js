@@ -19,6 +19,7 @@ const getBaseTime = (list) => {
 const conversation = {
   // namespaced: true, //命名空间
   state: {
+    sessionDraftMap: new Map(), //会话草稿
     totalUnreadMsg: 0, // 未读消息总数
     showMsgBox: false, //是否显示输入框
     showCheckbox: false, //是否显示多选框
@@ -40,6 +41,17 @@ const conversation = {
     isNotify: false, // 是否免打扰
   },
   mutations: {
+    // 设置会话草稿
+    SET_SESSION_DRAFT(state, action) {
+      const { ID, payload } = action
+      const length = payload?.[0]?.children.length == 1
+      const text = payload?.[0]?.children[0].text == ''
+      if (length && text) {
+        state.sessionDraftMap.delete(ID)
+      } else {
+        state.sessionDraftMap.set(ID, payload);
+      }
+    },
     // 设置历史消息
     SET_HISTORYMESSAGE(state, action) {
       const { type, payload } = action;

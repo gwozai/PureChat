@@ -43,6 +43,7 @@
         </div>
         <div class="message-item-right-bottom">
           <CustomMention :item="item" v-if="isMention(item)" />
+          <CustomMention v-else-if="isdraft(item)" :item="item" />
           <span v-else>{{ fnNews(item) }}</span>
         </div>
         <!-- 未读消息红点 -->
@@ -90,12 +91,20 @@ const contextMenuItemInfo = ref([]);
 
 const { state, getters, dispatch, commit } = useStore();
 const { tabList } = useGetters(["tabList"]);
-const { messageList, Conver, currentUserProfile } = useState({
+const { messageList, Conver, currentUserProfile, sessionDraftMap } = useState({
+  sessionDraftMap: (state) => state.conversation.sessionDraftMap,
   currentUserProfile: (state) => state.user.currentUserProfile,
   messageList: (state) => state.conversation.currentMessageList,
   conversationList: (state) => state.conversation.conversationList,
   Conver: (state) => state.conversation.currentConversation,
 });
+
+const isdraft = (item) => {
+  return (
+    item.conversationID !== Conver?.value?.conversationID &&
+    sessionDraftMap.value.has(item.conversationID)
+  );
+};
 
 const chatName = (item) => {
   switch (item.type) {
@@ -117,6 +126,7 @@ const fnNews = (data) => {
   const isFound = fromAccount == "@TLS#NOT_FOUND"; // 未知消息
   const isSystem = type == "@TIM#SYSTEM"; //系统消息
   const isCount = unreadCount > 0 && isNotify(data); // 未读消息计数
+  console.log(data);
   // 是否为撤回消息
   if (isRevoked) {
     const nick = isOther ? lastMessage.nick : "你";
@@ -135,10 +145,17 @@ const fnNews = (data) => {
 };
 const CustomMention = (props) => {
   const { item } = props;
-  const { type, lastMessage, unreadCount, groupAtInfoList } = item;
+  const { type, lastMessage, unreadCount, groupAtInfoList, conversationID: ID } = item;
   const { messageForShow, fromAccount, isRevoked } = lastMessage;
-  const element = `<span style="color:#f44336;">[有人@我]</span>`;
-  return h("span", { innerHTML: `${element}${lastMessage.nick}: ${messageForShow}` });
+  const element = (num = 0) => {
+    const arr = ["有人@我", "草稿"];
+    return `<span style="color:#f44336;">[${arr[num]}]</span>`;
+  };
+  const draft = sessionDraftMap.value.get(ID);
+  if (draft) {
+    return h("span", { innerHTML: `${element(1)}${draft?.[0]?.children[0].text}` });
+  }
+  return h("span", { innerHTML: `${element()}${lastMessage.nick}: ${messageForShow}` });
 };
 
 const isMention = (item) => {

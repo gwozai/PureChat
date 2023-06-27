@@ -89,7 +89,9 @@ const {
   isShowModal,
   currentMemberList,
   currentReplyMsg,
+  sessionDraftMap,
 } = useState({
+  sessionDraftMap: (state) => state.conversation.sessionDraftMap,
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
   historyMessageList: (state) => state.conversation.historyMessageList,
@@ -138,19 +140,36 @@ const setToolbar = (item) => {
       break;
   }
 };
+// 插入草稿
+const insertDraft = (newValue) => {
+  if (!newValue) return;
+  const editor = editorRef.value;
+  editor && editor.focus();
+  const { conversationID: ID } = newValue;
+  const draftMap = sessionDraftMap.value;
+  const draft = draftMap.get(ID);
+  clearInputInfo();
+  draft?.[0]?.children.forEach((item) => {
+    editorRef.value.insertNode(item);
+  });
+};
 // 更新草稿
 const updateDraft = (data) => {
-  console.log(data);
-  console.log(editorRef.value);
+  if (!currentConversation) return;
+  const { conversationID } = currentConversation.value;
+  commit("SET_SESSION_DRAFT", {
+    ID: conversationID,
+    payload: data,
+  });
 };
 const fnUpdateDraft = debounce((data) => {
   updateDraft(data);
 }, 300);
+
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   fnUpdateDraft(content);
-  // console.log(messages.value, "编辑器内容");
 };
 
 const customAlert = (s, t) => {
@@ -221,7 +240,6 @@ const customPaste = (editor, event, callback) => {
 const dropHandler = (e) => {
   const files = e.dataTransfer.files || [];
   console.log(e);
-
   console.log(files);
 };
 // 插入文件
@@ -253,17 +271,6 @@ const setEmoj = (url, item) => {
   editorRef.value.insertNode(node);
   editorRef.value.focus(true);
   // editorRef.value.showProgressBar(100); // 进度条
-
-  // const ImageElement = {
-  //   type: "image",
-  //   class: "img",
-  //   src: url,
-  //   alt: "",
-  //   href: "",
-  //   style: { width: "25px" },
-  //   children: [{ text: "" }],
-  // };
-  // editorRef.value.insertNode(ImageElement);
 };
 const setPicture = (data) => {
   parsepicture(data);
@@ -303,10 +310,7 @@ const handleEnter = () => {
 const clearInputInfo = () => {
   commit("setReplyMsg", null);
   const editor = editorRef.value;
-  // valueHtml.value = "";
-  // editor.setHtml("<p></p>");
-  // editor.deleteForward();
-  editor.clear();
+  editor && editor.clear();
 };
 
 const sendMsgBefore = () => {
@@ -395,6 +399,10 @@ const sendMessage = async () => {
 
 emitter.on("handleAt", ({ id, name }) => {
   insertMention(id, name);
+});
+
+watch(currentConversation, (newValue) => {
+  insertDraft(newValue);
 });
 
 // 组件销毁时，及时销毁编辑器
