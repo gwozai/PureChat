@@ -325,7 +325,7 @@ export const getUserStatus = (id) => {
 export const translateText = (params) => {
   const { textList } = params;
   const { code, data } = tim.translateText({
-    sourceTextList: textList,
+    sourceTextList: [textList],
     sourceLanguage: "auto",
     targetLanguage: "zh",
   });

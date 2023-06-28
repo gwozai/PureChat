@@ -15,6 +15,10 @@ const MENU_LIST = [
     id: "copy",
     text: "复制",
   },
+  // {
+  //   id: "translate",
+  //   text: "翻译",
+  // },
   {
     id: "revoke",
     text: "撤回",

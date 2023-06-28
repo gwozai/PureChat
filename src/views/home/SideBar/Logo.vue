@@ -30,7 +30,6 @@ const { show, collapse } = toRefs(props);
   width: 100%;
   height: 48px;
   overflow: hidden;
-  // border-right: 1px solid #e8e8e8;
 }
 .sidebar-logo-link {
   height: 100%;

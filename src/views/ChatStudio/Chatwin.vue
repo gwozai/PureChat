@@ -123,7 +123,7 @@ import Stateful from "./components/Stateful.vue";
 import LoadMore from "./components/LoadMore.vue";
 import MyPopover from "@/views/components/MyPopover/index.vue";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
-import { deleteMsgList, revokeMsg, getMsgList } from "@/api/im-sdk-api";
+import { deleteMsgList, revokeMsg, getMsgList, translateText } from "@/api/im-sdk-api";
 import emitter from "@/utils/mitt-bus";
 import { download } from "@/utils/message-input-utils";
 
@@ -445,14 +445,17 @@ const handlRightClick = (data) => {
   const info = MenuItemInfo.value;
   const { id, text } = data;
   switch (id) {
-    case "send":
+    case "send": // 发起会话
       handleSendMessage(info);
       break;
-    case "ait":
+    case "ait": // @对方
       handleAt(info);
       break;
     case "copy": //复制
       handleCopyMsg(info);
+      break;
+    case "translate": // 翻译
+      handleTranslate(info);
       break;
     case "revoke": //撤回
       handleRevokeMsg(info);
@@ -489,6 +492,11 @@ const handleSave = (data) => {
     payload: { fileName, fileUrl },
   } = data;
   download(fileUrl, fileName);
+};
+
+const handleTranslate = (data) => {
+  const data1 = translateText({ textList: data.payload.text });
+  console.log(data1);
 };
 // 转发
 const handleForward = (data) => {

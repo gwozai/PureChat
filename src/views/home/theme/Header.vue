@@ -1,6 +1,5 @@
 <template>
   <div class="select-none" :class="['fixed-header', sidebar ? 'style-fixed' : '']">
-    <!-- :style="fnStyle(isActive)" -->
     <div class="navbar">
       <div
         :class="classes.container"
@@ -9,7 +8,6 @@
       >
         <FontIcon class="icon-hover" :iconName="isActive ? 'Expand' : 'Fold'" />
       </div>
-      <!-- 面包屑 :separator-icon="ArrowRight" > icon-->
       <el-breadcrumb>
         <el-breadcrumb-item :key="value.title" v-for="value in route.matched.map((t) => t.meta)">
           {{ value.title }}
@@ -70,35 +68,6 @@ const route = useRoute();
 const value = ref("");
 const drawer = ref(false);
 
-watch(
-  () => router.currentRoute.value.path,
-  () => {
-    const Tag = router.currentRoute.value.meta?.title;
-    if (!tags.value) {
-      tags.value.push({
-        title: Tag,
-        path: router.currentRoute.value.path,
-      });
-    }
-    const index = tags.value?.findIndex((t) => {
-      return t?.title === Tag;
-    });
-    if (Tag === "首页") return;
-    if (router.currentRoute.value.path === "/login") return;
-
-    if (index < 0) {
-      tags.value.push({
-        title: Tag,
-        path: router.currentRoute.value.path,
-      });
-      commit("updateData", {
-        key: "elTag",
-        value: tags.value,
-      });
-    }
-  }
-);
-
 const { isActive, userProfile, tags, sidebar, setswitch } = useState({
   userProfile: (state) => state.user.currentUserProfile,
   tags: (state) => state.data.elTag,
@@ -106,10 +75,6 @@ const { isActive, userProfile, tags, sidebar, setswitch } = useState({
   isActive: (state) => state.settings.isCollapse,
   setswitch: (state) => state.settings.setswitch,
 });
-
-const fnStyle = (off) => {
-  return `width:calc(100% - ${off ? "65px" : "201px"})`;
-};
 
 const topersonal = () => {
   router.push({ name: "personal" });
@@ -154,6 +119,32 @@ const toggleClick = (val) => {
     });
   }
 };
+
+const getBreadcrumb = (value) => {
+  const title = route.meta.title;
+  const label = tags.value;
+  let index = -1;
+  if (label) {
+    index = label.findIndex((t) => {
+      return t?.title === title;
+    });
+  }
+  const tag = label ? [...label, { title, path: value }] : [{ title, path: value }];
+  if (index == -1) {
+    commit("updateData", { key: "elTag", value: tag });
+  }
+};
+
+watch(
+  () => route.path,
+  (value) => {
+    getBreadcrumb(value);
+  },
+  {
+    immediate: true,
+    deep: true,
+  }
+);
 </script>
 <style module="classes" scoped>
 .container {

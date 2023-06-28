@@ -5,9 +5,9 @@
         <FontIcon iconName="arrow-left" class="cursor-w" />
       </div>
       <div class="scroll-container">
-        <el-tag :type="CurTitle === '首页' ? '' : 'info'" @click="tagClick('/welcome')">
+        <!-- <el-tag :type="CurTitle === '首页' ? '' : 'info'" @click="tagClick('/welcome')">
           首页
-        </el-tag>
+        </el-tag> -->
         <el-tag
           v-show="tags"
           v-for="tag in tags"
@@ -25,21 +25,6 @@
       <div class="arrow-right">
         <FontIcon iconName="arrow-right" class="cursor-w" />
       </div>
-    </div>
-    <div v-if="false" class="dropdown">
-      <el-dropdown>
-        <span class="el-dropdown-link">
-          <FontIcon iconName="arrow-down" />
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item :icon="Back" @click="closing('left')"> 关闭左侧 </el-dropdown-item>
-            <el-dropdown-item :icon="Right" @click="closing('right')"> 关闭右侧 </el-dropdown-item>
-            <el-dropdown-item :icon="Minus" @click="closing('other')"> 关闭其他 </el-dropdown-item>
-            <el-dropdown-item :icon="Close" @click="closing('all')"> 全部关闭 </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
     </div>
     <!-- 右键菜单 -->
     <contextmenu ref="contextmenu">

@@ -65,6 +65,7 @@ export const errorHandler = (error) => {
   } else {
     errMessage = "无法连接到服务器！";
   }
-  ElMessage(errMessage);
+  console.log(errMessage);
+  // ElMessage(errMessage);
   return Promise.reject(error);
 };
