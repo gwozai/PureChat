@@ -175,6 +175,17 @@ export const Megtype = (elem_type) => {
   return resp;
 };
 
+export const msgOne = (item) => {
+  const { isRevoked, type } = item;
+  if (isRevoked) {
+    return "message-view__tips-elem";
+  } else if (type == "TIMGroupTipElem") {
+    return "message-view__tips-elem";
+  } else {
+    return "message-view__item--index";
+  }
+};
+
 /**
  * 将字符串中的特殊字符进行 HTML 转义
  * @param {string} str - 待转义的字符串

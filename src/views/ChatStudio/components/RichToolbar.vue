@@ -21,30 +21,6 @@
         </div>
       </div>
     </el-popover>
-    <!-- 最近表情 -->
-    <el-popover
-      v-if="false"
-      ref="popoverRef"
-      :show-after="200"
-      :hide-after="300"
-      :show-arrow="false"
-      :teleported="false"
-      :virtual-ref="buttonRef"
-      placement="top-start"
-      trigger="hover"
-      virtual-triggering
-    >
-      <div class="lately-emoji">
-        <div
-          v-for="item in emojiName.slice(0, 16)"
-          class="emoji"
-          :key="item"
-          @click="SelectEmoticon(item)"
-        >
-          <img :src="emojiUrl + emojiMap[item]" :title="item" />
-        </div>
-      </div>
-    </el-popover>
     <!-- 图片 -->
     <span class="" title="图片" @click="SendImageClick">
       <svg-icon iconClass="icontupian" class="icon-hover" />
@@ -57,21 +33,6 @@
     <span class="" title="截图" @click="clickCscreenshot" v-if="false">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
-    <!-- 更多 -->
-    <el-popover
-      v-if="false"
-      placement="top-start"
-      popper-class="style-tup"
-      :width="100"
-      trigger="hover"
-    >
-      <template #reference>
-        <span class="">
-          <svg-icon iconClass="icondiandiandian" class="icon-hover" />
-        </span>
-      </template>
-      <div>更多</div>
-    </el-popover>
     <input
       type="file"
       id="imagePicker"
@@ -93,7 +54,6 @@
 </template>
 
 <script setup>
-// import html2canvas from "html2canvas";
 import { ref, unref, toRefs, defineEmits } from "vue";
 import { emojiName, emojiUrl, emojiMap, localemojiUrl } from "@/utils/emoji-map";
 import { ClickOutside as vClickOutside } from "element-plus";

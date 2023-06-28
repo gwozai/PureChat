@@ -96,8 +96,6 @@ export default defineComponent({
       const result = await showConfirmationBox(message, "prompt");
       if (result == "cancel") return;
       const { value, action } = result;
-      console.log(value);
-      console.log(forwardData);
       forwardData.map(async (t) => {
         await this.sendSingleMessage({
           convId: value,

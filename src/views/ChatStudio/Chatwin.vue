@@ -12,13 +12,16 @@
           :key="item.ID"
           :class="{ 'reset-select': item.isRevoked }"
         >
+          <!-- 加载更多 -->
           <LoadMore :index="index" />
           <div class="message-view__item--blank"></div>
+          <!-- 时间 -->
           <div class="message-view__item--time-divider" v-if="isTime(item)">
             {{ timeFormat(item.time * 1000, true) }}
           </div>
+          <!-- 消息体 -->
           <div
-            v-if="!isTime(item) && !item.isDeleted"
+            v-else-if="!isTime(item) && !item.isDeleted"
             class="message-view__item"
             :class="{
               'is-self': ISown(item),
@@ -28,6 +31,7 @@
             @click="handleSelect($event, item, 'outside')"
             :id="`choice${item.ID}`"
           >
+            <!-- 多选框 -->
             <Checkbox
               :item="item"
               :isRevoked="item.isRevoked"
@@ -51,7 +55,7 @@
             >
               <name-component :item="item" />
               <div :class="Megtype(item.type)" :id="item.ID">
-                <component :key="item.ID" :is="loadMsgComponents(item.type, item)" :message="item">
+                <component :key="item.ID" :is="loadMsgComponents(item)" :message="item">
                 </component>
               </div>
             </div>
@@ -61,7 +65,7 @@
         </div>
       </div>
     </el-scrollbar>
-    <!-- <MyPopover /> -->
+    <MyPopover />
     <contextmenu ref="contextmenu">
       <contextmenu-item
         v-for="item in RIGHT_CLICK_MENU_LIST"
@@ -72,24 +76,6 @@
         {{ item.text }}
       </contextmenu-item>
     </contextmenu>
-    <el-dialog
-      v-model="dialogVisible"
-      :title="$t('common.forward')"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <div>
-        <el-input v-model="input" placeholder="请输入联系人id或者群主id" clearable />
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">{{ $t("el.messagebox.cancel") }}</el-button>
-          <el-button type="primary" @click="createGroupBtn">
-            {{ $t("el.messagebox.confirm") }}
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
   </section>
 </template>
 
@@ -108,9 +94,15 @@ import {
   toRefs,
   defineAsyncComponent,
 } from "vue";
+import {
+  handleCopyMsg,
+  dragControllerDiv,
+  validatelastMessage,
+  Megtype,
+  msgOne,
+} from "./utils/utils";
 import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
 import { useStore } from "vuex";
-import { handleCopyMsg, dragControllerDiv, validatelastMessage, Megtype } from "./utils/utils";
 import { showConfirmationBox } from "@/utils/message";
 
 import { timeFormat } from "@/utils/timeFormat";
@@ -135,8 +127,6 @@ import CustomElemItem from "./ElemItemTypes/CustomElemItem.vue";
 import groupTipElement from "./ElemItemTypes/groupTipElement.vue";
 import GroupSystemNoticeElem from "./ElemItemTypes/GroupSystemNoticeElem.vue";
 
-const input = ref("");
-const dialogVisible = ref(false);
 const isRight = ref(true);
 const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
@@ -145,13 +135,12 @@ const { state, dispatch, commit } = useStore();
 const { currentType } = useGetters(["currentType"]);
 const {
   noMore,
-  // userInfo,
-  currentUserProfile,
   showMsgBox,
   forwardData,
   showCheckbox,
   needScrollDown,
   currentReplyMsg,
+  currentUserProfile,
   currentMessageList,
   currentConversation,
 } = useState({
@@ -165,16 +154,8 @@ const {
   currentMessageList: (state) => state.conversation.currentMessageList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
-const opendialog = () => {
-  dialogVisible.value = true;
-};
-const createGroupBtn = () => {
-  dialogVisible.value = false;
-  input.value = "";
-};
-const handleClose = (done) => {
-  done();
-};
+const opendialog = () => {};
+
 const NameComponent = (props) => {
   const { item } = props;
   const { isRevoked, type, from, nick, conversationType } = item;
@@ -253,11 +234,11 @@ const ISown = (item) => {
 const onclickavatar = (e, item) => {
   const isSelf = ISown(item);
   if (isSelf) return;
-  // commit("setPopoverStatus", {
-  //   status: true,
-  //   seat: e,
-  //   cardData: item,
-  // });
+  commit("setPopoverStatus", {
+    status: true,
+    seat: e,
+    cardData: item,
+  });
 };
 const scrollBottom = () => {
   try {
@@ -346,61 +327,21 @@ const getMoreMsg = async () => {
     });
   }
 };
-
 // 动态组件
-const loadMsgComponents = (elem_type, item) => {
-  // console.log(elem_type, item);
-  let resp = "";
+const loadMsgComponents = (item) => {
+  const { type, isRevoked } = item;
   const CompMap = {
-    TextElemItem: TextElemItem,
-    TipsElemItem: TipsElemItem,
-    ImageElemItem: ImageElemItem,
-    FileElemItem: FileElemItem,
-    CustomElemItem: CustomElemItem,
-    groupTipElement: groupTipElement,
-    GroupSystemNoticeElem: GroupSystemNoticeElem,
+    TIMTextElem: TextElemItem, //文本消息
+    TIMImageElem: ImageElemItem, // 图片消息
+    TIMFileElem: FileElemItem, // 文件消息
+    TIMCustomElem: CustomElemItem, // 自定义消息
+    TIMGroupTipElem: groupTipElement, // 群消息提示
+    TIMGroupSystemNoticeElem: GroupSystemNoticeElem, // 系统通知
   };
-  // 撤回消息
-  if (item.isRevoked) {
-    resp = "TipsElemItem";
-    return CompMap[resp];
-  }
-  switch (elem_type) {
-    case "TIMTextElem": // 文本消息
-      resp = "TextElemItem";
-      break;
-    case "TIMImageElem": // 图片消息
-      resp = "ImageElemItem";
-      break;
-    case "TIMFileElem": // 文件消息
-      resp = "FileElemItem";
-      break;
-    case "TIMGroupTipElem": // 群消息提示
-      resp = "groupTipElement";
-      break;
-    case "TIMGroupSystemNoticeElem": // 系统通知
-      resp = "GroupSystemNoticeElem";
-      break;
-    case "TIMCustomElem": // 自定义消息
-      resp = "CustomElemItem";
-      break;
-    default:
-      resp = "";
-      break;
-  }
-  return CompMap[resp];
+  if (isRevoked) return TipsElemItem;
+  return CompMap[type] || null;
 };
 
-const msgOne = (item) => {
-  const { isRevoked, type } = item;
-  if (isRevoked) {
-    return "message-view__tips-elem";
-  } else if (type == "TIMGroupTipElem") {
-    return "message-view__tips-elem";
-  } else {
-    return "message-view__item--index";
-  }
-};
 const handleContextAvatarMenuEvent = (event, item) => {
   const { flow } = item;
   const type = currentType.value;
