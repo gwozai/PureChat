@@ -120,11 +120,7 @@ export default defineComponent({
       this.CHEC_OUT_CONVERSATION({ convId: `GROUP${groupID}` });
     },
     fileupload() {},
-    async callApi() {
-      console.log(process.env.VUE_APP_API_URL);
-      console.log(process.env.VUE_APP_API_KEY);
-      await getUser();
-    },
+    async callApi() {},
   },
   setup(props, { attrs, emit, expose, slots }) {
     const data = reactive({ text: "" });

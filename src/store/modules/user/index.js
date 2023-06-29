@@ -7,15 +7,11 @@ import { ElMessage } from "element-plus";
 import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
-import TLSSigAPIv2 from "tls-sig-api-v2";
 import { login, logout } from "@/api/node-admin-api/user";
 import { getMenu } from "@/api/node-admin-api/menu";
 import emitter from "@/utils/mitt-bus";
 import { verification } from "@/utils/message/index";
 const timProxy = new TIMProxy();
-const tim_sdk_appid = process.env.VUE_APP_SDK_APPID;
-const tim_sdk_key = process.env.VUE_APP_IM_SDK_KEY;
-const api = new TLSSigAPIv2.Api(tim_sdk_appid, tim_sdk_key);
 
 const user = {
   state: {
