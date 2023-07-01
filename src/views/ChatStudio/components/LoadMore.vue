@@ -13,6 +13,7 @@
 import { toRefs } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 
+// eslint-disable-next-line no-undef
 const props = defineProps({
   index: {
     type: Number,

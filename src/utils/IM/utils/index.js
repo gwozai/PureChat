@@ -1,5 +1,5 @@
 import TIM from "tim-js-sdk";
-import { throttle } from "@/utils/throttle";
+import { throttle } from "lodash-es";
 
 export function kickedOutReason(type) {
   switch (type) {

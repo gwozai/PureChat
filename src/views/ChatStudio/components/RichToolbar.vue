@@ -33,6 +33,12 @@
     <span class="" title="截图" @click="clickCscreenshot" v-if="false">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
+    <!-- 滚动到底部 -->
+    <span class="chat_chat-input-action" title="滚动到底部" @click="onTobBottom" v-show="tobottom">
+      <el-icon class="svg-left icon-hover">
+        <DArrowLeft />
+      </el-icon>
+    </span>
     <input
       type="file"
       id="imagePicker"
@@ -54,15 +60,19 @@
 </template>
 
 <script setup>
+import emitter from "@/utils/mitt-bus";
 import { ref, unref, toRefs, defineEmits } from "vue";
 import { emojiName, emojiUrl, emojiMap, localemojiUrl } from "@/utils/emoji-map";
 import { ClickOutside as vClickOutside } from "element-plus";
+import { useStore } from "vuex";
 
+const tobottom = ref();
 const buttonRef = ref();
 const popoverRef = ref();
 const imagePicker = ref();
 const filePicker = ref();
 const visible = ref(false);
+const { state, dispatch, commit } = useStore();
 const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
 
 const onClickOutside = () => {
@@ -106,6 +116,12 @@ async function sendFile(e) {
     key: "setParsefile",
   });
 }
+const onTobBottom = () => {
+  commit("updataScroll");
+};
+emitter.on("onisbot", (state) => {
+  tobottom.value = !state;
+});
 </script>
 <style>
 .style-emo {
@@ -114,6 +130,22 @@ async function sendFile(e) {
 }
 </style>
 <style lang="scss" scoped>
+.chat_chat-input-action {
+  cursor: pointer;
+  animation: chat_slide-in 0.3s ease;
+}
+
+@keyframes chat_slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .toolbar {
   height: 40px;
   padding: 0 5px;

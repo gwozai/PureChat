@@ -21,7 +21,8 @@
 <script setup>
 import { reactive, ref, onMounted, computed } from "vue";
 import _ from "lodash-es";
-import { throttle } from "@/utils/throttle";
+import { throttle } from "lodash-es";
+// import { throttle } from "@/utils/throttle";
 
 function picture(i) {
   const num = {

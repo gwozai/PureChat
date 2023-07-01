@@ -17,6 +17,10 @@ const sidebar = {
         title: "应用",
       },
       {
+        icon: "github",
+        title: "github",
+      },
+      {
         icon: "test",
         title: "测试",
         show: production,

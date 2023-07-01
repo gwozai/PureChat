@@ -72,6 +72,7 @@ import {
   CreateImgtMsg,
   sendMsg,
 } from "@/api/im-sdk-api";
+const { production } = require("@/config/vue.custom.config");
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -373,7 +374,13 @@ const sendMessage = async () => {
   });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
-  imCallback({ Text: message.payload.text, From: message.from, To: toAccount, type: message.type });
+  !production &&
+    imCallback({
+      Text: message.payload.text,
+      From: message.from,
+      To: toAccount,
+      type: message.type,
+    });
   // chatGpt({
   //   To: toAccount,
   //   From: message.from,
@@ -456,7 +463,9 @@ onBeforeUnmount(() => {
       margin: 0;
     }
     :deep(.w-e-text-placeholder) {
-      top: 2px;
+      font-style: normal;
+      font-size: 15px;
+      top: 5px;
     }
     :deep(.w-e-scroll) {
       @include scrollBar;

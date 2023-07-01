@@ -15,7 +15,7 @@ export const toolbarConfig = {
 };
 // 编辑器配置
 export const editorConfig = {
-  placeholder: "", // 请输入内容...
+  placeholder: "按Enter发送消息,Ctrl+Enter换行", // 请输入内容...
   /* 菜单配置 */
   MENU_CONF: {},
   EXTEND_CONF: {

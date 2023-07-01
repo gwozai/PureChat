@@ -1,12 +1,14 @@
 <template>
   <span :class="['label', getLabel(data).className]" v-show="getLabel(data).show">
-    {{ getLabel(data).label }}
+    <!-- {{ getLabel(data).label }} -->
+    <svg-icon iconClass="robot" />
   </span>
 </template>
 
 <script setup>
 import { toRefs } from "vue";
 
+// eslint-disable-next-line no-undef
 const props = defineProps({
   data: {
     type: String,
@@ -39,11 +41,14 @@ const getLabel = (data) => {
   border-radius: 2px;
   font-size: 10px;
   font-weight: 400;
+  svg {
+    stroke: unset;
+  }
 }
 // .all {}
 
 .robot {
-  color: rgb(84, 180, 239);
-  border: 0.64px solid #c6e2ff;
+  // color: rgb(84, 180, 239);
+  // border: 0.64px solid #c6e2ff;
 }
 </style>

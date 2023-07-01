@@ -74,7 +74,6 @@
 import { ref, onMounted, computed, h } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
 import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
-import { debounce } from "@/utils/debounce";
 import { getRoles } from "@/api/node-admin-api/roles";
 import { generateUUID } from "@/utils/index";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";

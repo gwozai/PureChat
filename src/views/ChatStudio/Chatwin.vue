@@ -53,7 +53,7 @@
               v-contextmenu:contextmenu
               @contextmenu.prevent="handleContextMenuEvent($event, item)"
             >
-              <name-component :item="item" />
+              <NameComponent :item="item" />
               <div :class="Megtype(item.type)" :id="item.ID">
                 <component :key="item.ID" :is="loadMsgComponents(item)" :message="item">
                 </component>
@@ -65,7 +65,7 @@
         </div>
       </div>
     </el-scrollbar>
-    <MyPopover />
+    <!-- <MyPopover /> -->
     <contextmenu ref="contextmenu">
       <contextmenu-item
         v-for="item in RIGHT_CLICK_MENU_LIST"
@@ -106,8 +106,7 @@ import { useStore } from "vuex";
 import { showConfirmationBox } from "@/utils/message";
 
 import { timeFormat } from "@/utils/timeFormat";
-import { debounce, delay } from "@/utils/debounce";
-import { throttle } from "@/utils/throttle";
+import { debounce } from "lodash-es";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import Checkbox from "./components/Checkbox.vue";
@@ -117,6 +116,7 @@ import MyPopover from "@/views/components/MyPopover/index.vue";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { deleteMsgList, revokeMsg, getMsgList, translateText } from "@/api/im-sdk-api";
 import emitter from "@/utils/mitt-bus";
+import NameComponent from "./components/NameComponent.vue";
 import { download } from "@/utils/message-input-utils";
 
 import TextElemItem from "./ElemItemTypes/TextElemItem.vue";
@@ -156,31 +156,31 @@ const {
 });
 const opendialog = () => {};
 
-const NameComponent = (props) => {
-  const { item } = props;
-  const { isRevoked, type, from, nick, conversationType } = item;
-  // 撤回消息 群提示消息 不显示
-  const show = isRevoked || type == "TIMGroupTipElem";
-  // 系统消息
-  const isSystem = from == "@TIM#SYSTEM";
-  const isFound = from == "@TLS#NOT_FOUND";
-  // 非单聊消息
-  const isGroup = conversationType !== "C2C" && !isFound;
-  const isSingle = conversationType == "C2C";
-  if (isSingle) return null;
-  return h(
-    "div",
-    {
-      style: { display: show ? "none" : "" },
-      class: "message_name",
-    },
-    [
-      isSystem ? h("span", { class: "isSystem" }, "系统") : null,
-      isGroup ? h("span", { class: "isGroup" }, nick) : null,
-      isFound ? h("span", { class: "isFound" }, "管理员") : null,
-    ]
-  );
-};
+// const NameComponent = (props) => {
+//   const { item } = props;
+//   const { isRevoked, type, from, nick, conversationType } = item;
+//   // 撤回消息 群提示消息 不显示
+//   const show = isRevoked || type == "TIMGroupTipElem";
+//   // 系统消息
+//   const isSystem = from == "@TIM#SYSTEM";
+//   const isFound = from == "@TLS#NOT_FOUND";
+//   // 非单聊消息
+//   const isGroup = conversationType !== "C2C" && !isFound;
+//   const isSingle = conversationType == "C2C";
+//   if (isSingle) return null;
+//   return h(
+//     "div",
+//     {
+//       style: { display: show ? "none" : "" },
+//       class: "message_name",
+//     },
+//     [
+//       isSystem ? h("span", { class: "isSystem" }, "系统") : null,
+//       isGroup ? h("span", { class: "isGroup" }, nick) : null,
+//       isFound ? h("span", { class: "isFound" }, "管理员") : null,
+//     ]
+//   );
+// };
 
 const updateLoadMore = (newValue) => {
   nextTick(() => {
@@ -260,7 +260,8 @@ const loadMoreFn = () => {
     const canLoadData = top > 50; //滚动到顶部
     canLoadData && getMoreMsg();
   }
-  scrollBottom();
+  const isbot = scrollBottom();
+  emitter.emit("onisbot", isbot);
 };
 const debouncedFunc = debounce(loadMoreFn, 250); //防抖处理
 
