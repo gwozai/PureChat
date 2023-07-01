@@ -1,7 +1,6 @@
 import http from "@/utils/http/index";
 import axios from "axios";
 import qs from "qs";
-import { Cloud } from "laf-client-sdk";
 import { restSendMsg } from "@/api/rest-api";
 
 export const createForData = ({ name, type, size, fileName, uploadedSize = 0, file }) => {
