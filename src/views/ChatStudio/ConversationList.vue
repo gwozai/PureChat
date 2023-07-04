@@ -37,7 +37,7 @@
             <span>{{ chatName(item) }}</span>
             <Label :data="item.userProfile?.userID" />
           </div>
-          <div class="message-time">
+          <div class="message-time" v-if="item.lastMessage?.lastTime">
             {{ timeFormat(item.lastMessage.lastTime * 1000) }}
           </div>
         </div>
@@ -137,7 +137,11 @@ const fnNews = (data) => {
     return messageForShow;
   }
   if (type == "GROUP" && isOther) {
-    return `${lastMessage.nick}: ${messageForShow}`;
+    if (lastMessage.nick) {
+      return `${lastMessage.nick}: ${messageForShow}`;
+    } else {
+      messageForShow;
+    }
   }
   return messageForShow;
 };
