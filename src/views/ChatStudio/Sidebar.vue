@@ -93,16 +93,16 @@ function toggle(item) {
     border-radius: 4px;
     cursor: pointer;
     &:hover {
-      background-color: #f2f2f2;
+      background-color: var(--hover-color);
     }
   }
   .style-svg {
-    color: #303133;
+    color: var(--color-text);
     font-size: 1.25rem;
   }
 
   .current {
-    background: #d9ecff !important;
+    background: var(--color-aside-list-action) !important;
   }
   .icon-title {
     color: var(--color-text);

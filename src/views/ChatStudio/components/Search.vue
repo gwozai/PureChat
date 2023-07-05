@@ -78,7 +78,7 @@ watch(appoint, (value) => {
 
 <style lang="scss" scoped>
 .header-bar {
-  background: #fff;
+  background: var(--color-body-bg);
   height: 60px;
   padding: 14px;
   position: relative;

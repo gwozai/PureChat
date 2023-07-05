@@ -293,7 +293,7 @@ onMounted(() => {});
   }
 }
 .scrollbar-list {
-  background: #fff;
+  background: var(--color-body-bg);
   height: 100%;
   // height: calc(100% - 40px);
 }
@@ -305,8 +305,9 @@ onMounted(() => {});
   justify-content: center;
   cursor: pointer;
   position: relative;
+  color: var(--color-text);
   &:hover {
-    background: #f0f2f5;
+    background: var(--hover-color);
   }
   &:hover .close-btn {
     display: block;
@@ -334,7 +335,7 @@ onMounted(() => {});
       position: absolute;
       right: 0;
       top: 26px;
-      color: rgb(29 33 41 / 30%);
+      // color: rgb(29 33 41 / 30%);
     }
     .message-item-right-top {
       display: flex;
@@ -349,7 +350,7 @@ onMounted(() => {});
         overflow: hidden;
         max-height: 18px;
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.85);
+        // color: rgba(0, 0, 0, 0.85);
         max-width: 140px;
       }
       .message-time {
