@@ -15,7 +15,10 @@ export const toolbarConfig = {
 };
 // 编辑器配置
 export const editorConfig = {
-  placeholder: "按Enter发送消息,Ctrl+Enter换行", // 请输入内容...
+  // 请输入内容...
+  placeholder: "按Enter发送消息,Ctrl+Enter换行",
+  // 配置编辑器是否只读，默认为 false
+  // readOnly: true,
   /* 菜单配置 */
   MENU_CONF: {},
   EXTEND_CONF: {
@@ -24,6 +27,7 @@ export const editorConfig = {
       hideModal, // 必须
     },
   },
+
   hoverbarKeys: {
     link: {
       // 重写 link 元素的 hoverbar

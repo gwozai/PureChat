@@ -60,7 +60,12 @@ import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "./components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
-import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
+import {
+  fileImgToBase64Url,
+  dataURLtoFile,
+  urlToBase64,
+  convertEmoji,
+} from "@/utils/message-input-utils";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { chatGpt, imCallback } from "@/api/node-admin-api/other";
@@ -72,6 +77,7 @@ import {
   CreateImgtMsg,
   sendMsg,
 } from "@/api/im-sdk-api";
+import s from "storejs";
 const { production } = require("@/config/vue.custom.config");
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
@@ -238,10 +244,13 @@ const customPaste = (editor, event, callback) => {
   // callback(true)
 };
 // 拖拽事件
-const dropHandler = (e) => {
-  const files = e.dataTransfer.files || [];
-  console.log(e);
-  console.log(files);
+const dropHandler = (event) => {
+  console.log(event);
+  // const files = e.dataTransfer.files || [];
+  // console.log(e);
+  // console.log(files);
+  event.preventDefault();
+  // return 123;
 };
 // 插入文件
 const parsefile = async (file) => {
@@ -268,8 +277,19 @@ const parsetext = (item) => {
   console.log(item);
 };
 const setEmoj = (url, item) => {
+  console.log(url);
   const node = { text: item };
-  editorRef.value.insertNode(node);
+  // editorRef.value.insertNode(node);
+  const ImageElement = {
+    type: "image",
+    class: "EmoticonPack",
+    src: url,
+    alt: item,
+    href: "",
+    style: { width: "26px" },
+    children: [{ text: "" }],
+  };
+  editorRef.value.insertNode(ImageElement);
   editorRef.value.focus(true);
   // editorRef.value.showProgressBar(100); // 进度条
 };
@@ -336,11 +356,11 @@ const sendMsgBefore = () => {
   const matchStrName = HtmlText.match(/data-fileName="([^"]*)"/);
   const fileName = matchStrName?.[1];
   const link = matchStr?.[1];
-
+  const emoticons = convertEmoji(HtmlText, image);
   // console.log(text);
   // console.log(link);
   // console.log(image);
-  // console.log(HtmlText);
+  console.log(HtmlText);
   // console.log(innHTML);
   // console.log(aitStr);
   return {
@@ -349,15 +369,23 @@ const sendMsgBefore = () => {
     aitStr,
     aitlist,
     files: link ? { fileName, src: link } : null,
+    emoj: emoticons,
   };
 };
 // 发送消息
 const sendMessage = async () => {
   let TextMsg = null;
   const { type, toAccount, conversationID } = currentConversation.value;
-  const { text, aitStr, image, aitlist, files } = sendMsgBefore();
-  const data = { textMsg: text, aitStr, image, aitlist, files, reply: currentReplyMsg.value };
-  // console.log(data);
+  const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
+  const data = {
+    textMsg: emoj ? emoj : text,
+    aitStr,
+    image: emoj ? null : image,
+    aitlist,
+    files,
+    reply: currentReplyMsg.value,
+  };
+
   TextMsg = await sendChatMessage(toAccount, type, data);
   console.log(TextMsg);
   // return;
@@ -461,6 +489,9 @@ onBeforeUnmount(() => {
     overflow-y: hidden;
     :deep(.w-e-text-container p) {
       margin: 0;
+    }
+    :deep(.w-e-image-dragger) {
+      display: none;
     }
     :deep(.w-e-text-placeholder) {
       font-style: normal;

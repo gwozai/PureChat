@@ -234,3 +234,31 @@ export function findNonImageString(arr) {
   const result = arr.find((element) => regex.test(element));
   return result;
 }
+
+/**
+ * 将包含表情图像的 HTML 字符串转换为对应的表情符号文本
+ * @param {string} html - 待转换的 HTML 字符串
+ * @param {Array} emojiMap - 表情符号和对应的图像数据数组
+ * @returns {string} - 转换后的结果
+ *
+ * <p>12<img src="*" alt="[我最美]" />333</p>
+ * <p>12[我最美]333</p>
+ */
+export function convertEmoji(html, emojiMap) {
+  if (!html || !emojiMap || !Array.isArray(emojiMap)) return "";
+  const filteredData = emojiMap.filter((item) => item.class === "EmoticonPack");
+  if (filteredData.length == 0) return false;
+  const convertedData = filteredData.map((item) => ({
+    [item.src]: item.alt,
+  }));
+  const emojiMapExtended = {
+    ...Object.assign(...convertedData),
+  };
+  const regex = /<img src="([^"]+)"[^>]+>/g;
+  const result = html.replace(regex, (match, src) => {
+    const emojiText = emojiMapExtended[src] || "";
+    return emojiText;
+  });
+  const rege = /<[^>]+>/g; //<p>[吓]23[疑问]</p> -> [吓]23[疑问]
+  return result.replace(rege, "");
+}

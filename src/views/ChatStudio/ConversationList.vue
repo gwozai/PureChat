@@ -369,6 +369,9 @@ onMounted(() => {});
       text-overflow: ellipsis;
       position: relative;
     }
+    .svg-icon {
+      color: rgba(0, 0, 0, 0.45);
+    }
     .el-badge {
       position: absolute;
       right: 0px;
