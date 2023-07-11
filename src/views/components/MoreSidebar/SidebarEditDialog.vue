@@ -11,6 +11,7 @@
       <div class="container" v-for="item in list" :key="item.title">
         <p class="text left-text">{{ item.title }}</p>
         <div class="edit-area" :class="item.class" v-if="item.class == 'left-edit-area'">
+          <!-- v-if="item.class == 'left-edit-area'" -->
           <draggable
             class="dragArea list-group w-full"
             :list="outsideList"
@@ -23,10 +24,12 @@
             dragClass="chosen"
             animation="300"
           >
-            <template v-for="element in outsideList" :key="element.icon">
+            <template v-for="element in left" :key="element.icon">
               <div class="list-group-item" :class="element?.class">
-                <el-icon class="reduce"><RemoveFilled /></el-icon>
-                <el-icon class="add"><CirclePlusFilled /></el-icon>
+                <!-- 删除 -->
+                <FontIcon iconName="RemoveFilled" class="reduce" />
+                <!-- 添加 -->
+                <FontIcon iconName="CirclePlusFilled" class="add" />
                 <svg-icon
                   v-if="element.icon !== 'test'"
                   :iconClass="element.icon"
@@ -34,7 +37,7 @@
                 />
                 <el-icon class="style-svg" v-else><SwitchFilled /></el-icon>
                 {{ element.title }}
-                <el-icon class="rank"><Rank /></el-icon>
+                <FontIcon iconName="Rank" class="rank" />
               </div>
             </template>
           </draggable>
@@ -82,6 +85,9 @@ export default defineComponent({
     ...mapState({
       outsideList: (state) => state.sidebar.outsideList,
     }),
+    left() {
+      return this.outsideList.filter((t) => t.icon !== "icondiandiandian");
+    },
   },
   mounted() {
     emitter.on("SidebarEditDialog", (val) => {

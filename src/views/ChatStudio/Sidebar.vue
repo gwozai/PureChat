@@ -12,7 +12,8 @@
           :class="{ current: outside == item.icon }"
         >
           <el-badge :value="unreadMsg" :hidden="item.icon !== 'news' || unreadMsg == 0">
-            <svg-icon v-if="item.icon !== 'test'" :iconClass="item.icon" class="style-svg" />
+            <FontIcon v-if="item?.type == 'el-icon'" :iconName="item.icon" class="style-svg" />
+            <svg-icon v-else-if="item.icon !== 'test'" :iconClass="item.icon" class="style-svg" />
             <el-icon v-else><SwitchFilled /></el-icon>
           </el-badge>
           <div class="icon-title">{{ item.title }}</div>

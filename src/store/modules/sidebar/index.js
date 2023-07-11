@@ -25,6 +25,11 @@ const sidebar = {
         title: "测试",
         show: production,
       },
+      // {
+      //   icon: "Switch",
+      //   title: "排序",
+      //   type: 'el-icon'
+      // },
       {
         icon: "icondiandiandian",
         title: "更多",

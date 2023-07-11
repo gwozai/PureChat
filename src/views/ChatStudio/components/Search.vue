@@ -69,7 +69,7 @@ const handleClose = (done) => {
 };
 const onBlur = () => {};
 const onFocus = () => {
-  searchBoxRef.value.setModal(true);
+  // searchBoxRef.value.setModal(true);
 };
 watch(appoint, (value) => {
   console.log(value);

@@ -9,6 +9,7 @@
         <el-tab-pane label="全部" name="whole"></el-tab-pane>
         <el-tab-pane :label="unread" name="unread"></el-tab-pane>
         <el-tab-pane label="@我" name="mention"></el-tab-pane>
+        <el-tab-pane label="群聊" name="groupChat"></el-tab-pane>
       </el-tabs>
       <div class="scroll-container" :class="{ 'style-net': !networkStatus }">
         <!-- 连接已断开 -->
@@ -24,14 +25,7 @@
       <Chatwin ref="ChatRef" />
       <!-- 消息回复框 -->
       <ReplyBox />
-      <div id="svgResize" @mouseover="dragControllerDiv(ChatRef)" v-if="showMsgBox">
-        <!-- <div class="back-to-the-bottom" @click="toBottom">
-          <el-icon class="svg-left">
-            <DArrowLeft />
-          </el-icon>
-          <span>回到底部</span>
-        </div> -->
-      </div>
+      <div id="svgResize" @mouseover="dragControllerDiv(ChatRef)" v-if="showMsgBox"></div>
       <!-- 多选框 -->
       <MultiChoiceBox />
       <!-- 编辑器 -->

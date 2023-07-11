@@ -421,6 +421,8 @@ const conversation = {
           return state.conversationList.filter((t) => t.unreadCount > 0);
         case "mention":
           return state.conversationList.filter((t) => t.groupAtInfoList.length > 0);
+        case "groupChat":
+          return state.conversationList.filter((t) => t.type == "GROUP");
         default:
           return state.conversationList;
       }
