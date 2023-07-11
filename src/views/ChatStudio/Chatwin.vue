@@ -16,7 +16,7 @@
           <LoadMore :index="index" />
           <div class="message-view__item--blank"></div>
           <!-- 时间 -->
-          <div class="message-view__item--time-divider" v-if="isTime(item)">
+          <div v-if="isTime(item)" class="message-view__item--time-divider">
             {{ timeFormat(item.time * 1000, true) }}
           </div>
           <!-- 消息体 -->
@@ -155,32 +155,6 @@ const {
   currentConversation: (state) => state.conversation.currentConversation,
 });
 const opendialog = () => {};
-
-// const NameComponent = (props) => {
-//   const { item } = props;
-//   const { isRevoked, type, from, nick, conversationType } = item;
-//   // 撤回消息 群提示消息 不显示
-//   const show = isRevoked || type == "TIMGroupTipElem";
-//   // 系统消息
-//   const isSystem = from == "@TIM#SYSTEM";
-//   const isFound = from == "@TLS#NOT_FOUND";
-//   // 非单聊消息
-//   const isGroup = conversationType !== "C2C" && !isFound;
-//   const isSingle = conversationType == "C2C";
-//   if (isSingle) return null;
-//   return h(
-//     "div",
-//     {
-//       style: { display: show ? "none" : "" },
-//       class: "message_name",
-//     },
-//     [
-//       isSystem ? h("span", { class: "isSystem" }, "系统") : null,
-//       isGroup ? h("span", { class: "isGroup" }, nick) : null,
-//       isFound ? h("span", { class: "isFound" }, "管理员") : null,
-//     ]
-//   );
-// };
 
 const updateLoadMore = (newValue) => {
   nextTick(() => {

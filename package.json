@@ -1,7 +1,7 @@
 {
   "name": "pure-admin",
   "version": "0.1.4",
-  "private": true,
+  "license": "MIT",
   "author": {
     "name": "Hyk260",
     "email": "2607881950@qq.com"
@@ -11,11 +11,8 @@
     "dev": "vue-cli-service serve --report",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --fix",
-    "app": "cd server && nodemon app",
     "build:dev": "vue-cli-service build --mode development",
     "build:staging": "vue-cli-service build --mode staging",
-    "build:pkg:win": "cd server && pkg -t win app.js",
-    "build:pkg:mac": "cd server && pkg -t macos app.js",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -102,7 +99,6 @@
     "type": "git",
     "url": "https://github.com/Hyk260"
   },
-  "license": "MIT",
   "peerDependencies": {
     "snabbdom": "^3.5.1"
   }
