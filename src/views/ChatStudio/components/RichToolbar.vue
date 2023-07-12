@@ -15,9 +15,25 @@
           <svg-icon iconClass="iconxiaolian" class="icon-hover" />
         </span>
       </template>
-      <div class="emojis">
-        <div v-for="item in emojiName" class="emoji" :key="item" @click="SelectEmoticon(item)">
-          <img :src="emojiUrl + emojiMap[item]" :title="item" />
+      <div>
+        <div class="emojis">
+          <el-scrollbar>
+            <div style="padding: 0 10px 0 15px">
+              <span
+                v-for="item in emojiName"
+                class="emoji"
+                :key="item"
+                @click="SelectEmoticon(item)"
+              >
+                <img :src="emojiUrl + emojiMap[item]" :title="item" />
+              </span>
+            </div>
+          </el-scrollbar>
+        </div>
+        <div class="tool">
+          <div v-for="item in toolDate" :key="item.icon">
+            <svg-icon :iconClass="item.icon" class="icon-hover" />
+          </div>
         </div>
       </div>
     </el-popover>
@@ -74,7 +90,16 @@ const filePicker = ref();
 const visible = ref(false);
 const { state, dispatch, commit } = useStore();
 const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
-
+const toolDate = [
+  {
+    title: "默认表情",
+    icon: "iconxiaolian",
+  },
+  {
+    title: "我的收藏",
+    icon: "collect",
+  },
+];
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
 };
@@ -127,9 +152,22 @@ emitter.on("onisbot", (state) => {
 .style-emo {
   z-index: 9999 !important;
   width: auto !important;
+  padding: 0 !important;
 }
 </style>
 <style lang="scss" scoped>
+.tool {
+  height: 50px;
+  display: flex;
+  padding: 0 10px;
+  div {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .chat_chat-input-action {
   cursor: pointer;
   animation: chat_slide-in 0.3s ease;
@@ -170,7 +208,7 @@ emitter.on("onisbot", (state) => {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   .emoji {
     img {
       width: 30px;
@@ -182,7 +220,7 @@ emitter.on("onisbot", (state) => {
   width: 125px;
   height: 140px;
 }
-::-webkit-scrollbar {
-  display: none;
-}
+// ::-webkit-scrollbar {
+//   // display: none;
+// }
 </style>
