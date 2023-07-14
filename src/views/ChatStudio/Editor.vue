@@ -70,14 +70,7 @@ import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { chatGpt, imCallback } from "@/api/node-admin-api/other";
 import { debounce } from "lodash-es";
-import {
-  CreateTextMsg,
-  CreateTextAtMsg,
-  CreateFiletMsg,
-  CreateImgtMsg,
-  sendMsg,
-} from "@/api/im-sdk-api";
-import s from "storejs";
+import { sendMsg } from "@/api/im-sdk-api/message";
 const { production } = require("@/config/vue.custom.config");
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef

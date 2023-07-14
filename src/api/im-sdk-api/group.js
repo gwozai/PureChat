@@ -164,3 +164,25 @@ export const getGroupList = async () => {
     groupList,
   };
 };
+
+// 获取群详细资料
+export const getGroupProfile = async (params) => {
+  try {
+    const { groupID } = params;
+    const {
+      data: { group },
+      code,
+    } = await tim.getGroupProfile({
+      groupID: groupID,
+    });
+    return {
+      code,
+      data: group,
+    };
+  } catch (error) {
+    return {
+      code: -1,
+      data: error,
+    };
+  }
+};

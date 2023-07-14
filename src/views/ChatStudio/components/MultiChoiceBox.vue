@@ -15,7 +15,7 @@
 <script>
 import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
-import { deleteMsgList, createForwardMsg, sendMsg } from "@/api/im-sdk-api";
+import { createForwardMsg, sendMsg } from "@/api/im-sdk-api/message";
 import { showConfirmationBox } from "@/utils/message";
 import TIM from "tim-js-sdk";
 export default defineComponent({

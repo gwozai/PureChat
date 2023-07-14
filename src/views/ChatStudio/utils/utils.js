@@ -7,7 +7,7 @@ import {
   CreateFiletMsg,
   CreateImgtMsg,
   sendMsg,
-} from "@/api/im-sdk-api";
+} from "@/api/im-sdk-api/message";
 
 const { toClipboard } = useClipboard();
 

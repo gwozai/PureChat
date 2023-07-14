@@ -1,25 +1,7 @@
 import TIM from "tim-js-sdk";
 import tim from "@/utils/im-sdk/tim";
-import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { getReplyMsgContent } from "@/utils/message-input-utils";
 
-// 未读总数
-export const getUnreadMsg = async () => {
-  return await tim.getTotalUnreadMessageCount();
-};
-// 获取消息列表
-export const getMsgList = async (params) => {
-  const { conversationID, count, nextReqMessageID } = params;
-  const { code, data } = await tim.getMessageList({
-    conversationID: conversationID,
-    count: count || HISTORY_MESSAGE_COUNT,
-    nextReqMessageID: nextReqMessageID || "",
-  });
-  if (code == 0) {
-    return data;
-  }
-  return {};
-};
 // 获取 SDK 缓存的好友列表
 export const getFriendList = async (params) => {
   let promise = tim.getFriendList();
@@ -38,27 +20,6 @@ export const getMyProfile = async () => {
     if (code == 0) return data;
   } catch (e) {
     console.log(e);
-  }
-};
-// 获取群详细资料
-export const getGroupProfile = async (params) => {
-  try {
-    const { groupID } = params;
-    const {
-      data: { group },
-      code,
-    } = await tim.getGroupProfile({
-      groupID: groupID,
-    });
-    return {
-      code,
-      data: group,
-    };
-  } catch (error) {
-    return {
-      code: -1,
-      data: error,
-    };
   }
 };
 //登录
@@ -86,134 +47,6 @@ export const TIM_logout = async () => {
 export const TIM_Destroy = async () => {
   // SDK 会先 logout，然后断开 WebSocket 长连接，并释放资源
   await tim.destroy();
-};
-// 创建自定义消息
-export const createCustomMsg = async (params) => {
-  const { convId, convType, textMsg } = params;
-  function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-  // 2. 创建消息实例，接口返回的实例可以上屏
-  const message = tim.createCustomMessage({
-    to: convId,
-    conversationType: convType,
-    payload: {
-      data: "dice", // 用于标识该消息是骰子类型消息
-      description: String(random(1, 6)), // 获取骰子点数
-      extension: "",
-    },
-  });
-  console.log(message);
-};
-// 创建文本消息
-export const CreateTextMsg = async (params) => {
-  const { convId, convType, textMsg, reply } = params;
-  const replyMsgContent = getReplyMsgContent(reply);
-  let message = await tim.createTextMessage({
-    to: convId, // 接受放ID
-    conversationType: convType, // 会话类型 TIM.TYPES.CONV_C2C
-    payload: {
-      text: textMsg,
-    },
-    // needReadReceipt: true,
-    cloudCustomData: replyMsgContent,
-  });
-  return message;
-};
-
-// 创建@ 提醒功能的文本消息
-export const CreateTextAtMsg = async (params) => {
-  const { convId, convType, textMsg, atUserList, reply } = params;
-  const replyMsgContent = getReplyMsgContent(reply);
-  let message = await tim.createTextAtMessage({
-    to: convId,
-    conversationType: convType || TIM.TYPES.CONV_GROUP,
-    payload: {
-      text: textMsg, // '@denny @lucy @所有人 今晚聚餐，收到的请回复',
-      atUserList: atUserList, // ['denny', 'lucy', TIM.TYPES.MSG_AT_ALL] // 'denny' 'lucy' 都是 userID，而非昵称
-    },
-    cloudCustomData: replyMsgContent,
-  });
-  return message;
-};
-// 创建图片消息
-export const CreateImgtMsg = (params) => {
-  const { convId, convType, image } = params;
-  const message = tim.createImageMessage({
-    to: convId,
-    conversationType: convType,
-    payload: {
-      file: image,
-    },
-    onProgress: function (event) {
-      console.log("file uploading:", event);
-    },
-  });
-  return message;
-};
-// 创建文件消息
-export const CreateFiletMsg = async (params) => {
-  const { convId, convType, files } = params;
-  const message = tim.createFileMessage({
-    to: convId,
-    conversationType: convType,
-    payload: {
-      file: files,
-    },
-    // 文件上传进度
-    onProgress: (event) => {
-      console.log("file uploading:", event);
-    },
-  });
-  return message;
-};
-// 创建合并消息
-export const createMergerMsg = async (params) => {
-  const { convId, convType, List, title, abstractList } = params;
-  let mergerMessage = tim.createMergerMessage({
-    to: convId,
-    conversationType: convType,
-    payload: {
-      messageList: List,
-      title: "大湾区前端人才中心的聊天记录",
-      abstractList: ["allen: 666", "iris: [图片]", "linda: [文件]"],
-      compatibleText: "请升级IMSDK到v2.10.1或更高版本查看此消息",
-    },
-    // 消息自定义数据（云端保存，会发送到对端，程序卸载重装后还能拉取到，v2.10.2起支持）
-    // cloudCustomData: 'your cloud custom data'
-  });
-};
-// 转发消息
-export const createForwardMsg = async (params) => {
-  const { convId, convType, message } = params;
-  console.log(params);
-  const forwardMsg = await tim.createForwardMessage({
-    to: convId,
-    conversationType: convType,
-    payload: message,
-  });
-  // const { code, message: data } = await sendMsg(forwardMsg);
-  // return {
-  //   code,
-  //   data,
-  // };
-  return forwardMsg;
-};
-// 发送消息
-export const sendMsg = async (params) => {
-  const { messageElementObject, callback } = params || {};
-  try {
-    const {
-      code,
-      data: { message },
-    } = await tim.sendMessage(params);
-    return {
-      code,
-      message,
-    };
-  } catch (error) {
-    console.log(error);
-  }
 };
 // 删除消息
 export const deleteMsgList = async (params) => {

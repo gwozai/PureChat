@@ -2,14 +2,17 @@ import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/sto
 import { addTimeDivider } from "@/utils/addTimeDivider";
 import TIM from "tim-js-sdk";
 import {
-  getMsgList,
   deleteConversation,
   getConversationProfile,
   setMessageRead,
-  getUnreadMsg,
   TIMpingConv,
   setMessageRemindType,
 } from "@/api/im-sdk-api";
+import {
+  getMsgList,
+  getUnreadMsg,
+} from "@/api/im-sdk-api/session";
+
 import { deepClone } from "@/utils/clone";
 
 const getBaseTime = (list) => {
