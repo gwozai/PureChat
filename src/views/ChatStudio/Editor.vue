@@ -356,6 +356,7 @@ const sendMsgBefore = () => {
   console.log(HtmlText);
   // console.log(innHTML);
   // console.log(aitStr);
+  console.log(emoticons);
   return {
     text,
     image: image?.length > 0 ? image : null,
@@ -372,7 +373,7 @@ const sendMessage = async () => {
   const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
   const data = {
     textMsg: emoj ? emoj : text,
-    aitStr,
+    aitStr: emoj ? emoj : text,
     image: emoj ? null : image,
     aitlist,
     files,
@@ -380,8 +381,6 @@ const sendMessage = async () => {
   };
 
   TextMsg = await sendChatMessage(toAccount, type, data);
-  console.log(TextMsg);
-  // return;
   commit("SET_HISTORYMESSAGE", {
     type: "UPDATE_MESSAGES",
     payload: {
@@ -395,13 +394,13 @@ const sendMessage = async () => {
   });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
-  !production &&
-    imCallback({
-      Text: message.payload.text,
-      From: message.from,
-      To: toAccount,
-      type: message.type,
-    });
+  // !production &&
+  //   imCallback({
+  //     Text: message.payload.text,
+  //     From: message.from,
+  //     To: toAccount,
+  //     type: message.type,
+  //   });
   // chatGpt({
   //   To: toAccount,
   //   From: message.from,
