@@ -22,7 +22,7 @@ export const getMsgList = async (params) => {
     const { code, data } = await tim.getMessageList({
       conversationID,
       count: count || HISTORY_MESSAGE_COUNT,
-      nextReqMessageID: nextReqMessageID || ""
+      nextReqMessageID: nextReqMessageID || "",
     });
     if (code === 0) {
       return data;

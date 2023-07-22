@@ -8,10 +8,7 @@ import {
   TIMpingConv,
   setMessageRemindType,
 } from "@/api/im-sdk-api";
-import {
-  getMsgList,
-  getUnreadMsg,
-} from "@/api/im-sdk-api/session";
+import { getMsgList, getUnreadMsg } from "@/api/im-sdk-api/session";
 
 import { deepClone } from "@/utils/clone";
 

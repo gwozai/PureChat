@@ -373,7 +373,7 @@ const sendMessage = async () => {
   const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
   const data = {
     textMsg: emoj ? emoj : text,
-    aitStr: emoj ? emoj : text,
+    aitStr: emoj ? emoj : aitStr,
     image: emoj ? null : image,
     aitlist,
     files,

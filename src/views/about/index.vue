@@ -92,7 +92,7 @@ const devSchema = [];
 
 const data = [
   {
-    label: "文档地址",
+    label: "版本",
     tag: version,
   },
   {
