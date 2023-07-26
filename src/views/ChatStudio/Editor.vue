@@ -394,20 +394,13 @@ const sendMessage = async () => {
   });
   // 发送消息
   let { code, message } = await sendMsg(TextMsg);
-  // !production &&
-  //   imCallback({
-  //     Text: message.payload.text,
-  //     From: message.from,
-  //     To: toAccount,
-  //     type: message.type,
-  //   });
-  // chatGpt({
-  //   To: toAccount,
-  //   From: message.from,
-  //   content: message.payload.text,
-  //   userID: userProfile.value.userID,
-  // });
-  // restSendMsg({ To: toAccount, From: message.from });
+  !production &&
+    imCallback({
+      Text: message.payload.text,
+      From: message.from,
+      To: toAccount,
+      type: message.type,
+    });
   console.log(message, "sendMsg");
   if (code == 0) {
     clearInputInfo();
