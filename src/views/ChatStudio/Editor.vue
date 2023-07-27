@@ -28,8 +28,8 @@
       @hideMentionModal="hideMentionModal"
       @insertMention="insertMention"
     />
-    <el-tooltip effect="dark" content="按Enter发送消息,Ctrl+Enter换行" placement="left-start">
-      <el-button class="btn-send" @click="handleEnter()"> 发送 </el-button>
+    <el-tooltip effect="dark" :content="$t('chat.buttonPrompt')" placement="left-start">
+      <el-button class="btn-send" @click="handleEnter()"> {{ $t("chat.sending") }} </el-button>
     </el-tooltip>
   </div>
 </template>
@@ -54,7 +54,7 @@ import {
   nextTick,
 } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
-import { getMsgElemItem, sendChatMessage } from "./utils/utils";
+import { getMsgElemItem, sendChatMessage, customAlert } from "./utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -104,7 +104,6 @@ const {
 
 const handleCreated = (editor) => {
   editorRef.value = editor;
-
   console.log(editor.getConfig());
   // editor.enable(); //
   // editor.disable(); // 只读
@@ -172,26 +171,6 @@ const onChange = (editor) => {
   fnUpdateDraft(content);
 };
 
-const customAlert = (s, t) => {
-  console.log(s, t);
-  switch (t) {
-    case "success":
-      console.log("success");
-      break;
-    case "info":
-      console.log("info");
-      break;
-    case "warning":
-      console.log("warning");
-      break;
-    case "error":
-      console.log("error");
-      break;
-    default:
-      console.log("default");
-      break;
-  }
-};
 // 粘贴事件
 const customPaste = (editor, event, callback) => {
   console.log("ClipboardEvent 粘贴事件对象", event);
@@ -201,7 +180,6 @@ const customPaste = (editor, event, callback) => {
   // console.log(html);
   console.log(text);
   // console.log(rtf);
-
   if (event?.clipboardData?.items) {
     const items = event.clipboardData.items;
     // console.log(items);
@@ -225,25 +203,18 @@ const customPaste = (editor, event, callback) => {
       }
     }
   }
-
   // 自定义插入内容
   editor.insertText(text);
-
   // 返回 false ，阻止默认粘贴行为
   event.preventDefault();
   callback(false); // 返回值（注意，vue 事件的返回值，不能用 return）
-
   // 返回 true ，继续默认的粘贴行为
   // callback(true)
 };
 // 拖拽事件
 const dropHandler = (event) => {
   console.log(event);
-  // const files = e.dataTransfer.files || [];
-  // console.log(e);
-  // console.log(files);
   event.preventDefault();
-  // return 123;
 };
 // 插入文件
 const parsefile = async (file) => {
@@ -289,7 +260,6 @@ const setEmoj = (url, item) => {
 const setPicture = (data) => {
   parsepicture(data);
 };
-
 const setParsefile = (data) => {
   parsefile(data);
 };
@@ -313,7 +283,6 @@ const handleEnter = () => {
   const editor = editorRef.value;
   const isEmpty = editor.isEmpty(); // 判断当前编辑器内容是否为空
   const { text, aitStr, files, image } = sendMsgBefore();
-
   if ((!isEmpty && !empty(text)) || image || aitStr || files) {
     sendMessage();
   } else {
@@ -368,7 +337,6 @@ const sendMsgBefore = () => {
 };
 // 发送消息
 const sendMessage = async () => {
-  let TextMsg = null;
   const { type, toAccount, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
   const data = {
@@ -379,42 +347,14 @@ const sendMessage = async () => {
     files,
     reply: currentReplyMsg.value,
   };
-
-  TextMsg = await sendChatMessage(toAccount, type, data);
-  commit("SET_HISTORYMESSAGE", {
-    type: "UPDATE_MESSAGES",
+  const message = await sendChatMessage(toAccount, type, data);
+  dispatch("SESSION_MESSAGE_SENDING", {
     payload: {
       convId: conversationID,
-      message: TextMsg,
+      message,
     },
   });
-  nextTick(() => {
-    commit("updataScroll");
-    clearInputInfo();
-  });
-  // 发送消息
-  let { code, message } = await sendMsg(TextMsg);
-  !production &&
-    imCallback({
-      Text: message.payload.text,
-      From: message.from,
-      To: toAccount,
-      type: message.type,
-    });
-  console.log(message, "sendMsg");
-  if (code == 0) {
-    clearInputInfo();
-    commit("SET_HISTORYMESSAGE", {
-      type: "UPDATE_MESSAGES",
-      payload: {
-        convId: conversationID,
-        message: message,
-      },
-    });
-    commit("updataScroll");
-  } else {
-    console.log(message);
-  }
+  clearInputInfo();
 };
 
 emitter.on("handleAt", ({ id, name }) => {

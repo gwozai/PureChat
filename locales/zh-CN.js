@@ -3,6 +3,10 @@ import elementZhLocale from "element-plus/lib/locale/lang/zh-cn";
 // zh-CN
 export default {
   ...elementZhLocale,
+  chat: {
+    buttonPrompt: '按Enter发送消息,Ctrl+Enter换行',
+    sending: '发送'
+  },
   common: {
     forward: "转发",
     createGroupChat: "创建群聊",

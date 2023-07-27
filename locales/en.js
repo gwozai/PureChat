@@ -3,6 +3,10 @@ import elementEnLocale from "element-plus/lib/locale/lang/en";
 // en
 export default {
   ...elementEnLocale,
+  chat: {
+    buttonPrompt: 'Press Enter to send the message, Ctrl+Enter to wrap',
+    sending: 'Sending'
+  },
   common: {
     forward: "Forward",
     createGroupChat: "Create Group Chat",

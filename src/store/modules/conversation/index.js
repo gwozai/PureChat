@@ -8,6 +8,7 @@ import {
   TIMpingConv,
   setMessageRemindType,
 } from "@/api/im-sdk-api";
+import { sendMsg } from "@/api/im-sdk-api/message";
 import { getMsgList, getUnreadMsg } from "@/api/im-sdk-api/session";
 
 import { deepClone } from "@/utils/clone";
@@ -400,6 +401,48 @@ const conversation = {
         payload: action,
       });
     },
+    // 会话消息发送
+    async SESSION_MESSAGE_SENDING({ state, commit, dispatch }, action) {
+      const { payload } = action;
+      const { convId } = payload
+      commit("SET_HISTORYMESSAGE", {
+        type: "UPDATE_MESSAGES",
+        payload: {
+          convId: convId,
+          message: payload.message,
+        },
+      });
+      nextTick(() => {
+        commit("updataScroll");
+      });
+      // 发送消息
+      const { code, message } = await sendMsg(payload.message);
+      if (code == 0) {
+        dispatch('SENDMSG_SUCCESS_CALLBACK', { convId, message })
+      } else {
+        console.log('发送失败', code, message)
+      }
+    },
+    // 消息发送成功回调
+    async SENDMSG_SUCCESS_CALLBACK({ state, commit }, action) {
+      const { convId, message } = action
+      console.log(message, "sendMsg消息发送成功");
+      commit("SET_HISTORYMESSAGE", {
+        type: "UPDATE_MESSAGES",
+        payload: {
+          convId: convId,
+          message: message,
+        },
+      });
+      commit("updataScroll");
+      // !production &&
+      //   imCallback({
+      //     Text: message.payload.text,
+      //     From: message.from,
+      //     To: toAccount,
+      //     type: message.type,
+      //   });
+    }
   },
   getters: {
     toAccount: (state) => {

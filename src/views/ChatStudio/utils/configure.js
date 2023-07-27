@@ -1,4 +1,5 @@
 import store from "@/store/index";
+import { $t } from "@/plugins/i18n";
 // 工具栏配置
 export const toolbarConfig = {
   /* 显示哪些菜单，如何排序、分组 */
@@ -16,7 +17,7 @@ export const toolbarConfig = {
 // 编辑器配置
 export const editorConfig = {
   // 请输入内容...
-  placeholder: "按Enter发送消息,Ctrl+Enter换行",
+  placeholder: $t('chat.buttonPrompt'),
   // 配置编辑器是否只读，默认为 false
   // readOnly: true,
   /* 菜单配置 */
