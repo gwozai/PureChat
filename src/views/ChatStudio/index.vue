@@ -1,15 +1,8 @@
 <template>
-  <div class="list-container">
+  <div class="h-full w-full flex">
     <!-- 侧边栏 -->
     <Sidebar />
-    <!-- 消息 -->
-    <news v-show="outside == 'news'" />
-    <!-- 通讯录 -->
-    <mailList v-show="outside == 'mail_list'" />
-    <!-- 应用 -->
-    <application v-show="outside == 'application'" />
-    <!-- 测试 -->
-    <test v-show="outside == 'test'" />
+    <component v-if="Component[outside]" :is="Component[outside]" />
   </div>
 </template>
 
@@ -30,12 +23,19 @@ import { useStore } from "vuex";
 
 import Sidebar from "./Sidebar.vue";
 import application from "./application.vue";
+import document from "./document.vue";
 import mailList from "./mailList.vue";
 import news from "./news.vue";
 import test from "./test.vue";
 
 const { state, dispatch, commit } = useStore();
-
+const Component = {
+  test: test,
+  news: news,
+  application: application,
+  Document: document,
+  mail_list: mailList,
+};
 const { networkStatus, conver, outside, groupDrawer, showMsgBox, conversationList } = useState({
   outside: (state) => state.conversation.outside,
   networkStatus: (state) => state.conversation.networkStatus,
@@ -46,10 +46,4 @@ const { networkStatus, conver, outside, groupDrawer, showMsgBox, conversationLis
 });
 </script>
 
-<style lang="scss" scoped>
-.list-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -6,7 +6,7 @@
     :with-header="true"
     :show-close="true"
   >
-    <ul class="setting width-full">
+    <ul class="setting w-full">
       <li>
         <span>{{ t("common.closeSidebar") }}</span>
         <el-switch

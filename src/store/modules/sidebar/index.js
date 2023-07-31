@@ -21,6 +21,11 @@ const sidebar = {
         title: "github",
       },
       {
+        icon: "Document",
+        title: "文档",
+        type: "el-icon",
+      },
+      {
         icon: "test",
         title: "测试",
         show: production,

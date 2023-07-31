@@ -1,5 +1,5 @@
 <template>
-  <div class="flex width-full style-mail" v-if="false">
+  <div class="flex w-full style-mail" v-if="false">
     <div class="abv">
       <el-tabs v-model="activeName" class="style-tabs" @tab-click="taggleClick">
         <el-tab-pane label="通讯录" name="first">
