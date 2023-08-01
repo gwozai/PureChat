@@ -10,7 +10,6 @@ export function loadAllassembly(app) {
     // const name = key.replace(/\/index.vue/, "").slice(2);
     const name = key.replace(/\.\/(.*)\/index\.vue/, "$1"); // 获取组件名称
     const meter = files(key).default;
-
     if (!whiteList.includes(name)) {
       app.component(name, meter);
     }

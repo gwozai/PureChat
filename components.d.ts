@@ -60,4 +60,7 @@ declare module '@vue/runtime-core' {
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     UserAvatar: typeof import('./src/components/UserAvatar/index.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

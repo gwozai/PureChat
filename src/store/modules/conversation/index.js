@@ -38,7 +38,7 @@ const conversation = {
     currentReplyMsg: null, // 回复数据
     currentReplyUser: null,
     activetab: "whole", // 全部 未读 提及我
-    outside: "news", // 侧边栏初始状态
+    outside: "message", // 侧边栏初始状态
     isNotify: false, // 是否免打扰
   },
   mutations: {

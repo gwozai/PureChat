@@ -17,7 +17,6 @@ import { loadAllassembly } from "./components";
 import { directive } from "v-contextmenu";
 import { MotionPlugin } from "@vueuse/motion";
 import { registerSvgIcon } from "./assets/icons/index";
-
 const app = createApp(App);
 // 自定义指令
 Object.keys(directives).forEach((key) => {

@@ -7,36 +7,38 @@
     title="导航栏编辑"
     width="450px"
   >
-    <div class="draggable">
+    <div class="draggable flex">
       <div class="container" v-for="item in list" :key="item.title">
         <p class="text left-text">{{ item.title }}</p>
-        <div class="edit-area" :class="item.class" v-if="item.class == 'left-edit-area'">
-          <!-- v-if="item.class == 'left-edit-area'" -->
+        <div class="edit-area" :class="item.class">
+          <!-- v-show="item.class == 'left-edit-area'" -->
           <draggable
             class="dragArea list-group w-full"
             :list="outsideList"
             tag="transition-group"
             filter=".fixed"
             :move="onMove"
+            @remove="onRemove"
             @start="onStart"
             @end="onEnd"
+            :group="fnSelect(item.group)"
             ghostClass="ghost"
             dragClass="chosen"
             animation="300"
           >
-            <template v-for="element in left" :key="element.icon">
+            <template v-for="element in fnSelect(item.type)" :key="element.only">
               <div class="list-group-item" :class="element?.class">
                 <!-- 删除 -->
-                <FontIcon iconName="RemoveFilled" class="reduce" />
+                <FontIcon iconName="RemoveFilled" class="reduce" @click="reduce(element)" />
                 <!-- 添加 -->
-                <FontIcon iconName="CirclePlusFilled" class="add" />
-                <svg-icon
-                  v-if="element.icon !== 'test'"
-                  :iconClass="element.icon"
+                <FontIcon iconName="CirclePlusFilled" class="add" @click="increase(element)" />
+                <FontIcon
+                  v-if="element?.type == 'el-icon'"
+                  :iconName="element.icon"
                   class="style-svg"
                 />
-                <el-icon class="style-svg" v-else><SwitchFilled /></el-icon>
-                {{ element.title }}
+                <svg-icon v-else :iconClass="element.icon" class="style-svg" />
+                <span>{{ element.title }}</span>
                 <FontIcon iconName="Rank" class="rank" />
               </div>
             </template>
@@ -54,9 +56,9 @@
 </template>
 
 <script>
-import { ref, defineComponent, reactive, toRefs, computed, watch, nextTick } from "vue";
+import { defineComponent } from "vue";
 import emitter from "@/utils/mitt-bus";
-import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
+import { mapState } from "vuex";
 import { VueDraggableNext } from "vue-draggable-next";
 export default defineComponent({
   components: {
@@ -69,13 +71,31 @@ export default defineComponent({
           class: "left-edit-area",
           title: "显示在导航栏上",
           button: "reduce",
+          type: "leftEdit",
+          group: "outsideGroup", // 用于分组，同一组的不同list可以相互拖动
         },
         {
           class: "right-edit-area",
           title: "更多",
           button: "add",
+          type: "rightEdit",
+          group: "insideGroup",
         },
       ],
+      outsideGroup: {
+        name: "draggable",
+        put: true,
+        pull: true,
+      },
+      insideGroup: {
+        name: "draggable",
+        put: true,
+        pull: (e) => {
+          if (e.el.id == "right") return;
+          console.log(e);
+          return true;
+        },
+      },
       showdialog: false,
       enabled: true,
       dragging: false,
@@ -84,19 +104,38 @@ export default defineComponent({
   computed: {
     ...mapState({
       outsideList: (state) => state.sidebar.outsideList,
+      moreList: (state) => state.sidebar.moreList,
     }),
-    left() {
-      return this.outsideList.filter((t) => t.icon !== "icondiandiandian");
+    leftEdit() {
+      return this.outsideList.filter((t) => t.only !== "more");
+    },
+    rightEdit() {
+      return this.moreList;
     },
   },
   mounted() {
     emitter.on("SidebarEditDialog", (val) => {
-      this.showdialog = val;
+      this.setDialog(val);
     });
   },
   methods: {
+    onRemove(e) {
+      console.log(e);
+    },
     onStart() {},
-    onEnd() {},
+    onEnd() {
+      console.log(this.outsideList);
+      console.log(this.moreList);
+    },
+    fnSelect(type) {
+      return this[type];
+    },
+    reduce(item) {
+      console.log(item);
+    },
+    increase(item) {
+      console.log(item);
+    },
     onMove(e) {
       if (e.relatedContext.element.if_fixed == 1) return false;
       return true;
@@ -106,6 +145,9 @@ export default defineComponent({
     },
     handleCancel() {
       this.showdialog = false;
+    },
+    setDialog(flg) {
+      this.showdialog = flg;
     },
   },
 });
@@ -132,7 +174,6 @@ export default defineComponent({
   margin-right: 10px;
 }
 .draggable {
-  display: flex;
   justify-content: space-between;
   .container {
     border-radius: 4px;
