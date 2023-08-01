@@ -35,11 +35,11 @@
 </template>
 
 <script setup>
-import "./utils/custom-menu";
+import "../utils/custom-menu";
 import "@wangeditor/editor/dist/css/style.css";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import RichToolbar from "./components/RichToolbar.vue";
-import { toolbarConfig, editorConfig } from "./utils/configure";
+import RichToolbar from "../components/RichToolbar.vue";
+import { toolbarConfig, editorConfig } from "../utils/configure";
 import emitter from "@/utils/mitt-bus";
 import {
   onBeforeUnmount,
@@ -54,11 +54,11 @@ import {
   nextTick,
 } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
-import { getMsgElemItem, sendChatMessage, customAlert } from "./utils/utils";
+import { getMsgElemItem, sendChatMessage, customAlert } from "../utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-import MentionModal from "./components/MentionModal.vue";
+import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
 import {
   fileImgToBase64Url,

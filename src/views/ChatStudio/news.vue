@@ -55,15 +55,15 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv } from "./utils/utils";
 import { useStore } from "vuex";
 
-import ReplyBox from "./ReplyBox.vue";
-import Editor from "./Editor.vue";
+import Editor from "./chat/Editor.vue";
 import Sidebar from "./Sidebar.vue";
 import Search from "./components/Search.vue";
 import Header from "./components/Header.vue";
-import Chatwin from "./Chatwin.vue";
-import GroupDetails from "./GroupDetails.vue";
+import ReplyBox from "./components/ReplyBox.vue";
+import Chatwin from "./chat/Chatwin.vue";
+import GroupDetails from "./chat/GroupDetails.vue";
 import networklink from "./components/networklink.vue";
-import ConversationList from "./ConversationList.vue";
+import ConversationList from "./chat/ConversationList.vue";
 import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 
 const unread = ref("未读");

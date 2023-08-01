@@ -100,8 +100,8 @@ import {
   validatelastMessage,
   Megtype,
   msgOne,
-} from "./utils/utils";
-import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
+} from "../utils/utils";
+import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
 import { useStore } from "vuex";
 import { showConfirmationBox } from "@/utils/message";
 
@@ -109,24 +109,24 @@ import { timeFormat } from "@/utils/timeFormat";
 import { debounce } from "lodash-es";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
-import Checkbox from "./components/Checkbox.vue";
-import Stateful from "./components/Stateful.vue";
-import LoadMore from "./components/LoadMore.vue";
+import Checkbox from "../components/Checkbox.vue";
+import Stateful from "../components/Stateful.vue";
+import LoadMore from "../components/LoadMore.vue";
 import MyPopover from "@/views/components/MyPopover/index.vue";
 import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { deleteMsgList, revokeMsg, translateText } from "@/api/im-sdk-api";
 import { getMsgList } from "@/api/im-sdk-api/session";
 import emitter from "@/utils/mitt-bus";
-import NameComponent from "./components/NameComponent.vue";
+import NameComponent from "../components/NameComponent.vue";
 import { download } from "@/utils/message-input-utils";
 
-import TextElemItem from "./ElemItemTypes/TextElemItem.vue";
-import TipsElemItem from "./ElemItemTypes/TipsElemItem.vue";
-import ImageElemItem from "./ElemItemTypes/ImageElemItem.vue";
-import FileElemItem from "./ElemItemTypes/FileElemItem.vue";
-import CustomElemItem from "./ElemItemTypes/CustomElemItem.vue";
-import groupTipElement from "./ElemItemTypes/groupTipElement.vue";
-import GroupSystemNoticeElem from "./ElemItemTypes/GroupSystemNoticeElem.vue";
+import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
+import TipsElemItem from "../ElemItemTypes/TipsElemItem.vue";
+import ImageElemItem from "../ElemItemTypes/ImageElemItem.vue";
+import FileElemItem from "../ElemItemTypes/FileElemItem.vue";
+import CustomElemItem from "../ElemItemTypes/CustomElemItem.vue";
+import groupTipElement from "../ElemItemTypes/groupTipElement.vue";
+import GroupSystemNoticeElem from "../ElemItemTypes/GroupSystemNoticeElem.vue";
 
 const isRight = ref(true);
 const MenuItemInfo = ref([]);

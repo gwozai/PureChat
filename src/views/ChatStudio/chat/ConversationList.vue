@@ -73,7 +73,7 @@
 <script setup>
 import { ref, onMounted, computed, h } from "vue";
 import { getImageType } from "@/utils/message-input-utils";
-import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "./utils/menu";
+import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
 import { getRoles } from "@/api/node-admin-api/roles";
 import { generateUUID } from "@/utils/index";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
@@ -83,7 +83,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
 import { TIMpingConv, setMessageRemindType } from "@/api/im-sdk-api";
-import Label from "./components/Label.vue";
+import Label from "../components/Label.vue";
 
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
