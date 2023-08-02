@@ -1,5 +1,6 @@
 import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
+import { chatGpt, imCallback } from "@/api/node-admin-api/other";
 import TIM from "tim-js-sdk";
 import {
   deleteConversation,
@@ -10,8 +11,8 @@ import {
 } from "@/api/im-sdk-api";
 import { sendMsg } from "@/api/im-sdk-api/message";
 import { getMsgList, getUnreadMsg } from "@/api/im-sdk-api/session";
-
 import { deepClone } from "@/utils/clone";
+const { production } = require("@/config/vue.custom.config");
 
 const getBaseTime = (list) => {
   return list?.length > 0 ? list.find((t) => t.isTimeDivider).time : 0;
@@ -424,7 +425,8 @@ const conversation = {
       }
     },
     // 消息发送成功回调
-    async SENDMSG_SUCCESS_CALLBACK({ state, commit }, action) {
+    async SENDMSG_SUCCESS_CALLBACK({ state, commit, rootState }, action) {
+      let toAccount = state.currentConversation?.toAccount;
       const { convId, message } = action
       console.log(message, "sendMsg消息发送成功");
       commit("SET_HISTORYMESSAGE", {
@@ -435,13 +437,13 @@ const conversation = {
         },
       });
       commit("updataScroll");
-      // !production &&
-      //   imCallback({
-      //     Text: message.payload.text,
-      //     From: message.from,
-      //     To: toAccount,
-      //     type: message.type,
-      //   });
+      !production &&
+        imCallback({
+          Text: message.payload.text,
+          From: message.from,
+          To: toAccount,
+          type: message.type,
+        });
     }
   },
   getters: {
