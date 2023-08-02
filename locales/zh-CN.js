@@ -5,7 +5,8 @@ export default {
   ...elementZhLocale,
   chat: {
     buttonPrompt: '按Enter发送消息,Ctrl+Enter换行',
-    sending: '发送'
+    sending: '发送',
+    sendMessage: '发送消息'
   },
   common: {
     forward: "转发",

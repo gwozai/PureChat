@@ -5,7 +5,8 @@ export default {
   ...elementEnLocale,
   chat: {
     buttonPrompt: 'Press Enter to send the message, Ctrl+Enter to wrap',
-    sending: 'Sending'
+    sending: 'Sending',
+    sendMessage: 'Send message'
   },
   common: {
     forward: "Forward",

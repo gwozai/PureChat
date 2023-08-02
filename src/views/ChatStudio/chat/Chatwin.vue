@@ -65,7 +65,7 @@
         </div>
       </div>
     </el-scrollbar>
-    <!-- <MyPopover /> -->
+    <MyPopover />
     <contextmenu ref="contextmenu">
       <contextmenu-item
         v-for="item in RIGHT_CLICK_MENU_LIST"

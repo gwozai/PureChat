@@ -29,7 +29,7 @@ const sidebar = {
         only: 'test',
         icon: "SwitchFilled",
         title: "测试",
-        show: production ? '' : 'hide',
+        show: production ? 'hide' : '',
         type: "el-icon",
       },
       {

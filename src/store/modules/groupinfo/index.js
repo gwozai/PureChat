@@ -20,6 +20,7 @@ export default {
     isShowAddBook: false, // 地址本状态
     popover: false, // 卡片
     seat: null,
+    cardData: null,
     groupDrawer: false, // 群聊开关
     groupList: [], //群组列表
     groupProfile: null, // 群聊数据
