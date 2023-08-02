@@ -4,20 +4,21 @@
     :modal="true"
     v-model="showdialog"
     :append-to-body="true"
+    @close="onClose"
     title="导航栏编辑"
     width="450px"
   >
     <div class="draggable flex">
       <div class="container" v-for="item in list" :key="item.title">
         <p class="text left-text">{{ item.title }}</p>
-        <div class="edit-area" :class="item.class">
-          <!-- v-show="item.class == 'left-edit-area'" -->
+        <div class="edit-area h-full" :class="item.class">
           <draggable
             class="dragArea list-group w-full"
-            :list="outsideList"
+            :list="fnSelect(item.list)"
             tag="transition-group"
             filter=".fixed"
             :move="onMove"
+            @update="onUpdate"
             @remove="onRemove"
             @start="onStart"
             @end="onEnd"
@@ -58,6 +59,7 @@
 <script>
 import { defineComponent } from "vue";
 import emitter from "@/utils/mitt-bus";
+import { cloneDeep, uniqBy } from "lodash-es";
 import { mapState } from "vuex";
 import { VueDraggableNext } from "vue-draggable-next";
 export default defineComponent({
@@ -72,6 +74,7 @@ export default defineComponent({
           title: "显示在导航栏上",
           button: "reduce",
           type: "leftEdit",
+          list: "leftEdit",
           group: "outsideGroup", // 用于分组，同一组的不同list可以相互拖动
         },
         {
@@ -79,6 +82,7 @@ export default defineComponent({
           title: "更多",
           button: "add",
           type: "rightEdit",
+          list: "rightEdit",
           group: "insideGroup",
         },
       ],
@@ -92,13 +96,18 @@ export default defineComponent({
         put: true,
         pull: (e) => {
           if (e.el.id == "right") return;
-          console.log(e);
           return true;
         },
       },
+      leftEdit: [],
+      rightEdit: [],
       showdialog: false,
       enabled: true,
       dragging: false,
+      cache: {
+        deepLeft: [],
+        deepRight: [],
+      },
     };
   },
   computed: {
@@ -106,45 +115,88 @@ export default defineComponent({
       outsideList: (state) => state.sidebar.outsideList,
       moreList: (state) => state.sidebar.moreList,
     }),
-    leftEdit() {
-      return this.outsideList.filter((t) => t.only !== "more");
-    },
-    rightEdit() {
-      return this.moreList;
-    },
+  },
+  created() {
+    this.init();
   },
   mounted() {
     emitter.on("SidebarEditDialog", (val) => {
       this.setDialog(val);
+      this.record();
     });
   },
   methods: {
-    onRemove(e) {
-      console.log(e);
+    record() {
+      const { leftEdit, rightEdit } = this.fnRepeat();
+      this.cache["deepLeft"] = leftEdit;
+      this.cache["deepRight"] = rightEdit;
     },
+    onRemove() {},
     onStart() {},
+    onUpdate() {},
+    callback() {
+      this.$nextTick(() => {
+        this.$store.commit("SET_OUT_SIDE_LIST", this.leftEdit);
+        this.$store.commit("SET_MORE_LIST", this.rightEdit);
+      });
+    },
     onEnd() {
-      console.log(this.outsideList);
-      console.log(this.moreList);
+      this.callback();
+    },
+    fnRepeat() {
+      const left = this.outsideList.filter((t) => t.only !== "more" && t?.show !== "hide");
+      const right = this.moreList;
+      return {
+        leftEdit: uniqBy(left, "only"),
+        rightEdit: uniqBy(right, "only"),
+      };
+    },
+    init() {
+      const { leftEdit: left, rightEdit: right } = this.fnRepeat();
+      this.leftEdit = cloneDeep(left);
+      this.rightEdit = cloneDeep(right);
     },
     fnSelect(type) {
       return this[type];
     },
+    // 删除
     reduce(item) {
-      console.log(item);
+      if (item.if_fixed == 1) return;
+      const index = this.leftEdit.indexOf(item);
+      this.leftEdit.splice(index, 1);
+      this.rightEdit.push(item);
+      this.callback();
     },
+    // 添加
     increase(item) {
-      console.log(item);
+      const index = this.rightEdit.indexOf(item);
+      this.rightEdit.splice(index, 1);
+      this.leftEdit.push(item);
+      this.callback();
     },
     onMove(e) {
       if (e.relatedContext.element.if_fixed == 1) return false;
       return true;
     },
-    handleConfirm() {
-      this.showdialog = false;
+    reduction() {
+      this.leftEdit = cloneDeep(this.cache["deepLeft"]);
+      this.rightEdit = cloneDeep(this.cache["deepRight"]);
+      this.callback();
     },
+    // 确定
+    handleConfirm() {
+      this.setDialog(false);
+    },
+    // 取消
     handleCancel() {
-      this.showdialog = false;
+      this.setDialog(false);
+      this.reduction();
+    },
+    // 关闭弹框回调
+    onClose() {
+      if (!this.showdialog) return;
+      console.log("onClose");
+      this.reduction();
     },
     setDialog(flg) {
       this.showdialog = flg;
@@ -175,12 +227,14 @@ export default defineComponent({
 }
 .draggable {
   justify-content: space-between;
+  height: 400px;
   .container {
     border-radius: 4px;
     width: 195px;
   }
   .edit-area {
     background-color: #f5f5f5;
+    height: 384px;
     .chosen {
       background-color: white;
       color: black;

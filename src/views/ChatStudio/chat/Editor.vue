@@ -117,7 +117,7 @@ const insertMention = (id, name) => {
     info: { id }, // 其他信息，自定义
     children: [{ text: "" }], // 必须有一个空 text 作为 children
   };
-  editor.restoreSelection(); // 恢复选区
+  editor?.restoreSelection(); // 恢复选区
   editor.deleteBackward("character"); // 删除 '@'
   editor.insertNode(mentionNode); // 插入 mention
   editor.move(1); // 移动光标

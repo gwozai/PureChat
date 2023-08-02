@@ -14,11 +14,11 @@ const sidebar = {
         icon: "mail_list",
         title: "通讯录",
       },
-      {
-        only: 'apply',
-        icon: "application",
-        title: "应用",
-      },
+      // {
+      //   only: 'apply',
+      //   icon: "application",
+      //   title: "应用",
+      // },
       {
         only: 'document',
         icon: "Document",
@@ -29,7 +29,7 @@ const sidebar = {
         only: 'test',
         icon: "SwitchFilled",
         title: "测试",
-        show: production ? 'hide' : '',
+        show: production ? '' : 'hide',
         type: "el-icon",
       },
       {
@@ -45,15 +45,23 @@ const sidebar = {
         icon: "github",
         title: "github",
       },
-      {
-        only: 'gitee',
-        icon: "Connection",
-        title: "gitee",
-      }
+      // {
+      //   only: 'gitee',
+      //   icon: "Connection",
+      //   title: "gitee",
+      // }
     ]
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    SET_OUT_SIDE_LIST(state, list) {
+      const data = state.outsideList.filter(t => t.only == 'more')
+      state.outsideList = [...list, ...data]
+    },
+    SET_MORE_LIST(state, list) {
+      state.moreList = list
+    }
+  },
   actions: {},
 };
 
