@@ -59,3 +59,16 @@ export const restSendMsg = async (params) => {
     },
   });
 };
+// 解散群组
+export const destroyGroup = async (params) => {
+  const { groupId } = params;
+  const url = "v4/group_open_http_svc/destroy_group";
+  const random = randomNum(0, 4294967295);
+  const result = await service({
+    url: buildURL(url),
+    method: "post",
+    data: {
+      GroupId: groupId
+    },
+  });
+}

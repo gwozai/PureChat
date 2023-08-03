@@ -1,7 +1,6 @@
 import http from "@/utils/http/index";
 import axios from "axios";
 import qs from "qs";
-import { restSendMsg } from "@/api/rest-api";
 
 export const createForData = ({ name, type, size, fileName, uploadedSize = 0, file }) => {
   const formData = new FormData();
@@ -45,32 +44,7 @@ export const uploadFiles = async (params) => {
     console.log(error);
   }
 };
-// 单发单聊消息
-export const restSendmsg = (params) => {
-  return http({
-    url: "/restSendmsg",
-    method: "get",
-    params,
-  });
-};
-// 钉钉机器人接口
-export const dingTalk = async (params) => {
-  return http({
-    url: "/dingTalk",
-    method: "post",
-    data: params,
-  });
-};
-// chatGpt
-export const chatGpt = async (params) => {
-  const { From, To, content, userID } = params;
-  if (To == "R00002") {
-    const data = await dingTalk({ text: content });
-    console.log(data);
-  }
-  if (To !== "R00001") return;
-  await restSendmsg(params);
-};
+
 // im消息回调
 export const imCallback = (params) => {
   const { Text, From, To, type } = params;

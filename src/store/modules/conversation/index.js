@@ -1,6 +1,6 @@
 import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
-import { chatGpt, imCallback } from "@/api/node-admin-api/other";
+import { imCallback } from "@/api/node-admin-api/other";
 import TIM from "tim-js-sdk";
 import {
   deleteConversation,

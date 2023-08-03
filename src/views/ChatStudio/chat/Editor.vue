@@ -67,7 +67,6 @@ import {
   convertEmoji,
 } from "@/utils/message-input-utils";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
-import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { debounce } from "lodash-es";
 import { sendMsg } from "@/api/im-sdk-api/message";
 const { production } = require("@/config/vue.custom.config");

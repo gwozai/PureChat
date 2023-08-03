@@ -27,7 +27,6 @@ import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "v
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { getFriendList } from "@/api/im-sdk-api";
 import { getGroupList } from "@/api/im-sdk-api/group";
-import { accountCheck, restSendMsg } from "@/api/rest-api";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { setCookies, getCookies } from "@/utils/Cookies";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
@@ -108,15 +107,10 @@ export default defineComponent({
     getCookies() {
       console.log(getCookies(ACCESS_TOKEN));
     },
-    sendMsg() {
-      restSendMsg();
-    },
-    async test2() {
-      const res = await accountCheck({ userid: "admin" });
-      console.log(res);
-    },
+    sendMsg() {},
+    async test2() {},
     handleGroupClick(groupID) {
-      this.TAGGLE_OUE_SIDE("news");
+      this.TAGGLE_OUE_SIDE("message");
       this.CHEC_OUT_CONVERSATION({ convId: `GROUP${groupID}` });
     },
     fileupload() {},
@@ -134,7 +128,6 @@ export default defineComponent({
       setState,
       theme,
       setTheme,
-      accountCheck,
       ...toRefs(data),
     };
   },
