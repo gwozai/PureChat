@@ -7439,6 +7439,11 @@ minizlib@^2.1.1:
     minipass "^3.0.0"
     yallist "^4.0.0"
 
+mint-filter@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/mint-filter/-/mint-filter-4.0.3.tgz#da12775be9400db000467031fa86c5eb3ed9bc8e"
+  integrity sha512-CKh2zKv9oFHEmYCXFk5REG2480FBNYixK+hw0mlRd/TgDJVhPpRhHPNhWa3Q6zF1tpE2q7w7y+Ylu1YJusXDpA==
+
 mississippi@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmmirror.com/mississippi/-/mississippi-3.0.0.tgz#ea0a3291f97e0b5e8776b363d5f0a12d94c67022"
@@ -8845,10 +8850,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.npmmirror.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
 
-pure-tools@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/pure-tools/-/pure-tools-0.0.1.tgz#198106bf6e422a148363194752e088d8245db40e"
-  integrity sha512-T392qcZcd9FoHD77Qwb1VLmB4opPKUdLqVCwVbXyXmkt5i57++NArbK4TZrpE4Q6P0PVBOYUwdjcl9jjJraS8w==
+pure-tools@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/pure-tools/-/pure-tools-0.0.2.tgz#49e588488c8854b4be4505b8044fe390224a8c87"
+  integrity sha512-wNUtidus81UqxSNVvf9h1BFnAHIVEhCmm0PkKrXiurCrj7EGXDX1w+mS+kIFfDuiqQTdQpVwAS4z23X1YadG7Q==
   dependencies:
     typescript "^5.1.6"
 

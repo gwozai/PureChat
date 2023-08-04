@@ -304,7 +304,6 @@ const sendMsgBefore = () => {
   const text = editor.getText(); // 纯文本内容
   const HtmlText = editor.getHtml(); // 非格式化的 html
   const image = editor.getElemsByType("image"); // 所有图片
-
   if (str.includes("mention")) {
     aitStr = str.replace(/<[^>]+>/g, "");
     aitStr = aitStr.replace(/&nbsp;/gi, "");

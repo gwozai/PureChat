@@ -3,14 +3,14 @@ const sidebar = {
   state: {
     outsideList: [
       {
-        only: 'message',
+        only: "message",
         icon: "news",
         title: "消息",
         class: "fixed",
         if_fixed: 1,
       },
       {
-        only: 'address_book',
+        only: "address_book",
         icon: "mail_list",
         title: "通讯录",
       },
@@ -20,28 +20,28 @@ const sidebar = {
       //   title: "应用",
       // },
       {
-        only: 'document',
+        only: "document",
         icon: "Document",
         title: "文档",
         type: "el-icon",
       },
       {
-        only: 'test',
+        only: "test",
         icon: "SwitchFilled",
         title: "测试",
-        show: production ? 'hide' : '',
+        show: production ? "hide" : "",
         type: "el-icon",
       },
       {
-        only: 'more',
+        only: "more",
         icon: "icondiandiandian",
         title: "更多",
-        mode: 'other'
+        mode: "other",
       },
     ],
     moreList: [
       {
-        only: 'github',
+        only: "github",
         icon: "github",
         title: "github",
       },
@@ -50,17 +50,17 @@ const sidebar = {
       //   icon: "Connection",
       //   title: "gitee",
       // }
-    ]
+    ],
   },
   getters: {},
   mutations: {
     SET_OUT_SIDE_LIST(state, list) {
-      const data = state.outsideList.filter(t => t.only == 'more')
-      state.outsideList = [...list, ...data]
+      const data = state.outsideList.filter((t) => t.only == "more");
+      state.outsideList = [...list, ...data];
     },
     SET_MORE_LIST(state, list) {
-      state.moreList = list
-    }
+      state.moreList = list;
+    },
   },
   actions: {},
 };

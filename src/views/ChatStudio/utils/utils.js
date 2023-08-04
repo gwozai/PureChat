@@ -267,7 +267,6 @@ export async function sendChatMessage(convId, convType, options) {
   return TextMsg;
 }
 
-
 export const customAlert = (s, t) => {
   console.log(s, t);
   switch (t) {

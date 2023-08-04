@@ -405,7 +405,7 @@ const conversation = {
     // 会话消息发送
     async SESSION_MESSAGE_SENDING({ state, commit, dispatch }, action) {
       const { payload } = action;
-      const { convId } = payload
+      const { convId } = payload;
       commit("SET_HISTORYMESSAGE", {
         type: "UPDATE_MESSAGES",
         payload: {
@@ -419,15 +419,15 @@ const conversation = {
       // 发送消息
       const { code, message } = await sendMsg(payload.message);
       if (code == 0) {
-        dispatch('SENDMSG_SUCCESS_CALLBACK', { convId, message })
+        dispatch("SENDMSG_SUCCESS_CALLBACK", { convId, message });
       } else {
-        console.log('发送失败', code, message)
+        console.log("发送失败", code, message);
       }
     },
     // 消息发送成功回调
     async SENDMSG_SUCCESS_CALLBACK({ state, commit, rootState }, action) {
       let toAccount = state.currentConversation?.toAccount;
-      const { convId, message } = action
+      const { convId, message } = action;
       console.log(message, "sendMsg消息发送成功");
       commit("SET_HISTORYMESSAGE", {
         type: "UPDATE_MESSAGES",
@@ -444,7 +444,7 @@ const conversation = {
       //     To: toAccount,
       //     type: message.type,
       //   });
-    }
+    },
   },
   getters: {
     toAccount: (state) => {

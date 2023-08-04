@@ -1,5 +1,5 @@
 import { deleteConversation } from "@/api/im-sdk-api/index";
-import { restApi } from '@/api/node-admin-api/rest';
+import { restApi } from "@/api/node-admin-api/rest";
 import {
   getGroupList,
   getGroupProfile,
@@ -105,8 +105,8 @@ export default {
       // dispatch("DELETE_SESSION", { convId });
       const { ErrorCode } = await restApi({
         params: groupId,
-        funName: 'destroyGroup'
-      })
+        funName: "destroyGroup",
+      });
       if (ErrorCode !== 0) return;
       dispatch("DELETE_SESSION", { convId });
     },

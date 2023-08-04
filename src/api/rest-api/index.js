@@ -68,7 +68,7 @@ export const destroyGroup = async (params) => {
     url: buildURL(url),
     method: "post",
     data: {
-      GroupId: groupId
+      GroupId: groupId,
     },
   });
-}
+};
