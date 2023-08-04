@@ -13,6 +13,7 @@
     </el-button>
     <el-button type="primary" @click="test1">获取群组列表</el-button>
     <el-button type="primary" @click="test2"> 查询帐号 </el-button>
+    <el-button type="primary" @click="test3"> 拉取运营数据 </el-button>
 
     <div v-for="item in groupList" :key="item.groupID">
       <p @click="handleGroupClick(item.groupID)">
@@ -100,6 +101,12 @@ export default defineComponent({
     },
     test1() {
       this.getGroupList();
+    },
+    async test3() {
+      const data = await this.$api.restApi({
+        funName: "getappInfo",
+      });
+      console.log(data);
     },
     setCookies() {
       setCookies("key", "123", 10);
