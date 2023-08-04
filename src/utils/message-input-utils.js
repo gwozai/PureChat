@@ -32,7 +32,6 @@ export const fileImgToBase64Url = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64Value = reader.result;
-      // reader.result 表示文件的数据 URL
       resolve(base64Value);
     };
     reader.readAsDataURL(file);
@@ -56,7 +55,6 @@ export const urlToBase64 = (url) => {
       const result = canvas.toDataURL("image/png");
       resolve(result);
     };
-    // 使用 setAttribute 方法设置 crossOrigin 属性为 "Anonymous"，以便跨域加载图片。
     image.setAttribute("crossOrigin", "Anonymous");
     image.src = url;
     image.onerror = () => {
@@ -87,14 +85,10 @@ export const getImageType = (str) => {
  */
 export const getFileType = (filename) => {
   if (!filename) return "";
-  // 获取文件名的最后一个部分
   const lastPart = filename.split("/").pop();
-  // 如果文件名只有一个点号，则返回空字符串
   if (lastPart === ".") return "";
-  // 如果文件名包含多个点号，则返回最后一个点号之后的部分作为扩展名
   const parts = lastPart.split(".");
   if (parts.length > 1) return parts.pop();
-  // 文件名中只有一个部分，没有扩展名
   return "";
 };
 
@@ -196,10 +190,8 @@ export function downloadCopy(url, filename) {
  */
 export function queryStringToObject(String) {
   let params = {};
-  // 从查询字符串中获取参数部分并去掉问号
   let queryString = String.match(/\?(.*)/)[1];
   queryString = queryString.substring(1);
-  // 对每个参数进行处理，将其分割为键值对，并将键值对加入到params对象中
   queryString.split("&").forEach(function (param) {
     var keyValue = param.split("=");
     params[keyValue[0]] = decodeURIComponent(keyValue[1] || "");
@@ -225,9 +217,8 @@ export function getReplyMsgContent(reply) {
  * 匹配不包含 <img src= 的字符串
  * @param {string[]} arr - 包含字符串和图片链接的数组
  * @returns {string} - 返回第一个匹配到的不含图片链接的字符串，如果都含有图片链接则返回 undefined
- * const arr = ['<img src="image.png">', "some string", '<img src="image3.png">'];
- * const result = findNonImageString(arr);
- * console.log(result); // 输出 "some string"
+ * ['<img src="image.png">', "some string", '<img src="image3.png">']
+ * "some string"
  */
 export function findNonImageString(arr) {
   const regex = /^((?!<img src=).)*$/;
@@ -240,9 +231,8 @@ export function findNonImageString(arr) {
  * @param {string} html - 待转换的 HTML 字符串
  * @param {Array} emojiMap - 表情符号和对应的图像数据数组
  * @returns {string} - 转换后的结果
- *
  * <p>12<img src="*" alt="[我最美]" />333</p>
- * <p>12[我最美]333</p>
+ * 12[我最美]333
  */
 export function convertEmoji(html, emojiMap) {
   if (!html || !emojiMap || !Array.isArray(emojiMap)) return "";
@@ -259,6 +249,6 @@ export function convertEmoji(html, emojiMap) {
     const emojiText = emojiMapExtended[src] || "";
     return emojiText;
   });
-  const rege = /<[^>]+>/g; //<p>[吓]23[疑问]</p> -> [吓]23[疑问]
+  const rege = /<[^>]+>/g;
   return result.replace(rege, "");
 }

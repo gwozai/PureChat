@@ -118,7 +118,7 @@ import { deleteMsgList, revokeMsg, translateText } from "@/api/im-sdk-api";
 import { getMsgList } from "@/api/im-sdk-api/session";
 import emitter from "@/utils/mitt-bus";
 import NameComponent from "../components/NameComponent.vue";
-import { download } from "@/utils/message-input-utils";
+import { download, downloadCopy } from "@/utils/message-input-utils";
 
 import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
 import TipsElemItem from "../ElemItemTypes/TipsElemItem.vue";
@@ -408,7 +408,8 @@ const handleSave = (data) => {
   const {
     payload: { fileName, fileUrl },
   } = data;
-  download(fileUrl, fileName);
+  // download(fileUrl, fileName);
+  downloadCopy(fileUrl, fileName);
 };
 
 const handleTranslate = (data) => {
