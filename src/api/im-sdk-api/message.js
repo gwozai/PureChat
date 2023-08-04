@@ -1,7 +1,13 @@
 import tim from "@/utils/im-sdk/tim";
 import TIM from "tim-js-sdk";
+import emitter from "@/utils/mitt-bus";
 import { getReplyMsgContent } from "@/utils/message-input-utils";
 
+const fileUploading = (data, bar = 0) => {
+  const uuid = data?.payload?.uuid || ''
+  console.log("file uploading:", uuid, bar?.toFixed(0));
+  emitter.emit('fileUploading', { uuid, num: bar?.toFixed(0) })
+}
 // 发送消息
 export const sendMsg = async (params) => {
   const { messageElementObject, callback } = params || {};
@@ -91,7 +97,7 @@ export const CreateFiletMsg = async (params) => {
     },
     // 文件上传进度
     onProgress: (event) => {
-      console.log("file uploading:", event);
+      fileUploading(message, event * 100)
     },
   });
   return message;

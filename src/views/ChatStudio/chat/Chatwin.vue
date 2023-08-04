@@ -55,7 +55,12 @@
             >
               <NameComponent :item="item" />
               <div :class="Megtype(item.type)" :id="item.ID">
-                <component :key="item.ID" :is="loadMsgComponents(item)" :message="item">
+                <component
+                  :key="item.ID"
+                  :is="loadMsgModule(item)"
+                  :message="item"
+                  :status="item.status"
+                >
                 </component>
               </div>
             </div>
@@ -304,7 +309,7 @@ const getMoreMsg = async () => {
   }
 };
 // 动态组件
-const loadMsgComponents = (item) => {
+const loadMsgModule = (item) => {
   const { type, isRevoked } = item;
   const CompMap = {
     TIMTextElem: TextElemItem, //文本消息
