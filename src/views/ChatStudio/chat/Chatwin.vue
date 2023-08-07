@@ -436,7 +436,7 @@ const handleDeleteMsg = async (data) => {
     const message = { message: "确定删除?", iconType: "warning" };
     const result = await showConfirmationBox(message);
     if (result == "cancel") return;
-    const { code } = await deleteMsgList(data);
+    const { code } = await deleteMsgList([data]);
     if (code !== 0) return;
     const { conversationID, toAccount, to } = data;
     const payload = { convId: conversationID, message: data };

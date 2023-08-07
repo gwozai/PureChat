@@ -53,7 +53,7 @@ export const deleteMsgList = async (params) => {
   const {
     code,
     data: { messageList },
-  } = await tim.deleteMessage([params]);
+  } = await tim.deleteMessage(params);
   return {
     code,
     messageList,

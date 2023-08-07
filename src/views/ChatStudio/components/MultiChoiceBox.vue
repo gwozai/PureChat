@@ -17,6 +17,7 @@ import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "v
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { createForwardMsg, sendMsg } from "@/api/im-sdk-api/message";
 import { showConfirmationBox } from "@/utils/message";
+import { deleteMsgList } from "@/api/im-sdk-api";
 import TIM from "tim-js-sdk";
 export default defineComponent({
   name: "MultiChoiceBox",
@@ -50,6 +51,7 @@ export default defineComponent({
       showMsgBox: (state) => state.conversation.showMsgBox,
       forwardData: (state) => state.conversation.forwardData,
       showCheckbox: (state) => state.conversation.showCheckbox,
+      currentConversation: (state) => state.conversation.currentConversation,
     }),
     disabled() {
       return this.forwardData.size == 0;
@@ -74,16 +76,17 @@ export default defineComponent({
       this.shutdown();
     },
     async deleteMessage() {
-      // const { code } = await deleteMsgList(obj);
-      // if (code !== 0) return;
-      // const { conversationID, toAccount, to } = data;
-      // this.$store.commit("SET_HISTORYMESSAGE", {
-      //   type: "DELETE_MESSAGE",
-      //   payload: {
-      //     convId: conversationID,
-      //     message: data,
-      //   },
-      // });
+      const forwardData = this.filterate();
+      const { code } = await deleteMsgList([...forwardData]);
+      if (code !== 0) return;
+      const { conversationID, toAccount, to } = this.currentConversation;
+      this.$store.commit("SET_HISTORYMESSAGE", {
+        type: "DELETE_MESSAGE",
+        payload: {
+          convId: conversationID,
+          message: null,
+        },
+      });
     },
     // 合并转发
     mergeForward() {
