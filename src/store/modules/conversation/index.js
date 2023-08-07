@@ -438,12 +438,12 @@ const conversation = {
       });
       commit("updataScroll");
       // !production &&
-      //   imCallback({
-      //     Text: message.payload.text,
-      //     From: message.from,
-      //     To: toAccount,
-      //     type: message.type,
-      //   });
+      imCallback({
+        Text: message.payload.text,
+        From: message.from,
+        To: toAccount,
+        type: message.type,
+      });
     },
   },
   getters: {

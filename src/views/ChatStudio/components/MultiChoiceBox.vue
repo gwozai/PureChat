@@ -28,7 +28,7 @@ export default defineComponent({
           type: "MergeForward",
           value: "合并转发",
           icon: "mergeForward",
-          class: "noDrop",
+          class: "noDrop", // noDrop
         },
         {
           type: "ForwardItemByItem",
@@ -40,7 +40,7 @@ export default defineComponent({
           type: "removalMsg",
           value: "删除消息",
           icon: "delete",
-          class: "noDrop",
+          class: "",
         },
       ],
     };
@@ -76,6 +76,8 @@ export default defineComponent({
       this.shutdown();
     },
     async deleteMessage() {
+      const result = await showConfirmationBox({ message: "确定删除?", iconType: "warning" });
+      if (result == "cancel") return;
       const forwardData = this.filterate();
       const { code } = await deleteMsgList([...forwardData]);
       if (code !== 0) return;

@@ -48,6 +48,7 @@ export const uploadFiles = async (params) => {
 // im消息回调
 export const imCallback = (params) => {
   const { Text, From, To, type } = params;
+  if (To !== 'R00001') return
   const data = {
     MsgBody: [
       {

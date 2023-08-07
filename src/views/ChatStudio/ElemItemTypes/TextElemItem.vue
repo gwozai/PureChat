@@ -23,7 +23,6 @@ import { toRefs, h } from "vue";
 import ReplyElem from "./ReplyElem.vue";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
 // const reg = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
-
 const props = defineProps({
   message: {
     type: Object,
@@ -31,6 +30,7 @@ const props = defineProps({
   },
 });
 const { message } = toRefs(props);
+
 const onClick = (data) => {
   console.log(data);
 };
