@@ -26,6 +26,11 @@ const sidebar = {
         type: "el-icon",
       },
       {
+        only: "chatgpt",
+        icon: "openai",
+        title: "ChatGpt",
+      },
+      {
         only: "test",
         icon: "SwitchFilled",
         title: "测试",

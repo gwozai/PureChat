@@ -24,6 +24,7 @@ const showChat = (value) => {
 };
 const frame = [
   "document",
+  "chatgpt",
   // "github",
   // "gitee"
 ];

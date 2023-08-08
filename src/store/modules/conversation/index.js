@@ -57,9 +57,10 @@ const conversation = {
           } else {
             state.currentMessageList = [];
           }
+          console.log(state.currentMessageList, HISTORY_MESSAGE_COUNT)
           // 当前会话少于历史条数关闭loading
-          const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
-          state.noMore = isMore;
+          // const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
+          // state.noMore = isMore;
           break;
         }
         // 添加更多消息 拉取历史消息时触发
