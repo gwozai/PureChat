@@ -5,6 +5,8 @@
 <script setup>
 import { html2Escape } from "../utils/utils";
 import { ref, toRefs, computed, watch, h } from "vue";
+
+// eslint-disable-next-line no-undef
 const props = defineProps({
   text: {
     type: String,
@@ -15,14 +17,17 @@ const { text } = toRefs(props);
 
 function AnalysisUrl(props) {
   const { text } = props;
-  let str = html2Escape(text);
-  let reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-|:|;|\+|%|#)+)/g;
-  let flag = reg.test(str);
-  let htmlStr = str.replace(
-    reg,
-    `<a data-link="$1$2" href="$1$2" class="linkUrl" target="_blank"> $1$2 </a>`
-  );
-  return flag ? h("span", { innerHTML: htmlStr, onClick: () => {} }) : text;
+  const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-|,|:|;|\+|%|#)+)/g;
+  const urls = text.match(reg);
+  if (!urls) {
+    return text;
+  }
+  const htmlStr = urls.reduce((acc, url) => {
+    const escapedUrl = html2Escape(url);
+    const link = `<a data-link="${escapedUrl}" href="${escapedUrl}" class="linkUrl" target="_blank">${escapedUrl}</a>`;
+    return acc.replace(url, link);
+  }, text);
+  return h("span", { innerHTML: htmlStr, onClick: () => {} });
 }
 </script>
 
