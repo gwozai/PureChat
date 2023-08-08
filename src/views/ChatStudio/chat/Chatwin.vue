@@ -473,10 +473,8 @@ watch(currentReplyMsg, (data) => {
 });
 
 emitter.on("updataScroll", (data) => {
-  const off = data == "bottom";
-  if (off) {
-    const isbot = scrollBottom();
-    isbot && updateScrollBarHeight();
+  if (data == "bottom") {
+    scrollBottom() && updateScrollBarHeight();
   } else {
     updateScrollBarHeight();
   }
