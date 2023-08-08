@@ -2,6 +2,7 @@ import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/sto
 import { addTimeDivider } from "@/utils/addTimeDivider";
 import { imCallback } from "@/api/node-admin-api/other";
 import TIM from "tim-js-sdk";
+import { nextTick } from "vue";
 import {
   deleteConversation,
   getConversationProfile,
@@ -57,7 +58,7 @@ const conversation = {
           } else {
             state.currentMessageList = [];
           }
-          console.log(state.currentMessageList, HISTORY_MESSAGE_COUNT)
+          console.log(state.currentMessageList, HISTORY_MESSAGE_COUNT);
           // 当前会话少于历史条数关闭loading
           // const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
           // state.noMore = isMore;
@@ -82,30 +83,37 @@ const conversation = {
           console.log(payload, "更新消息");
           const { convId, message } = payload;
           let oldMessageList = state.historyMessageList.get(convId);
+          // const matchedIndex = oldMessageList.findIndex((item) => item.ID === payload.message.ID);
           let matched = false;
-          let newMessageList = [];
-          if (oldMessageList) {
-            newMessageList = oldMessageList.map((oldMessage) => {
-              if (oldMessage.ID === payload.message.ID) {
-                matched = true;
-                return payload.message;
-              } else {
-                return oldMessage;
-              }
-            });
-          }
+          // let newMessageList = [];
+          // if (oldMessageList) {
+          //   newMessageList = oldMessageList.map((oldMessage) => {
+          //     if (oldMessage.ID === payload.message.ID) {
+          //       matched = true;
+          //       return payload.message;
+          //     } else {
+          //       return oldMessage;
+          //     }
+          //   });
+          // }
+          // 新消息
+          // if (!matched) {
+          //   let baseTime = getBaseTime(newMessageList);
+          //   let timeDividerResult = addTimeDivider([message], baseTime).reverse();
+          //   newMessageList.unshift(...timeDividerResult);
+          // }
           // 使用reduce()方法来代替map()
           // 并在reduce过程中判断是否匹配到了消息。
           // 避免在检查完所有旧消息之后仍需要再次遍历新消息数组来判断是否添加新消息的情况
-          // const newMessageList = oldMessageList.reduce((acc, item) => {
-          //   if (item.message_msg_id === message.message_msg_id) {
-          //     matched = true;
-          //     acc.push(message);
-          //   } else {
-          //     acc.push(item);
-          //   }
-          //   return acc;
-          // }, []);
+          const newMessageList = oldMessageList.reduce((acc, item) => {
+            if (item.ID === payload.message.ID) {
+              matched = true;
+              acc.push(payload.message);
+            } else {
+              acc.push(item);
+            }
+            return acc;
+          }, []);
           // 新消息
           if (!matched) {
             let baseTime = getBaseTime(newMessageList);
