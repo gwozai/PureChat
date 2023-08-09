@@ -45,6 +45,13 @@ export default defineComponent({
       ],
     };
   },
+  watch: {
+    currentConversation() {
+      if (!this.disabled) {
+        this.$store.commit("SET_FORWARD_DATA", { type: "clear", payload: null });
+      }
+    },
+  },
   computed: {
     ...mapGetters(["currentType"]),
     ...mapState({

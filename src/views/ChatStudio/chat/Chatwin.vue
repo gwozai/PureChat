@@ -35,7 +35,7 @@
             <Checkbox
               :item="item"
               :isRevoked="item.isRevoked"
-              @click.stop="handleSelect($event, item)"
+              @click.stop="handleSelect($event, item, 'initial')"
             />
             <div class="picture" v-if="!item.isRevoked && item.type !== 'TIMGroupTipElem'">
               <el-avatar
@@ -118,7 +118,7 @@ import Checkbox from "../components/Checkbox.vue";
 import Stateful from "../components/Stateful.vue";
 import LoadMore from "../components/LoadMore.vue";
 import MyPopover from "@/views/components/MyPopover/index.vue";
-import { HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
+import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/store/mutation-types";
 import { deleteMsgList, revokeMsg, translateText } from "@/api/im-sdk-api";
 import { getMsgList } from "@/api/im-sdk-api/session";
 import emitter from "@/utils/mitt-bus";
@@ -176,19 +176,33 @@ const updateLoadMore = (newValue) => {
   });
 };
 
+const getElementById = (ID) => {
+  return document.getElementById(`choice${ID}`);
+};
+const setSelect = (el) => {
+  el.classList.toggle("style-select");
+};
 const handleSelect = (e, item, type = "initial") => {
+  // tip消息 撤回消息
   if (!showCheckbox.value || item.type == "TIMGroupTipElem" || item.isRevoked) {
     return;
   }
-  const _el = document.getElementById(`choice${item.ID}`);
-  const el = _el.getElementsByTagName("input")[0];
-  _el.parentNode.classList.toggle("style-select");
+  const _el = getElementById(item.ID);
+  const el = _el.getElementsByClassName("check-btn")[0];
+  if (!el.checked && forwardData.value.size >= MULTIPLE_CHOICE_MAX) {
+    commit("showMessage", {
+      message: `最多只能选择${MULTIPLE_CHOICE_MAX}条`,
+      type: "error",
+    });
+    return;
+  }
+  setSelect(_el.parentNode);
   // 点击input框
   if (type == "initial" && e.target.tagName !== "INPUT") {
-    const el = document.getElementById(`choice${item.ID}`);
-    el.parentNode.classList.toggle("style-select");
+    const el = getElementById(item.ID);
+    setSelect(el.parentNode);
   }
-  // 多选
+  // 首次右键打开多选 默认选中当前
   if (type == "choice") {
     el.checked = true;
     commit("SET_FORWARD_DATA", {
@@ -213,7 +227,7 @@ const ISown = (item) => {
 
 const onclickavatar = (e, item) => {
   const isSelf = ISown(item);
-  if (isSelf) return;
+  if (isSelf || showCheckbox.value) return;
   commit("setPopoverStatus", {
     status: true,
     seat: e,
