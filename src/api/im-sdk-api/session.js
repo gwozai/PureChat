@@ -34,3 +34,22 @@ export const getMsgList = async (params) => {
     return {};
   }
 };
+// 变更消息的接口
+export const modifyMessage = async (params) => {
+  try {
+    const { data: message } = await tim.modifyMessage(params);
+    // 修改消息成功，message 是最新的消息
+    console.log(message);
+    return message;
+  } catch (imError) {
+    const { code, data } = imError;
+    if (code === 2480) {
+      // 修改消息发生冲突，data.message 是最新的消息
+    } else if (code === 2481) {
+      // 不支持修改直播群消息
+    } else if (code === 20026) {
+      // 消息不存在
+    }
+    // 修改消息失败
+  }
+};

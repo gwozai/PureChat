@@ -90,6 +90,8 @@ export default class TIMProxy {
     tim.on(TIM.EVENT.FRIEND_GROUP_LIST_UPDATED, this.onFriendGroupListUpdated);
     // 已订阅用户或好友的状态变更（在线状态或自定义状态）时触发。
     tim.on(TIM.EVENT.USER_STATUS_UPDATED, this.onUserStatusUpdated);
+    // 收到消息被修改的通知
+    tim.on(TIM.EVENT.MESSAGE_MODIFIED, this.onMessageModified);
   }
   onReadyStateUpdate({ name }) {
     const isSDKReady = name === TIM.EVENT.SDK_READY;
@@ -173,6 +175,7 @@ export default class TIMProxy {
       });
     }
   }
+  onMessageModified({ data }) {}
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }
