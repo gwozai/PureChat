@@ -1,8 +1,8 @@
 <template>
   <div class="viewref" v-if="index == currentMessageList.length - 1">
-    <!-- <div class="showMore">
+    <div class="showMore">
       {{ noMore ? "没有更多了" : "" }}
-    </div> -->
+    </div>
     <div class="showMore bouncing-loader" v-show="!noMore">
       <div v-for="item in 3" :key="item"></div>
     </div>
