@@ -14,84 +14,93 @@
           </div>
         </header>
       </Motion>
-      <!-- 表单 -->
-      <el-form ref="ruleFormRef" :model="user" :rules="rules">
-        <!-- 账号 -->
-        <el-form-item prop="username">
-          <el-autocomplete
-            clearable
-            :debounce="200"
-            size="large"
-            :prefix-icon="User"
-            v-model="user.username"
-            placeholder="用户账号"
-            @select="handleSelect"
-            class="inline-input w-50"
-            :fetch-suggestions="querySearch"
-          />
-        </el-form-item>
-        <!-- 密码 -->
-        <el-form-item prop="password">
-          <el-input
-            v-model="user.password"
-            type="password"
-            placeholder="用户密码"
-            :prefix-icon="Lock"
-            size="large"
-            show-password
+      <template v-if="currentPage === 0">
+        <!-- 表单 -->
+        <el-form ref="ruleFormRef" :model="user" :rules="rules">
+          <!-- 账号 -->
+          <el-form-item prop="username">
+            <el-autocomplete
+              clearable
+              :debounce="200"
+              size="large"
+              :prefix-icon="User"
+              v-model="user.username"
+              placeholder="用户账号"
+              @select="handleSelect"
+              class="inline-input w-50"
+              :fetch-suggestions="querySearch"
+            />
+          </el-form-item>
+          <!-- 密码 -->
+          <el-form-item prop="password">
+            <el-input
+              v-model="user.password"
+              type="password"
+              placeholder="用户密码"
+              :prefix-icon="Lock"
+              size="large"
+              show-password
+            >
+            </el-input>
+          </el-form-item>
+          <!-- 验证码 -->
+          <el-form-item prop="verifyCode">
+            <el-input v-model="user.verifyCode" size="large" placeholder="验证码" clearable>
+              <template #prefix>
+                <el-icon class="el-input__icon"><Key /></el-icon>
+              </template>
+              <template #append>
+                <ReImageVerify v-model:code="imgCode" />
+              </template>
+            </el-input>
+          </el-form-item>
+          <!-- keep -->
+          <div class="login-options">
+            <el-checkbox v-model="user.keep">记住密码</el-checkbox>
+            <div class="forget">忘记密码?</div>
+          </div>
+          <!-- 登录 -->
+          <el-button
+            type="primary"
+            class="login-btn"
+            @click="LoginBtn(ruleFormRef)"
+            :loading="false"
           >
-          </el-input>
-        </el-form-item>
-        <!-- 验证码 -->
-        <el-form-item prop="verifyCode">
-          <el-input v-model="user.verifyCode" size="large" placeholder="验证码" clearable>
-            <template #prefix>
-              <el-icon class="el-input__icon"><Key /></el-icon>
-            </template>
-            <template #append>
-              <ReImageVerify v-model:code="imgCode" />
-            </template>
-          </el-input>
-        </el-form-item>
-        <!-- keep -->
-        <div class="login-options">
-          <el-checkbox v-model="user.keep">记住密码</el-checkbox>
-          <div class="forget">忘记密码?</div>
-        </div>
-        <!-- 登录 -->
-        <el-button type="primary" class="login-btn" @click="LoginBtn(ruleFormRef)" :loading="false">
-          <template #loading>
-            <div class="custom-loading">
-              <svg class="circular" viewBox="-10, -10, 50, 50">
-                <path
-                  class="path"
-                  d="
+            <template #loading>
+              <div class="custom-loading">
+                <svg class="circular" viewBox="-10, -10, 50, 50">
+                  <path
+                    class="path"
+                    d="
                   M 30 15
                   L 28 17
                   M 25.61 25.61
                   A 15 15, 0, 0, 1, 15 30
                   A 15 15, 0, 1, 1, 27.99 7.5
                   L 15 15"
-                  style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"
-                />
-              </svg>
-              <!-- <FontIcon iconName="Eleme" class="circular" /> -->
-            </div>
-          </template>
-          登录
-        </el-button>
-      </el-form>
-      <!-- other -->
-      <div hidden class="mt-20 flex flex_j_c-space-between">
-        <el-button
-          v-for="(item, index) in operates"
-          :key="item.title"
-          size="default"
-          @click="onHandle(index + 1)"
-        >
-          {{ item.title }}
-        </el-button>
-      </div>
+                    style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"
+                  />
+                </svg>
+                <!-- <FontIcon iconName="Eleme" class="circular" /> -->
+              </div>
+            </template>
+            登录
+          </el-button>
+        </el-form>
+        <!-- other  -->
+        <div hidden class="mt-20 flex flex_j_c-space-between">
+          <el-button
+            v-for="(item, index) in operates"
+            :key="item.title"
+            size="default"
+            @click="onHandle(index + 1)"
+          >
+            {{ item.title }}
+          </el-button>
+        </div>
+      </template>
+      <!-- 二维码登录 -->
+      <QrCode v-if="currentPage === 2" />
     </div>
   </div>
 </template>
@@ -106,7 +115,8 @@ import { user, rules } from "./utils/validation";
 import Motion from "@/utils/motion";
 import ThemeSwitch from "../components/ThemeSwitch";
 import ReImageVerify from "@/views/components/ReImageVerify/index.vue";
-// import emitter from "@/utils/mitt-bus";
+import QrCode from "./components/qrCode.vue";
+import { useState } from "@/utils/hooks/useMapper";
 const { production } = require("@/config/vue.custom.config");
 
 const restaurants = ref([]);
@@ -114,6 +124,10 @@ const ruleFormRef = ref();
 const imgCode = ref("");
 
 const { state, dispatch, commit } = useStore();
+
+const { currentPage } = useState({
+  currentPage: (state) => state.user.currentPage,
+});
 
 const handleSelect = (item) => {
   console.log(item);
@@ -142,7 +156,7 @@ const Signin = () => {
 };
 
 const onHandle = (index) => {
-  console.log(index);
+  commit("SET_CURRENTPAGE", 2);
 };
 
 const onkeypress = ({ code }) => {

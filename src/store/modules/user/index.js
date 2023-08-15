@@ -21,10 +21,14 @@ const user = {
     userSig: "", // 密钥
     message: null,
     showload: false, // 登录按钮加载状态
+    currentPage: 0,
     timProxy,
   },
   getters: {},
   mutations: {
+    SET_CURRENTPAGE(state, num) {
+      state.currentPage = num
+    },
     toggleIsSDKReady(state, isSDKReady) {
       state.isSDKReady = isSDKReady;
     },
