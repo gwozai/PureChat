@@ -96,6 +96,7 @@ export default defineComponent({
           message: null,
         },
       });
+      this.shutdown();
     },
     // 合并转发
     mergeForward() {

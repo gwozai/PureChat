@@ -6,10 +6,10 @@ export default (store) => {
     const { data, settings } = state;
     const { payload, type } = mutation;
     switch (type) {
-      case "updateData":
+      case "UPDATE_USER_INFO":
         storage.set(USER_DATA, data);
         break;
-      case "updateSettings":
+      case "UPDATE_USER_SETUP":
         storage.set(SET_UP, settings);
         break;
     }

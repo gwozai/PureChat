@@ -81,7 +81,7 @@ const topersonal = () => {
 };
 
 const opensetup = (val) => {
-  commit("updateSettings", {
+  commit("UPDATE_USER_SETUP", {
     key: "setswitch",
     value: true,
   });
@@ -108,12 +108,12 @@ const Logout = async () => {
 const toggleClick = (val) => {
   if (sidebar.value) {
     drawer.value = true;
-    commit("updateSettings", {
+    commit("UPDATE_USER_SETUP", {
       key: "isCollapse",
       value: false,
     });
   } else {
-    commit("updateSettings", {
+    commit("UPDATE_USER_SETUP", {
       key: "isCollapse",
       value: !val,
     });
@@ -131,7 +131,7 @@ const getBreadcrumb = (value) => {
   }
   const tag = label ? [...label, { title, path: value }] : [{ title, path: value }];
   if (index == -1) {
-    commit("updateData", { key: "elTag", value: tag });
+    commit("UPDATE_USER_INFO", { key: "elTag", value: tag });
   }
 };
 

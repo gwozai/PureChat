@@ -44,7 +44,7 @@ emitter.on("resize", ({ detail }) => {
    */
   console.log(detail);
   if (width > 0 && width <= 760) {
-    commit("updateSettings", {
+    commit("UPDATE_USER_SETUP", {
       key: "sidebar",
       value: false,
     });
@@ -52,7 +52,7 @@ emitter.on("resize", ({ detail }) => {
     // toggle("desktop", false);
   } else if (width > 990) {
     // toggle("desktop", true);
-    // commit("updateSettings", {
+    // commit("UPDATE_USER_SETUP", {
     //   key: "sidebar",
     //   value: true,
     // });

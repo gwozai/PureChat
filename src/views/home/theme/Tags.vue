@@ -85,7 +85,7 @@ const tagClick = (path) => {
 
 const handleClose = (tag) => {
   let data = tags.value.splice(tags.value.indexOf(tag), 1);
-  commit("updateData", { elTag: data });
+  commit("UPDATE_USER_INFO", { elTag: data });
 };
 
 function closing(tag) {
@@ -110,7 +110,7 @@ function closing(tag) {
       tags.value.splice(0, tags.value.length);
       break;
   }
-  commit("updateData", {
+  commit("UPDATE_USER_INFO", {
     key: "elTag",
     value: tags.value,
   });

@@ -106,14 +106,14 @@ const { sidebar, logoVal, appearance, lang, setswitch } = useState({
 });
 
 const LogoChange = (val) => {
-  commit("updateSettings", {
+  commit("UPDATE_USER_SETUP", {
     key: "logoIcon",
     value: !val,
   });
 };
 
 const greyChange = (val) => {
-  commit("updateSettings", {
+  commit("UPDATE_USER_SETUP", {
     key: "sidebar",
     value: !val,
   });
@@ -124,7 +124,7 @@ const drawer = computed({
     return setswitch.value;
   },
   set(val) {
-    commit("updateSettings", {
+    commit("UPDATE_USER_SETUP", {
       key: "setswitch",
       value: false,
     });
@@ -141,7 +141,7 @@ const themecolor = computed({
 });
 
 const ThemeColorChange = (val) => {
-  commit("updateSettings", {
+  commit("UPDATE_USER_SETUP", {
     key: "appearance",
     value: val,
   });
@@ -158,7 +158,7 @@ const language = computed({
 });
 
 const languageChange = (val) => {
-  commit("updateSettings", {
+  commit("UPDATE_USER_SETUP", {
     key: "lang",
     value: val,
   });

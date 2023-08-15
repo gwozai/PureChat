@@ -16,7 +16,7 @@ export function useDataThemeChange() {
       document.documentElement.classList.remove("dark");
     }
     // 更新store状态 页面刷新不丢失
-    store.commit("updateSettings", {
+    store.commit("UPDATE_USER_SETUP", {
       key: "appearance",
       value: value,
     });

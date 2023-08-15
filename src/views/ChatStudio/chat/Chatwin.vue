@@ -251,6 +251,7 @@ const loadMoreFn = () => {
     // 第一条消息 加载更多 节点
     const offsetTopScreen = messageViewRef.value?.children?.[current];
     const top = offsetTopScreen?.getBoundingClientRect().top;
+    console.log(top);
     const canLoadData = top > 50; //滚动到顶部
     canLoadData && getMoreMsg();
   }

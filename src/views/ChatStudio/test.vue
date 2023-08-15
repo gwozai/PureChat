@@ -91,13 +91,13 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapMutations(["TAGGLE_OUE_SIDE", "setAddbookStatus", "updateSettings"]),
+    ...mapMutations(["TAGGLE_OUE_SIDE", "setAddbookStatus", "UPDATE_USER_SETUP"]),
     ...mapActions(["getGroupList", "CHEC_OUT_CONVERSATION"]),
     openAddress() {
       this.setAddbookStatus(true);
     },
     openSetup() {
-      this.updateSettings({ key: "setswitch", value: true });
+      this.UPDATE_USER_SETUP({ key: "setswitch", value: true });
     },
     test1() {
       this.getGroupList();

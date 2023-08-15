@@ -50,17 +50,17 @@ const isShowCheck = computed(() => {
   left: 0;
   height: 100%;
 }
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
 
 .container {
   cursor: pointer;
   user-select: none;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
 }
 
 .checkmark {

@@ -13,7 +13,7 @@ const actions = {
     root.children.map((item) => {
       router.addRoute(item);
     });
-    commit("updateData", { key: "Routingtable", value: root.children });
+    commit("UPDATE_USER_INFO", { key: "Routingtable", value: root.children });
   },
   // 页面刷新重新加载路由
   reloadRoute({ commit, state }, route) {
