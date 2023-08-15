@@ -30,7 +30,7 @@
             </div>
           </el-scrollbar>
         </div>
-        <div class="tool">
+        <div class="tool" v-if="false">
           <div v-for="item in toolDate" :key="item.icon">
             <svg-icon :iconClass="item.icon" class="icon-hover" />
           </div>

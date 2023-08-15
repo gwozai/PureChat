@@ -18,14 +18,6 @@
       <el-form ref="ruleFormRef" :model="user" :rules="rules">
         <!-- 账号 -->
         <el-form-item prop="username">
-          <!-- <el-input
-            v-model="user.username"
-            placeholder="用户账号"
-            :prefix-icon="User"
-            size="large"
-            clearable
-          >
-          </el-input> -->
           <el-autocomplete
             clearable
             :debounce="200"
@@ -63,7 +55,7 @@
         </el-form-item>
         <!-- keep -->
         <div class="login-options">
-          <el-checkbox v-model="keep">记住密码</el-checkbox>
+          <el-checkbox v-model="user.keep">记住密码</el-checkbox>
           <div class="forget">忘记密码?</div>
         </div>
         <!-- 登录 -->
@@ -109,21 +101,18 @@ import { Lock, User, Key } from "@element-plus/icons-vue";
 import { reactive, ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { login, getuser } from "@/api/node-admin-api/user";
 import { operates, thirdParty } from "./utils/enums";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { user, rules } from "./utils/validation";
 import Motion from "@/utils/motion";
 import ThemeSwitch from "../components/ThemeSwitch";
 import ReImageVerify from "@/views/components/ReImageVerify/index.vue";
-import emitter from "@/utils/mitt-bus";
+// import emitter from "@/utils/mitt-bus";
 const { production } = require("@/config/vue.custom.config");
 
 const restaurants = ref([]);
-const keep = ref(false);
 const ruleFormRef = ref();
 const imgCode = ref("");
 
-const router = useRouter();
 const { state, dispatch, commit } = useStore();
 
 const handleSelect = (item) => {

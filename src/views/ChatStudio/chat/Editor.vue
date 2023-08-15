@@ -344,6 +344,7 @@ const sendMessage = async () => {
     files,
     reply: currentReplyMsg.value,
   };
+  clearInputInfo();
   const message = await sendChatMessage(toAccount, type, data);
   dispatch("SESSION_MESSAGE_SENDING", {
     payload: {
@@ -351,7 +352,6 @@ const sendMessage = async () => {
       message,
     },
   });
-  clearInputInfo();
 };
 
 emitter.on("handleAt", ({ id, name }) => {

@@ -1,10 +1,14 @@
 import { reactive } from "vue";
 import store from "@/store/index";
+import storage from "storejs";
+
+const { username, password, keep } = storage.get('ACCOUNT') || {}
 
 // 账号
 export const user = reactive({
-  username: "",
-  password: "123456",
+  username: username || "",
+  password: password || "123456",
+  keep: keep || false,
   verifyCode: "",
 });
 

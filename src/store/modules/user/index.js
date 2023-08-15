@@ -73,6 +73,7 @@ const user = {
           userSig: result.userSig,
         });
         commit("UPDATE_USER_INFO", { key: "user", value: result });
+        commit("ACCOUNT_INFORMATION", data);
         setTimeout(() => {
           router.push("/chatstudio");
         }, 1000);

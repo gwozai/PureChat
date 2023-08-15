@@ -124,7 +124,9 @@ const conversation = {
           state.historyMessageList.set(convId, newMessageList);
           // 当前会有列表有值
           if (state.currentConversation) {
-            state.currentMessageList = newMessageList;
+            if (state.currentConversation.conversationID === convId) {
+              state.currentMessageList = newMessageList
+            }
             state.needScrollDown = 0;
           }
           break;

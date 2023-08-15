@@ -60,6 +60,7 @@
           </span>
         </div>
         <div class="group-member--avatar">
+          <span class="group-member--add" @click="groupMemberAdd"> </span>
           <div
             class="avatar"
             v-for="item in currentMemberList"
@@ -79,7 +80,6 @@
               {{ item.role == "Owner" ? "群主" : "管理员" }}
             </div>
           </div>
-          <span class="group-member--add" @click="groupMemberAdd"> </span>
         </div>
       </div>
       <el-divider />
