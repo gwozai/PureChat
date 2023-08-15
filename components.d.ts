@@ -54,6 +54,7 @@ declare module '@vue/runtime-core' {
     ElTree: typeof import('element-plus/es')['ElTree']
     FontIcon: typeof import('./src/components/FontIcon/index.vue')['default']
     Portrait: typeof import('./src/components/Portrait/index.vue')['default']
+    QrCode: typeof import('./src/components/QrCode/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideItem: typeof import('./src/components/SideItem/index.vue')['default']
