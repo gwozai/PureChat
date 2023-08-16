@@ -66,13 +66,18 @@ export const showConfirmationBox = async (data, Type = "confirm") => {
     tip = "提示",
     iconType = "", // warning
     inputValue = "", // input
+    draggable = false,
   } = data;
   try {
     const formEl = await ElMessageBox[Type](message, tip, {
       confirmButtonText: confirmText,
       cancelButtonText: cancelText,
       type: iconType,
-      inputValue: inputValue || "",
+      inputValue,
+      draggable,
+      // beforeClose: (action, instance, done) => {
+      //   done();
+      // },
     });
     return formEl;
   } catch (error) {

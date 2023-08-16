@@ -287,3 +287,16 @@ export const customAlert = (s, t) => {
       break;
   }
 };
+
+export const chatName = (item) => {
+  switch (item.type) {
+    case "C2C":
+      return item.userProfile.nick;
+    case "GROUP":
+      return item.groupProfile.name;
+    case "@TIM#SYSTEM":
+      return "系统通知";
+    default:
+      return "";
+  }
+};

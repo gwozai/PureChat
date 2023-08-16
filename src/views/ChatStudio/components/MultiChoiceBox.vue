@@ -13,12 +13,15 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
+import { defineComponent, h } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { createForwardMsg, sendMsg } from "@/api/im-sdk-api/message";
 import { showConfirmationBox } from "@/utils/message";
 import { deleteMsgList } from "@/api/im-sdk-api";
+import { chatName } from "../utils/utils";
+import { squareUrl } from "../utils/menu";
 import TIM from "tim-js-sdk";
+
 export default defineComponent({
   name: "MultiChoiceBox",
   data() {
@@ -43,6 +46,8 @@ export default defineComponent({
           class: "",
         },
       ],
+      multipleValue: null,
+      squareUrl,
     };
   },
   watch: {
@@ -58,6 +63,7 @@ export default defineComponent({
       showMsgBox: (state) => state.conversation.showMsgBox,
       forwardData: (state) => state.conversation.forwardData,
       showCheckbox: (state) => state.conversation.showCheckbox,
+      conversationList: (state) => state.conversation.conversationList,
       currentConversation: (state) => state.conversation.currentConversation,
     }),
     disabled() {
@@ -79,9 +85,39 @@ export default defineComponent({
           break;
       }
     },
+    tabulation() {
+      const data = this.conversationList;
+      return h(
+        "div",
+        {
+          class: "tabulation-style",
+        },
+        data.map((item) => {
+          return h(
+            "div",
+            {
+              key: item.toAccount,
+              onClick: () => {
+                this.setMultipleValue({
+                  toAccount: item.toAccount,
+                  type: item.type,
+                });
+              },
+            },
+            [
+              h("img", {
+                src: item.userProfile?.avatar || this.squareUrl,
+              }),
+              h("div", chatName(item)),
+            ]
+          );
+        })
+      );
+    },
     onClose() {
       this.shutdown();
     },
+    // 多选删除
     async deleteMessage() {
       const result = await showConfirmationBox({ message: "确定删除?", iconType: "warning" });
       if (result == "cancel") return;
@@ -105,14 +141,19 @@ export default defineComponent({
     // 逐条转发
     async aQuickForward() {
       const forwardData = this.filterate();
-      const message = { message: "请选择转发人员", inputValue: "" };
-      const result = await showConfirmationBox(message, "prompt");
-      if (result == "cancel") return;
-      const { value, action } = result;
+      const message = { message: this.tabulation(), tip: "选择要转发的联系人" }; // 请选择转发人员
+      const result = await showConfirmationBox(message); //  "prompt"
+      if (result == "cancel") {
+        this.setMultipleValue();
+        return;
+      }
+      if (!this.multipleValue) return;
+      const { toAccount, type } = this.multipleValue;
       forwardData.map(async (t) => {
         await this.sendSingleMessage({
-          convId: value,
+          convId: toAccount,
           message: t,
+          type,
         });
       });
       this.shutdown();
@@ -120,7 +161,7 @@ export default defineComponent({
     async sendSingleMessage({ convId, type, message }) {
       const forwardMsg = await createForwardMsg({
         convId: convId,
-        convType: type || TIM.TYPES.CONV_C2C, // this.currentType,
+        convType: type || TIM.TYPES.CONV_C2C,
         message: message,
       });
       const { code, message: data } = await sendMsg(forwardMsg);
@@ -149,6 +190,7 @@ export default defineComponent({
       // 关闭多选框
       this.SET_CHEC_BOX(false);
       this.closedState();
+      this.setMultipleValue();
     },
     closedState() {
       const checkBoxElements = Array.from(document.querySelectorAll(".check-btn"));
@@ -161,10 +203,33 @@ export default defineComponent({
         element.classList.remove("style-select");
       });
     },
+    setMultipleValue(value = null) {
+      this.multipleValue = value;
+    },
   },
 });
 </script>
-
+<style lang="scss">
+.tabulation-style {
+  max-height: 200px;
+  overflow: auto;
+  img {
+    height: 60%;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  & > div {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 5px;
+  }
+  :hover {
+    background: hsl(220, 20%, 91%);
+  }
+}
+</style>
 <style lang="scss" scoped>
 .checkbox-style {
   position: relative;

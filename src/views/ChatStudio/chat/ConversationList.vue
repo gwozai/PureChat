@@ -84,6 +84,7 @@ import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/addTimeDivider";
 import { TIMpingConv, setMessageRemindType } from "@/api/im-sdk-api";
 import Label from "../components/Label.vue";
+import { chatName } from "../utils/utils";
 
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
@@ -105,18 +106,6 @@ const isdraft = (item) => {
   );
 };
 
-const chatName = (item) => {
-  switch (item.type) {
-    case "C2C":
-      return item.userProfile.nick;
-    case "GROUP":
-      return item.groupProfile.name;
-    case "@TIM#SYSTEM":
-      return "系统通知";
-    default:
-      return "";
-  }
-};
 const fnNews = (data) => {
   const { type, lastMessage, unreadCount, groupAtInfoList } = data;
   const { messageForShow, fromAccount, isRevoked } = lastMessage;
