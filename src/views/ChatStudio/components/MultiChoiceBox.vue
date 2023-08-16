@@ -10,6 +10,34 @@
       </span>
     </div>
   </div>
+  <el-dialog
+    v-model="dialogVisible"
+    title="选择要转发的联系人"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <div class="tabulation-style">
+      <div
+        v-for="item in conversationList"
+        :key="item.toAccount"
+        :class="{ tabulationHover: multipleValue?.toAccount == item.toAccount }"
+        @click="onClickItem(item)"
+      >
+        <img :src="item.userProfile?.avatar || squareUrl" alt="" />
+        <div>{{ chatName(item) }}</div>
+      </div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="setDialogVisible(null)">
+          {{ $t("el.datepicker.cancel") }}
+        </el-button>
+        <el-button type="primary" @click="handleConfirm(dialogType)">
+          {{ $t("el.datepicker.confirm") }}
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
@@ -21,6 +49,7 @@ import { deleteMsgList } from "@/api/im-sdk-api";
 import { chatName } from "../utils/utils";
 import { squareUrl } from "../utils/menu";
 import TIM from "tim-js-sdk";
+import { ElRadio } from "element-plus";
 
 export default defineComponent({
   name: "MultiChoiceBox",
@@ -46,8 +75,11 @@ export default defineComponent({
           class: "",
         },
       ],
+      dialogVisible: false,
+      dialogType: "",
       multipleValue: null,
       squareUrl,
+      chatName,
     };
   },
   watch: {
@@ -75,44 +107,36 @@ export default defineComponent({
     onClock(item) {
       switch (item.type) {
         case "MergeForward": // 合并转发
-          this.mergeForward();
+          // this.setDialogVisible(true, item.type);
           break;
         case "ForwardItemByItem": // 逐条转发
-          this.aQuickForward();
+          this.setDialogVisible(true, item.type);
           break;
         case "removalMsg":
           this.deleteMessage(); // 删除消息
           break;
       }
     },
-    tabulation() {
-      const data = this.conversationList;
-      return h(
-        "div",
-        {
-          class: "tabulation-style",
-        },
-        data.map((item) => {
-          return h(
-            "div",
-            {
-              key: item.toAccount,
-              onClick: () => {
-                this.setMultipleValue({
-                  toAccount: item.toAccount,
-                  type: item.type,
-                });
-              },
-            },
-            [
-              h("img", {
-                src: item.userProfile?.avatar || this.squareUrl,
-              }),
-              h("div", chatName(item)),
-            ]
-          );
-        })
-      );
+    handleConfirm(type) {
+      switch (type) {
+        case "MergeForward": // 合并转发
+          this.mergeForward();
+          break;
+        case "ForwardItemByItem": // 逐条转发
+          this.aQuickForward();
+          break;
+      }
+      this.setDialogVisible();
+    },
+    onClickItem(item) {
+      this.setMultipleValue({
+        toAccount: item.toAccount,
+        type: item.type,
+      });
+    },
+    handleClose(done) {
+      this.setDialogVisible();
+      done();
     },
     onClose() {
       this.shutdown();
@@ -141,12 +165,6 @@ export default defineComponent({
     // 逐条转发
     async aQuickForward() {
       const forwardData = this.filterate();
-      const message = { message: this.tabulation(), tip: "选择要转发的联系人" }; // 请选择转发人员
-      const result = await showConfirmationBox(message); //  "prompt"
-      if (result == "cancel") {
-        this.setMultipleValue();
-        return;
-      }
       if (!this.multipleValue) return;
       const { toAccount, type } = this.multipleValue;
       forwardData.map(async (t) => {
@@ -161,7 +179,7 @@ export default defineComponent({
     async sendSingleMessage({ convId, type, message }) {
       const forwardMsg = await createForwardMsg({
         convId: convId,
-        convType: type || TIM.TYPES.CONV_C2C,
+        convType: type,
         message: message,
       });
       const { code, message: data } = await sendMsg(forwardMsg);
@@ -203,6 +221,10 @@ export default defineComponent({
         element.classList.remove("style-select");
       });
     },
+    setDialogVisible(value = false, type = "") {
+      this.dialogVisible = value;
+      this.dialogType = type;
+    },
     setMultipleValue(value = null) {
       this.multipleValue = value;
     },
@@ -213,6 +235,9 @@ export default defineComponent({
 .tabulation-style {
   max-height: 200px;
   overflow: auto;
+  .tabulationHover {
+    background: hsl(220, 20%, 91%);
+  }
   img {
     height: 60%;
     border-radius: 5px;
