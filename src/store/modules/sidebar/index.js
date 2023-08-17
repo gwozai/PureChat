@@ -9,11 +9,11 @@ const sidebar = {
         class: "fixed",
         if_fixed: 1,
       },
-      {
-        only: "address_book",
-        icon: "mail_list",
-        title: "通讯录",
-      },
+      // {
+      //   only: "address_book",
+      //   icon: "mail_list",
+      //   title: "通讯录",
+      // },
       // {
       //   only: 'apply',
       //   icon: "application",

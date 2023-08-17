@@ -50,31 +50,32 @@ import { chatName } from "../utils/utils";
 import { squareUrl } from "../utils/menu";
 import TIM from "tim-js-sdk";
 import { ElRadio } from "element-plus";
+const buttonList = [
+  {
+    type: "MergeForward",
+    value: "合并转发",
+    icon: "mergeForward",
+    class: "noDrop", // noDrop
+  },
+  {
+    type: "ForwardItemByItem",
+    value: "逐条转发",
+    icon: "aQuickForward",
+    class: "",
+  },
+  {
+    type: "removalMsg",
+    value: "删除消息",
+    icon: "delete",
+    class: "",
+  },
+];
 
 export default defineComponent({
   name: "MultiChoiceBox",
   data() {
     return {
-      buttonList: [
-        {
-          type: "MergeForward",
-          value: "合并转发",
-          icon: "mergeForward",
-          class: "noDrop", // noDrop
-        },
-        {
-          type: "ForwardItemByItem",
-          value: "逐条转发",
-          icon: "aQuickForward",
-          class: "",
-        },
-        {
-          type: "removalMsg",
-          value: "删除消息",
-          icon: "delete",
-          class: "",
-        },
-      ],
+      buttonList,
       dialogVisible: false,
       dialogType: "",
       multipleValue: null,
@@ -224,6 +225,7 @@ export default defineComponent({
     setDialogVisible(value = false, type = "") {
       this.dialogVisible = value;
       this.dialogType = type;
+      !value && this.setMultipleValue();
     },
     setMultipleValue(value = null) {
       this.multipleValue = value;
