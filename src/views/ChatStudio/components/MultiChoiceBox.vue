@@ -48,7 +48,7 @@ import { showConfirmationBox } from "@/utils/message";
 import { deleteMsgList } from "@/api/im-sdk-api";
 import { chatName } from "../utils/utils";
 import { squareUrl } from "../utils/menu";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import { ElRadio } from "element-plus";
 const buttonList = [
   {

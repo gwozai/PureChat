@@ -1,4 +1,4 @@
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import tim from "@/utils/im-sdk/tim";
 
 /**

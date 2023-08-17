@@ -19,7 +19,7 @@
 import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs, ref } from "vue";
 import { mapState, mapGetters } from "vuex";
 import store from "@/store";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 export default defineComponent({
   name: "MentionModal",
   props: {

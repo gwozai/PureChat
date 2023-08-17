@@ -1,4 +1,3 @@
-import TIM from "tim-js-sdk";
 import tim from "@/utils/im-sdk/tim";
 
 export const getUserProfile = async (userID) => {

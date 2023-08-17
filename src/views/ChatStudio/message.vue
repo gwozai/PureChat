@@ -49,7 +49,7 @@ import {
   watchEffect,
   nextTick,
 } from "vue";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import { useEventListener } from "@/utils/hooks/index";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv } from "./utils/utils";

@@ -127,7 +127,7 @@ import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-
 import { useI18n } from "vue-i18n";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
 import { showConfirmationBox } from "@/utils/message";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 // eslint-disable-next-line no-undef
 const props = defineProps({
   groupProfile: {

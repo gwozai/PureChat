@@ -1,5 +1,5 @@
 import tim from "@/utils/im-sdk/tim";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import emitter from "@/utils/mitt-bus";
 import { getReplyMsgContent } from "@/utils/message-input-utils";
 

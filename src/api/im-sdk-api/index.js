@@ -1,6 +1,4 @@
-import TIM from "tim-js-sdk";
 import tim from "@/utils/im-sdk/tim";
-import { getReplyMsgContent } from "@/utils/message-input-utils";
 
 // 获取 SDK 缓存的好友列表
 export const getFriendList = async (params) => {

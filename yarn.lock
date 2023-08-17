@@ -1384,6 +1384,11 @@
   resolved "https://registry.npmmirror.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
+"@tencentcloud/chat@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@tencentcloud/chat/-/chat-3.1.2.tgz#68faa8dca25e417730d79e88ce37da8a9271b564"
+  integrity sha512-LkDrON2lYPpQ/Vp4RsKsLtdy/w1SbPmeEtwjyrr9y4LSFFJru5tz4n+NS7Akhdb3H/QKjuf4cc8Umzl514jEDg==
+
 "@transloadit/prettier-bytes@0.0.7":
   version "0.0.7"
   resolved "https://registry.npmmirror.com/@transloadit/prettier-bytes/-/prettier-bytes-0.0.7.tgz#cdb5399f445fdd606ed833872fa0cabdbc51686b"

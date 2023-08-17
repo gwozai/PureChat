@@ -1,5 +1,5 @@
 "use strict";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
@@ -175,7 +175,7 @@ export default class TIMProxy {
       });
     }
   }
-  onMessageModified({ data }) {}
+  onMessageModified({ data }) { }
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }

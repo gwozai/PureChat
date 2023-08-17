@@ -1,5 +1,4 @@
 import useClipboard from "vue-clipboard3";
-import TIM from "tim-js-sdk";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
 import {
   CreateTextMsg,

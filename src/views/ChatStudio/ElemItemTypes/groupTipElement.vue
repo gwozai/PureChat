@@ -6,7 +6,7 @@
 import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import store from "@/store";
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 export default defineComponent({
   name: "GroupTipElement",
   props: {

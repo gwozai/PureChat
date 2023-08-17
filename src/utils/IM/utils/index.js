@@ -1,4 +1,4 @@
-import TIM from "tim-js-sdk";
+import TIM from "@tencentcloud/chat";
 import { throttle } from "lodash-es";
 
 export function kickedOutReason(type) {
