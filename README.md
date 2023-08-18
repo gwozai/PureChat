@@ -164,6 +164,8 @@ yarn build
 
 <img src="./images/chatstudio.png">
 
+<img src="./images/chatgpt.png">
+
 ### 浏览器支持
 
 本地开发推荐使用`Chrome 90+` 浏览器
