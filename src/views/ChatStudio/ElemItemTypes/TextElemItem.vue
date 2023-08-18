@@ -7,17 +7,20 @@
         :originalMsg="message.cloudCustomData && JSON.parse(message.cloudCustomData)"
       />
       <template v-for="item in decodeText(message.payload.text)" :key="item">
-        <!-- // linkUrl: verifyLink(item.text) -->
-        <!-- <span v-if="item.name === 'text'" class="text-erase">
+        <span v-if="item.name === 'text'" class="text-erase">
           <analysis-url :text="item.text" />
-        </span> -->
+        </span>
         <!-- 文本擦除效果 -->
-        <div v-if="item.name === 'text'" class="text-erase">
+        <!-- <div v-if="item.name === 'text'" class="text-erase">
           <analysis-url :text="item.text" />
           <p class="eraser" v-if="!self && isRobot">
             <span class="text"><analysis-url :text="item.text" /></span>
           </p>
-        </div>
+        </div> -->
+        <!-- preview -->
+        <!-- <span v-if="item.name === 'text'">
+          <v-md-preview :text="item.text" tab-size="0"></v-md-preview>
+        </span> -->
         <img v-else-if="item.name === 'img'" class="emoji" :src="item.src" alt="表情包" />
       </template>
     </template>
@@ -58,10 +61,21 @@ const onClick = (data) => {
   border-radius: 3px;
   word-break: break-all;
   white-space: pre-wrap;
+  :deep(.github-markdown-body) {
+    width: 100%;
+    padding: 0;
+    p {
+      margin: 0 !important;
+    }
+    .v-md-hljs-html {
+      margin: 0;
+    }
+  }
 }
 .text-erase {
+  width: 100%;
   position: relative;
-  display: inline-block;
+  // display: inline-block;
   p {
     margin: 0;
   }
