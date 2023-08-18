@@ -23,11 +23,10 @@
           <div
             v-else-if="!isTime(item) && !item.isDeleted"
             class="message-view__item"
-            :class="{
-              'is-self': ISown(item),
-              'is-other': !ISown(item),
-              'style-choice': showCheckbox && !item.isRevoked,
-            }"
+            :class="[
+              ISown(item) ? 'is-self' : 'is-other',
+              showCheckbox && !item.isRevoked ? 'style-choice' : '',
+            ]"
             @click="handleSelect($event, item, 'outside')"
             :id="`choice${item.ID}`"
           >

@@ -1,11 +1,12 @@
 <template>
-  <div class="mention-modal" :style="{ top: top, left: left }">
+  <div class="mention-modal" :style="{ top: top, left: left }" @keydown="onKeydown">
     <input class="mention-input" v-model="searchVal" ref="input" @keyup="inputKeyupHandler" />
     <ul class="mention-list">
       <el-scrollbar>
         <li
           v-for="item in searchedList"
           :key="item.joinTime"
+          :class="{ active: isActive(item) }"
           @click="insertMentionHandler(item.userID, item.nick)"
         >
           {{ item.nick }}
@@ -47,6 +48,11 @@ export default defineComponent({
       });
     },
   },
+  data() {
+    return {
+      tabIndex: 0,
+    };
+  },
   methods: {
     inputKeyupHandler(event) {
       // esc - 隐藏 modal
@@ -68,6 +74,34 @@ export default defineComponent({
       console.log(id, name);
       this.$emit("insertMention", id, name);
       this.$emit("hideMentionModal"); // 隐藏 modal
+    },
+    onKeydown(event) {
+      console.log(event.keyCode);
+      switch (event.keyCode) {
+        case 38: // 上
+          this.tabIndex > 0 && this.tabIndex--;
+          this.scrollToSelectedItem();
+          break;
+        case 40: //下
+          this.tabIndex < this.list?.length - 1 && this.tabIndex++;
+          this.scrollToSelectedItem();
+          break;
+        case 13: // 回车
+          console.log(this.tabIndex);
+          break;
+        case 8: //删除
+          console.log(this.tabIndex);
+          break;
+      }
+    },
+    isActive(item) {
+      return item.userID == this.list[this.tabIndex].userID;
+    },
+    scrollToSelectedItem() {
+      const element = document.querySelector(".active");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     },
   },
   setup(props, { attrs, emit, expose, slots }) {
@@ -101,7 +135,7 @@ export default defineComponent({
       state.top = `${selectionRect.top + 20}px`;
       state.left = `${selectionRect.left + 5}px`;
       // focus input
-      // input.value.focus();
+      input.value.focus();
     });
 
     onBeforeUnmount(() => {});
@@ -141,5 +175,9 @@ export default defineComponent({
 }
 .mention-modal ul li:hover {
   text-decoration: underline;
+}
+
+.active {
+  background: rgb(255, 242, 240);
 }
 </style>
