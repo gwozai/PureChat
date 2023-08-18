@@ -59,7 +59,7 @@ const conversation = {
             state.currentMessageList = [];
           }
           // 当前会话少于历史条数关闭loading
-          const isMore = state.currentMessageList?.length < 5
+          const isMore = state.currentMessageList?.length < 5;
           // HISTORY_MESSAGE_COUNT;
           state.noMore = isMore;
           break;
@@ -125,7 +125,7 @@ const conversation = {
           // 当前会有列表有值
           if (state.currentConversation) {
             if (state.currentConversation.conversationID === convId) {
-              state.currentMessageList = newMessageList
+              state.currentMessageList = newMessageList;
             }
             state.needScrollDown = 0;
           }
@@ -265,7 +265,10 @@ const conversation = {
     // 设置提及弹框显示隐藏
     SET_MENTION_MODAL(state, action) {
       const { type } = state.currentConversation;
-      if (type !== "GROUP") return;
+      if (type !== "GROUP") {
+        state.isShowModal = false;
+        return;
+      }
       state.isShowModal = action;
     },
     //  切换列表 全部 未读 提及我

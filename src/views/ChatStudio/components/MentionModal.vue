@@ -35,13 +35,18 @@ export default defineComponent({
       default: false,
     },
   },
+  watch: {},
   computed: {
+    // ...mapState({
+    //   currentConversation: (state) => state.conversation.currentConversation,
+    // }),
     // 根据 <input> value 筛选 list
     searchedList() {
       const searchVal = this.searchVal.trim().toLowerCase();
       return this.list.filter((item) => {
         const name = item.nick.toLowerCase();
         if (name.indexOf(searchVal) >= 0) {
+          this.tabIndex = 0;
           return true;
         }
         return false;
@@ -62,7 +67,7 @@ export default defineComponent({
       // enter - 插入 mention node
       if (event.key === "Enter") {
         // 插入第一个
-        const firstOne = this.searchedList[0];
+        const firstOne = this.searchedList[this.tabIndex];
         if (firstOne) {
           console.log(firstOne);
           const { userID, nick } = firstOne;
@@ -76,26 +81,31 @@ export default defineComponent({
       this.$emit("hideMentionModal"); // 隐藏 modal
     },
     onKeydown(event) {
-      console.log(event.keyCode);
+      console.log(this.tabIndex);
       switch (event.keyCode) {
         case 38: // 上
-          this.tabIndex > 0 && this.tabIndex--;
+          this.tabIndex >= 0 && this.tabIndex--;
           this.scrollToSelectedItem();
           break;
         case 40: //下
-          this.tabIndex < this.list?.length - 1 && this.tabIndex++;
+          this.tabIndex < this.searchedList?.length - 1 && this.tabIndex++;
           this.scrollToSelectedItem();
           break;
         case 13: // 回车
-          console.log(this.tabIndex);
+          // console.log(this.tabIndex);
           break;
         case 8: //删除
-          console.log(this.tabIndex);
+          // console.log(this.tabIndex);
           break;
       }
     },
     isActive(item) {
-      return item.userID == this.list[this.tabIndex].userID;
+      if (!item) return;
+      if (this.tabIndex > -1) {
+        return item?.userID == this.searchedList[this.tabIndex]?.userID;
+      } else {
+        return false;
+      }
     },
     scrollToSelectedItem() {
       const element = document.querySelector(".active");
@@ -134,11 +144,13 @@ export default defineComponent({
       // 定位 modal
       state.top = `${selectionRect.top + 20}px`;
       state.left = `${selectionRect.left + 5}px`;
-      // focus input
+      // input blur() focus()
       input.value.focus();
     });
 
-    onBeforeUnmount(() => {});
+    onBeforeUnmount(() => {
+      emit("hideMentionModal"); // 隐藏 modal
+    });
 
     return {
       input,
@@ -178,6 +190,6 @@ export default defineComponent({
 }
 
 .active {
-  background: rgb(255, 242, 240);
+  background: #f0f2f5;
 }
 </style>
