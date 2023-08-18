@@ -60,6 +60,7 @@
                   :is="loadMsgModule(item)"
                   :message="item"
                   :status="item.status"
+                  :self="ISown(item)"
                 >
                 </component>
               </div>

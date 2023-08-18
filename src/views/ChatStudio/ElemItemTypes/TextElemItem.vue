@@ -14,7 +14,7 @@
         <!-- 文本擦除效果 -->
         <div v-if="item.name === 'text'" class="text-erase">
           <analysis-url :text="item.text" />
-          <p class="eraser">
+          <p class="eraser" v-if="!self">
             <span class="text"><analysis-url :text="item.text" /></span>
           </p>
         </div>
@@ -35,8 +35,12 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  self: {
+    type: Boolean,
+    default: false,
+  },
 });
-const { message } = toRefs(props);
+const { message, self } = toRefs(props);
 
 const onClick = (data) => {
   console.log(data);
@@ -56,6 +60,7 @@ const onClick = (data) => {
 }
 .text-erase {
   position: relative;
+  display: inline-block;
   p {
     margin: 0;
   }
