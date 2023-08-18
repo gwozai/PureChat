@@ -14,7 +14,7 @@
         <!-- 文本擦除效果 -->
         <div v-if="item.name === 'text'" class="text-erase">
           <analysis-url :text="item.text" />
-          <p class="eraser" v-if="!self">
+          <p class="eraser" v-if="!self && isRobot">
             <span class="text"><analysis-url :text="item.text" /></span>
           </p>
         </div>
@@ -29,7 +29,6 @@ import { decodeText } from "@/utils/decodeText";
 import { toRefs, h } from "vue";
 import ReplyElem from "./ReplyElem.vue";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
-// const reg = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
 const props = defineProps({
   message: {
     type: Object,
@@ -41,6 +40,8 @@ const props = defineProps({
   },
 });
 const { message, self } = toRefs(props);
+
+const isRobot = message.value.from == "R00001";
 
 const onClick = (data) => {
   console.log(data);
