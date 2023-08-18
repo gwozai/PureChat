@@ -16,8 +16,8 @@
       @onCreated="handleCreated"
       @customPaste="customPaste"
       @customAlert="customAlert"
-      @onChange="onChange"
       @keyup.enter="handleEnter"
+      @onChange="onChange"
       @drop="dropHandler"
     />
     <!-- @ mention弹框 -->
@@ -277,7 +277,8 @@ const parsepicture = async (file) => {
   editorRef.value.insertNode(ImageElement);
 };
 // 回车
-const handleEnter = () => {
+const handleEnter = (event) => {
+  if (event?.ctrlKey) return;
   const editor = editorRef.value;
   const isEmpty = editor.isEmpty(); // 判断当前编辑器内容是否为空
   const { text, aitStr, files, image } = sendMsgBefore();
@@ -362,6 +363,7 @@ watch(currentConversation, (newValue) => {
   insertDraft(newValue);
 });
 
+onMounted(() => {});
 // 组件销毁时，及时销毁编辑器
 onBeforeUnmount(() => {
   const editor = editorRef.value;
