@@ -11,6 +11,10 @@ const RIGHT_CLICK_CHAT_LIST = [
 ];
 
 const MENU_LIST = [
+    {
+    id: "revoke",
+    text: "撤回",
+  },
   {
     id: "copy",
     text: "复制",
@@ -19,10 +23,6 @@ const MENU_LIST = [
   //   id: "translate",
   //   text: "翻译",
   // },
-  {
-    id: "revoke",
-    text: "撤回",
-  },
   {
     id: "saveAs",
     text: "另存为",

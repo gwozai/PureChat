@@ -110,6 +110,7 @@ import { squareUrl, circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } f
 import { useStore } from "vuex";
 import { showConfirmationBox } from "@/utils/message";
 
+import TIM from "@tencentcloud/chat";
 import { timeFormat } from "@/utils/timeFormat";
 import { debounce } from "lodash-es";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -138,7 +139,12 @@ const MenuItemInfo = ref([]);
 const scrollbarRef = ref(null);
 const messageViewRef = ref(null);
 const { state, dispatch, commit } = useStore();
-const { currentType } = useGetters(["currentType"]);
+const { isOwner, isAdmin, toAccount, currentType } = useGetters([
+  "isOwner",
+  "isAdmin",
+  "toAccount",
+  "currentType",
+]);
 const {
   noMore,
   showMsgBox,
@@ -365,12 +371,19 @@ const handleContextMenuEvent = (event, item) => {
   const relinquish = nowtime - time < 120 ? true : false;
   const self = ISown(item);
   RIGHT_CLICK_MENU_LIST.value = MENU_LIST;
+  // 对方消息
   if (!self) {
     RIGHT_CLICK_MENU_LIST.value = MENU_LIST.filter((t) => t.id !== "revoke");
   }
+  // 超过撤回时间
   if (!relinquish) {
     RIGHT_CLICK_MENU_LIST.value = MENU_LIST.filter((t) => t.id !== "revoke");
   }
+  // 群主 & 群聊
+  if (isOwner.value && currentType.value === TIM.TYPES.CONV_GROUP) {
+    if (!self) RIGHT_CLICK_MENU_LIST.value = MENU_LIST;
+  }
+  // 非文件消息
   if (!isFile) {
     RIGHT_CLICK_MENU_LIST.value = RIGHT_CLICK_MENU_LIST.value.filter((t) => t.id !== "saveAs");
   } else {

@@ -81,7 +81,6 @@ export default defineComponent({
       this.$emit("hideMentionModal"); // 隐藏 modal
     },
     onKeydown(event) {
-      console.log(this.tabIndex);
       switch (event.keyCode) {
         case 38: // 上
           this.tabIndex >= 0 && this.tabIndex--;
@@ -98,6 +97,7 @@ export default defineComponent({
           // console.log(this.tabIndex);
           break;
       }
+      console.log(this.tabIndex);
     },
     isActive(item) {
       if (!item) return;
