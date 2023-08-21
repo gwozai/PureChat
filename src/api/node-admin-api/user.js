@@ -11,6 +11,15 @@ export const login = (params) => {
   });
 };
 
+// 注册接口
+export const register = (data) => {
+  return http({
+    url: "/register",
+    method: "post",
+    data,
+  });
+};
+
 // 账号列表
 export const getuser = async () => {
   const data = [

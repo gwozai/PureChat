@@ -7,7 +7,7 @@ import { ElMessage } from "element-plus";
 import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { getCookies } from "@/utils/Cookies";
-import { login, logout } from "@/api/node-admin-api/user";
+import { login, register, logout } from "@/api/node-admin-api/user";
 import { getMenu } from "@/api/node-admin-api/menu";
 import emitter from "@/utils/mitt-bus";
 import { verification } from "@/utils/message/index";
@@ -27,7 +27,7 @@ const user = {
   getters: {},
   mutations: {
     SET_CURRENTPAGE(state, num) {
-      state.currentPage = num
+      state.currentPage = num;
     },
     toggleIsSDKReady(state, isSDKReady) {
       state.isSDKReady = isSDKReady;
@@ -85,6 +85,11 @@ const user = {
       } else {
         verification(code, msg);
       }
+    },
+    // 注册
+    async REGISTER({ state }, data) {
+      const result = await register(data);
+      console.log(result);
     },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {

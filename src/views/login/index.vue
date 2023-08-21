@@ -87,13 +87,13 @@
             登录
           </el-button>
         </el-form>
-        <!-- other  -->
-        <div hidden class="mt-20 flex flex_j_c-space-between">
+        <!-- other hidden -->
+        <div class="mt-20 flex flex_j_c-space-between">
           <el-button
-            v-for="(item, index) in operates"
+            v-for="item in operates"
             :key="item.title"
             size="default"
-            @click="onHandle(index + 1)"
+            @click="onHandle(item.currentPage)"
           >
             {{ item.title }}
           </el-button>
@@ -101,6 +101,8 @@
       </template>
       <!-- 二维码登录 -->
       <QrCode v-if="currentPage === 2" />
+      <!-- 注册 -->
+      <Register v-if="currentPage === 3" />
     </div>
   </div>
 </template>
@@ -116,6 +118,7 @@ import Motion from "@/utils/motion";
 import ThemeSwitch from "../components/ThemeSwitch";
 import ReImageVerify from "@/views/components/ReImageVerify/index.vue";
 import QrCode from "./components/qrCode.vue";
+import Register from "./components/Register.vue";
 import { useState } from "@/utils/hooks/useMapper";
 const { production } = require("@/config/vue.custom.config");
 
@@ -156,7 +159,7 @@ const Signin = () => {
 };
 
 const onHandle = (index) => {
-  commit("SET_CURRENTPAGE", 2);
+  commit("SET_CURRENTPAGE", index);
 };
 
 const onkeypress = ({ code }) => {
