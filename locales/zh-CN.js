@@ -4,9 +4,9 @@ import elementZhLocale from "element-plus/lib/locale/lang/zh-cn";
 export default {
   ...elementZhLocale,
   chat: {
-    buttonPrompt: '按Enter发送消息,Ctrl+Enter换行',
-    sending: '发送',
-    sendMessage: '发送消息'
+    buttonPrompt: "按Enter发送消息,Ctrl+Enter换行",
+    sending: "发送",
+    sendMessage: "发送消息",
   },
   common: {
     forward: "转发",
@@ -25,6 +25,7 @@ export default {
   },
   login: {
     username: "账号",
+    nickname: "昵称",
     password: "密码",
     verifyCode: "验证码",
     remember: "记住密码",

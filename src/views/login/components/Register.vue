@@ -10,7 +10,17 @@
         />
       </el-form-item>
     </Motion>
-    <!-- <Motion :delay="100">
+    <Motion :delay="50">
+      <el-form-item prop="nickname">
+        <el-input
+          clearable
+          v-model="ruleForm.nickname"
+          :placeholder="$t('login.nickname')"
+          :prefix-icon="User"
+        />
+      </el-form-item>
+    </Motion>
+    <Motion :delay="100">
       <el-form-item prop="phone">
         <el-input
           clearable
@@ -19,7 +29,7 @@
           :prefix-icon="Iphone"
         />
       </el-form-item>
-    </Motion> -->
+    </Motion>
     <!-- <Motion :delay="150">
       <el-form-item prop="verifyCode">
         <div class="w-full flex justify-between">
@@ -97,32 +107,19 @@
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import Motion from "@/utils/motion";
+import { ruleForm, updateRules } from "../utils/validation";
 import { useStore } from "vuex";
-import { useI18n } from "vue-i18n";
+// import { useI18n } from "vue-i18n";
 import { Lock, User, Key, Iphone } from "@element-plus/icons-vue";
-const { locale, t } = useI18n();
+// const { locale, t } = useI18n();
 const { state, dispatch, commit } = useStore();
 const onBack = () => {
   commit("SET_CURRENTPAGE", 0);
 };
 
-/** 6位数字验证码正则 */
-const REGEXP_SIX = /^\d{6}$/;
-
-/** 密码正则（密码格式应为8-18位数字、字母、符号的任意两种组合） */
-const REGEXP_PWD =
-  /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/;
-
 const checked = ref(false);
 const loading = ref(false);
 const ruleFormRef = ref();
-const ruleForm = reactive({
-  username: "",
-  phone: "",
-  verifyCode: "",
-  password: "",
-  repeatPassword: "",
-});
 
 const onUpdate = async (formEl) => {
   loading.value = true;
@@ -144,76 +141,6 @@ const onUpdate = async (formEl) => {
     }
   });
 };
-
-const updateRules = reactive({
-  username: [
-    {
-      required: true,
-      message: "请输入账号",
-      trigger: "blur",
-    },
-  ],
-  phone: [
-    {
-      validator: (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error(t("login.phoneReg")));
-        }
-        // else if (!isPhone(value)) {
-        //   callback(new Error(t("login.phoneCorrectReg")));
-        // }
-        else {
-          callback();
-        }
-      },
-      trigger: "blur",
-    },
-  ],
-  verifyCode: [
-    {
-      validator: (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error(t("login.verifyCodeReg")));
-        } else if (!REGEXP_SIX.test(value)) {
-          callback(new Error(t("login.verifyCodeSixReg")));
-        } else {
-          callback();
-        }
-      },
-      trigger: "blur",
-    },
-  ],
-  password: [
-    {
-      validator: (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error(t("login.passwordReg")));
-        }
-        // else if (!REGEXP_PWD.test(value)) {
-        //   callback(new Error(t("login.passwordRuleReg")));
-        // }
-        else {
-          callback();
-        }
-      },
-      trigger: "blur",
-    },
-  ],
-  repeatPassword: [
-    {
-      validator: (rule, value, callback) => {
-        if (value === "") {
-          callback(new Error(t("login.passwordSureReg")));
-        } else if (ruleForm.password !== value) {
-          callback(new Error(t("login.passwordDifferentReg")));
-        } else {
-          callback();
-        }
-      },
-      trigger: "blur",
-    },
-  ],
-});
 </script>
 
 <style lang="scss" scoped></style>
