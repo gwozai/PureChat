@@ -12,7 +12,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useState } from "@/utils/hooks/useMapper";
+import { useState, useGetters } from "@/utils/hooks/useMapper";
 
 const props = defineProps({
   message: {
@@ -21,17 +21,21 @@ const props = defineProps({
   },
 });
 const { message } = props;
+const { imgUrlList } = useGetters(["imgUrlList"]);
 const { showCheckbox } = useState({
   showCheckbox: (state) => state.conversation.showCheckbox,
 });
 
-const index = ref(0);
 const url = message.payload.imageInfoArray[0].url;
-const srcList = [];
-srcList.push(url);
 
+const index = imgUrlList.value.findIndex((item) => {
+  return item == url;
+});
+
+const srcList = imgUrlList.value;
 const geiPic = async (url) => {
   console.log(url);
+  // console.log(imgUrlList.value);
 };
 </script>
 

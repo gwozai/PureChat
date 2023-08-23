@@ -59,7 +59,7 @@ const conversation = {
             state.currentMessageList = [];
           }
           // 当前会话少于历史条数关闭loading
-          const isMore = state.currentMessageList?.length < 5;
+          const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
           // HISTORY_MESSAGE_COUNT;
           state.noMore = isMore;
           break;

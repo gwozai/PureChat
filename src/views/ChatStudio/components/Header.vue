@@ -33,6 +33,7 @@ const { Conver, groupDrawer, groupProfile } = useState({
 });
 const openSetup = () => {
   commit("setGroupStatus", true);
+  console.log(Conver.value);
   console.log(groupProfile.value);
 };
 

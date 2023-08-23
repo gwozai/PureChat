@@ -198,13 +198,27 @@ export function queryStringToObject(String) {
   });
   return params;
 }
+const TypeMap = {
+  TIMImageElem: "[图片]",
+  TIMFileElem: "[文件]",
+};
+
+export const fnReplyContent = (msg) => {
+  const type = msg?.type;
+  const reply = TypeMap[type] || "";
+  if (reply) {
+    return reply;
+  } else {
+    return msg?.payload?.text;
+  }
+};
 
 export function getReplyMsgContent(reply) {
   if (!reply) return "";
   const replyMsgContent = JSON.stringify({
     messageReply: {
       messageID: reply.ID,
-      messageAbstract: reply.payload.text,
+      messageAbstract: fnReplyContent(reply),
       messageSender: reply.nick,
       messageType: 0,
       version: "1",
