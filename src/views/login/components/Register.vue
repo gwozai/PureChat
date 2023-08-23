@@ -71,7 +71,7 @@
         />
       </el-form-item>
     </Motion> -->
-    <Motion :delay="300">
+    <!-- <Motion :delay="300">
       <el-form-item>
         <el-checkbox v-model="checked">
           {{ $t("login.readAccept") }}
@@ -80,7 +80,7 @@
           {{ $t("login.privacyPolicy") }}
         </el-button>
       </el-form-item>
-    </Motion>
+    </Motion> -->
     <Motion :delay="350">
       <el-form-item>
         <el-button
@@ -109,9 +109,7 @@ import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import Motion from "@/utils/motion";
 import { ruleForm, updateRules } from "../utils/validation";
 import { useStore } from "vuex";
-// import { useI18n } from "vue-i18n";
 import { Lock, User, Key, Iphone } from "@element-plus/icons-vue";
-// const { locale, t } = useI18n();
 const { state, dispatch, commit } = useStore();
 const onBack = () => {
   commit("SET_CURRENTPAGE", 0);

@@ -10,6 +10,8 @@ const REGEXP_SIX = /^\d{6}$/;
 const REGEXP_PWD =
   /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[()])+$)(?!^.*[\u4E00-\u9FA5].*$)([^(0-9a-zA-Z)]|[()]|[a-z]|[A-Z]|[0-9]){8,18}$/;
 
+const pattern = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
+
 const { username, password, keep } = storage.get("ACCOUNT") || {};
 
 export const user = reactive({
@@ -61,7 +63,7 @@ export const updateRules = reactive({
   username: [
     {
       required: true,
-      message: "请输入账号",
+      message: "账号格式应为字母、数字组合 （张爱玲）zhangal（张三） zhangsan",
       trigger: "blur",
     },
   ],
@@ -77,11 +79,9 @@ export const updateRules = reactive({
       validator: (rule, value, callback) => {
         if (value === "") {
           callback(new Error($t("login.phoneReg")));
-        }
-        // else if (!isPhone(value)) {
-        //   callback(new Error($t("login.phoneCorrectReg")));
-        // }
-        else {
+        } else if (!pattern.test(value)) {
+          callback(new Error($t("login.phoneCorrectReg")));
+        } else {
           callback();
         }
       },

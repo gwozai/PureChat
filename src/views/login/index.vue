@@ -56,7 +56,6 @@ const { currentPage } = useState({
     }
   }
 }
-
 .wave {
   background: var(--color-body-bg);
   position: fixed;
