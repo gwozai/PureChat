@@ -11,14 +11,14 @@
     <Editor
       class="editor-content"
       v-model="valueHtml"
-      :defaultConfig="editorConfig"
       :mode="mode"
+      :defaultConfig="editorConfig"
+      @drop="dropHandler"
+      @onChange="onChange"
       @onCreated="handleCreated"
       @customPaste="customPaste"
       @customAlert="customAlert"
       @keyup.enter="handleEnter"
-      @onChange="onChange"
-      @drop="dropHandler"
     />
     <!-- @ mention弹框 -->
     <mention-modal
@@ -41,49 +41,27 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import RichToolbar from "../components/RichToolbar.vue";
 import { toolbarConfig, editorConfig } from "../utils/configure";
 import emitter from "@/utils/mitt-bus";
-import {
-  onBeforeUnmount,
-  ref,
-  shallowRef,
-  onMounted,
-  onUpdated,
-  reactive,
-  toRefs,
-  computed,
-  watch,
-  nextTick,
-} from "vue";
-import { getImageType } from "@/utils/message-input-utils";
-import { getMsgElemItem, sendChatMessage, customAlert } from "../utils/utils";
+import { onBeforeUnmount, ref, shallowRef, onMounted, computed, watch, nextTick } from "vue";
+import { sendChatMessage, customAlert } from "../utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
-import {
-  fileImgToBase64Url,
-  dataURLtoFile,
-  urlToBase64,
-  convertEmoji,
-} from "@/utils/message-input-utils";
-import { GET_MESSAGE_LIST } from "@/store/mutation-types";
+import { fileImgToBase64Url, convertEmoji } from "@/utils/message-input-utils";
 import { debounce } from "lodash-es";
-import { sendMsg } from "@/api/im-sdk-api/message";
-const { production } = require("@/config/vue.custom.config");
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
 const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
 
-const { state, getters, dispatch, commit } = useStore();
+const { dispatch, commit } = useStore();
 const { isOwner, toAccount } = useGetters(["isOwner", "toAccount"]);
 const {
   currentConversation,
-  historyMessageList,
   showMsgBox,
   showCheckbox,
-  userProfile,
   isShowModal,
   currentMemberList,
   currentReplyMsg,
@@ -92,8 +70,6 @@ const {
   sessionDraftMap: (state) => state.conversation.sessionDraftMap,
   currentMemberList: (state) => state.groupinfo.currentMemberList,
   currentConversation: (state) => state.conversation.currentConversation,
-  historyMessageList: (state) => state.conversation.historyMessageList,
-  userProfile: (state) => state.user.currentUserProfile,
   showCheckbox: (state) => state.conversation.showCheckbox,
   showMsgBox: (state) => state.conversation.showMsgBox,
   isShowModal: (state) => state.conversation.isShowModal,
@@ -239,9 +215,6 @@ const parsetext = (item) => {
   console.log(item);
 };
 const setEmoj = (url, item) => {
-  console.log(url);
-  const node = { text: item };
-  // editorRef.value.insertNode(node);
   const ImageElement = {
     type: "image",
     class: "EmoticonPack",
@@ -338,7 +311,6 @@ const sendMsgBefore = () => {
 // 发送消息
 const sendMessage = async () => {
   const data = sendMsgBefore();
-  // return;
   const message = await sendChatMessage(data);
   clearInputInfo();
   dispatch("SESSION_MESSAGE_SENDING", {
