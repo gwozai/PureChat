@@ -7,6 +7,7 @@ import emitter from "@/utils/mitt-bus";
 import { scrollToDomPostion } from "@/utils/common";
 import { kickedOutReason, fnCheckoutNetState } from "./utils/index";
 import { ElNotification } from "element-plus";
+import { deepClone } from "@/utils/clone";
 import { h, nextTick } from "vue";
 
 export default class TIMProxy {
@@ -99,14 +100,22 @@ export default class TIMProxy {
     if (!isSDKReady) return;
     store.dispatch("GET_MY_PROFILE");
   }
-  onUpdateConversationList({ data, name }) {
+  onUpdateConversationList({ data }) {
     console.log(data, "会话列表更新");
-    // const convId = store.state.conversation?.currentConversation?.conversationID;
-    // const conv = data.filter((t) => t.conversationID == convId);
-    // 当前跳转窗口的属性
-
+    const convId = store.state.conversation?.currentConversation?.conversationID;
+    const conv = data.filter((t) => t.conversationID == convId);
     // 更新会话列表
-    store.dispatch("REPLACE_CONV_LIST", data);
+    store.commit("SET_CONVERSATION", {
+      type: "REPLACE_CONV_LIST",
+      payload: data,
+    });
+    // 更新窗口数据
+    if (conv) {
+      store.commit("SET_CONVERSATION", {
+        type: "UPDATE_CURRENT_SESSION",
+        payload: deepClone(conv[0]),
+      });
+    }
     // 未读消息
     store.dispatch("GET_TOTAL_UNREAD_MSG");
   }

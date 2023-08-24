@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref, computed, toRefs } from "vue";
+import { nextTick, ref, computed, toRefs, watchEffect } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { UserFilled } from "@element-plus/icons-vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -136,6 +136,10 @@ const props = defineProps({
   },
 });
 const { groupProfile } = toRefs(props);
+
+// const groupProfile = computed(() => {
+//   return currentConversation.value.groupProfile;
+// });
 const GROUP_TYPE_MAP = {
   Public: "陌生人社交群(Public)",
   Private: "好友工作群(Work)",
@@ -143,13 +147,14 @@ const GROUP_TYPE_MAP = {
   AVChatRoom: "直播群(AVChatRoom)",
 };
 const { locale, t } = useI18n();
-const { commit, dispatch } = useStore();
+const { state, commit, dispatch } = useStore();
 const {
   userProfile,
   groupDrawer,
   showMsgBox,
   // groupProfile,
   currentMemberList,
+  conversationList,
   currentConversation,
 } = useState({
   userProfile: (state) => state.user.currentUserProfile,
@@ -157,6 +162,7 @@ const {
   groupDrawer: (state) => state.groupinfo.groupDrawer,
   // groupProfile: (state) => state.groupinfo.groupProfile,
   currentMemberList: (state) => state.groupinfo.currentMemberList,
+  conversationList: (state) => state.conversation.conversationList,
   currentConversation: (state) => state.conversation.currentConversation,
 });
 const { isOwner, isAdmin, toAccount, currentType } = useGetters([
@@ -165,6 +171,11 @@ const { isOwner, isAdmin, toAccount, currentType } = useGetters([
   "toAccount",
   "currentType",
 ]);
+
+watchEffect(() => {
+  console.log(conversationList.value, "conversationList");
+  console.log(currentConversation.value, "currentConversation");
+});
 const input = ref("");
 const isNotify = ref(false);
 const dialogVisible = ref(false);

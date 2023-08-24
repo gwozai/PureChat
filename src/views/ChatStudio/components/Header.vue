@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { h, ref } from "vue";
+import { h, ref, watchEffect } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 import { GET_MESSAGE_LIST } from "@/store/mutation-types";
 import { useStore } from "vuex";
@@ -33,10 +33,7 @@ const { Conver, groupDrawer, groupProfile } = useState({
 });
 const openSetup = () => {
   commit("setGroupStatus", true);
-  console.log(Conver.value);
-  console.log(groupProfile.value);
 };
-
 const HeaderView = (props) => {
   const { list } = props;
   if (!list) return;

@@ -243,7 +243,7 @@ const conversation = {
         }
         // 更新当前窗口数据
         case CONVERSATIONTYPE.UPDATE_CURRENT_SESSION: {
-          state.currentConversation = action;
+          state.currentConversation = payload;
           break;
         }
         // 更新会话列表
@@ -409,13 +409,21 @@ const conversation = {
         type,
       });
     },
+    // 更新当前窗口数据
+    // async UPDATE_CURRENT_SESSION({ state, commit }, action) {
+    //   commit("SET_CONVERSATION", {
+    //     type: "UPDATE_CURRENT_SESSION",
+    //     payload: action,
+    //   });
+    //   console.log(state.currentConversation)
+    // },
     // 更新会话列表
-    async REPLACE_CONV_LIST({ state, commit }, action) {
-      commit("SET_CONVERSATION", {
-        type: "REPLACE_CONV_LIST",
-        payload: action,
-      });
-    },
+    // async REPLACE_CONV_LIST({ state, commit }, action) {
+    //   commit("SET_CONVERSATION", {
+    //     type: "REPLACE_CONV_LIST",
+    //     payload: action,
+    //   });
+    // },
     // 会话消息发送
     async SESSION_MESSAGE_SENDING({ state, commit, dispatch }, action) {
       const { payload } = action;

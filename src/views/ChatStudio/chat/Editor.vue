@@ -77,7 +77,7 @@ const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
 
 const { state, getters, dispatch, commit } = useStore();
-const { isOwner } = useGetters(["isOwner"]);
+const { isOwner, toAccount } = useGetters(["isOwner", "toAccount"]);
 const {
   currentConversation,
   historyMessageList,
@@ -335,7 +335,10 @@ const sendMsgBefore = () => {
 };
 // 发送消息
 const sendMessage = async () => {
-  const { type, toAccount, conversationID } = currentConversation.value;
+  console.log(currentConversation);
+  console.log(toAccount);
+  const convId = toAccount.value;
+  const { type, conversationID } = currentConversation.value;
   const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
   const data = {
     textMsg: emoj ? emoj : text,
@@ -346,7 +349,7 @@ const sendMessage = async () => {
     reply: currentReplyMsg.value,
   };
   clearInputInfo();
-  const message = await sendChatMessage(toAccount, type, data);
+  const message = await sendChatMessage(convId, type, data);
   dispatch("SESSION_MESSAGE_SENDING", {
     payload: {
       convId: conversationID,
@@ -359,9 +362,9 @@ emitter.on("handleAt", ({ id, name }) => {
   insertMention(id, name);
 });
 
-watch(currentConversation, (newValue) => {
-  insertDraft(newValue);
-});
+// watch(currentConversation, (newValue) => {
+//   insertDraft(newValue);
+// });
 
 onMounted(() => {});
 // 组件销毁时，及时销毁编辑器

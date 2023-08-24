@@ -51,9 +51,6 @@ export default {
   },
   mutations: {
     // 更新群详情
-    updateGroupInfo(state, payload) {
-      state.groupProfile = payload;
-    },
     setGroupProfile(state, payload) {
       state.groupProfile = payload;
     },
