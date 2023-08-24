@@ -218,10 +218,11 @@ export const html2Escape = (str) => {
  * @returns {Promise<Object>} - 返回聊天消息对象
  *
  */
-export async function sendChatMessage(convId, convType, options) {
+export async function sendChatMessage(options) {
   let TextMsg;
   let flag = true;
-  const { textMsg, aitStr, aitlist, files, image, reply } = options;
+  const { convId, convType, textMsg, aitStr, aitlist, files, image, reply } = options;
+  console.log(options)
   // 如果包含文件，则创建相应的文件消息
   if (files) {
     const { fileName, src } = files;

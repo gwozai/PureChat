@@ -166,7 +166,7 @@ const fnUpdateDraft = debounce((data) => {
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
-  fnUpdateDraft(content);
+  // fnUpdateDraft(content);
 };
 
 // 粘贴事件
@@ -281,8 +281,8 @@ const handleEnter = (event) => {
   if (event?.ctrlKey) return;
   const editor = editorRef.value;
   const isEmpty = editor.isEmpty(); // 判断当前编辑器内容是否为空
-  const { text, aitStr, files, image } = sendMsgBefore();
-  if ((!isEmpty && !empty(text)) || image || aitStr || files) {
+  const { textMsg, aitStr, files, image } = sendMsgBefore();
+  if ((!isEmpty && !empty(textMsg)) || image || aitStr || files) {
     sendMessage();
   } else {
     clearInputInfo();
@@ -295,64 +295,55 @@ const clearInputInfo = () => {
   editor && editor.clear();
 };
 
-const sendMsgBefore = () => {
+const extractFilesInfo = (html) => {
+  const matchStr = html.match(/data-link="([^"]*)"/);
+  const matchStrName = html.match(/data-fileName="([^"]*)"/);
+  const fileName = matchStrName?.[1];
+  const link = matchStr?.[1];
+  return { fileName, link };
+};
+
+const extractAitInfo = () => {
   let aitStr = "";
   let aitlist = [];
-  let newmsg = [];
-  let str = valueHtml.value;
-  let content = messages.value[0].children;
+  let html = valueHtml.value;
+  if (html.includes("mention")) {
+    aitStr = html.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
+    const newmsg = messages.value[0].children.filter((t) => t.type === "mention");
+    newmsg.forEach((t) => aitlist.push(t.info.id));
+    aitlist = Array.from(new Set(aitlist));
+  }
+  return { aitStr, aitlist };
+};
+
+const sendMsgBefore = () => {
   const editor = editorRef.value;
   const text = editor.getText(); // 纯文本内容
   const HtmlText = editor.getHtml(); // 非格式化的 html
   const image = editor.getElemsByType("image"); // 所有图片
-  if (str.includes("mention")) {
-    aitStr = str.replace(/<[^>]+>/g, "");
-    aitStr = aitStr.replace(/&nbsp;/gi, "");
-    newmsg = content.filter((t) => t.type == "mention");
-    newmsg.map((t) => aitlist.push(t.info.id));
-    aitlist = Array.from(new Set(aitlist));
-  }
-  const matchStr = HtmlText.match(/data-link="([^"]*)"/);
-  const matchStrName = HtmlText.match(/data-fileName="([^"]*)"/);
-  const fileName = matchStrName?.[1];
-  const link = matchStr?.[1];
+  const { aitStr, aitlist } = extractAitInfo();
+  const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
-  // console.log(text);
-  // console.log(link);
-  // console.log(image);
-  console.log(HtmlText);
-  // console.log(innHTML);
-  // console.log(aitStr);
-  console.log(emoticons);
   return {
-    text,
-    image: image?.length > 0 ? image : null,
-    aitStr,
+    convId: toAccount.value,
+    convType: currentConversation.value.type,
+    textMsg: emoticons || text,
+    image: image?.length > 0 && !emoticons ? image : null,
+    aitStr: emoticons || aitStr,
     aitlist,
     files: link ? { fileName, src: link } : null,
-    emoj: emoticons,
+    reply: currentReplyMsg.value,
   };
 };
 // 发送消息
 const sendMessage = async () => {
-  console.log(currentConversation);
-  console.log(toAccount);
-  const convId = toAccount.value;
-  const { type, conversationID } = currentConversation.value;
-  const { text, aitStr, image, aitlist, files, emoj } = sendMsgBefore();
-  const data = {
-    textMsg: emoj ? emoj : text,
-    aitStr: emoj ? emoj : aitStr,
-    image: emoj ? null : image,
-    aitlist,
-    files,
-    reply: currentReplyMsg.value,
-  };
+  const data = sendMsgBefore();
+  // return;
+  const message = await sendChatMessage(data);
   clearInputInfo();
-  const message = await sendChatMessage(convId, type, data);
   dispatch("SESSION_MESSAGE_SENDING", {
     payload: {
-      convId: conversationID,
+      convId: currentConversation.value.conversationID,
       message,
     },
   });
