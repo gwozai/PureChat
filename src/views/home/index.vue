@@ -12,16 +12,10 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-
 import Theme from "@/views/home/theme/index.vue";
 import SideBar from "@/views/home/SideBar/index.vue";
 import Setup from "@/views/home/setup/index.vue";
 import AddressBook from "@/views/components/AddressBook/index.vue";
-
-// const route = useRoute();
-// const router = useRouter();
-// router.replace("/welcome");
 </script>
 <style lang="scss" scoped>
 .css {

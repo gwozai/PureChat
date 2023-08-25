@@ -42,7 +42,6 @@ emitter.on("resize", ({ detail }) => {
    * 760 < width <= 990 折叠侧边栏
    * width > 990 展开侧边栏
    */
-  console.log(detail);
   if (width > 0 && width <= 760) {
     commit("UPDATE_USER_SETUP", {
       key: "sidebar",

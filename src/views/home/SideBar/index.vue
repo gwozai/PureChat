@@ -44,11 +44,6 @@ const props = defineProps({
     default: false,
   },
 });
-// const routing = router.options.routes[0].children;
-
-// const routing = router.options.routes.filter((t) => t.name == "home")[0].children;
-// console.log(routing);
-// cosnt routing =
 const { vislbile, collapse } = toRefs(props);
 
 const { isCollapse, sidebar, logoVal, routing } = useState({
