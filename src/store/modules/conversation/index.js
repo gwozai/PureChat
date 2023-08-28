@@ -448,9 +448,8 @@ const conversation = {
     },
     // 消息发送成功回调
     async SENDMSG_SUCCESS_CALLBACK({ state, commit, rootState }, action) {
-      let toAccount = state.currentConversation?.toAccount;
+      console.log(action, "sendMsg消息发送成功");
       const { convId, message } = action;
-      console.log(message, "sendMsg消息发送成功");
       commit("SET_HISTORYMESSAGE", {
         type: "UPDATE_MESSAGES",
         payload: {
@@ -459,11 +458,10 @@ const conversation = {
         },
       });
       commit("updataScroll");
-      // !production &&
       imCallback({
         Text: message.payload.text,
         From: message.from,
-        To: toAccount,
+        To: message.to,
         type: message.type,
       });
     },
