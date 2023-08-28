@@ -3,11 +3,11 @@ import http from "@/utils/http/index";
 import storage from "storejs";
 
 // 登录接口
-export const login = (params) => {
+export const login = (data) => {
   return http({
     url: "/login",
-    method: "get",
-    params,
+    method: "post",
+    data,
   });
 };
 
