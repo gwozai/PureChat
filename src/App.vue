@@ -11,7 +11,6 @@ import { useStore, mapState } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { ElConfigProvider } from "element-plus";
 import { useState } from "@/utils/hooks/useMapper";
-import { treeToFlat } from "@/utils/ToTree";
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import en from "element-plus/lib/locale/lang/en";

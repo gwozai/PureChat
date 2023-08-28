@@ -11,9 +11,9 @@
                 <el-button size="small" plain @click="Putall(isExpand)">
                   {{ isExpand ? "全部展开" : " 全部收起" }}
                 </el-button>
-                <!-- <el-button size="small" type="danger" @click="delMenuBtn" v-show="showDelBtn">
+                <el-button size="small" type="danger" @click="delMenuBtn" v-show="showDelBtn">
                   删除
-                </el-button> -->
+                </el-button>
               </div>
             </template>
             <el-skeleton animated :rows="12" :loading="loading">
@@ -227,7 +227,7 @@ const dialogFormVisible = ref(false);
 const dialogRef = ref(null);
 const { dispatch, commit } = useStore();
 const { routingtable } = useState({
-  routingtable: (state) => state.data.Routingtable,
+  routingtable: (state) => state.data.routeTable,
 });
 
 watch(filterText, (val) => {
@@ -303,7 +303,7 @@ const determine = (formEl) => {
 const newlyAddeMenu = async () => {
   // const { icon, title, path } = data
   // 根目录ID
-  let RootDir = "d17d701b-6257-40bd-a6c3-a4672d4823d4";
+  let RootDir = "57c79357-0309-41b9-919a-253c3dfe6691";
   // 默认根目录新建 || 自选目录
   const ID = state.checkedKeys;
   if (ID?.length > 0 && showDelBtn.value) {

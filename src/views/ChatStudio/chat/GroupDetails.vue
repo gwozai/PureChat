@@ -56,7 +56,7 @@
           <span> 群成员 </span>
           <span class="group-member--title__right">
             <span>{{ currentMemberList.length }}人 </span>
-            <span><a @click="openDetails">查看</a></span>
+            <!-- <span><a @click="openDetails">查看</a></span> -->
           </span>
         </div>
         <div class="group-member--avatar">
@@ -84,7 +84,7 @@
       </div>
       <el-divider />
       <!-- 免打扰 -->
-      <div class="group-flag-message">
+      <div class="group-flag-message" v-if="false">
         <div class="group-flag-message--title">
           <span class="group-flag-message--title__text"> 消息免打扰 </span>
           <el-switch v-model="isNotify" @change="notify" />

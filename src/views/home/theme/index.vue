@@ -43,10 +43,10 @@ emitter.on("resize", ({ detail }) => {
    * width > 990 展开侧边栏
    */
   if (width > 0 && width <= 760) {
-    commit("UPDATE_USER_SETUP", {
-      key: "sidebar",
-      value: false,
-    });
+    // commit("UPDATE_USER_SETUP", {
+    //   key: "sidebar",
+    //   value: false,
+    // });
   } else if (width > 760 && width <= 990) {
     // toggle("desktop", false);
   } else if (width > 990) {

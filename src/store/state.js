@@ -17,7 +17,7 @@ const defaultData = {
   user: null,
   token: null,
   elTag: [], // Tag 标签
-  Routingtable: null, // 路由表  Route Table
+  routeTable: null, // 路由表  Route Table
 };
 
 // 获取本地存储中的设置和用户信息，如果没有则使用默认值

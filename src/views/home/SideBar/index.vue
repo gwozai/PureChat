@@ -50,7 +50,7 @@ const { isCollapse, sidebar, logoVal, routing } = useState({
   isCollapse: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
   logoVal: (state) => state.settings.logoIcon,
-  routing: (state) => state.data.Routingtable,
+  routing: (state) => state.data.routeTable,
 });
 
 const handleOpen = (key, keyPath) => {

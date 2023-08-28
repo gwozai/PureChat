@@ -9,7 +9,6 @@
 
 <script setup>
 import { toRefs } from "vue";
-
 const { title } = require("@/config/vue.custom.config");
 const props = defineProps({
   show: {

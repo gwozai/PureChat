@@ -1,6 +1,5 @@
 import router from "@/router";
 import storage from "storejs";
-import { tree } from "@/utils/ToTree";
 import { USER_DATA, SET_UP } from "@/store/mutation-types";
 import emitter from "@/utils/mitt-bus";
 

@@ -1,27 +1,24 @@
-import storage from "storejs";
 import router from "@/router";
-import views from "@/utils/assembly.js";
-import { ToTree, flatToTree, tree } from "@/utils/ToTree";
-import { USER_DATA, SET_UP } from "@/store/mutation-types";
+import { convertToTree, optimizeTree } from "@/utils/ToTree";
 
 const actions = {
-  // 更新路由
-  updateRoute({ commit, state }, route) {
+  // 初始化路由表 将扁平化数据结构 转化为 符合 ElementUI 菜单组件的格式
+  updateRoute({ commit }, route) {
     const root = route.find((t) => (t.path = "/root"));
-    tree(route);
-    ToTree(root, route);
-    root.children.map((item) => {
+    optimizeTree(route);
+    convertToTree(root, route);
+    root.children.forEach((item) => {
       router.addRoute(item);
     });
-    commit("UPDATE_USER_INFO", { key: "Routingtable", value: root.children });
+    commit("UPDATE_USER_INFO", { key: "routeTable", value: root.children });
   },
   // 页面刷新重新加载路由
-  reloadRoute({ commit, state }, route) {
+  reloadRoute({ state }, route) {
     try {
-      const routing = state.data.Routingtable;
+      const routing = state.data.routeTable;
       if (!routing) return;
-      tree(routing);
-      routing.map((item) => {
+      optimizeTree(routing);
+      routing.forEach((item) => {
         router.addRoute(item);
       });
     } catch (error) {
