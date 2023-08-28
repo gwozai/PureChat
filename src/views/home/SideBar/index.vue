@@ -17,7 +17,7 @@
         @open="handleOpen"
         @close="handleClose"
       >
-        <SideItem :tree="routing[0].children" />
+        <SideItem :tree="routeTable[0].children" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -34,6 +34,7 @@ import Logo from "./Logo.vue";
 const Refelmenu = ref();
 const route = useRoute();
 const router = useRouter();
+// eslint-disable-next-line no-undef
 const props = defineProps({
   vislbile: {
     type: Boolean,
@@ -46,11 +47,11 @@ const props = defineProps({
 });
 const { vislbile, collapse } = toRefs(props);
 
-const { isCollapse, sidebar, logoVal, routing } = useState({
+const { isCollapse, sidebar, logoVal, routeTable } = useState({
   isCollapse: (state) => state.settings.isCollapse,
   sidebar: (state) => state.settings.sidebar,
   logoVal: (state) => state.settings.logoIcon,
-  routing: (state) => state.data.routeTable,
+  routeTable: (state) => state.data.routeTable,
 });
 
 const handleOpen = (key, keyPath) => {

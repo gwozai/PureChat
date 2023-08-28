@@ -33,7 +33,7 @@
                       <el-tree
                         ref="treeRef"
                         class="filter-tree"
-                        :data="routingtable"
+                        :data="routeTable[0].children"
                         show-checkbox
                         accordion
                         highlight-current
@@ -116,52 +116,7 @@
         </el-col>
       </el-row>
       <!-- 弹框 -->
-      <el-dialog v-model="dialogFormVisible" :title="'添加菜单'">
-        <el-form
-          ref="ruleFormRef"
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          label-width="120px"
-          class="demo-ruleForm"
-        >
-          <el-form-item :label="ruleFormText.title" prop="title" placeholder="请输入标题">
-            <el-input v-model="ruleForm.title" autocomplete="off" />
-          </el-form-item>
-          <el-form-item :label="ruleFormText.path" prop="path" placeholder="请输入路径">
-            <el-input v-model="ruleForm.path" />
-          </el-form-item>
-          <el-form-item :label="ruleFormText.component" prop="component" placeholder="请输入组件名">
-            <el-input v-model="ruleForm.component" />
-          </el-form-item>
-          <el-form-item :label="ruleFormText.icon" prop="icon">
-            <el-select
-              v-model="ruleForm.icon"
-              class="year"
-              popper-class="style-select"
-              placeholder="请选择图标"
-            >
-              <el-option
-                class="dropdown"
-                v-for="item in ElIcons"
-                :key="item.name"
-                :label="item.name"
-                :value="item.name"
-              >
-                <FontIcon :iconName="item.name" />
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="resetForm(ruleFormRef)"> 重置 </el-button>
-            <el-button @click="dialogFormVisible = false"> 取消 </el-button>
-            <el-button type="primary" @click="determine(ruleFormRef)"> 确定 </el-button>
-          </span>
-        </template>
-      </el-dialog>
+      <DialogMenu ref="dialogRef" />
     </div>
   </el-scrollbar>
 </template>
@@ -174,17 +129,11 @@ import { ElMessageBox } from "element-plus";
 import * as ElIcons from "@element-plus/icons-vue";
 import { updateMenu, AddMenu, getMenu, DeleteMenu } from "@/api/node-admin-api/menu";
 import { Message, errorMessage, warnMessage } from "@/utils/message";
+import DialogMenu from "./DialogMenu.vue";
 
 const defaultProps = {
   children: "children",
   label: "label",
-};
-
-const ruleFormText = {
-  title: "标题",
-  path: "路径",
-  component: "组件",
-  icon: "图标",
 };
 
 const state = reactive({
@@ -199,40 +148,22 @@ const formLabelAlign = reactive({
   icon: "",
   component: "",
 });
-// 新增菜单数据
-const ruleForm = reactive({
-  title: "测试",
-  path: "/system1",
-  component: "System",
-  icon: "Folder",
-});
-
-// 校验规则
-const rules = reactive({
-  name: [{ required: true, message: "请输入标题", trigger: "blur" }],
-  path: [{ required: true, message: "请输入路径", trigger: "blur" }],
-  icon: [],
-  component: [{ required: true, message: "请输入组件名", trigger: "blur" }],
-});
 
 const loading = ref(true);
 const showDelBtn = ref(false);
 const isExpand = ref(false);
 const ruleLabelRef = ref();
-const ruleFormRef = ref();
 const labelPosition = ref("right");
 const filterText = ref("");
 const treeRef = ref(null);
-const dialogFormVisible = ref(false);
-const dialogRef = ref(null);
+const dialogRef = ref();
 const { dispatch, commit } = useStore();
-const { routingtable } = useState({
-  routingtable: (state) => state.data.routeTable,
+const { routeTable } = useState({
+  routeTable: (state) => state.data.routeTable,
 });
 
 watch(filterText, (val) => {
   treeRef.value.filter(val);
-  // console.log(treeRef.value)
 });
 
 const filterNode = (value, data) => {
@@ -244,11 +175,11 @@ const Reset = () => {};
 
 // 添加菜单按钮
 const addMenuBtn = () => {
-  dialogFormVisible.value = true;
+  dialogRef.value.openDialog();
 };
 // 全部收起
 const Putall = (val) => {
-  const tree = routingtable.value;
+  const tree = routeTable.value[0].children;
   isExpand.value = !isExpand.value;
   tree.map((t, i) => {
     treeRef.value.store.nodesMap[tree[i].id].expanded = val;
@@ -282,42 +213,10 @@ const delMenu = async () => {
   }
 };
 const update = async (menu) => {
-  // console.log(menu)
   await dispatch("updateRoute", menu);
 };
 const nodeClick = (data) => {
   console.log(data);
-};
-// 弹框确定按钮
-const determine = (formEl) => {
-  formEl.validate((valid) => {
-    if (valid) {
-      dialogFormVisible.value = false;
-      newlyAddeMenu();
-    } else {
-      return false;
-    }
-  });
-};
-// 新建菜单
-const newlyAddeMenu = async () => {
-  // const { icon, title, path } = data
-  // 根目录ID
-  let RootDir = "57c79357-0309-41b9-919a-253c3dfe6691";
-  // 默认根目录新建 || 自选目录
-  const ID = state.checkedKeys;
-  if (ID?.length > 0 && showDelBtn.value) {
-    RootDir = formLabelAlign.ID;
-  }
-  console.log(RootDir);
-  const datas = await AddMenu({
-    parentId: RootDir,
-    path: ruleForm.path,
-    title: ruleForm.title,
-    icon: ruleForm.icon,
-    componentName: "System",
-  });
-  datas && update(datas);
 };
 const checkBox = (node, key) => {
   console.log(node, key);
@@ -341,17 +240,13 @@ const checkBox = (node, key) => {
 };
 const resetForm = (formEl) => {
   if (!formEl) return;
-  console.log(formEl);
   formEl.resetFields();
 };
 // 修改菜单
 const modifyMenu = async () => {
-  // console.log(state.treeData)
   const { id, path, meta, componentName } = state.treeData;
   const { title } = meta;
-
   const { icon } = formLabelAlign;
-  // console.log(icon)
   const route = await updateMenu({ id, path, title, icon });
   route && dispatch("updateRoute", route);
 };
