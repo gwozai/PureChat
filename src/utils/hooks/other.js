@@ -1,11 +1,11 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
 /**
- * useToggle - 一个提供布尔类型状态和一些辅助函数以用于切换状态的钩子函数。
- * @param {Boolean} initialState - 初始状态。默认值为false。
- * @returns {Array} - 返回一个数组
+ * useBoolean - 一个提供布尔类型状态和一些辅助函数以用于切换状态的钩子函数。
+ * @param {Boolean} flag - 初始状态。默认值为false。
+ * @returns {Object}
  */
-export function useToggle(flag = false) {
+export function useBoolean(flag = false) {
   const state = ref(flag);
   function setState(value) {
     state.value = value;
@@ -19,7 +19,7 @@ export function useToggle(flag = false) {
   function toggle() {
     setState(!state.value);
   }
-  return [state, setState, setTrue, setFalse, toggle];
+  return { state, setState, setTrue, setFalse, toggle };
 }
 
 /**

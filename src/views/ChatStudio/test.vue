@@ -6,7 +6,7 @@
     <br />
     <el-button type="primary" @click="setState(true)">true</el-button>
     <el-button type="primary" @click="setState(false)">false</el-button>
-    <p>useToggle {{ state }}</p>
+    <p>useBoolean {{ state }}</p>
     <br />
     <el-button v-for="{ title, onclick } in buttons" :key="title" type="primary" @click="onclick">
       {{ title }}
@@ -31,7 +31,7 @@ import { getGroupList } from "@/api/im-sdk-api/group";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { setCookies, getCookies } from "@/utils/Cookies";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
-import { useToggle } from "@/utils/hooks/index";
+import { useBoolean } from "@/utils/hooks/index";
 import { cloud, getUser } from "@/api/laf-sdk-api";
 import io from "socket.io-client";
 
@@ -126,7 +126,7 @@ export default defineComponent({
   setup(props, { attrs, emit, expose, slots }) {
     const data = reactive({ text: "" });
     const { theme, setTheme } = useDataThemeChange();
-    const [state, setState] = useToggle();
+    const { state, setState } = useBoolean();
 
     onMounted(() => {});
     onBeforeUnmount(() => {});
