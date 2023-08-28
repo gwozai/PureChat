@@ -2,10 +2,7 @@
 import qs from "qs";
 import axios from "axios";
 import storage from "storejs";
-import router from "@/router";
-import { ElMessage } from "element-plus";
 import NProgress from "@/utils/progress";
-import store from "@/store";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { setCookies } from "@/utils/Cookies";
 import { errorHandler } from "./tools";
@@ -30,7 +27,7 @@ const service = axios.create({
   //   console.log(persent);
   // },
 });
-const whiteList = ["/restSendmsg", "/imCallback"];
+const whiteList = ["/imCallback"];
 // 请求拦截器
 service.interceptors.request.use((config) => {
   const { url } = config;

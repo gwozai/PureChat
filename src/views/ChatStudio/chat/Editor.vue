@@ -49,6 +49,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/message-input-utils";
+import { MintFilter } from "@/utils/mint-filter";
 import { debounce } from "lodash-es";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
@@ -138,52 +139,45 @@ const updateDraft = (data) => {
 const fnUpdateDraft = debounce((data) => {
   updateDraft(data);
 }, 300);
-
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   // fnUpdateDraft(content);
 };
 
-// 粘贴事件
+const handleFile = (item) => {
+  const type = item.type;
+  let pasteFile = item.getAsFile();
+  if (type.match("^image/")) {
+    parsepicture(pasteFile);
+  } else {
+    parsefile(pasteFile);
+  }
+};
+
+const handleString = (item, editor) => {
+  item.getAsString((str) => {
+    parsetext(str, editor);
+  });
+};
+
+const kindHandlers = {
+  file: handleFile,
+  string: handleString,
+};
+
 const customPaste = (editor, event, callback) => {
   console.log("ClipboardEvent 粘贴事件对象", event);
-  // const html = event.clipboardData.getData("text/html"); // 获取粘贴的 html
   const text = event.clipboardData.getData("text/plain"); // 获取粘贴的纯文本
-  // const rtf = event.clipboardData.getData("text/rtf"); // 获取 rtf 数据（如从 word wsp 复制粘贴）
-  // console.log(html);
-  console.log(text);
-  // console.log(rtf);
-  if (event?.clipboardData?.items) {
-    const items = event.clipboardData.items;
-    // console.log(items);
-    for (let [key, value] of Object.entries(items)) {
-      console.log(key, value);
-      const { kind, type } = value;
-      // console.log(kind, type)
-      if (kind === "file") {
-        // DataTransferItemList 转换成 File
-        let pasteFile = value?.getAsFile?.();
-        if (type.match("^image/")) {
-          parsepicture(pasteFile);
-        } else {
-          parsefile(pasteFile);
-        }
-      }
-      if (kind === "string") {
-        value.getAsString((str) => {
-          parsetext(str, editor);
-        });
-      }
-    }
+  const items = event?.clipboardData?.items ?? [];
+  for (const item of items) {
+    const { kind } = item;
+    const handler = kindHandlers[kind];
+    handler && handler(item, editor);
   }
-  // 自定义插入内容
   editor.insertText(text);
-  // 返回 false ，阻止默认粘贴行为
   event.preventDefault();
-  callback(false); // 返回值（注意，vue 事件的返回值，不能用 return）
-  // 返回 true ，继续默认的粘贴行为
-  // callback(true)
+  callback(false);
 };
 // 拖拽事件
 const dropHandler = (event) => {
@@ -297,10 +291,11 @@ const sendMsgBefore = () => {
   const { aitStr, aitlist } = extractAitInfo();
   const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
+  const filteredText = MintFilter(text);
   return {
     convId: toAccount.value,
     convType: currentConversation.value.type,
-    textMsg: emoticons || text,
+    textMsg: emoticons || filteredText || text,
     image: image?.length > 0 && !emoticons ? image : null,
     aitStr: emoticons || aitStr,
     aitlist,

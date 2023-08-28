@@ -2,6 +2,7 @@
 import url from "url";
 import path from "path";
 import os from "os";
+import { MintFilter } from '@/utils/mint-filter';
 
 /**
  * 将二进制数据转换为 base64 URL 格式
@@ -264,5 +265,7 @@ export function convertEmoji(html, emojiMap) {
     return emojiText;
   });
   const rege = /<[^>]+>/g;
-  return result.replace(rege, "");
+  const text = result.replace(rege, "");
+  return MintFilter(text)
 }
+
