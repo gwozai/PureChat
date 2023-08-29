@@ -115,9 +115,9 @@
           </el-card>
         </el-col>
       </el-row>
-      <!-- 弹框 -->
-      <DialogMenu ref="dialogRef" />
     </div>
+    <!-- 弹框 -->
+    <DialogMenu ref="dialogRef" />
   </el-scrollbar>
 </template>
 
@@ -222,7 +222,7 @@ const checkBox = (node, key) => {
   console.log(node, key);
   const { checkedKeys } = key;
   const { id, label, meta, path, componentName } = node;
-  const { icon } = meta;
+  const { icon, modify } = meta;
   state.treeData = node;
   state.checkedKeys = checkedKeys;
   const exist = checkedKeys.length > 0;
@@ -237,6 +237,7 @@ const checkBox = (node, key) => {
   } else {
     resetForm(ruleLabelRef.value);
   }
+  showDelBtn.value = modify;
 };
 const resetForm = (formEl) => {
   if (!formEl) return;
@@ -272,35 +273,13 @@ onMounted(() => {
   }, 100);
 });
 </script>
-<style lang="scss">
-.style-select {
-  background: #fff;
-
-  .el-scrollbar__view {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .el-select-dropdown__item {
-    padding: 0;
-  }
-
-  .el-select-dropdown {
-    width: 400px;
-  }
-}
-</style>
 <style lang="scss" scoped>
+@import url(./index.scss);
 .el-col {
   min-width: 300px;
 }
 .el-card {
   min-width: 300px;
-}
-.is-current {
-  .custom-node {
-    // background-color: #d5e8fc;
-  }
 }
 .custom-node {
   .el-icon {
@@ -328,27 +307,25 @@ onMounted(() => {
   height: 26px;
   line-height: 26px;
 }
-.year {
-  :deep(.el-input__inner) {
-    // background: url("~@/assets/images/log.png") no-repeat;
-    // background-size: 26px 26px;
-    // background-position: 0px 3px;
-    // padding: 0 0 0 26px;
-    // box-sizing: border-box;
-    // font-size: 14px;
-  }
+// .year {
+//   :deep(.el-input__inner) {
+//     // background: url("~@/assets/images/log.png") no-repeat;
+//     // background-size: 26px 26px;
+//     // background-position: 0px 3px;
+//     // padding: 0 0 0 26px;
+//     // box-sizing: border-box;
+//     // font-size: 14px;
+//   }
 
-  :deep(.el-input) {
-    width: 500px;
-  }
-}
-.dropdown {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.custom-node {
-}
+//   :deep(.el-input) {
+//     width: 500px;
+//   }
+// }
+// .dropdown {
+//   width: 50px;
+//   height: 50px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 </style>
