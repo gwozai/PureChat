@@ -1,9 +1,3 @@
-/* eslint-disable no-irregular-whitespace */
-import url from "url";
-import path from "path";
-import os from "os";
-import { MintFilter } from '@/utils/mint-filter';
-
 /**
  * 将二进制数据转换为 base64 URL 格式
  * @param {string | Buffer} data 要转换的数据，可以是一个字符串或一个 Buffer 对象
@@ -266,6 +260,5 @@ export function convertEmoji(html, emojiMap) {
   });
   const rege = /<[^>]+>/g;
   const text = result.replace(rege, "");
-  return MintFilter(text)
+  return text;
 }
-

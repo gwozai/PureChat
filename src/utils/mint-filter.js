@@ -1,6 +1,3 @@
-
-const { production } = require("@/config/vue.custom.config");
-
 class TrieNode {
   constructor() {
     this.children = new Map();
@@ -36,7 +33,6 @@ class Mint {
   }
   buildFailureLinks() {
     const queue = [];
-    // Set failure link of depth 1 nodes to root
     for (const [key, node] of this.root.children) {
       node.failureLink = this.root;
       queue.push(node);
@@ -49,13 +45,14 @@ class Mint {
         while (failureLinkNode !== null && !failureLinkNode.children.has(key)) {
           failureLinkNode = failureLinkNode.failureLink;
         }
-        childNode.failureLink = failureLinkNode !== null ? failureLinkNode.children.get(key) : this.root;
+        childNode.failureLink =
+          failureLinkNode !== null ? failureLinkNode.children.get(key) : this.root;
       }
     }
   }
   filter(text, options = { replace: true }) {
     let currentNode = this.root;
-    let filteredText = '';
+    let filteredText = "";
     const matches = [];
     for (let i = 0; i < text.length; i++) {
       const char = text[i];
@@ -67,7 +64,7 @@ class Mint {
         filteredText += char;
       } else {
         currentNode = currentNode.children.get(char);
-        filteredText += options.replace ? '*' : char;
+        filteredText += options.replace ? "*" : char;
         if (currentNode.isEndOfWord) {
           matches.push(text.substring(i - currentNode.length + 1, i + 1));
         }
@@ -91,22 +88,7 @@ class Mint {
         }
       }
     }
-
     return true;
   }
 }
-
-const vocabulary = [
-  '傻逼', '王八蛋', '打胶', '打炮'
-]
-const mint = new Mint(vocabulary);
-
-const MintFilter = (text) => {
-  if (production) return text
-  const filteredText = mint.filter(text).text;
-  console.log(filteredText, "mint-filter");
-  return filteredText
-}
-
-
-export { Mint, MintFilter };
+export default Mint;

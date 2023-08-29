@@ -22,8 +22,8 @@
             <el-skeleton animated :rows="12" :loading="false">
               <template #default>
                 <div class="mb-5">
-                  <el-button size="small" plain @click="AddRoleBtn"> 新增角色 </el-button>
-                  <el-button v-show="ShowDelBtn" size="small" type="danger" @click="Deletelot">
+                  <el-button size="small" plain @click="addRoleBtn"> 新增角色 </el-button>
+                  <el-button v-show="ShowDelBtn" size="small" type="danger" @click="deletelot">
                     删除角色
                   </el-button>
                 </div>
@@ -37,22 +37,23 @@
                   @selection-change="handleSelectionChange"
                 >
                   <el-table-column type="selection" />
+                  <el-table-column prop="userId" label="userId" width="100" />
                   <el-table-column prop="roleName" label="角色名称" width="200" />
-                  <el-table-column prop="info" label="说明" width="200" />
+                  <!-- <el-table-column prop="info" label="说明" width="200" /> -->
                   <el-table-column prop="createTime" label="创建时间" width="200">
                     <template #default="scope">
                       {{ formatTime(scope.row.createTime) }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="updateTime" label="更新时间" sortable width="200">
+                  <!-- <el-table-column prop="updateTime" label="更新时间" sortable width="200">
                     <template #default="scope">
                       {{ formatTime(scope.row.updateTime) }}
                     </template>
-                  </el-table-column>
-                  <el-table-column prop="isDefaultRole" label="角色类型" width="200">
+                  </el-table-column> -->
+                  <el-table-column prop="isAdmin" label="角色类型" width="200">
                     <template #default="scope">
-                      <el-tag :type="scope.row.isDefaultRole ? '' : 'success'">
-                        {{ scope.row.isDefaultRole ? "内置" : "自定义" }}
+                      <el-tag :type="scope.row.isAdmin ? '' : 'success'">
+                        {{ scope.row.isAdmin ? "管理员" : "普通账号" }}
                       </el-tag>
                     </template>
                   </el-table-column>
@@ -177,7 +178,7 @@ function handlePageChange(val) {
   // tableData.value = PageData.value[val-1]
   // console.log(PageData.value)
 }
-const AddRoleBtn = () => {
+const addRoleBtn = () => {
   dialogFormVisible.value = true;
   infoText.value = true;
 };
@@ -198,7 +199,7 @@ const Addrole = async () => {
   const { code, msg } = await addRoles({
     roleName: ruleForm.name,
     info: ruleForm.info,
-    isDefaultRole: false,
+    isAdmin: false,
   });
   if (code === 200) {
     successMessage(msg);
@@ -213,7 +214,7 @@ const ModifyRoles = async () => {
     id: ruleForm.id,
     roleName: ruleForm.name,
     info: ruleForm.info,
-    isDefaultRole: false,
+    isAdmin: false,
   });
   if (code === 200) {
     successMessage(msg);
@@ -228,11 +229,11 @@ const ModifyRoles = async () => {
 // 删除单列
 const DelColumn = (index, data) => {
   const { $index, row } = index;
-  const { roleName, id, isDefaultRole } = row;
-  if (isDefaultRole) {
-    warnMessage("内置用户不允许删除!");
-    return;
-  }
+  const { roleName, id, isAdmin } = row;
+  // if (isAdmin) {
+  //   warnMessage("内置用户不允许删除!");
+  //   return;
+  // }
   ElMessageBox.confirm(`确认删除角色 ${roleName || ""} 吗?`, "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
@@ -257,7 +258,7 @@ const delRoles = async (id) => {
   console.log(code, msg);
 };
 // 多选删除
-const Deletelot = () => {
+const deletelot = () => {
   // delRoles(ruleForm.ids)
 };
 // 修改按钮
@@ -282,7 +283,7 @@ const getRolesList = async () => {
 getRolesList();
 
 function filterTag(value, row) {
-  return row.isDefaultRole === value;
+  return row.isAdmin === value;
 }
 
 const checkAge = (rule, value, callback) => {

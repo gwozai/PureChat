@@ -49,7 +49,6 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/common";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/message-input-utils";
-import { MintFilter } from "@/utils/mint-filter";
 import { debounce } from "lodash-es";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
@@ -291,11 +290,10 @@ const sendMsgBefore = () => {
   const { aitStr, aitlist } = extractAitInfo();
   const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
-  const filteredText = MintFilter(text);
   return {
     convId: toAccount.value,
     convType: currentConversation.value.type,
-    textMsg: emoticons || filteredText || text,
+    textMsg: emoticons || text,
     image: image?.length > 0 && !emoticons ? image : null,
     aitStr: emoticons || aitStr,
     aitlist,
