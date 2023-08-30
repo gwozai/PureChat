@@ -25,7 +25,8 @@
                 :key="item"
                 @click="SelectEmoticon(item)"
               >
-                <img :src="emojiUrl + emojiMap[item]" :title="item" />
+                <!-- <img :src="emojiUrl + emojiMap[item]" :title="item" /> -->
+                <img :src="require('@/assets/emoji_qq/' + emojiMap[item])" :title="item" />
               </span>
             </div>
           </el-scrollbar>

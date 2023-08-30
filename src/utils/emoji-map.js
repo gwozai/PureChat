@@ -1,6 +1,6 @@
 //  https://www.emojiall.com/img/platform/qq/014@2x.gif
 export const emojiUrl = "https://www.emojiall.com/img/platform/qq/";
-export const localemojiUrl = "@/assets/expression/";
+export const localemojiUrl = "@/assets/emoji_qq/";
 export const emojiMap = {
   "[微笑]": "014@2x.gif",
   "[撇嘴]": "001@2x.gif",

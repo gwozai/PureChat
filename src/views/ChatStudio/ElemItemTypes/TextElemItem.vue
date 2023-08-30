@@ -21,7 +21,13 @@
         <!-- <span v-if="item.name === 'text'">
           <v-md-preview :text="item.text" tab-size="0"></v-md-preview>
         </span> -->
-        <img v-else-if="item.name === 'img'" class="emoji" :src="item.src" alt="表情包" />
+        <!-- <img v-else-if="item.name === 'img'" class="emoji" :src="item.localSrc" alt="表情包" /> -->
+        <img
+          v-else-if="item.name === 'img'"
+          class="emoji"
+          :src="require('@/assets/emoji_qq/' + item.localSrc)"
+          alt="表情包"
+        />
       </template>
     </template>
   </div>
