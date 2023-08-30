@@ -43,10 +43,9 @@ const left = ref("");
 const top = ref("");
 const userProfile = ref(null);
 const state = reactive({
-  sculpture: require("@/assets/images/ChatGPT.png"),
   back: require("@/assets/images/gptBack.png"),
 });
-const { sculpture, back } = toRefs(state);
+const { back } = toRefs(state);
 
 const { dispatch, commit } = useStore();
 const { popover, seat, cardData } = useState({

@@ -40,8 +40,6 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import avatars from "@/assets/images/picture.jpg";
 
 let loading = ref(true);
 const date = new Date();
