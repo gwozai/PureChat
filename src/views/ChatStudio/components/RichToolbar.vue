@@ -18,21 +18,30 @@
       <div>
         <div class="emojis">
           <el-scrollbar>
-            <div style="padding: 0 10px 0 15px">
+            <div v-if="table == 'QQ'" style="padding: 0 10px 0 15px">
               <span
-                v-for="item in emojiName"
+                v-for="item in emojiQq.emojiName"
                 class="emoji"
                 :key="item"
                 @click="SelectEmoticon(item)"
               >
-                <!-- <img :src="emojiUrl + emojiMap[item]" :title="item" /> -->
-                <img :src="require('@/assets/emoji_qq/' + emojiMap[item])" :title="item" />
+                <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
+              </span>
+            </div>
+            <div v-else-if="table == 'Tiktok'" style="padding: 0 10px 0 15px">
+              <span
+                v-for="item in emojiDouyin.emojiName"
+                class="emoji"
+                :key="item"
+                @click="SelectEmoticon(item)"
+              >
+                <img :src="require('@/assets/emoji/' + emojiDouyin.emojiMap[item])" :title="item" />
               </span>
             </div>
           </el-scrollbar>
         </div>
-        <div class="tool" v-if="false">
-          <div v-for="item in toolDate" :key="item.icon">
+        <div class="tool">
+          <div v-for="item in toolDate" :key="item.icon" @click="table = item.type">
             <svg-icon :iconClass="item.icon" class="icon-hover" />
           </div>
         </div>
@@ -79,33 +88,43 @@
 <script setup>
 import emitter from "@/utils/mitt-bus";
 import { ref, unref, toRefs, defineEmits } from "vue";
-import { emojiName, emojiUrl, emojiMap, localemojiUrl } from "@/utils/emoji-map";
+// import { emojiName, emojiUrl, emojiMap } from "@/utils/emoji-map";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { useStore } from "vuex";
+
+const emojiQq = require("@/utils/emoji-map-qq");
+const emojiDouyin = require("@/utils/emoji-map-douyin");
 
 const tobottom = ref();
 const buttonRef = ref();
 const popoverRef = ref();
 const imagePicker = ref();
 const filePicker = ref();
-const visible = ref(false);
+const table = ref("QQ");
 const { state, dispatch, commit } = useStore();
 const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
 const toolDate = [
   {
     title: "默认表情",
     icon: "iconxiaolian",
+    type: "QQ",
   },
   {
     title: "我的收藏",
     icon: "collect",
+    type: "Tiktok",
   },
 ];
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
 };
 const SelectEmoticon = (item) => {
-  let url = emojiUrl + emojiMap[item];
+  let url = "";
+  if (table.value == "QQ") {
+    url = emojiQq.emojiUrl + emojiQq.emojiMap[item];
+  } else {
+    url = emojiDouyin.emojiUrl + emojiDouyin.emojiMap[item];
+  }
   emit("setToolbar", {
     data: {
       url,
@@ -114,6 +133,7 @@ const SelectEmoticon = (item) => {
     key: "setEmoj",
   });
   unref(popoverRef).hide();
+  table.value = "QQ";
 };
 const SendImageClick = () => {
   let $el = imagePicker.value;

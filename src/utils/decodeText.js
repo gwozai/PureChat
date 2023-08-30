@@ -1,4 +1,4 @@
-import { emojiMap, emojiUrl, localemojiUrl } from "./emoji-map";
+import { emojiMap, emojiUrl } from "./emoji-map";
 
 export function decodeText(text) {
   const renderDom = []; // 存储渲染后的 DOM 元素
@@ -31,7 +31,6 @@ export function decodeText(text) {
             name: "img",
             src: emojiUrl + emoji,
             localSrc: emoji, // 本地表情包地址
-            // localSrc: require(localemojiUrl + emoji)
           });
           remainingText = remainingText.substring(rightBracketIndex + 1);
         } else {

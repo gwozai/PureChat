@@ -25,7 +25,7 @@
         <img
           v-else-if="item.name === 'img'"
           class="emoji"
-          :src="require('@/assets/emoji_qq/' + item.localSrc)"
+          :src="require('@/assets/emoji/' + item.localSrc)"
           alt="表情包"
         />
       </template>
