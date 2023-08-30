@@ -7,13 +7,10 @@ import {
   deleteConversation,
   getConversationProfile,
   setMessageRead,
-  TIMpingConv,
   setMessageRemindType,
 } from "@/api/im-sdk-api";
 import { sendMsg } from "@/api/im-sdk-api/message";
 import { getMsgList, getUnreadMsg } from "@/api/im-sdk-api/session";
-import { deepClone } from "@/utils/clone";
-const { production } = require("@/config/vue.custom.config");
 
 const getBaseTime = (list) => {
   return list?.length > 0 ? list.find((t) => t.isTimeDivider).time : 0;
@@ -169,6 +166,7 @@ const conversation = {
             historyMessageList: new Map(),
             currentConversation: null,
             currentMessageList: [],
+            activetab: 'whole',
             showMsgBox: false,
             showCheckbox: false,
             currentReplyUser: null,

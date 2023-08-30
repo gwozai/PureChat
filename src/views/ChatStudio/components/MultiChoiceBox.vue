@@ -10,34 +10,7 @@
       </span>
     </div>
   </div>
-  <el-dialog
-    v-model="dialogVisible"
-    title="选择要转发的联系人"
-    width="30%"
-    :before-close="handleClose"
-  >
-    <div class="tabulation-style">
-      <div
-        v-for="item in conversationList"
-        :key="item.toAccount"
-        :class="{ tabulationHover: multipleValue?.toAccount == item.toAccount }"
-        @click="onClickItem(item)"
-      >
-        <img :src="item.userProfile?.avatar || squareUrl" alt="" />
-        <div>{{ chatName(item) }}</div>
-      </div>
-    </div>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="setDialogVisible(null)">
-          {{ $t("el.datepicker.cancel") }}
-        </el-button>
-        <el-button type="primary" @click="handleConfirm(dialogType)">
-          {{ $t("el.datepicker.confirm") }}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <MagforwardingPopup @confirm="confirm" ref="wardingRef" />
 </template>
 
 <script>
@@ -45,11 +18,9 @@ import { defineComponent, h } from "vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 import { createForwardMsg, sendMsg } from "@/api/im-sdk-api/message";
 import { showConfirmationBox } from "@/utils/message";
+import MagforwardingPopup from "./MagforwardingPopup.vue";
 import { deleteMsgList } from "@/api/im-sdk-api";
-import { chatName } from "../utils/utils";
-import { squareUrl } from "../utils/menu";
-import TIM from "@tencentcloud/chat";
-import { ElRadio } from "element-plus";
+
 const buttonList = [
   {
     type: "MergeForward",
@@ -76,22 +47,13 @@ export default defineComponent({
   data() {
     return {
       buttonList,
-      dialogVisible: false,
-      dialogType: "",
       multipleValue: null,
-      squareUrl,
-      chatName,
     };
   },
-  watch: {
-    currentConversation() {
-      if (!this.disabled) {
-        this.$store.commit("SET_FORWARD_DATA", { type: "clear", payload: null });
-      }
-    },
+  components: {
+    MagforwardingPopup,
   },
   computed: {
-    ...mapGetters(["currentType"]),
     ...mapState({
       showMsgBox: (state) => state.conversation.showMsgBox,
       forwardData: (state) => state.conversation.forwardData,
@@ -108,10 +70,10 @@ export default defineComponent({
     onClock(item) {
       switch (item.type) {
         case "MergeForward": // 合并转发
-          // this.setDialogVisible(true, item.type);
+          this.setDialogVisible(item.type);
           break;
         case "ForwardItemByItem": // 逐条转发
-          this.setDialogVisible(true, item.type);
+          this.setDialogVisible(item.type);
           break;
         case "removalMsg":
           this.deleteMessage(); // 删除消息
@@ -127,17 +89,10 @@ export default defineComponent({
           this.aQuickForward();
           break;
       }
-      this.setDialogVisible();
     },
-    onClickItem(item) {
-      this.setMultipleValue({
-        toAccount: item.toAccount,
-        type: item.type,
-      });
-    },
-    handleClose(done) {
-      this.setDialogVisible();
-      done();
+    confirm({ value, type }) {
+      this.setMultipleValue(value);
+      this.handleConfirm(type);
     },
     onClose() {
       this.shutdown();
@@ -222,10 +177,8 @@ export default defineComponent({
         element.classList.remove("style-select");
       });
     },
-    setDialogVisible(value = false, type = "") {
-      this.dialogVisible = value;
-      this.dialogType = type;
-      !value && this.setMultipleValue();
+    setDialogVisible(type = "") {
+      this.$refs.wardingRef.openPopup(type);
     },
     setMultipleValue(value = null) {
       this.multipleValue = value;

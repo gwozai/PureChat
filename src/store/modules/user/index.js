@@ -1,6 +1,3 @@
-import storage from "storejs";
-import { useRouter, useRoute } from "vue-router";
-import { nextTick } from "vue";
 import router from "@/router";
 import { getMyProfile, TIM_logout, TIM_login } from "@/api/im-sdk-api";
 import { ElMessage } from "element-plus";
