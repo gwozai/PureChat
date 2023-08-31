@@ -1,4 +1,4 @@
-//  https://www.emojiall.com/img/platform/qq/014@2x.gif
+//  https://www.emojiall.com/img/platform/qq/042@2x.gif
 export const emojiUrl = "https://www.emojiall.com/img/platform/qq/";
 
 export const emojiMap = {

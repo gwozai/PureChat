@@ -1,7 +1,10 @@
-// https://www.emojiall.com/images/60/douyin/clv.png
+// https://www.emojiall.com/images/60/douyin/1f437.png
 export const emojiUrl = "https://www.emojiall.com/images/60/douyin/";
 
 export const emojiMap = {
+  "[吐彩虹]": "1f308.png",
+  "[绝望的凝视]": "1f61e.png",
+  "[听歌]": "1f3a7.png",
   "[流汗]": "1f613.png",
   "[大哭]": "1f62d.png",
   "[猪头]": "1f437.png",
@@ -35,18 +38,21 @@ export const emojiMap = {
   "[吐舌]": "coq.png",
   // "[呆无辜]": "cor.png",
   "[白眼]": "cot.png",
-  // "[吃瓜群众]": "cox.png",
+  "[吃瓜群众]": "cox.png",
   "[绿帽子]": "coz.png",
-  // "[皱眉]": "cp2.png",
-  // "[擦汗]": "cp3.png",
-  // "[强]": "cp7.png",
-  // "[如花]": "cp8.png",
-  // "[奋斗]": "cpc.png",
+  "[皱眉]": "cp2.png",
+  "[擦汗]": "cp3.png",
+  "[强]": "cp7.png",
+  "[如花]": "cp8.png",
+  "[奋斗]": "cpc.png",
   "[V5]": "clv.png",
   "[给力]": "clw.png",
 };
 
 export const emojiName = [
+  "[吐彩虹]",
+  "[绝望的凝视]",
+  "[听歌]",
   "[流汗]",
   "[大哭]",
   "[猪头]",
@@ -80,13 +86,13 @@ export const emojiName = [
   "[吐舌]",
   // "[呆无辜]",
   "[白眼]",
-  // "[吃瓜群众]",
+  "[吃瓜群众]",
   "[绿帽子]",
-  // "[皱眉]",
-  // "[擦汗]",
-  // "[强]",
-  // "[如花]",
-  // "[奋斗]",
+  "[皱眉]",
+  "[擦汗]",
+  "[强]",
+  "[如花]",
+  "[奋斗]",
   "[V5]",
   "[给力]",
 ];

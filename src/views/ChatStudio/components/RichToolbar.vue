@@ -18,7 +18,7 @@
       <div>
         <div class="emojis">
           <el-scrollbar>
-            <div v-if="table == 'QQ'" style="padding: 0 10px 0 15px">
+            <div class="emoji_QQ" v-show="table == 'QQ'">
               <span
                 v-for="item in emojiQq.emojiName"
                 class="emoji"
@@ -28,7 +28,7 @@
                 <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
               </span>
             </div>
-            <div v-else-if="table == 'Tiktok'" style="padding: 0 10px 0 15px">
+            <div class="emoji_Tiktok" v-show="table == 'Tiktok'">
               <span
                 v-for="item in emojiDouyin.emojiName"
                 class="emoji"
@@ -126,10 +126,7 @@ const SelectEmoticon = (item) => {
     url = emojiDouyin.emojiUrl + emojiDouyin.emojiMap[item];
   }
   emit("setToolbar", {
-    data: {
-      url,
-      item,
-    },
+    data: { url, item },
     key: "setEmoj",
   });
   unref(popoverRef).hide();
@@ -177,6 +174,25 @@ emitter.on("onisbot", (state) => {
 }
 </style>
 <style lang="scss" scoped>
+.emojis {
+  width: 400px;
+  height: 202px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .emoji_QQ,
+  .emoji_Tiktok {
+    padding: 0 10px 0 15px;
+  }
+
+  .emoji {
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
 .tool {
   height: 50px;
   display: flex;
@@ -189,6 +205,7 @@ emitter.on("onisbot", (state) => {
     align-items: center;
   }
 }
+
 .chat_chat-input-action {
   cursor: pointer;
   animation: chat_slide-in 0.3s ease;
@@ -221,27 +238,4 @@ emitter.on("onisbot", (state) => {
     color: #808080;
   }
 }
-.emojis,
-.lately-emoji {
-  width: 400px;
-  height: 202px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  // overflow-y: scroll;
-  .emoji {
-    img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-}
-.lately-emoji {
-  width: 125px;
-  height: 140px;
-}
-// ::-webkit-scrollbar {
-//   // display: none;
-// }
 </style>

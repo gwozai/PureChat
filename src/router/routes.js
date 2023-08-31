@@ -15,7 +15,6 @@ const Role = () => import(/* webpackChunkName: "Role" */ "@/views/system/role/in
 const Personal = () => import(/* webpackChunkName: "Personal" */ "@/views/Personal/index");
 const About = () => import(/* webpackChunkName: "About" */ "@/views/about/index");
 
-// const Welcome = defineAsyncComponent(() => import('@/views/welcome/index.vue'));
 const routes = [
   { path: "/", redirect: "/chatstudio" },
   {
@@ -26,111 +25,6 @@ const routes = [
       title: "登录",
       icon: "Eleme",
     },
-  },
-];
-
-const routescopy = [
-  { path: "/", redirect: "/chatstudio" },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: {
-      title: "登录",
-      icon: "Eleme",
-    },
-  },
-  {
-    path: "/",
-    name: "home",
-    component: Home,
-    meta: {
-      title: "Home",
-      icon: "Eleme",
-    },
-    redirect: "/chatstudio",
-    children: [
-      // 首页
-      {
-        path: "/welcome",
-        name: "welcome",
-        component: Welcome,
-        meta: {
-          title: "首页",
-          icon: "Eleme",
-        },
-      },
-      // 聊天工作室
-      {
-        path: "/chatstudio",
-        name: "chatstudio",
-        component: ChatStudio,
-        meta: {
-          keep: true,
-          title: "聊天工作室",
-          icon: "ForkSpoon",
-        },
-      },
-      // 个人中心
-      {
-        path: "/personal",
-        name: "personal",
-        component: Personal,
-        meta: {
-          title: "个人中心",
-          icon: "User",
-        },
-      },
-      // 系统管理
-      {
-        path: "system",
-        name: "system",
-        redirect: "/system/menu",
-        meta: {
-          title: "系统管理",
-          icon: "Setting",
-        },
-        children: [
-          {
-            path: "/system/menu",
-            name: "menu",
-            component: Menu,
-            meta: {
-              title: "菜单列表",
-              icon: "More",
-            },
-          },
-          {
-            path: "/system/role",
-            name: "role",
-            component: Role,
-            meta: {
-              title: "角色权限",
-              icon: "User",
-            },
-          },
-          {
-            path: "/system/user",
-            name: "user",
-            component: User,
-            meta: {
-              title: "用户权限",
-              icon: "CopyDocument",
-            },
-          },
-        ],
-      },
-      // 关于
-      {
-        path: "/about",
-        name: "about",
-        component: About,
-        meta: {
-          title: "关于",
-          icon: "Warning",
-        },
-      },
-    ],
   },
 ];
 
