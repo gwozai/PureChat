@@ -63,14 +63,13 @@ const user = {
   actions: {
     // 登录
     async LOG_IN({ state, commit, dispatch }, data) {
-      const { username, password } = data;
-      const { code, msg, result } = await login({ username, password });
+      const { code, msg, result } = await login(data);
       console.log({ code, msg, result }, "登录信息");
       if (code == 200) {
         window.TIMProxy.init();
         dispatch("GET_MENU");
         dispatch("TIM_LOG_IN", {
-          userID: username,
+          userID: result.username,
           userSig: result.userSig,
         });
         commit("UPDATE_USER_INFO", { key: "user", value: result });
@@ -90,13 +89,12 @@ const user = {
     },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
-      const { userID, userSig } = user;
-      const { code, data } = await TIM_login({ userID, userSig });
+      const { code, data } = await TIM_login(user);
       console.log({ code, data }, "TIM_LOG_IN");
       if (code == 0) {
         commit("showMessage", { message: "登录成功!" });
-        commit("getUserInfo", { userID, userSig });
-        console.log({ userID, userSig }, "getUserInfo");
+        commit("getUserInfo", user);
+        console.log(user, "getUserInfo");
       } else {
         console.log("err");
       }

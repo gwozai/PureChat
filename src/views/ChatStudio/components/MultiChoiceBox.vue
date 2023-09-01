@@ -14,13 +14,11 @@
 </template>
 
 <script>
-import { defineComponent, h } from "vue";
-import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import { createForwardMsg, sendMsg } from "@/api/im-sdk-api/message";
 import { showConfirmationBox } from "@/utils/message";
-import MagforwardingPopup from "./MagforwardingPopup.vue";
 import { deleteMsgList } from "@/api/im-sdk-api";
-
+import MagforwardingPopup from "./MagforwardingPopup.vue";
 const buttonList = [
   {
     type: "MergeForward",
@@ -42,7 +40,7 @@ const buttonList = [
   },
 ];
 
-export default defineComponent({
+export default {
   name: "MultiChoiceBox",
   data() {
     return {
@@ -184,7 +182,7 @@ export default defineComponent({
       this.multipleValue = value;
     },
   },
-});
+};
 </script>
 <style lang="scss">
 .tabulation-style {

@@ -11,7 +11,6 @@ import { deepClone } from "@/utils/clone";
 import { h, nextTick } from "vue";
 
 export default class TIMProxy {
-  // 静态方法
   constructor() {
     this.version = TIM.VERSION; // im版本号
     this.userProfile = {}; // IM用户信息
@@ -184,7 +183,7 @@ export default class TIMProxy {
       });
     }
   }
-  onMessageModified({ data }) { }
+  onMessageModified({ data }) {}
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }

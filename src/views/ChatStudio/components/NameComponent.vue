@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, computed, watch, h } from "vue";
+import { toRefs, h } from "vue";
 // eslint-disable-next-line no-undef
 const props = defineProps({
   item: {
