@@ -35,7 +35,6 @@ const index = imgUrlList.value.findIndex((item) => {
 const srcList = imgUrlList.value;
 const geiPic = async (url) => {
   console.log(url);
-  // console.log(imgUrlList.value);
 };
 </script>
 

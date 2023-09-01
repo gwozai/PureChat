@@ -105,9 +105,3 @@ const obj = {
     return a + b;
   },
 };
-// 测试
-// const copy = deepClone(obj);
-// console.log(copy)
-
-// obj.field = 3
-// console.log(obj)

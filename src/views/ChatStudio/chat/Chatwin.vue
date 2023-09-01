@@ -294,7 +294,6 @@ const getMoreMsg = async () => {
       conversationID: conversationID,
       nextReqMessageID: ID,
     });
-    // console.log(result, "getMsgList");
     const { isCompleted, messageList, nextReqMessageID } = result;
     let noMore = true;
     let Loadmore = messageList.length < HISTORY_MESSAGE_COUNT;

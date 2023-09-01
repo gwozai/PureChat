@@ -123,12 +123,9 @@ useEventListener(window, "focus", () => {
   });
 });
 onActivated(() => {
-  console.log("onActivated");
   commit("updataScroll");
 });
-onDeactivated(() => {
-  console.log("onDeactivated");
-});
+onDeactivated(() => {});
 onMounted(() => {});
 onUnmounted(() => {});
 watchEffect(() => {

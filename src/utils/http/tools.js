@@ -3,7 +3,6 @@ import { ElMessage } from "element-plus";
 import NProgress from "@/utils/progress";
 // 异常拦截处理器
 export const errorHandler = (error) => {
-  // console.log(error)
   let errMessage = "未知错误";
   if (error.response) {
     const { data, status } = error.response;

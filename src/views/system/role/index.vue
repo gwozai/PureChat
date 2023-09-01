@@ -170,13 +170,10 @@ function handleSelectionChange(val) {
 function handleSizeChange(val) {
   console.log(val);
   PageData.value = chunk(tableData.value, val);
-  // console.log(PageData.value)
 }
 
 function handlePageChange(val) {
   console.log(val);
-  // tableData.value = PageData.value[val-1]
-  // console.log(PageData.value)
 }
 const addRoleBtn = () => {
   dialogFormVisible.value = true;
