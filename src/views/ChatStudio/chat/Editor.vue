@@ -25,7 +25,6 @@
       v-if="isShowModal"
       :isOwner="isOwner"
       :memberlist="currentMemberList"
-      @hideMentionModal="hideMentionModal"
       @insertMention="insertMention"
     />
     <el-tooltip effect="dark" :content="$t('chat.buttonPrompt')" placement="left-start">
@@ -83,7 +82,7 @@ const handleCreated = (editor) => {
   // editor.disable(); // 只读
   // editor.hidePanelOrModal();
 };
-const insertMention = (id, name) => {
+const insertMention = (id, name, backward = true) => {
   const editor = editorRef.value;
   const mentionNode = {
     type: "mention", // 必须是 'mention'
@@ -92,12 +91,9 @@ const insertMention = (id, name) => {
     children: [{ text: "" }], // 必须有一个空 text 作为 children
   };
   editor?.restoreSelection(); // 恢复选区
-  editor.deleteBackward("character"); // 删除 '@'
+  backward && editor.deleteBackward("character"); // 删除 '@'
   editor.insertNode(mentionNode); // 插入 mention
   editor.move(1); // 移动光标
-};
-const hideMentionModal = () => {
-  commit("SET_MENTION_MODAL", false);
 };
 const setToolbar = (item) => {
   const { data, key } = item;
@@ -315,7 +311,7 @@ const sendMessage = async () => {
 };
 
 emitter.on("handleAt", ({ id, name }) => {
-  insertMention(id, name);
+  insertMention(id, name, false);
 });
 
 // watch(currentConversation, (newValue) => {

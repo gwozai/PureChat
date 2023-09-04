@@ -59,10 +59,31 @@ export default defineComponent({
     };
   },
   methods: {
+    initMention() {
+      // 仅群主支持@全员
+      if (!this.isOwner) {
+        state.list.shift();
+      }
+      // 获取光标位置，定位 modal
+      const domSelection = document.getSelection();
+      const domRange = domSelection.getRangeAt(0);
+      if (domRange == null) return;
+      const selectionRect = domRange.getBoundingClientRect();
+      // 获取编辑区域 DOM 节点的位置，以辅助定位
+      // const containerRect = editor.getEditableContainer().getBoundingClientRect();
+      // 定位 modal
+      state.top = `${selectionRect.top + 20}px`;
+      state.left = `${selectionRect.left + 5}px`;
+      // input blur() focus()
+      input.value.focus();
+    },
+    hideMentionModal() {
+      this.$store.commit("SET_MENTION_MODAL", false);
+    },
     inputKeyupHandler(event) {
       // esc - 隐藏 modal
       if (event.key === "Escape") {
-        this.$emit("hideMentionModal");
+        this.hideMentionModal();
       }
       // enter - 插入 mention node
       if (event.key === "Enter") {
@@ -78,7 +99,7 @@ export default defineComponent({
     insertMentionHandler(id, name) {
       console.log(id, name);
       this.$emit("insertMention", id, name);
-      this.$emit("hideMentionModal"); // 隐藏 modal
+      this.hideMentionModal(); // 隐藏 modal
     },
     onKeydown(event) {
       switch (event.keyCode) {
@@ -113,6 +134,9 @@ export default defineComponent({
         element.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     },
+  },
+  mounted() {
+    // this.initMention()
   },
   setup(props, { attrs, emit, expose, slots }) {
     const input = ref(null);
@@ -149,7 +173,7 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
-      emit("hideMentionModal"); // 隐藏 modal
+      this.hideMentionModal(); // 隐藏 modal
     });
 
     return {
