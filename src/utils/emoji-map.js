@@ -11,5 +11,3 @@ export const emojiName = [
   ...require("./emoji-map-qq").emojiName,
   ...require("./emoji-map-douyin").emojiName,
 ];
-
-console.log(localemojiUrl, emojiMap, emojiName);
