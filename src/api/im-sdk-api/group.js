@@ -1,11 +1,7 @@
 import TIM from "@tencentcloud/chat";
 import tim from "@/utils/im-sdk/tim";
 
-/**
- * 群组类型
- * @readonly
- * @enum {string}
- */
+// 群类型
 const GroupType = {
   GRP_WORK: TIM.TYPES.GRP_WORK, // 好友工作群，默认
   GRP_PUBLIC: TIM.TYPES.GRP_PUBLIC, // 陌生人社交群
@@ -20,39 +16,28 @@ const ModifyType = {
   GROUP_CUSTOM_FIELD: "groupCustomField", // 修改群组维度自定义字段
 };
 
-// 解散群组
-export const dismissGroup = async (params) => {
-  const groupId = params;
+// 解散群
+export const dismissGroup = async (groupId) => {
   const {
     code,
     data: { groupID },
   } = await tim.dismissGroup(groupId);
-  return {
-    code,
-    groupID,
-  };
+  return { code, groupID };
 };
 
-/**
- * 创建群组
- * @param {CreateGroupParams} params - 创建群组的参数
- * @param {GroupType} type - 群组类型
- * @returns {Promise<{ code: number, group: any }>} - 返回一个 Promise，包含创建结果和群组对象
- */
+// 创建群
 export const createGroup = async (params, type = GroupType.GRP_WORK) => {
   const { groupName } = params;
   const {
     code,
-    data: { group, overLimitUserIDList },
+    data: { group },
   } = await tim.createGroup({
     type,
     name: groupName,
   });
-  return {
-    code,
-    group,
-  };
+  return { code, group };
 };
+
 // 退出群
 export const quitGroup = async (params) => {
   const { groupId } = params;
@@ -62,6 +47,7 @@ export const quitGroup = async (params) => {
     data,
   };
 };
+
 // 获取群成员列表
 export const getGroupMemberList = async (params) => {
   const { groupID, count } = params; // offset
@@ -73,10 +59,7 @@ export const getGroupMemberList = async (params) => {
     count: 15,
     offset: 0,
   });
-  return {
-    code,
-    memberList,
-  };
+  return { code, memberList };
 };
 
 /**
@@ -97,10 +80,7 @@ export const updateGroupProfile = async (params) => {
     code,
     data: { group },
   } = await tim.updateGroupProfile(parameter);
-  return {
-    code,
-    group,
-  };
+  return { code, group };
 };
 
 // 添加群成员
@@ -132,6 +112,7 @@ export const addGroupMember = async (params) => {
     };
   }
 };
+
 // 删除群成员
 export const deleteGroupMember = async (params) => {
   const { groupID, user } = params;
@@ -142,27 +123,22 @@ export const deleteGroupMember = async (params) => {
   };
   try {
     const { code, data } = await tim.deleteGroupMember(parameter);
-    return {
-      code,
-      data,
-    };
+    return { code, data };
   } catch (error) {
-    console.log(error);
     return {
       code: -1,
+      data: error,
     };
   }
 };
+
 // 获取群组列表
 export const getGroupList = async () => {
   const {
     code,
     data: { groupList },
   } = await tim.getGroupList();
-  return {
-    code,
-    groupList,
-  };
+  return { code, groupList };
 };
 
 // 获取群详细资料
@@ -175,10 +151,7 @@ export const getGroupProfile = async (params) => {
     } = await tim.getGroupProfile({
       groupID: groupID,
     });
-    return {
-      code,
-      data: group,
-    };
+    return { code, data: group };
   } catch (error) {
     return {
       code: -1,

@@ -10,7 +10,6 @@ const fileUploading = (data, bar = 0) => {
 };
 // 发送消息
 export const sendMsg = async (params) => {
-  const { messageElementObject, callback } = params || {};
   try {
     const {
       code,
