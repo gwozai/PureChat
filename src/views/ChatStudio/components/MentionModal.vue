@@ -21,14 +21,9 @@ import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs
 import { mapState, mapGetters } from "vuex";
 import store from "@/store";
 import TIM from "@tencentcloud/chat";
-export default defineComponent({
+export default {
   name: "MentionModal",
   props: {
-    // 群组成员数据
-    memberlist: {
-      type: Object,
-      default: () => {},
-    },
     // 群主
     isOwner: {
       type: Boolean,
@@ -37,9 +32,14 @@ export default defineComponent({
   },
   watch: {},
   computed: {
-    // ...mapState({
-    //   currentConversation: (state) => state.conversation.currentConversation,
-    // }),
+    ...mapState({
+      // currentConversation: (state) => state.conversation.currentConversation,
+      currentUserProfile: (state) => state.user.currentUserProfile,
+      currentMemberList: (state) => state.groupinfo.currentMemberList,
+    }),
+    filterList() {
+      return this.currentMemberList.filter((t) => t.userID !== this.currentUserProfile.userID);
+    },
     // 根据 <input> value 筛选 list
     searchedList() {
       const searchVal = this.searchVal.trim().toLowerCase();
@@ -55,14 +55,28 @@ export default defineComponent({
   },
   data() {
     return {
+      top: "",
+      left: "",
+      list: [],
       tabIndex: 0,
+      searchVal: "",
     };
   },
   methods: {
+    initList() {
+      this.list = [
+        {
+          joinTime: 0,
+          userID: TIM.TYPES.MSG_AT_ALL,
+          nick: "全体成员",
+        },
+        ...this.filterList,
+      ];
+    },
     initMention() {
       // 仅群主支持@全员
       if (!this.isOwner) {
-        state.list.shift();
+        this.list.shift();
       }
       // 获取光标位置，定位 modal
       const domSelection = document.getSelection();
@@ -72,10 +86,10 @@ export default defineComponent({
       // 获取编辑区域 DOM 节点的位置，以辅助定位
       // const containerRect = editor.getEditableContainer().getBoundingClientRect();
       // 定位 modal
-      state.top = `${selectionRect.top + 20}px`;
-      state.left = `${selectionRect.left + 5}px`;
+      this.top = `${selectionRect.top + 20}px`;
+      this.left = `${selectionRect.left + 5}px`;
       // input blur() focus()
-      input.value.focus();
+      this.$refs.input.focus();
     },
     hideMentionModal() {
       this.$store.commit("SET_MENTION_MODAL", false);
@@ -97,7 +111,6 @@ export default defineComponent({
       }
     },
     insertMentionHandler(id, name) {
-      console.log(id, name);
       this.$emit("insertMention", id, name);
       this.hideMentionModal(); // 隐藏 modal
     },
@@ -135,55 +148,16 @@ export default defineComponent({
       }
     },
   },
+  created() {
+    this.initList();
+  },
   mounted() {
-    // this.initMention()
+    this.initMention();
   },
-  setup(props, { attrs, emit, expose, slots }) {
-    const input = ref(null);
-    const { memberlist, isOwner } = toRefs(props);
-    const filterList = memberlist.value.filter(
-      (t) => t.userID !== store.state.user.currentUserProfile.userID
-    );
-    const state = reactive({
-      // 定位信息
-      top: "",
-      left: "",
-      // list 信息
-      searchVal: "",
-      list: [{ joinTime: 0, userID: TIM.TYPES.MSG_AT_ALL, nick: "全体成员" }, ...filterList],
-    });
-
-    onMounted(() => {
-      // 仅群主支持@全员
-      if (!isOwner.value) {
-        state.list.shift();
-      }
-      // 获取光标位置，定位 modal
-      const domSelection = document.getSelection();
-      const domRange = domSelection.getRangeAt(0);
-      if (domRange == null) return;
-      const selectionRect = domRange.getBoundingClientRect();
-      // 获取编辑区域 DOM 节点的位置，以辅助定位
-      // const containerRect = editor.getEditableContainer().getBoundingClientRect();
-      // 定位 modal
-      state.top = `${selectionRect.top + 20}px`;
-      state.left = `${selectionRect.left + 5}px`;
-      // input blur() focus()
-      input.value.focus();
-    });
-
-    onBeforeUnmount(() => {
-      this.hideMentionModal(); // 隐藏 modal
-    });
-
-    return {
-      input,
-      // eslint-disable-next-line vue/no-dupe-keys
-      memberlist,
-      ...toRefs(state),
-    };
+  beforeUnmount() {
+    this.hideMentionModal(); // 隐藏 modal
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>
@@ -212,7 +186,6 @@ export default defineComponent({
 .mention-modal ul li:hover {
   text-decoration: underline;
 }
-
 .active {
   background: #f0f2f5;
 }
