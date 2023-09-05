@@ -80,7 +80,6 @@ const ClickMenuItem = (item) => {
 };
 
 const onClick = (path) => {
-  console.log(path);
   router.push(path);
 };
 

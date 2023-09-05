@@ -46,8 +46,6 @@ const router = createRouter({
 
 let isF = false;
 router.beforeEach(async (to, from, next) => {
-  // console.log(to, "to");
-  // console.log(from, "from");
   if (from.path === to.path) return;
   setPageTitle(to.meta.title);
   const token = storage.get(ACCESS_TOKEN);

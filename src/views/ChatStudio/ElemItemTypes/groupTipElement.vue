@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     getGroupTipContent(message) {
-      console.log(message);
       const userName = message.nick || message.payload.userIDList.join(",");
       switch (message.payload.operationType) {
         case TIM.TYPES.GRP_TIP_MBR_JOIN:

@@ -85,7 +85,6 @@ const user = {
     // 注册
     async REGISTER({ state }, data) {
       const result = await register(data);
-      console.log(result);
     },
     // 登录im
     async TIM_LOG_IN({ commit, dispatch }, user) {
@@ -95,8 +94,6 @@ const user = {
         commit("showMessage", { message: "登录成功!" });
         commit("getUserInfo", user);
         console.log(user, "getUserInfo");
-      } else {
-        console.log("err");
       }
     },
     // 退出登录

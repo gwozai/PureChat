@@ -161,14 +161,11 @@ const rules = reactive({
 });
 
 function handleSelectionChange(val) {
-  console.log(val);
   ShowDelBtn.value = val.length > 0;
   ruleForm.ids = val.map((t) => t.id);
-  console.log(ruleForm.ids);
 }
 // 每页显示个数
 function handleSizeChange(val) {
-  console.log(val);
   PageData.value = chunk(tableData.value, val);
 }
 
@@ -183,10 +180,8 @@ const addRoleBtn = () => {
 const determine = (off, formEl) => {
   formEl.validate((valid) => {
     if (valid) {
-      console.log("submit!");
       off ? Addrole() : ModifyRoles();
     } else {
-      console.log("error submit!");
       return false;
     }
   });
@@ -252,7 +247,6 @@ const delRoles = async (id) => {
   } else {
     successMessage(msg);
   }
-  console.log(code, msg);
 };
 // 多选删除
 const deletelot = () => {
@@ -273,7 +267,6 @@ const ModifyBtn = (index, data) => {
 const getRolesList = async () => {
   let { code, result } = await getRoles();
   if (code === 200) {
-    console.log(result);
     tableData.value = result;
   }
 };
@@ -301,7 +294,6 @@ const checkAge = (rule, value, callback) => {
 };
 
 const checkName = (rule, value, callback) => {
-  console.log(value);
   if (value === "") {
     callback(new Error("必传参数"));
   } else {
