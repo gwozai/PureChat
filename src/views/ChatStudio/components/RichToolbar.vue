@@ -87,13 +87,12 @@
 
 <script setup>
 import emitter from "@/utils/mitt-bus";
-import { ref, unref, toRefs, defineEmits } from "vue";
-// import { emojiName, emojiUrl, emojiMap } from "@/utils/emoji-map";
+import { ref, unref, defineEmits } from "vue";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { useStore } from "vuex";
 
-const emojiQq = require("@/utils/emoji-map-qq");
-const emojiDouyin = require("@/utils/emoji-map-douyin");
+const emojiQq = require("@/utils/emoji/emoji-map-qq");
+const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 
 const tobottom = ref();
 const buttonRef = ref();
