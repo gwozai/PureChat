@@ -80,7 +80,6 @@ const conversation = {
           console.log(payload, "更新消息");
           const { convId, message } = payload;
           let oldMessageList = state.historyMessageList.get(convId);
-          // const matchedIndex = oldMessageList.findIndex((item) => item.ID === payload.message.ID);
           let matched = false;
           // let newMessageList = [];
           // if (oldMessageList) {
@@ -166,7 +165,7 @@ const conversation = {
             historyMessageList: new Map(),
             currentConversation: null,
             currentMessageList: [],
-            activetab: 'whole',
+            activetab: "whole",
             showMsgBox: false,
             showCheckbox: false,
             currentReplyUser: null,
@@ -493,9 +492,16 @@ const conversation = {
     },
     // 用于当前会话的图片预览
     imgUrlList: (state) => {
-      return state.currentMessageList
-        .filter((message) => message.type === TIM.TYPES.MSG_IMAGE && !message.isRevoked) // 筛选出没有撤回并且类型是图片类型的消息
-        .map((message) => message.payload.imageInfoArray[0].url);
+      const filteredMessages = state.currentMessageList.filter(
+        (item) => item.type === TIM.TYPES.MSG_IMAGE && !item.isRevoked && !item.isDeleted
+      );
+      // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight
+      const reversedUrls = filteredMessages.reduceRight((urls, message) => {
+        const url = message.payload.imageInfoArray[0].url;
+        urls.push(url);
+        return urls;
+      }, []);
+      return reversedUrls;
     },
   },
 };

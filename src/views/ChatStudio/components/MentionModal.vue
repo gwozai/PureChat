@@ -17,9 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, onBeforeUnmount, onMounted, computed, reactive, toRefs, ref } from "vue";
-import { mapState, mapGetters } from "vuex";
-import store from "@/store";
+import { mapState } from "vuex";
 import TIM from "@tencentcloud/chat";
 export default {
   name: "MentionModal",
@@ -30,10 +28,8 @@ export default {
       default: false,
     },
   },
-  watch: {},
   computed: {
     ...mapState({
-      // currentConversation: (state) => state.conversation.currentConversation,
       currentUserProfile: (state) => state.user.currentUserProfile,
       currentMemberList: (state) => state.groupinfo.currentMemberList,
     }),
