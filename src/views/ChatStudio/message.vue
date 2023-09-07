@@ -96,7 +96,8 @@ const {
 const fnTotalUnreadMsg = () => {
   const unreadCount = totalUnreadMsg.value;
   const isUnread = unreadCount > 0;
-  unread.value = isUnread ? `未读(${unreadCount})` : "未读";
+  const num = unreadCount > 99 ? "99+" : unreadCount;
+  unread.value = isUnread ? `未读(${num})` : "未读";
 };
 const toBottom = () => {
   commit("updataScroll");

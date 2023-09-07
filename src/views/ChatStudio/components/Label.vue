@@ -45,10 +45,4 @@ const getLabel = (data) => {
     stroke: unset;
   }
 }
-// .all {}
-
-.robot {
-  // color: rgb(84, 180, 239);
-  // border: 0.64px solid #c6e2ff;
-}
 </style>

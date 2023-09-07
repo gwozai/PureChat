@@ -60,4 +60,4 @@ export function decodeText(text) {
   }
   return renderDom;
 }
-console.log(decodeText("[睡]123[呲牙]"));
+

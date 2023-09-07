@@ -1,7 +1,5 @@
 <template>
   <el-scrollbar class="scrollbar-list">
-    <!-- <transition-group name="fade-transform">
-    </transition-group> -->
     <div class="no-msg" v-if="tabList.length == 0">
       <el-empty description="暂无会话。" :image-size="150" />
     </div>
@@ -42,9 +40,7 @@
           </div>
         </div>
         <div class="message-item-right-bottom">
-          <CustomMention :item="item" v-if="isMention(item)" />
-          <CustomMention v-else-if="isdraft(item)" :item="item" />
-          <span v-else>{{ fnNews(item) }}</span>
+          <!-- <CustomMention :item="item"  :isNotify="isNotify(item)" /> -->
         </div>
         <!-- 未读消息红点 -->
         <template v-if="!isShowCount(item) && !isNotify(item)">
@@ -71,25 +67,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, h } from "vue";
-import { getImageType } from "@/utils/message-input-utils";
+import { ref, onMounted } from "vue";
 import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
-import { getRoles } from "@/api/node-admin-api/roles";
-import { generateUUID } from "@/utils/index";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/timeFormat";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-import { GET_MESSAGE_LIST } from "@/store/mutation-types";
-import { addTimeDivider } from "@/utils/addTimeDivider";
-import { TIMpingConv, setMessageRemindType } from "@/api/im-sdk-api";
+import { TIMpingConv } from "@/api/im-sdk-api";
 import Label from "../components/Label.vue";
+import CustomMention from "../components/CustomMention.vue";
 import { chatName } from "../utils/utils";
 
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
 
-const { state, getters, dispatch, commit } = useStore();
+const { dispatch, commit } = useStore();
 const { tabList } = useGetters(["tabList"]);
 const { messageList, Conver, currentUserProfile, sessionDraftMap } = useState({
   sessionDraftMap: (state) => state.conversation.sessionDraftMap,
@@ -99,59 +91,6 @@ const { messageList, Conver, currentUserProfile, sessionDraftMap } = useState({
   Conver: (state) => state.conversation.currentConversation,
 });
 
-const isdraft = (item) => {
-  return (
-    item.conversationID !== Conver?.value?.conversationID &&
-    sessionDraftMap.value.has(item.conversationID)
-  );
-};
-
-const fnNews = (data) => {
-  const { type, lastMessage, unreadCount, groupAtInfoList } = data;
-  const { messageForShow, fromAccount, isRevoked } = lastMessage;
-  const { userID } = currentUserProfile.value;
-  const isOther = userID !== fromAccount; // 其他人消息
-  const isFound = fromAccount == "@TLS#NOT_FOUND"; // 未知消息
-  const isSystem = type == "@TIM#SYSTEM"; //系统消息
-  const isCount = unreadCount > 0 && isNotify(data); // 未读消息计数
-  // 是否为撤回消息
-  if (isRevoked) {
-    const nick = isOther ? lastMessage.nick : "你";
-    return `${nick}撤回了一条消息`;
-  }
-  if (isCount) {
-    return `[${unreadCount}条] ${messageForShow}`;
-  }
-  if (isFound || isSystem) {
-    return messageForShow;
-  }
-  if (type == "GROUP" && isOther) {
-    if (lastMessage.nick) {
-      return `${lastMessage.nick}: ${messageForShow}`;
-    } else {
-      messageForShow;
-    }
-  }
-  return messageForShow;
-};
-const CustomMention = (props) => {
-  const { item } = props;
-  const { type, lastMessage, unreadCount, groupAtInfoList, conversationID: ID } = item;
-  const { messageForShow, fromAccount, isRevoked } = lastMessage;
-  const element = (num = 0) => {
-    const arr = ["有人@我", "草稿"];
-    return `<span style="color:#f44336;">[${arr[num]}]</span>`;
-  };
-  const draft = sessionDraftMap.value.get(ID);
-  if (draft) {
-    return h("span", { innerHTML: `${element(1)}${draft?.[0]?.children[0].text}` });
-  }
-  return h("span", { innerHTML: `${element()}${lastMessage.nick}: ${messageForShow}` });
-};
-
-const isMention = (item) => {
-  return item.groupAtInfoList.length > 0;
-};
 const isNotify = (item) => {
   return item.messageRemindType == "AcceptNotNotify";
 };
