@@ -40,7 +40,8 @@
           </div>
         </div>
         <div class="message-item-right-bottom">
-          <!-- <CustomMention :item="item"  :isNotify="isNotify(item)" /> -->
+          <CustomMention v-if="isMention(item) || isdraft(item)" :item="item" />
+          <span v-else>{{ formatNewsMessage(item) }}</span>
         </div>
         <!-- 未读消息红点 -->
         <template v-if="!isShowCount(item) && !isNotify(item)">
@@ -75,7 +76,6 @@ import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { TIMpingConv } from "@/api/im-sdk-api";
 import Label from "../components/Label.vue";
-import CustomMention from "../components/CustomMention.vue";
 import { chatName } from "../utils/utils";
 
 const isShowMenu = ref(false);
@@ -91,11 +91,20 @@ const { messageList, Conver, currentUserProfile, sessionDraftMap } = useState({
   Conver: (state) => state.conversation.currentConversation,
 });
 
+const isdraft = (item) => {
+  return (
+    item.conversationID !== Conver?.value?.conversationID &&
+    sessionDraftMap.value.has(item.conversationID)
+  );
+};
 const isNotify = (item) => {
   return item.messageRemindType == "AcceptNotNotify";
 };
 const isShowCount = (item) => {
   return item.unreadCount == 0;
+};
+const isMention = (item) => {
+  return item.groupAtInfoList.length > 0;
 };
 
 const fnClass = (item) => {
@@ -104,6 +113,51 @@ const fnClass = (item) => {
   if (select) {
     return "is-active";
   }
+};
+
+const formatNewsMessage = (data) => {
+  const { type, lastMessage, unreadCount } = data;
+  const { messageForShow, fromAccount, isRevoked } = lastMessage;
+  const { userID } = currentUserProfile.value;
+  const isOther = userID !== fromAccount; // 其他人消息
+  const isFound = fromAccount == "@TLS#NOT_FOUND"; // 未知消息
+  const isSystem = type == "@TIM#SYSTEM"; //系统消息
+  const isCount = unreadCount > 0 && isNotify(data); // 未读消息计数
+  // 是否为撤回消息
+  if (isRevoked) {
+    const nick = isOther ? lastMessage.nick : "你";
+    return `${nick}撤回了一条消息`;
+  }
+  if (isCount) {
+    return `[${unreadCount}条] ${messageForShow}`;
+  }
+  if (isFound || isSystem) {
+    return messageForShow;
+  }
+  if (type == "GROUP" && isOther) {
+    if (lastMessage.nick) {
+      return `${lastMessage.nick}: ${messageForShow}`;
+    } else {
+      messageForShow;
+    }
+  }
+  return messageForShow;
+};
+// 定义消息提示元素
+const createElement = (num = 0) => {
+  const messageTypes = ["有人@我", "草稿"];
+  return `<span style='color:#f44336;'>[${messageTypes[num]}]</span> `;
+};
+// 定义消息提示元素
+const CustomMention = (props) => {
+  const { item } = props;
+  const { lastMessage, conversationID: ID } = item;
+  const { messageForShow } = lastMessage;
+  const draft = sessionDraftMap.value.get(ID);
+  if (draft) {
+    return h("span", { innerHTML: `${createElement(1)}${draft?.[0]?.children[0].text}` });
+  }
+  return h("span", { innerHTML: `${createElement()}${lastMessage.nick}: ${messageForShow}` });
 };
 
 // 消息列表 右键菜单
