@@ -13,6 +13,7 @@
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import emitter from "@/utils/mitt-bus";
+import { updateMyProfile } from "@/api/im-sdk-api/profile";
 
 const dialogVisible = ref(false);
 

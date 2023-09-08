@@ -36,7 +36,7 @@ import { useState } from "@/utils/hooks/useMapper";
 import { onClickOutside, onLongPress, useElementBounding } from "@vueuse/core";
 import { squareUrl, circleUrl } from "../../ChatStudio/utils/menu";
 import { setSelfStatus, getUserStatus } from "@/api/im-sdk-api/index";
-import { getUserProfile } from "@/api/im-sdk-api/information";
+import { getUserProfile } from "@/api/im-sdk-api/profile";
 
 const popoverRef = ref();
 const left = ref("");
