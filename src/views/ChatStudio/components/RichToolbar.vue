@@ -17,21 +17,32 @@
       </template>
       <div>
         <div class="emojis">
-          <el-scrollbar>
+          <el-scrollbar wrap-class="custom-scrollbar-wrap">
             <div class="emoji_QQ" v-show="table == 'QQ'">
-              <span
+              <!-- 二维数组 -->
+              <div class="scroll-snap" v-for="emoji in EmotionPackGroup" :key="emoji">
+                <span
+                  v-for="item in emoji"
+                  class="emoji scroll-content"
+                  :key="item"
+                  @click="SelectEmoticon(item)"
+                >
+                  <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
+                </span>
+              </div>
+              <!-- <span
                 v-for="item in emojiQq.emojiName"
                 class="emoji"
                 :key="item"
                 @click="SelectEmoticon(item)"
               >
                 <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
-              </span>
+              </span> -->
             </div>
             <div class="emoji_Tiktok" v-show="table == 'Tiktok'">
               <span
                 v-for="item in emojiDouyin.emojiName"
-                class="emoji"
+                class="emoji scroll-content"
                 :key="item"
                 @click="SelectEmoticon(item)"
               >
@@ -42,7 +53,11 @@
         </div>
         <div class="tool">
           <div v-for="item in toolDate" :key="item.icon" @click="table = item.type">
-            <svg-icon :iconClass="item.icon" class="icon-hover" />
+            <svg-icon
+              :iconClass="item.icon"
+              :class="item.type == table ? 'isHover' : ''"
+              class="icon-hover"
+            />
           </div>
         </div>
       </div>
@@ -87,10 +102,10 @@
 
 <script setup>
 import emitter from "@/utils/mitt-bus";
-import { ref, unref, defineEmits } from "vue";
+import { ref, unref, defineEmits, onMounted } from "vue";
 import { ClickOutside as vClickOutside } from "element-plus";
+import { chunk } from "lodash-es";
 import { useStore } from "vuex";
-
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 
@@ -100,6 +115,7 @@ const popoverRef = ref();
 const imagePicker = ref();
 const filePicker = ref();
 const table = ref("QQ");
+const EmotionPackGroup = ref([]);
 const { state, dispatch, commit } = useStore();
 const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
 const toolDate = [
@@ -114,6 +130,9 @@ const toolDate = [
     type: "Tiktok",
   },
 ];
+const initEmotion = () => {
+  EmotionPackGroup.value = chunk(emojiQq.emojiName, 12 * 6);
+};
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
 };
@@ -164,6 +183,9 @@ const onTobBottom = () => {
 emitter.on("onisbot", (state) => {
   tobottom.value = !state;
 });
+onMounted(() => {
+  initEmotion();
+});
 </script>
 <style>
 .style-emo {
@@ -171,11 +193,22 @@ emitter.on("onisbot", (state) => {
   width: auto !important;
   padding: 0 !important;
 }
+.custom-scrollbar-wrap {
+  scroll-snap-type: y mandatory;
+}
+.scroll-snap {
+  scroll-snap-align: start;
+  height: 180px;
+}
 </style>
 <style lang="scss" scoped>
+.isHover {
+  color: var(--color-icon-hover) !important;
+}
+
 .emojis {
   width: 400px;
-  height: 202px;
+  height: 180px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -196,6 +229,7 @@ emitter.on("onisbot", (state) => {
   height: 50px;
   display: flex;
   padding: 0 10px;
+  background: rgb(243, 243, 244);
   div {
     width: 50px;
     height: 50px;

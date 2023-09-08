@@ -68,29 +68,15 @@ import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 
 const unread = ref("未读");
 const ChatRef = ref(null);
-const showGroup = ref(false);
 const activeName = ref("whole");
-const { state, dispatch, commit } = useStore();
+const { dispatch, commit } = useStore();
 
 const { toAccount, currentType } = useGetters(["toAccount", "currentType"]);
-const {
-  networkStatus,
-  conver,
-  outside,
-  groupDrawer,
-  showMsgBox,
-  conversationList,
-  currentReplyMsg,
-  totalUnreadMsg,
-} = useState({
-  outside: (state) => state.conversation.outside,
+const { networkStatus, conver, showMsgBox, totalUnreadMsg } = useState({
   networkStatus: (state) => state.conversation.networkStatus,
   totalUnreadMsg: (state) => state.conversation.totalUnreadMsg,
   conver: (state) => state.conversation.currentConversation,
   showMsgBox: (state) => state.conversation.showMsgBox,
-  groupDrawer: (state) => state.groupinfo.groupDrawer,
-  currentReplyMsg: (state) => state.conversation.currentReplyMsg,
-  conversationList: (state) => state.conversation.conversationList,
 });
 
 const fnTotalUnreadMsg = () => {
@@ -125,6 +111,7 @@ useEventListener(window, "focus", () => {
 });
 onActivated(() => {
   commit("updataScroll");
+  commit("TOGGLE_LIST", "whole");
 });
 onDeactivated(() => {});
 onMounted(() => {});
