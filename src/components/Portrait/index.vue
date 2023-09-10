@@ -6,6 +6,7 @@
 import { computed, toRefs } from "vue";
 import { useState } from "@/utils/hooks/useMapper";
 // <Portrait />
+// eslint-disable-next-line no-undef
 const props = defineProps({
   size: {
     type: Number,

@@ -24,6 +24,7 @@ export const uploadFiles = async (params) => {
       },
     });
     console.log(uploadedResult);
+    return uploadedResult;
   } catch (error) {
     console.log(error);
   }
