@@ -3,10 +3,12 @@ import TIMUploadPlugin from "tim-upload-plugin";
 
 const appid = process.env.VUE_APP_SDK_APPID;
 const level = process.env.VUE_APP_LOG_LEVEL;
+
 const options = {
   SDKAppID: Number(appid),
 };
-// 创建 SDK 实例实例通常用 tim 表示
+
+// 创建 SDK
 const chat = TencentCloudChat.create(options);
 
 // 设置 SDK 日志输出级别

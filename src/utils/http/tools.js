@@ -1,5 +1,4 @@
 import store from "@/store";
-import { ElMessage } from "element-plus";
 import NProgress from "@/utils/progress";
 // 异常拦截处理器
 export const errorHandler = (error) => {
@@ -59,12 +58,10 @@ export const errorHandler = (error) => {
       default:
         errMessage = `连接错误${status}`;
     }
-    // 关闭进度条动画
-    NProgress.done();
   } else {
     errMessage = "无法连接到服务器！";
   }
-  console.log(errMessage);
-  // ElMessage(errMessage);
+  // 关闭进度条动画
+  NProgress.done();
   return Promise.reject(error);
 };
