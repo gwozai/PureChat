@@ -10,7 +10,8 @@
 
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
-import { scrollToDomPostion } from "@/utils/common";
+import { scrollToDomPostion } from "@/utils/message-input-utils";
+// eslint-disable-next-line no-undef
 const props = defineProps({
   originalMsg: {
     type: Object,

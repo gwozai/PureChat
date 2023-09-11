@@ -4,7 +4,7 @@ import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
 import emitter from "@/utils/mitt-bus";
-import { scrollToDomPostion } from "@/utils/common";
+import { scrollToDomPostion } from "@/utils/message-input-utils";
 import { kickedOutReason, fnCheckoutNetState } from "./utils/index";
 import { ElNotification } from "element-plus";
 import { deepClone } from "@/utils/clone";

@@ -262,3 +262,13 @@ export function convertEmoji(html, emojiMap) {
   const text = result.replace(rege, "");
   return text;
 }
+
+export const scrollToDomPostion = (msgid) => {
+  const dom = document.getElementById(`${msgid}`);
+  if (!dom) return;
+  dom.scrollIntoView({ behavior: "smooth", block: "center" });
+  dom.classList.add("shrink-style");
+  setTimeout(() => {
+    dom.classList.remove("shrink-style");
+  }, 2000);
+};

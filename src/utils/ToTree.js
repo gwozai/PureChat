@@ -22,7 +22,7 @@ export function convertToTree(node, Menu) {
     }
   }
 }
-/** 
+/**
  * 对树状结构的数组进行处理，并根据 componentName 设置相应的组件。
  * @param {Array} arr - 菜单数据数组
  */
