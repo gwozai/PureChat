@@ -29,7 +29,7 @@ import { useState } from "@/utils/hooks/useMapper";
 
 const memberValue = ref(null);
 const emits = defineEmits(["define"]);
-const { state: dialog, setState: setDialog } = useBoolean();
+const [dialog, setDialog] = useBoolean();
 const { conversationList } = useState({
   conversationList: (state) => state.conversation.conversationList.filter((t) => t.type == "C2C"),
 });

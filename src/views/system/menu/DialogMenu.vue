@@ -60,7 +60,7 @@ const ruleFormText = {
   icon: "图标",
 };
 const ruleFormRef = ref();
-const { state: dialog, setState: setDialog } = useBoolean();
+const [dialog, setDialog] = useBoolean();
 // 校验规则
 const rules = reactive({
   name: [{ required: true, message: "请输入标题", trigger: "blur" }],

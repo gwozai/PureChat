@@ -126,7 +126,7 @@ export default defineComponent({
   setup(props, { attrs, emit, expose, slots }) {
     const data = reactive({ text: "" });
     const { theme, setTheme } = useDataThemeChange();
-    const { state, setState } = useBoolean();
+    const [state, setState] = useBoolean();
 
     onMounted(() => {});
     onBeforeUnmount(() => {});

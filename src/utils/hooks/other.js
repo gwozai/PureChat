@@ -1,25 +1,16 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
 /**
- * useBoolean - 一个提供布尔类型状态和一些辅助函数以用于切换状态的钩子函数。
- * @param {Boolean} flag - 初始状态。默认值为false。
- * @returns {Object}
+ * 创建一个布尔类型的状态变量和对应的更新函数
+ * @param {boolean} initialValue - 初始值，默认为 false
+ * @returns {Array} - 包含状态变量和更新函数的数组
  */
-export function useBoolean(flag = false) {
-  const state = ref(flag);
+export function useBoolean(initialValue = false) {
+  const state = ref(initialValue);
   function setState(value) {
     state.value = value;
   }
-  function setTrue() {
-    setState(true);
-  }
-  function setFalse() {
-    setState(false);
-  }
-  function toggle() {
-    setState(!state.value);
-  }
-  return { state, setState, setTrue, setFalse, toggle };
+  return [state, setState];
 }
 
 /**

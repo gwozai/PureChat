@@ -35,7 +35,7 @@ import { useBoolean } from "@/utils/hooks/index";
 import { chatName } from "../utils/utils";
 import { squareUrl } from "../utils/menu";
 
-const { state: dialogVisible, setState: setDialogVisible } = useBoolean();
+const [dialogVisible, setDialogVisible] = useBoolean();
 export default {
   name: "MagforwardingPopup",
   components: {},
