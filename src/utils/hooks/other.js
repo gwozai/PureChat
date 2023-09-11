@@ -33,27 +33,11 @@ export function useEventListener(target, event, callback) {
  * @return {Object} - 包含当前鼠标 x 和 y 坐标的对象。
  */
 export function useMouse() {
-  // 创建 x 和 y 两个响应式变量
   const x = ref(0);
   const y = ref(0);
-  // 在组件加载时添加鼠标移动事件的监听器
   useEventListener(window, "mousemove", (e) => {
     x.value = e.clientX;
     y.value = e.clientY;
   });
-  // 返回包含 x 和 y 变量的对象
   return { x, y };
-}
-
-export function useResizeListener() {
-  function addResizeListener(target, callback) {
-    window.addEventListener("resize", callback, false);
-  }
-  function removeResizeListener(target, callback) {
-    window.removeEventListener("resize", callback, false);
-  }
-  return {
-    addResizeListener,
-    removeResizeListener,
-  };
 }
