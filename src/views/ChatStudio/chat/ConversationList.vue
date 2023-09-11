@@ -18,7 +18,6 @@
       <!-- 置顶图标 -->
       <div class="pinned-tag" v-show="item.isPinned"></div>
       <!-- 关闭按钮 -->
-      <!-- <FontIcon iconName="close" class="close-btn" @click.stop="removeConv(item)" /> -->
       <el-badge is-dot :hidden="isShowCount(item) || !isNotify(item)">
         <img
           v-if="item.type == 'C2C'"
@@ -26,7 +25,7 @@
           class="portrait"
           alt="头像"
         />
-        <img v-else :src="squareUrl" class="portrait" alt="头像" />
+        <UserAvatar v-else shape="square" :nickName="chatName(item)" />
       </el-badge>
       <!-- 消息 -->
       <div class="message-item-right">
@@ -44,13 +43,13 @@
           <span v-else>{{ formatNewsMessage(item) }}</span>
         </div>
         <!-- 未读消息红点 -->
-        <template v-if="!isShowCount(item) && !isNotify(item)">
-          <el-badge :value="item.unreadCount" :max="99" />
-        </template>
+        <el-badge
+          v-show="!isShowCount(item) && !isNotify(item)"
+          :value="item.unreadCount"
+          :max="99"
+        />
         <!-- 消息免打扰 -->
-        <template v-if="isNotify(item)">
-          <svg-icon iconClass="DontDisturb" class="dont" />
-        </template>
+        <svg-icon v-show="isNotify(item)" iconClass="DontDisturb" class="dont" />
       </div>
     </div>
     <!-- 右键菜单 -->
@@ -265,15 +264,6 @@ onMounted(() => {});
   color: rgba(0, 0, 0, 0.45);
   margin-top: 50%;
 }
-.close-btn {
-  font-size: 12px !important;
-  position: absolute;
-  left: 1.5px;
-  display: none;
-  &:hover {
-    color: #409eff;
-  }
-}
 .scrollbar-list {
   background: var(--color-body-bg);
   height: 100%;
@@ -290,9 +280,6 @@ onMounted(() => {});
   color: var(--color-text);
   &:hover {
     background: var(--hover-color);
-  }
-  &:hover .close-btn {
-    display: block;
   }
   .pinned-tag {
     display: block;
