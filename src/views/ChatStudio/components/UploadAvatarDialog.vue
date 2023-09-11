@@ -22,6 +22,7 @@
 
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
+import { deepClone } from "@/utils/clone";
 import emitter from "@/utils/mitt-bus";
 import { useStore } from "vuex";
 import { uploadFiles } from "@/api/node-admin-api/other";
@@ -44,7 +45,7 @@ const imageClick = () => {
 async function sendImage(e) {
   console.log(e);
   const { code, data } = await uploadFiles({ files: e.target.files[0] });
-  if (code === 200) {
+  if (code === 0) {
     await modifyMyProfile(data.file_url);
   } else {
     console.log("上传失败");
@@ -54,7 +55,7 @@ async function sendImage(e) {
 async function modifyMyProfile(file_url) {
   const { code, data } = await updateMyProfile({ avatar: file_url });
   if (code === 0) {
-    commit("updateCurrentUserProfile", data);
+    commit("updateCurrentUserProfile", deepClone(data));
   } else {
     console.log("修改失败");
   }

@@ -1,5 +1,5 @@
 <template>
-  <el-avatar :size="size" :src="userProfile.avatar || circleUrl" :shape="shape" />
+  <el-avatar :size="size" :src="avatar" :shape="shape" />
 </template>
 
 <script setup>
@@ -21,6 +21,10 @@ const circleUrl = "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1ep
 const { size, shape } = toRefs(props);
 const { userProfile } = useState({
   userProfile: (state) => state.user.currentUserProfile,
+});
+
+const avatar = computed(() => {
+  return userProfile.value.avatar || circleUrl;
 });
 </script>
 

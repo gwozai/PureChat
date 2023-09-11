@@ -2,7 +2,6 @@
   <el-scrollbar>
     <el-card class="top-content">
       <div class="left-mark">
-        <!-- <img :src="avatars" title="直达仓库地址" @click="openDepot" /> -->
         <Portrait :size="45" @click="openDepot" />
         <span class="style-text">{{ greetings }}</span>
       </div>
