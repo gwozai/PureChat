@@ -11,9 +11,11 @@ const GroupType = {
 
 const ModifyType = {
   GROUP_NAME: "name", // 修改群名称
+  GROUP_AVATAR: "avatar", // 修改群头像
   GROUP_INTRODUCTION: "introduction", // 修改群简介
   GROUP_NOTIFICATION: "notification", // 修改群公告
   GROUP_CUSTOM_FIELD: "groupCustomField", // 修改群组维度自定义字段
+  GROUP_MUTE_ALL_MEMBERS: "muteAllMembers", // 修改群禁言
 };
 
 // 解散群
@@ -75,6 +77,7 @@ export const updateGroupProfile = async (params) => {
   const parameter = {
     groupID: convId,
     [modify]: value,
+    // groupCustomField: [{ key: 'custom_info', value: 'all_staff' }] // 自定义字段 app管理员可写
   };
   const {
     code,

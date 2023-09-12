@@ -15,7 +15,7 @@
     <div class="group-details" v-if="currentType === TIM.TYPES.CONV_GROUP">
       <!-- info -->
       <div class="group-base-info">
-        <UserAvatar :nickName="groupProfile.groupID" />
+        <UserAvatar :nickName="groupProfile.name" />
         <div class="group-base-info--text">
           <div>
             <span class="group-base-info--text__name">
@@ -218,7 +218,7 @@ const modifyGroupInfo = async (value, modify) => {
   const { code, group } = await updateGroupProfile({
     convId: groupID,
     modify: modify,
-    value: value,
+    value,
   });
 };
 const handleDismissGroup = async () => {

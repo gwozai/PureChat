@@ -23,6 +23,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  words: {
+    type: String || Boolean,
+    default: 2,
+  },
   shape: {
     type: String,
     default: "circle",
@@ -32,13 +36,13 @@ const props = defineProps({
   },
 });
 
-const { url, nickName, shape } = toRefs(props);
+const { url, nickName, shape, words } = toRefs(props);
 
 const displayInfo = (info) => {
   if (!info) {
     return "unknown";
   }
-  return info.slice(0, 3).toUpperCase();
+  return info.slice(0, words.value).toUpperCase();
 };
 </script>
 
