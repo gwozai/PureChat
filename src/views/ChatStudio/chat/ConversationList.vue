@@ -25,14 +25,20 @@
           class="portrait"
           alt="头像"
         />
-        <UserAvatar v-else shape="square" :nickName="chatName(item)" />
+        <UserAvatar
+          v-else
+          words="3"
+          shape="square"
+          :nickName="chatName(item)"
+          :url="item?.groupProfile?.avatar"
+        />
       </el-badge>
       <!-- 消息 -->
       <div class="message-item-right">
         <div class="message-item-right-top">
-          <div class="message-chat-name">
+          <div class="message-chat-name flex">
             <span>{{ chatName(item) }}</span>
-            <Label :data="item.userProfile?.userID" />
+            <Label :userID="item.userProfile?.userID" />
           </div>
           <div class="message-time" v-if="item.lastMessage?.lastTime">
             {{ timeFormat(item.lastMessage.lastTime * 1000) }}
@@ -250,6 +256,7 @@ onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/mixin.scss";
 .v-contextmenu {
   width: 154px;
   .v-contextmenu-item {
@@ -313,14 +320,17 @@ onMounted(() => {});
       width: 100%;
       .message-chat-name {
         font-size: 14px;
-        display: block;
-        text-overflow: ellipsis;
-        word-wrap: break-word;
-        overflow: hidden;
+        // display: block;
+        // text-overflow: ellipsis;
+        // word-wrap: break-word;
+        // overflow: hidden;
+        // color: rgba(0, 0, 0, 0.85);
         max-height: 18px;
         line-height: 18px;
-        // color: rgba(0, 0, 0, 0.85);
         max-width: 140px;
+        span {
+          @include ellipsisBasic(1);
+        }
       }
       .message-time {
         font-family: MicrosoftYaHei;
