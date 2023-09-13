@@ -11,7 +11,7 @@
       trigger="click"
     >
       <template #reference>
-        <span class="emoticon" title="选择表情" ref="buttonRef" v-click-outside="onClickOutside">
+        <span data-title="表情" class="emoticon" ref="buttonRef" v-click-outside="onClickOutside">
           <svg-icon iconClass="iconxiaolian" class="icon-hover" />
         </span>
       </template>
@@ -63,19 +63,24 @@
       </div>
     </el-popover>
     <!-- 图片 -->
-    <span class="" title="图片" @click="SendImageClick">
+    <span data-title="图片" @click="SendImageClick">
       <svg-icon iconClass="icontupian" class="icon-hover" />
     </span>
     <!-- 文件 -->
-    <span class="" title="文件" @click="SendFileClick">
+    <span data-title="文件" @click="SendFileClick">
       <svg-icon iconClass="iconwenjianjia" class="icon-hover" />
     </span>
     <!-- 截图 -->
-    <span class="" title="截图" @click="clickCscreenshot" v-if="false">
+    <span data-title="截图" @click="clickCscreenshot" v-if="false">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
     <!-- 滚动到底部 -->
-    <span class="chat_chat-input-action" title="滚动到底部" @click="onTobBottom" v-show="tobottom">
+    <span
+      data-title="滚动到底部"
+      class="chat_chat-input-action"
+      @click="onTobBottom"
+      v-show="tobottom"
+    >
       <el-icon class="svg-left icon-hover">
         <DArrowLeft />
       </el-icon>
@@ -269,6 +274,22 @@ onMounted(() => {
     position: relative;
     text-align: center;
     color: #808080;
+  }
+  & > span:hover:after {
+    font-size: 13px;
+    display: inline-block;
+    content: attr(data-title);
+    text-align: center;
+    color: rgba(0, 0, 0, 0.75);
+    position: absolute;
+    left: 17px;
+    top: 28px;
+    border-radius: 3px;
+    // border: 1px solid #e9e9e9;
+    background-color: #eaeaea;
+    white-space: nowrap;
+    padding: 2px 5px;
+    z-index: 9999;
   }
 }
 </style>

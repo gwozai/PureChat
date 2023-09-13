@@ -6,14 +6,6 @@ import { defineAsyncComponent } from "vue";
  * requiresAuth
  */
 const Login = () => import(/* webpackChunkName: "Login" */ "@/views/login/index");
-const Home = () => import(/* webpackChunkName: "Home" */ "@/views/home/index");
-const Welcome = () => import(/* webpackChunkName: "Welcome" */ "@/views/welcome/index");
-const ChatStudio = () => import(/* webpackChunkName: "ChatStudio" */ "@/views/ChatStudio/index");
-const Menu = () => import(/* webpackChunkName: "Menu" */ "@/views/system/menu/index");
-const User = () => import(/* webpackChunkName: "User" */ "@/views/system/user/index");
-const Role = () => import(/* webpackChunkName: "Role" */ "@/views/system/role/index");
-const Personal = () => import(/* webpackChunkName: "Personal" */ "@/views/Personal/index");
-const About = () => import(/* webpackChunkName: "About" */ "@/views/about/index");
 
 const routes = [
   { path: "/", redirect: "/chatstudio" },
