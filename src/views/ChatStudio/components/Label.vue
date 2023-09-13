@@ -48,8 +48,8 @@ const labelClass = (data) => {
     font-size: 10px;
     padding: 0 4px;
     display: inline-block;
-    line-height: 18px;
-    height: 18px;
+    line-height: initial;
+    height: 16px;
   }
 }
 </style>

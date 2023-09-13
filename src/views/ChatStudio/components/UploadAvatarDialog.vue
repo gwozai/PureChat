@@ -69,7 +69,6 @@ const imageClick = () => {
 };
 
 async function sendImage(e) {
-  console.log(e);
   option.url = URL.createObjectURL(e.target.files[0]);
   option.files = e.target.files[0];
 }
@@ -83,9 +82,8 @@ async function uploadAvatar() {
 }
 // 修改头像
 async function modifyMyProfile(file_url) {
-  const { code, data } = await updateMyProfile({ avatar: file_url });
+  const { code, data } = await updateMyProfile({ avatar: file_url + "?" + Date.now() });
   if (code === 0) {
-    console.log(data);
     commit("updateCurrentUserProfile", deepClone(data));
   } else {
     console.log("修改失败");
@@ -114,8 +112,8 @@ function handleClose() {
     margin: 20px 0;
 
     .avatar {
-      height: 300px;
-      width: 300px;
+      height: 200px;
+      width: 200px;
       background-color: var(--el-fill-color-lighter);
       border: 1px dashed var(--el-border-color-darker);
       border-radius: 6px;

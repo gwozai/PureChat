@@ -17,7 +17,7 @@
     >
       <!-- 置顶图标 -->
       <div class="pinned-tag" v-show="item.isPinned"></div>
-      <!-- 关闭按钮 -->
+      <!-- 头像 -->
       <el-badge is-dot :hidden="isShowCount(item) || !isNotify(item)">
         <img
           v-if="item.type == 'C2C'"
