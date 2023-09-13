@@ -24,8 +24,8 @@ const props = defineProps({
     default: "",
   },
   words: {
-    type: String || Boolean,
-    default: 2,
+    type: String || Number,
+    default: "2",
   },
   shape: {
     type: String,

@@ -32,7 +32,11 @@
       <Editor />
     </div>
     <!-- 群详情 -->
-    <GroupDetails v-if="currentType === TIM.TYPES.CONV_GROUP" :groupProfile="conver.groupProfile" />
+    <GroupDetails
+      v-if="currentType === TIM.TYPES.CONV_GROUP"
+      :groupProfile="conver.groupProfile"
+      :staff="isallStaff(conver)"
+    />
   </div>
 </template>
 
@@ -52,7 +56,7 @@ import {
 import TIM from "@tencentcloud/chat";
 import { useEventListener } from "@/utils/hooks/index";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-import { dragControllerDiv } from "./utils/utils";
+import { dragControllerDiv, isallStaff } from "./utils/utils";
 import { useStore } from "vuex";
 
 import Editor from "./chat/Editor.vue";

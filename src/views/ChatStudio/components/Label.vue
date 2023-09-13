@@ -1,6 +1,6 @@
 <template>
   <span :class="['label', labelClass()]">
-    <!-- <span class="all" v-show="props.isall">全员</span> -->
+    <span class="all" v-show="isallStaff(item)">全员</span>
     <svg-icon iconClass="robot" v-show="/^R\d{5}$/.test(userID)" />
   </span>
 </template>
@@ -8,6 +8,7 @@
 <script setup>
 import { deepClone } from "@/utils/clone";
 import { ref, toRefs, onMounted } from "vue";
+import { isallStaff } from "../utils/utils";
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
@@ -15,13 +16,13 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  isall: {
-    type: Boolean,
-    default: true,
+  item: {
+    type: Object,
+    default: () => {},
   },
 });
 
-const { userID, isall } = toRefs(props);
+const { userID, item } = toRefs(props);
 const labelClass = (data) => {
   return "";
 };
@@ -30,18 +31,25 @@ const labelClass = (data) => {
 <style lang="scss" scoped>
 @import "@/styles/mixin.scss";
 .label {
-  padding: 0px 2.5px;
-  margin: 1px 0 0 4px;
   text-align: center;
   border-radius: 2px;
   font-size: 10px;
   font-weight: 400;
-  // position: absolute;
   svg {
     stroke: unset;
   }
   .all {
-    @include ellipsisBasic(1);
+    // @include ellipsisBasic(1);
+    white-space: nowrap;
+    background: #e6f7ff;
+    border: 1px solid rgb(145, 213, 255);
+    color: #1890ff;
+    border-radius: 2px;
+    font-size: 10px;
+    padding: 0 4px;
+    display: inline-block;
+    line-height: 18px;
+    height: 18px;
   }
 }
 </style>

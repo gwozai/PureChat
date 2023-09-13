@@ -15,7 +15,7 @@
     <div class="group-details" v-if="currentType === TIM.TYPES.CONV_GROUP">
       <!-- info -->
       <div class="group-base-info">
-        <UserAvatar :nickName="groupProfile.name" />
+        <UserAvatar :url="groupProfile.avatar" :nickName="groupProfile.name" />
         <div class="group-base-info--text">
           <div>
             <span class="group-base-info--text__name">
@@ -92,7 +92,7 @@
       </div>
       <el-divider />
       <!-- 退出 转让 -->
-      <div class="group-operator">
+      <div class="group-operator" v-show="!staff">
         <el-button v-if="isOwner" type="danger" @click="handleDismissGroup"> 解散群组 </el-button>
         <el-button v-else type="danger" @click="handleQuitGroup"> 退出群组 </el-button>
         <div class="group-operator--divider"></div>
@@ -122,8 +122,12 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
+  staff: {
+    type: Boolean,
+    default: false,
+  },
 });
-const { groupProfile } = toRefs(props);
+const { groupProfile, staff } = toRefs(props);
 
 const GROUP_TYPE_MAP = {
   Public: "陌生人社交群(Public)",

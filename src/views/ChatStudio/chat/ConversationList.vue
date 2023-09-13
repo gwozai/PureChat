@@ -37,8 +37,8 @@
       <div class="message-item-right">
         <div class="message-item-right-top">
           <div class="message-chat-name flex">
-            <span>{{ chatName(item) }}</span>
-            <Label :userID="item.userProfile?.userID" />
+            <span class="name-title">{{ chatName(item) }}</span>
+            <Label :item="item" :userID="item.userProfile?.userID" />
           </div>
           <div class="message-time" v-if="item.lastMessage?.lastTime">
             {{ timeFormat(item.lastMessage.lastTime * 1000) }}
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { h, ref, onMounted } from "vue";
 import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/timeFormat";
@@ -81,7 +81,7 @@ import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { TIMpingConv } from "@/api/im-sdk-api";
 import Label from "../components/Label.vue";
-import { chatName } from "../utils/utils";
+import { chatName, isallStaff } from "../utils/utils";
 
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
@@ -328,7 +328,7 @@ onMounted(() => {});
         max-height: 18px;
         line-height: 18px;
         max-width: 140px;
-        span {
+        .name-title {
           @include ellipsisBasic(1);
         }
       }
