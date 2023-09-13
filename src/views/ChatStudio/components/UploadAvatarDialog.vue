@@ -1,7 +1,29 @@
 <template>
-  <el-dialog v-model="dialogVisible" :append-to-body="true" title="上传头像" width="30%" draggable>
-    <div>
-      <el-button @click="imageClick" type="primary">头像上传</el-button>
+  <el-dialog
+    v-model="dialogVisible"
+    :append-to-body="true"
+    title="上传头像"
+    width="560px"
+    :before-close="handleClose"
+    draggable
+  >
+    <div class="upload-avatar">
+      <div class="upload-top">
+        <span class="title"> 建议不超过1M，头像将在详情页面、会话中同步 </span>
+      </div>
+      <div class="upload-content flex">
+        <div class="avatar">
+          <!-- <div class="status-label">
+            <el-icon class="upload-success"><Plus /></el-icon>
+          </div> -->
+          <img v-if="option.url" :src="option.url" alt="头像" />
+          <el-icon class="plus" @click="imageClick"><Plus /></el-icon>
+        </div>
+        <!-- <div class="preview"></div> -->
+      </div>
+      <div class="upload-footer">
+        <el-button @click="imageClick" type="primary">头像上传</el-button>
+      </div>
     </div>
     <input
       type="file"
@@ -13,13 +35,12 @@
     />
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false"> 取消 </el-button>
-        <el-button type="primary" @click="dialogVisible = false"> 确定 </el-button>
+        <el-button @click="handleClose"> 取消 </el-button>
+        <el-button type="primary" @click="handleConfirm"> 确定 </el-button>
       </span>
     </template>
   </el-dialog>
 </template>
-
 <script setup>
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import { deepClone } from "@/utils/clone";
@@ -27,10 +48,15 @@ import emitter from "@/utils/mitt-bus";
 import { useStore } from "vuex";
 import { uploadFiles } from "@/api/node-admin-api/other";
 import { updateMyProfile } from "@/api/im-sdk-api/profile";
+import { squareUrl } from "../utils/menu";
 
 const { commit } = useStore();
 const imagePicker = ref();
 const dialogVisible = ref(false);
+const option = reactive({
+  url: "",
+  files: null,
+});
 
 emitter.on("uploadAvatarDialog", (val) => {
   dialogVisible.value = val;
@@ -44,7 +70,11 @@ const imageClick = () => {
 
 async function sendImage(e) {
   console.log(e);
-  const { code, data } = await uploadFiles({ files: e.target.files[0] });
+  option.url = URL.createObjectURL(e.target.files[0]);
+  option.files = e.target.files[0];
+}
+async function uploadAvatar() {
+  const { code, data } = await uploadFiles({ files: option.files });
   if (code === 0) {
     await modifyMyProfile(data.file_url);
   } else {
@@ -55,18 +85,81 @@ async function sendImage(e) {
 async function modifyMyProfile(file_url) {
   const { code, data } = await updateMyProfile({ avatar: file_url });
   if (code === 0) {
+    console.log(data);
     commit("updateCurrentUserProfile", deepClone(data));
   } else {
     console.log("修改失败");
   }
 }
-
+function closeUrl() {
+  option.url = "";
+}
 function handleConfirm() {
   dialogVisible.value = false;
+  closeUrl();
+  uploadAvatar();
 }
-function handleCancel() {
+function handleClose() {
   dialogVisible.value = false;
+  closeUrl();
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.upload-avatar {
+  .upload-top {
+    bottom: 1px;
+  }
+  .upload-content {
+    margin: 20px 0;
+
+    .avatar {
+      height: 300px;
+      width: 300px;
+      background-color: var(--el-fill-color-lighter);
+      border: 1px dashed var(--el-border-color-darker);
+      border-radius: 6px;
+      box-sizing: border-box;
+      cursor: pointer;
+      vertical-align: top;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      .status-label {
+        position: absolute;
+        right: -17px;
+        top: -7px;
+        width: 46px;
+        height: 26px;
+        background: var(--el-color-success);
+        text-align: center;
+        transform: rotate(45deg);
+        .upload-success {
+          font-size: 12px;
+          margin-top: 12px;
+          transform: rotate(-45deg);
+        }
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+      }
+      &:hover {
+        border-color: var(--el-color-primary);
+        color: var(--el-color-primary);
+      }
+    }
+    .plus {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      text-align: center;
+    }
+  }
+}
+</style>
