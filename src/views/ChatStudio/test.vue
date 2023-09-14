@@ -33,7 +33,6 @@ import { setCookies, getCookies } from "@/utils/Cookies";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
 import { useBoolean } from "@/utils/hooks/index";
 import { cloud, getUser } from "@/api/laf-sdk-api";
-import io from "socket.io-client";
 
 export default defineComponent({
   name: "Test",

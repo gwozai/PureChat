@@ -1,6 +1,8 @@
-<!-- <template>
-  <div class="group-tip-element-wrapper">{{ getGroupTipContent() }}</div>
-</template> -->
+<template>
+  <div class="group-tip-element-wrapper">
+    {{ getGroupTipContent(message) }}
+  </div>
+</template>
 
 <script>
 import { mapState } from "vuex";
@@ -23,7 +25,7 @@ export default {
   },
   methods: {
     getGroupTipContent(message) {
-      const userName = message.nick || message.payload.userIDList.join(",");
+      const userName = message?.nick || message.payload.userIDList.join(",");
       switch (message.payload.operationType) {
         case TIM.TYPES.GRP_TIP_MBR_JOIN:
           return `${userName} 加入群聊`;
@@ -57,9 +59,9 @@ export default {
       }
     },
   },
-  render() {
-    return <div class='group-tip-element-wrapper'>{this.getGroupTipContent(this.message)}</div>;
-  },
+  // render() {
+  //   return <div class='group-tip-element-wrapper'>{this.getGroupTipContent(this.message)}</div>;
+  // },
 };
 </script>
 
