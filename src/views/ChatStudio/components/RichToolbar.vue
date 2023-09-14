@@ -11,7 +11,12 @@
       trigger="click"
     >
       <template #reference>
-        <span data-title="表情" class="emoticon" ref="buttonRef" v-click-outside="onClickOutside">
+        <span
+          data-title="表情"
+          class="emoticon icon"
+          ref="buttonRef"
+          v-click-outside="onClickOutside"
+        >
           <svg-icon iconClass="iconxiaolian" class="icon-hover" />
         </span>
       </template>
@@ -68,21 +73,21 @@
       </div>
     </el-popover>
     <!-- 图片 -->
-    <span data-title="图片" @click="SendImageClick">
+    <span data-title="图片" class="icon" @click="SendImageClick">
       <svg-icon iconClass="icontupian" class="icon-hover" />
     </span>
     <!-- 文件 -->
-    <span data-title="文件" @click="SendFileClick">
+    <span data-title="文件" class="icon" @click="SendFileClick">
       <svg-icon iconClass="iconwenjianjia" class="icon-hover" />
     </span>
     <!-- 截图 -->
-    <span title="截图" @click="clickCscreenshot">
+    <span title="截图" class="" @click="clickCscreenshot">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
     <!-- 滚动到底部 -->
     <span
       data-title="滚动到底部"
-      class="chat_chat-input-action"
+      class="chat_chat-input-action icon"
       @click="onTobBottom"
       v-show="tobottom"
     >
@@ -149,7 +154,7 @@ const initEmotion = () => {
 };
 const getParser = () => {
   const browser = Bowser.getParser(window.navigator.userAgent);
-  systemOs.value = browser.getOS().name; // "Windows"
+  systemOs.value = browser.getOS().name; // "Windows" ""macOS""
 };
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
@@ -308,7 +313,7 @@ onMounted(() => {
     text-align: center;
     color: #808080;
   }
-  & > span:hover:after {
+  & > .icon:hover:after {
     font-size: 13px;
     display: inline-block;
     content: attr(data-title);
