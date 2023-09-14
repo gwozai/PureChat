@@ -76,7 +76,7 @@
       <svg-icon iconClass="iconwenjianjia" class="icon-hover" />
     </span>
     <!-- 截图 -->
-    <span data-title="截图" @click="clickCscreenshot" v-if="false">
+    <span title="截图" @click="clickCscreenshot">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
     <!-- 滚动到底部 -->
@@ -111,9 +111,11 @@
 </template>
 
 <script setup>
+import html2canvas from "html2canvas";
 import emitter from "@/utils/mitt-bus";
 import { ref, unref, defineEmits, onMounted } from "vue";
 import { ClickOutside as vClickOutside } from "element-plus";
+import { dataURLtoFile } from "@/utils/message-input-utils";
 import { chunk } from "lodash-es";
 import { useStore } from "vuex";
 import Bowser from "bowser";
@@ -175,7 +177,26 @@ const SendFileClick = () => {
   let $el = filePicker.value;
   $el.click();
 };
-const clickCscreenshot = () => {};
+// 截图
+const clickCscreenshot = () => {
+  const element = document.body;
+  html2canvas(element, {
+    allowTaint: true,
+    useCORS: true,
+    dpi: 150,
+    scale: 2,
+  }).then((canvas) => {
+    const image = canvas.toDataURL();
+    const File = dataURLtoFile(image);
+    console.log(File);
+    emit("setToolbar", {
+      data: {
+        files: File,
+      },
+      key: "setPicture",
+    });
+  });
+};
 
 async function sendImage(e) {
   emit("setToolbar", {

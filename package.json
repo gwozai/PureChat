@@ -37,6 +37,7 @@
     "element-plus": "^2.2.32",
     "element-resize-detector": "^1.2.4",
     "highlight.js": "^11.8.0",
+    "html2canvas": "^1.4.1",
     "husky": ">=6",
     "js-cookie": "^3.0.1",
     "lint-staged": ">=10",
