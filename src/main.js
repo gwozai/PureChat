@@ -53,6 +53,5 @@ getServerConfig(app).then(async (config) => {
 });
 app.config.globalProperties.$api = api;
 // app.config.errorHandler = (err, instance, info) => {
-//   // 向追踪服务报告错误
 //   console.log(err, instance, info);
 // };
