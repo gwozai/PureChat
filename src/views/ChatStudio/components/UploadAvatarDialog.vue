@@ -82,7 +82,7 @@ async function uploadAvatar() {
 }
 // 修改头像
 async function modifyMyProfile(file_url) {
-  const { code, data } = await updateMyProfile({ avatar: file_url + "?" + Date.now() });
+  const { code, data } = await updateMyProfile({ avatar: file_url });
   if (code === 0) {
     commit("updateCurrentUserProfile", deepClone(data));
   } else {

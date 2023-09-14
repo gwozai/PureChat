@@ -42,9 +42,11 @@
                 shape="square"
                 @click.stop="onclickavatar($event, item)"
                 :src="item.avatar || circleUrl"
+                @error="() => true"
                 v-contextmenu:contextmenu
                 @contextmenu.prevent="handleContextAvatarMenuEvent($event, item)"
               >
+                <img :src="circleUrl" />
               </el-avatar>
             </div>
             <div
