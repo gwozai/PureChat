@@ -19,25 +19,30 @@
         <div class="emojis">
           <el-scrollbar wrap-class="custom-scrollbar-wrap">
             <div class="emoji_QQ" v-show="table == 'QQ'">
-              <!-- 二维数组 -->
-              <div class="scroll-snap" v-for="emoji in EmotionPackGroup" :key="emoji">
+              <!-- 二维数组 window css 滚动贴合 -->
+              <template v-if="systemOs == 'Windows'">
+                <div class="scroll-snap" v-for="emoji in EmotionPackGroup" :key="emoji">
+                  <span
+                    v-for="item in emoji"
+                    class="emoji scroll-content"
+                    :key="item"
+                    @click="SelectEmoticon(item)"
+                  >
+                    <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
+                  </span>
+                </div>
+              </template>
+              <!-- mac -->
+              <template v-else>
                 <span
-                  v-for="item in emoji"
-                  class="emoji scroll-content"
+                  v-for="item in emojiQq.emojiName"
+                  class="emoji"
                   :key="item"
                   @click="SelectEmoticon(item)"
                 >
                   <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
                 </span>
-              </div>
-              <!-- <span
-                v-for="item in emojiQq.emojiName"
-                class="emoji"
-                :key="item"
-                @click="SelectEmoticon(item)"
-              >
-                <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
-              </span> -->
+              </template>
             </div>
             <div class="emoji_Tiktok" v-show="table == 'Tiktok'">
               <span
@@ -111,10 +116,12 @@ import { ref, unref, defineEmits, onMounted } from "vue";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { chunk } from "lodash-es";
 import { useStore } from "vuex";
+import Bowser from "bowser";
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 
 const tobottom = ref();
+const systemOs = ref("");
 const buttonRef = ref();
 const popoverRef = ref();
 const imagePicker = ref();
@@ -137,6 +144,10 @@ const toolDate = [
 ];
 const initEmotion = () => {
   EmotionPackGroup.value = chunk(emojiQq.emojiName, 12 * 6);
+};
+const getParser = () => {
+  const browser = Bowser.getParser(window.navigator.userAgent);
+  systemOs.value = browser.getOS().name; // "Windows"
 };
 const onClickOutside = () => {
   unref(popoverRef).popperRef?.delayHide?.();
@@ -189,6 +200,7 @@ emitter.on("onisbot", (state) => {
   tobottom.value = !state;
 });
 onMounted(() => {
+  getParser();
   initEmotion();
 });
 </script>
