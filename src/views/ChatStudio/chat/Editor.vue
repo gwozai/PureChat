@@ -41,7 +41,7 @@ import RichToolbar from "../components/RichToolbar.vue";
 import { toolbarConfig, editorConfig } from "../utils/configure";
 import emitter from "@/utils/mitt-bus";
 import { onBeforeUnmount, ref, shallowRef, onMounted, computed, watch, nextTick } from "vue";
-import { sendChatMessage, customAlert } from "../utils/utils";
+import { sendChatMessage, customAlert, parseHTMLToArr } from "../utils/utils";
 import { empty } from "@/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -286,6 +286,9 @@ const sendMsgBefore = () => {
   const { aitStr, aitlist } = extractAitInfo();
   const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
+  console.log(HtmlText);
+  const ElementArray = parseHTMLToArr(HtmlText);
+  console.log(ElementArray);
   return {
     convId: toAccount.value,
     convType: currentConversation.value.type,
