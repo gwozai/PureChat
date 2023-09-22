@@ -205,11 +205,15 @@ const removeGroupMemberBtn = async (item) => {
   if (code !== 0) return;
   updataGroup();
 };
-const addGroupMemberBtn = (value) => {
+const addGroupMemberBtn = async (value) => {
   const { groupID } = groupProfile.value;
   const { toAccount } = value;
-  addGroupMember({ groupID, user: toAccount });
-  updataGroup();
+  const { code, data } = await addGroupMember({ groupID, user: toAccount });
+  if (code == 0) {
+    updataGroup();
+  } else {
+    console.log(data);
+  }
 };
 const updataGroup = () => {
   setTimeout(() => {
