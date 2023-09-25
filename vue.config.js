@@ -72,16 +72,9 @@ module.exports = {
     // 根路径
     config.resolve.alias.set("@", resolve("src"));
 
-    // // 删除预加载
+    // 删除预加载
     // config.plugins.delete('preload');
     // config.plugins.delete('prefetch');
-    // // 压缩代码
-    // config.optimization.minimize(true);
-    // // 分割代码
-    // config.optimization.splitChunks({
-    //   chunks: "all",
-    // });
-
     config.plugin("html").tap((args) => {
       args[0].title = title; // 修改标题
       args[0].cdn = cdn; // CDN外链
@@ -104,7 +97,7 @@ module.exports = {
       Components({
         resolvers: [ElementPlusResolver()],
       }),
-      new BundleAnalyzerPlugin(),
+      // new BundleAnalyzerPlugin(),
       // 压缩配置 用于生成Gzip压缩的文件，从而减小文件的体积，加快网站的加载速度
       // new CompressionPlugin({
       //   algorithm: "gzip", // 使用gzip压缩
