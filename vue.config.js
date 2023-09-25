@@ -76,11 +76,11 @@ module.exports = {
     // config.plugins.delete('preload');
     // config.plugins.delete('prefetch');
     // // 压缩代码
-    config.optimization.minimize(true);
+    // config.optimization.minimize(true);
     // // 分割代码
-    config.optimization.splitChunks({
-      chunks: "all",
-    });
+    // config.optimization.splitChunks({
+    //   chunks: "all",
+    // });
 
     config.plugin("html").tap((args) => {
       args[0].title = title; // 修改标题
