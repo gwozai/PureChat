@@ -126,7 +126,7 @@ import { deleteMsgList, revokeMsg, translateText } from "@/api/im-sdk-api";
 import { getMsgList } from "@/api/im-sdk-api/session";
 import emitter from "@/utils/mitt-bus";
 import NameComponent from "../components/NameComponent.vue";
-import { download, downloadCopy } from "@/utils/message-input-utils";
+import { download, downloadCopy } from "@/utils/chat/index";
 
 import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
 import RelayElemItem from "../ElemItemTypes/RelayElemItem.vue";

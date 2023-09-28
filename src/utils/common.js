@@ -1,4 +1,5 @@
-// import store from '@/store/index';
+import dayjs from "dayjs";
+import { customRef } from "vue";
 const { title } = require("@/config/vue.custom.config");
 
 /**
@@ -36,30 +37,82 @@ export function autotaggTheme(e) {
   }
 }
 
-/**
- * 将字节数转换为可读性更强的单位
- * @param {number} bytes - 需要转换的字节数值
- * @returns {string} - 转换后的字符串，表示合适的单位和对应的数值
- */
-export function bytesToSize(bytes) {
-  const marker = 1024; // Change to 1000 if required
-  const decimal = 2; // Change as required
-  const kiloBytes = marker;
-  const megaBytes = marker * marker;
-  const gigaBytes = marker * marker * marker;
-  // const lang = store.state.settings.lang;
-  const lang = "zh";
-  if (bytes < kiloBytes) {
-    return bytes + (lang === "en" ? " Bytes" : "字节");
-  } else if (bytes < megaBytes) {
-    return (bytes / kiloBytes).toFixed(decimal) + " KB";
-  } else if (bytes < gigaBytes) {
-    return (bytes / megaBytes).toFixed(decimal) + " MB";
-  } else {
-    return (bytes / gigaBytes).toFixed(decimal) + " GB";
-  }
-}
-
 export function setPageTitle(routerTitle) {
   document.title = routerTitle ? `${routerTitle} | ${title}` || title : title;
+}
+
+export function generateUUID() {
+  let result = "";
+  const code = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+  result = code.replace(/[xy]/gu, (item) => {
+    const random = (Math.random() * 16) | 0;
+    const value = item === "x" ? random : (random & 0x3) | 0x8;
+    return value.toString(16);
+  });
+  return result;
+}
+
+export function useDebouncedRef(value, delay = 200) {
+  let timer;
+  return customRef((track, trigger) => {
+    return {
+      get() {
+        track();
+        return value;
+      },
+      set(val) {
+        if (timer) return;
+        timer = setTimeout(() => {
+          timer = null;
+          value = val;
+          trigger();
+        }, delay);
+      },
+    };
+  });
+}
+
+export function randomNum(min = 0, max = 100) {
+  return Math.floor(Math.random() * (min - max) + max);
+}
+
+/**
+ * 判断是否为空
+ */
+export function empty(value) {
+  switch (typeof value) {
+    case "undefined":
+      return true;
+    case "string":
+      if (value.replace(/(^[ \t\n\r]*)|([ \t\n\r]*$)/g, "").length == 0) return true;
+      break;
+    case "boolean":
+      if (!value) return true;
+      break;
+    case "number":
+      if (value === 0 || isNaN(value)) return true;
+      break;
+    case "object":
+      if (value === null || value.length === 0) return true;
+      for (var i in value) {
+        return false;
+      }
+      return true;
+  }
+  return false;
+}
+
+/**
+ * 判断数据类型
+ * 示例 typOf({}) === "object";
+ */
+export function typeOf(operand) {
+  const toString = Object.prototype.toString;
+  let type = toString.call(operand).split(" ")[1];
+  type = type.substring(0, type.length - 1).toLowerCase();
+  return type;
+}
+
+export function formatTime(data) {
+  return dayjs(data).format("YYYY-MM-DD HH:mm:ss"); // 2022-5-7 9:17:56
 }

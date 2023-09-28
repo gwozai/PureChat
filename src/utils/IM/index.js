@@ -4,7 +4,7 @@ import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
 import emitter from "@/utils/mitt-bus";
-import { scrollToDomPostion } from "@/utils/message-input-utils";
+import { scrollToDomPostion } from "@/utils/chat/index";
 import { kickedOutReason, fnCheckoutNetState } from "./utils/index";
 import { ElNotification } from "element-plus";
 import { deepClone } from "@/utils/clone";
@@ -127,7 +127,7 @@ export default class TIMProxy {
     console.log(data, "收到新消息");
     this.handleQuitGroupTip(data);
     this.handleNotificationTip(data);
-    this.handleUpdateMessage(data)
+    this.handleUpdateMessage(data);
   }
   onMessageRevoked({ data, name }) {
     console.log(data, "撤回消息");
@@ -160,7 +160,7 @@ export default class TIMProxy {
       });
     }
   }
-  onMessageModified({ data }) { }
+  onMessageModified({ data }) {}
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }
@@ -213,7 +213,9 @@ export default class TIMProxy {
       // 切换会话列表
       store.dispatch("CHEC_OUT_CONVERSATION", { convId: message.conversationID });
       // 定位到指定会话
-      setTimeout(() => { scrollToDomPostion(ID) }, 1000)
+      setTimeout(() => {
+        scrollToDomPostion(ID);
+      }, 1000);
       window.focus();
       notification.close();
     };
@@ -302,8 +304,8 @@ export default class TIMProxy {
     });
   }
   /**
-  * 群详情 @好友 系统通知tis
-  */
+   * 群详情 @好友 系统通知tis
+   */
   handleNotificationTip(data) {
     const userProfile = store.state.user.currentUserProfile;
     const { atUserList } = data[0];

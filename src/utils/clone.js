@@ -1,7 +1,5 @@
 /**
- * @description: 指定类型判断
- * @param {*}
- * @return {*}
+ * 指定类型判断
  * isType('Array',[])
  */
 export function isType(type, val) {

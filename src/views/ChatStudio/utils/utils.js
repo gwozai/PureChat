@@ -1,5 +1,5 @@
 import useClipboard from "vue-clipboard3";
-import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/message-input-utils";
+import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/chat/index";
 import {
   CreateTextMsg,
   CreateTextAtMsg,
