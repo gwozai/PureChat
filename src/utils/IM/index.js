@@ -7,7 +7,7 @@ import emitter from "@/utils/mitt-bus";
 import { scrollToDomPostion } from "@/utils/chat/index";
 import { kickedOutReason, fnCheckoutNetState } from "./utils/index";
 import { ElNotification } from "element-plus";
-import { deepClone } from "@/utils/clone";
+import { deepClone } from "@/utils/common";
 import { h, nextTick } from "vue";
 
 export default class TIMProxy {
