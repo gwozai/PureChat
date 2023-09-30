@@ -32,7 +32,6 @@ import { getGroupList } from "@/api/im-sdk-api/group";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
 import { useBoolean } from "@/utils/hooks/index";
-import { cloud, getUser } from "@/api/laf-sdk-api";
 
 export default defineComponent({
   name: "Test",
