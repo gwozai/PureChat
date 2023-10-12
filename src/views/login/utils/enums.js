@@ -1,8 +1,8 @@
 const operates = [
-  {
-    title: "手机登录",
-    currentPage: 1,
-  },
+  // {
+  //   title: "手机登录",
+  //   currentPage: 1,
+  // },
   {
     title: "二维码登录",
     currentPage: 2,

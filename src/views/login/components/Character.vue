@@ -1,17 +1,23 @@
 <template>
   <div class="rain">
     <div class="g-container">
-      <div class="item top"></div>
-      <div class="item right"></div>
-      <div class="item left"></div>
+      <div>
+        <div class="item top"></div>
+        <div class="item right"></div>
+        <div class="item left"></div>
+        <div class="middle">
+          <img src="@/assets/images/log.png" alt="" />
+          <div class="g-cont">
+            <div class="g-circle"></div>
+          </div>
+        </div>
+      </div>
       <p v-for="item in 20" :key="item"></p>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&display=swap");
@@ -92,6 +98,23 @@ $perColumnNums: 25;
     left: 0;
     bottom: 0;
   }
+  .middle {
+    width: 37px;
+    height: 37px;
+    position: absolute;
+    border-radius: 10px;
+    width: 37px;
+    height: 37px;
+    top: calc(50% - 16px);
+    left: calc(50% - 16px);
+    z-index: 2;
+    img {
+      border-radius: 50%;
+      width: 100%;
+      position: absolute;
+      z-index: 5;
+    }
+  }
 }
 
 p {
@@ -169,6 +192,59 @@ p {
   }
   100% {
     background-position: 0 0%;
+  }
+}
+</style>
+<style lang="scss" scoped>
+.g-cont {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 1px solid #444;
+}
+.g-circle {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  bottom: -4px;
+  right: -4px;
+  border-radius: 50%;
+  background: conic-gradient(#000 0%, transparent 40%, transparent);
+  animation: rotate 3s ease-in-out infinite;
+  transition-origin: 50% 50%;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    border-radius: 50%;
+    background: #000;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -3px);
+    border-radius: 50%;
+    // background: #fc0;
+    // box-shadow: 0 0 4px 2px #fc0;
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(-360deg);
   }
 }
 </style>

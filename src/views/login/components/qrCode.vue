@@ -1,8 +1,8 @@
 <template>
   <Motion>
     <div class="flex justify-center">
-      <!-- <QrCode /> -->
-      <Character />
+      <QrCode v-if="loading" />
+      <Character v-else />
     </div>
   </Motion>
   <Motion :delay="100">
@@ -22,7 +22,12 @@ import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import Motion from "@/utils/motion";
 import { useStore } from "vuex";
 import Character from "./Character.vue";
-const { state, dispatch, commit } = useStore();
+const { dispatch, commit } = useStore();
+import { useBoolean } from "@/utils/hooks/index";
+const [loading, setLoading] = useBoolean();
+setTimeout(() => {
+  setLoading(true);
+}, 2000);
 </script>
 
 <style lang="scss" scoped></style>
