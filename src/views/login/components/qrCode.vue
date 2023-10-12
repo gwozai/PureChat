@@ -1,8 +1,10 @@
 <template>
   <Motion>
     <div class="flex justify-center">
-      <QrCode v-if="loading" />
-      <Character v-else />
+      <!-- <QrCode v-if="loading" />
+      <Character v-else /> -->
+      <QrCode class="QrCode" v-show="loading" />
+      <Character />
     </div>
   </Motion>
   <Motion :delay="100">
@@ -30,4 +32,8 @@ setTimeout(() => {
 }, 2000);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.QrCode {
+  position: absolute;
+}
+</style>
