@@ -1,23 +1,32 @@
 <template>
   <div class="rain">
     <div class="g-container">
-      <div class="horn">
+      <div class="horn flex justify-center items-center">
         <div class="item top"></div>
         <div class="item right"></div>
         <div class="item left"></div>
-        <div class="middle" v-loading="false">
+        <div class="middle" v-loading="!loading">
           <img src="@/assets/images/log.png" alt="" />
-          <!-- <div class="g-cont">
-            <div class="g-circle"></div>
-          </div> -->
         </div>
       </div>
-      <p v-for="item in 3" :key="item"></p>
+      <template v-if="!loading">
+        <p v-for="item in 20" :key="item"></p>
+      </template>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script>
+export default {
+  name: "Character",
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&display=swap");
@@ -104,12 +113,10 @@ $perColumnNums: 25;
     bottom: 0;
   }
   .middle {
-    position: absolute;
     width: 45px;
     height: 45px;
-    top: calc(50% - 22.5px);
-    left: calc(50% - 22.5px);
     background: #fff;
+    border-radius: 2px;
     z-index: 2;
     img {
       border-radius: 50%;
@@ -151,7 +158,6 @@ p {
   $contentNext: randomChars($perColumnNums);
   $delay: random($n);
   $randomAnimationTine: #{$animationTime + random(20) / 10 - 1}s;
-
   p:nth-child(#{$i})::before {
     content: $content;
     color: #000;
@@ -159,7 +165,6 @@ p {
     animation: typing-#{$i} $randomAnimationTine steps(20, end) #{$delay * 0.1s * -1} infinite;
     z-index: 1;
   }
-
   p:nth-child(#{$i})::after {
     $alpha: random(40) / 100 + 0.6;
     content: "";
@@ -189,25 +194,6 @@ p {
     }
   }
 }
-
-// .rain {
-//   position: absolute;
-//   width: 1px;
-//   height: 100%;
-//   background: rgba(0, 255, 0, 0.3);
-//   animation: raindrop 1.5s linear infinite;
-// }
-
-// @keyframes raindrop {
-//   0% {
-//     transform: translateY(0);
-//     opacity: 0;
-//   }
-//   100% {
-//     transform: translateY(100vh);
-//     opacity: 1;
-//   }
-// }
 
 @keyframes mask {
   0% {
