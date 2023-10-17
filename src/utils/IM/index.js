@@ -245,7 +245,7 @@ export default class TIMProxy {
     if (groupTips.length > 0) {
       groupTips.forEach((groupTip) => {
         if (Array.isArray(groupTip.payload.userIDList) || groupTip.payload.userIDList.length > 0) {
-          // store.dispatch("getGroupMemberList");
+          store.dispatch("getGroupMemberList");
         }
       });
     }
