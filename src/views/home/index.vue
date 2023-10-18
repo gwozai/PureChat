@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full w-full">
-    <div class="flex h-full w-full man">
+  <div class="manView">
+    <div class="flex h-full w-full view">
       <!-- 侧边栏 -->
       <SideBar />
       <!-- 主体 -->
@@ -20,8 +20,12 @@ import Setup from "@/views/home/setup/index.vue";
 import AddressBook from "@/views/components/AddressBook/index.vue";
 </script>
 <style lang="scss" scoped>
-.man {
-  position: relative;
+.manView {
+  width: 100%;
+  // height: 100%;
+  .view {
+    position: relative;
+  }
 }
 .css {
   background-image: radial-gradient(transparent 1px, #fff 1px);
