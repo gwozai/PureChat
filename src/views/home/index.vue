@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex h-full man">
+  <div class="h-full w-full">
+    <div class="flex h-full w-full man">
       <!-- 侧边栏 -->
       <SideBar />
       <!-- 主体 -->
