@@ -2,7 +2,7 @@
   <div class="mention-modal" :style="{ top: top, left: left }">
     <!-- @keydown="onKeydown" -->
     <!-- <input class="mention-input" v-model="searchVal" ref="input" @keyup="inputKeyupHandler" /> -->
-    <ul class="mention-list">
+    <ul class="mention-list" ref="listRef">
       <el-scrollbar>
         <li
           v-for="item in searchedList"
@@ -83,16 +83,15 @@ export default {
       const selectionRect = domRange.getBoundingClientRect();
       // 获取编辑区域 DOM 节点的位置，以辅助定位
       // const containerRect = editor.getEditableContainer().getBoundingClientRect();
+      const height = this.$refs.listRef?.clientHeight;
       // 定位 modal
-      this.top = `${selectionRect.top + 20}px`;
+      this.top = `${selectionRect.top - height - 15}px`;
       this.left = `${selectionRect.left + 5}px`;
       // input blur() focus()
       // this.$refs.input.focus();
     },
     hideMentionModal() {
-      this.$nextTick(() => {
-        this.$store.commit("SET_MENTION_MODAL", false);
-      });
+      this.$store.commit("SET_MENTION_MODAL", false);
     },
     inputKeyupHandler(event) {
       console.log(event);
@@ -105,7 +104,7 @@ export default {
         // 插入第一个
         const firstOne = this.searchedList[this.tabIndex];
         if (firstOne) {
-          console.log(firstOne);
+          // console.log(firstOne);
           const { userID, nick } = firstOne;
           this.insertMentionHandler(userID, nick);
         }
