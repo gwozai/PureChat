@@ -91,7 +91,7 @@ export default class TIMProxy {
     // 已订阅用户或好友的状态变更（在线状态或自定义状态）时触发。
     tim.on(TIM.EVENT.USER_STATUS_UPDATED, this.onUserStatusUpdated);
     // 收到消息被修改的通知
-    tim.on(TIM.EVENT.MESSAGE_MODIFIED, this.onMessageModified);
+    tim.on(TIM.EVENT.MESSAGE_MODIFIED, this.onMessageModified, this);
   }
   onReadyStateUpdate({ name }) {
     const isSDKReady = name === TIM.EVENT.SDK_READY;
@@ -160,7 +160,10 @@ export default class TIMProxy {
       });
     }
   }
-  onMessageModified({ data }) {}
+  onMessageModified({ data }) {
+    console.log(data, "消息编辑");
+    this.handleUpdateMessage(data);
+  }
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }
@@ -271,7 +274,7 @@ export default class TIMProxy {
       type: "UPDATE_MESSAGES",
       payload: {
         convId: convId,
-        message: data[0],
+        message: deepClone(data[0]),
       },
     });
     // 更新滚动条位置到底部
