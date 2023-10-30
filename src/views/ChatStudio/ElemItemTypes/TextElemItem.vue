@@ -53,7 +53,6 @@ const { message, self } = toRefs(props);
 
 const onClick = (data) => {
   console.log(data);
-  modifyMessage(message.value);
 };
 </script>
 

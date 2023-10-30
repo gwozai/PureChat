@@ -162,7 +162,7 @@ export default class TIMProxy {
   }
   onMessageModified({ data }) {
     console.log(data, "消息编辑");
-    this.handleUpdateMessage(data);
+    this.handleUpdateMessage(data, false);
   }
   onNetStateChange({ data }) {
     store.commit("showMessage", fnCheckoutNetState(data.state));
@@ -254,7 +254,7 @@ export default class TIMProxy {
     }
   }
   // 消息更新
-  handleUpdateMessage(data) {
+  handleUpdateMessage(data, read = true) {
     const convId = store.state.conversation?.currentConversation?.conversationID;
     if (!convId) return;
     // 收到新消息 且 不为当前选中会话 更新对应ID消息
@@ -268,7 +268,7 @@ export default class TIMProxy {
       });
       return;
     }
-    this.ReportedMessageRead(data);
+    read && this.ReportedMessageRead(data);
     // 更新当前会话消息
     store.commit("SET_HISTORYMESSAGE", {
       type: "UPDATE_MESSAGES",
