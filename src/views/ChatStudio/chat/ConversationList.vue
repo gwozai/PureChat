@@ -79,7 +79,7 @@ import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/chat/index";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
-import { TIMpingConv } from "@/api/im-sdk-api";
+import { TIMpingConv } from "@/api/im-sdk-api/index";
 import Label from "../components/Label.vue";
 import emitter from "@/utils/mitt-bus";
 import { chatName, isallStaff } from "../utils/utils";

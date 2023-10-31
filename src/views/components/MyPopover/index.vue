@@ -36,8 +36,7 @@ import { useState } from "@/utils/hooks/useMapper";
 import { isRobot } from "@/utils/chat/index";
 import { onClickOutside, onLongPress, useElementBounding } from "@vueuse/core";
 import { squareUrl, circleUrl } from "../../ChatStudio/utils/menu";
-import { setSelfStatus, getUserStatus } from "@/api/im-sdk-api/index";
-import { getUserProfile } from "@/api/im-sdk-api/profile";
+import { getUserProfile } from "@/api/im-sdk-api/index";
 
 const popoverRef = ref();
 const left = ref("");

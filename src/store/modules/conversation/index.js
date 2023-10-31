@@ -8,9 +8,10 @@ import {
   getConversationProfile,
   setMessageRead,
   setMessageRemindType,
-} from "@/api/im-sdk-api";
-import { sendMsg } from "@/api/im-sdk-api/message";
-import { getMsgList, getUnreadMsg } from "@/api/im-sdk-api/session";
+  sendMsg,
+  getMsgList,
+  getUnreadMsg
+} from "@/api/im-sdk-api/index";
 
 const getBaseTime = (list) => {
   return list?.length > 0 ? list.find((t) => t.isTimeDivider).time : 0;

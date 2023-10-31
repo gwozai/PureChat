@@ -47,7 +47,7 @@ import { deepClone } from "@/utils/common";
 import emitter from "@/utils/mitt-bus";
 import { useStore } from "vuex";
 import { uploadFiles } from "@/api/node-admin-api/index";
-import { updateMyProfile } from "@/api/im-sdk-api/profile";
+import { updateMyProfile } from "@/api/im-sdk-api/index";
 import { squareUrl } from "../utils/menu";
 
 const { commit } = useStore();

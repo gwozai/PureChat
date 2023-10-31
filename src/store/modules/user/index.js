@@ -1,5 +1,5 @@
 import router from "@/router";
-import { getMyProfile, TIM_logout, TIM_login } from "@/api/im-sdk-api";
+import { getMyProfile, TIM_logout, TIM_login } from "@/api/im-sdk-api/index";
 import { ElMessage } from "element-plus";
 import TIMProxy from "@/utils/IM";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
