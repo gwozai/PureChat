@@ -1,5 +1,5 @@
 import { deleteConversation } from "@/api/im-sdk-api/index";
-import { restApi } from "@/api/node-admin-api/rest";
+import { restApi } from "@/api/node-admin-api/index";
 import {
   getGroupList,
   getGroupProfile,

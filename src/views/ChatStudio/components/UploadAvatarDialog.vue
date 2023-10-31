@@ -46,7 +46,7 @@ import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import { deepClone } from "@/utils/common";
 import emitter from "@/utils/mitt-bus";
 import { useStore } from "vuex";
-import { uploadFiles } from "@/api/node-admin-api/other";
+import { uploadFiles } from "@/api/node-admin-api/index";
 import { updateMyProfile } from "@/api/im-sdk-api/profile";
 import { squareUrl } from "../utils/menu";
 

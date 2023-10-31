@@ -101,13 +101,13 @@ export default defineComponent({
     test() {},
     test1() {
       // this.getGroupList();
-      this.$api.stream();
+      // this.$api.stream();
     },
     async test3() {
-      const data = await this.$api.restApi({
-        funName: "getappInfo",
-      });
-      console.log(data);
+      // const data = await this.$api.restApi({
+      //   funName: "getappInfo",
+      // });
+      // console.log(data);
     },
     setCookies() {
       console.log(pure);
