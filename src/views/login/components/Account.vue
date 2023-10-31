@@ -77,6 +77,19 @@
       {{ item.title }}
     </el-button>
   </div>
+  <!-- 第三方登录 -->
+  <Motion :delay="250">
+    <el-form-item>
+      <el-divider>
+        <p class="text-gray-500 text-xs">{{ $t("login.thirdLogin") }}</p>
+      </el-divider>
+      <div class="w-full flex justify-evenly">
+        <span v-for="(item, index) in thirdParty" :key="index" :title="item.title">
+          <svg-icon @click="onClick" class="icon" :iconClass="item.icon" />
+        </span>
+      </div>
+    </el-form-item>
+  </Motion>
 </template>
 
 <script setup>
@@ -126,6 +139,23 @@ const LoginBtn = async (formEl) => {
 const Signin = () => {
   dispatch("LOG_IN", user);
 };
+const onClick = () => {
+  let fetchTokenUrl = "https://graph.qq.com/oauth2.0/authorize";
+  // let fetchTokenUrl = "https://graph.qq.com/oauth2.0/token";
+  const redirect_uri = "https://www.shiyit.com/shiyi/oauth/callback/qq"; // 授权之后需要重定向的URL
+
+  const state = Date.now();
+  let options = {
+    display: "pc",
+    response_type: "code", // 固定的为code
+    client_id: 101995894, // 申请QQ登录成功后，分配给应用的appid。
+    redirect_uri,
+    state,
+    scope: "get_user_info,list_album", // 需要获取哪些权限
+  };
+  const searchParams = new URLSearchParams(options);
+  console.log(`${fetchTokenUrl}?${searchParams.toString()}`);
+};
 
 const onHandle = (index) => {
   commit("SET_CURRENTPAGE", index);
@@ -157,6 +187,9 @@ watch(imgCode, (value) => {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  color: rgb(107, 114, 128);
+}
 .login-btn {
   width: 100%;
   margin-top: 20px;
