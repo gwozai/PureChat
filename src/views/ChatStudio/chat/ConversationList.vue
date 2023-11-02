@@ -157,13 +157,15 @@ const createElement = (num = 0) => {
 // 定义消息提示元素
 const CustomMention = (props) => {
   const { item } = props;
-  const { lastMessage, conversationID: ID } = item;
+  const { lastMessage, conversationID: ID, unreadCount } = item;
   const { messageForShow } = lastMessage;
   const draft = sessionDraftMap.value.get(ID);
-  if (draft) {
+  if (draft && isdraft(item)) {
     return h("span", { innerHTML: `${createElement(1)}${draft?.[0]?.children[0].text}` });
   }
-  return h("span", { innerHTML: `${createElement()}${lastMessage.nick}: ${messageForShow}` });
+  return h("span", {
+    innerHTML: `${unreadCount !== 0 ? createElement() : ""}${lastMessage.nick}: ${messageForShow}`,
+  });
 };
 
 // 消息列表 右键菜单

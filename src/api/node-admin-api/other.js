@@ -14,7 +14,7 @@ function fnMsgBody(data) {
       },
     ],
     SyncOtherMachine: 2,
-    CallbackCommand: "Bot.OnC2CMessage",
+    CallbackCommand: "Bot.OnGroupMessage",
     From_Account: From,
     To_Account: To,
     MsgRandom: 707438945,
@@ -106,7 +106,7 @@ export const uploadFiles = async (params) => {
 export const imCallback = (params) => {
   console.log(params, "imCallback");
   const { Text, From, To, type } = params;
-  if (!isRobot(To)) return;
+  // if (!isRobot(To)) return;
   const data = fnMsgBody({ Text, From, To, type })
   return http({ url: "/imCallback", method: "post", data });
 };

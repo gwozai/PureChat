@@ -430,9 +430,9 @@ const conversation = {
           message: payload.message,
         },
       });
-      nextTick(() => {
-        commit("updataScroll");
-      });
+      // nextTick(() => {
+      commit("updataScroll");
+      // });
       // 发送消息
       const { code, message } = await sendMsg(payload.message);
       if (code == 0) {
@@ -453,12 +453,12 @@ const conversation = {
         },
       });
       commit("updataScroll");
-      imCallback({
-        Text: message.payload.text,
-        From: message.from,
-        To: message.to,
-        type: message.type,
-      });
+      // imCallback({
+      //   Text: message.payload.text,
+      //   From: message.from,
+      //   To: message.to,
+      //   type: message.type,
+      // });
     },
   },
   getters: {

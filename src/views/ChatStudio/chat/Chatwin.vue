@@ -80,7 +80,7 @@
         @click="handlRightClick(item)"
         v-show="isRight"
       >
-        {{ item.text }}
+        <p class="item">{{ item.text }}</p>
       </contextmenu-item>
     </contextmenu>
   </section>
@@ -679,8 +679,14 @@ $self-msg-color: #c2e8ff;
 }
 
 .v-contextmenu {
-  width: 154px;
+  .v-contextmenu-item--hover {
+    background: #f6f7f8 !important;
+  }
+  .item {
+    margin: 0;
+  }
   .v-contextmenu-item {
+    // width: 300px;
     height: 32px;
     line-height: 32px;
     padding: 0px 16px;
