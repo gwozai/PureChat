@@ -453,12 +453,12 @@ const conversation = {
         },
       });
       commit("updataScroll");
-      // imCallback({
-      //   Text: message.payload.text,
-      //   From: message.from,
-      //   To: message.to,
-      //   type: message.type,
-      // });
+      imCallback({
+        Text: message.payload.text,
+        From: message.from,
+        To: message.to,
+        type: message.type,
+      });
     },
   },
   getters: {
