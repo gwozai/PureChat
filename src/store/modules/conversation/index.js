@@ -430,9 +430,7 @@ const conversation = {
           message: payload.message,
         },
       });
-      // nextTick(() => {
       commit("updataScroll");
-      // });
       // 发送消息
       const { code, message } = await sendMsg(payload.message);
       if (code == 0) {
