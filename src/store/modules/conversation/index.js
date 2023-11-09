@@ -13,6 +13,16 @@ import {
   getUnreadMsg,
 } from "@/api/im-sdk-api/index";
 
+function transformData(data) {
+  const inputData = data.filter((item) => !item.isTimeDivider && !item.isDeleted && !item.isRevoked);
+  return inputData.map(data => {
+    return {
+      role: data.flow === "in" ? "assistant" : "user",
+      content: data.payload.text
+    };
+  }).reverse();
+}
+
 const getBaseTime = (list) => {
   return list?.length > 0 ? list.find((t) => t.isTimeDivider).time : 0;
 };
@@ -451,12 +461,13 @@ const conversation = {
         },
       });
       commit("updataScroll");
-      // imCallback({
-      //   Text: message.payload.text,
-      //   From: message.from,
-      //   To: message.to,
-      //   type: message.type,
-      // });
+      imCallback({
+        messages: transformData(state.currentMessageList),
+        Text: message.payload.text,
+        From: message.from,
+        To: message.to,
+        type: message.type,
+      });
     },
   },
   getters: {

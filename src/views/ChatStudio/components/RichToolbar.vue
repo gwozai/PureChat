@@ -16,6 +16,10 @@
     <span v-if="!production" data-title="截图" class="icon" @click="clickCscreenshot">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
+    <span v-if="isRobot(toAccount)" data-title="模型" class="icon">
+      <el-icon class="robot"><Orange /></el-icon>
+      <!-- <svg-icon iconClass="robot" class="icon-hover" /> -->
+    </span>
     <!-- 滚动到底部 -->
     <span data-title="滚动到底部" class="chat_vot icon" @click="onTobBottom" v-show="tobottom">
       <el-icon class="svg-left icon-hover">
@@ -50,6 +54,8 @@ import EmotionPackBox from "./EmotionPackBox.vue";
 import { useStore } from "vuex";
 import { ref, defineEmits } from "vue";
 import { dataURLtoFile } from "@/utils/chat/index";
+import { isRobot } from "@/utils/chat/index";
+import { useState, useGetters } from "@/utils/hooks/useMapper";
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 const { production } = require("@/config/vue.custom.config");
@@ -58,7 +64,9 @@ const tobottom = ref();
 const imagePicker = ref();
 const filePicker = ref();
 const { commit } = useStore();
+
 const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
+const { toAccount } = useGetters(["toAccount"]);
 
 const sendEmojiClick = () => {
   emitter.emit("onEmotionPackBox", true);
@@ -144,6 +152,9 @@ emitter.on("onisbot", (state) => {
     position: relative;
     text-align: center;
     color: #808080;
+  }
+  .robot {
+    cursor: pointer;
   }
   & > .icon:hover:after {
     font-size: 13px;

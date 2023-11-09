@@ -1,6 +1,7 @@
 import http from "@/utils/http/index";
 import { isRobot } from "@/utils/chat/index";
-import axios from "axios";
+import { restApi } from './rest';
+import { api } from "@/api/openai/api";
 
 function fnMsgBody(data) {
   const { type, Text, To, From } = data
@@ -103,16 +104,64 @@ export const uploadFiles = async (params) => {
 };
 
 // 测试环境 模拟im消息回调
-export const imCallback = (params) => {
+export const imCallback = async (params) => {
   console.log(params, "imCallback");
   const { Text, From, To, type } = params;
-  // if (!isRobot(To)) return;
-  const data = fnMsgBody({ Text, From, To, type })
-  return http({ url: "/imCallback", method: "post", data });
+  if (!isRobot(To)) return;
+  sendMessages(params)
+  // const data = fnMsgBody({ Text, From, To, type })
+  // return http({ url: "/imCallback", method: "post", data });
 };
 
-export const stream = () => {
-  const url = process.env.VUE_APP_PROXY_DOMAIN_REAL + 'stream'
-  // fetchData(url)
-  fetchStream(url)
+export const sendMsg = async (params, message) => {
+  return await restApi({
+    params: {
+      To_Account: params.From, From_Account: params.To, Text: message || '|'
+    },
+    funName: "restSendMsg",
+  });
 }
+
+export const modifyMsg = async (params, message) => {
+  const { From_Account, To_Account, MsgKey } = params
+
+  restApi({
+    params: {
+      From_Account, To_Account, MsgKey, message
+    },
+    funName: "modifyC2cMsg",
+  }).then((res) => {
+    console.log(res)
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
+export const sendMessages = (params) => {
+  let MsgKey = ''
+  api.chat({
+    messages: params.messages.slice(-6),
+    config: { model: "gpt-3.5-turbo", stream: false },
+    onUpdate(message) {
+      console.log(message, 'onUpdate');
+      // modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+    },
+    onFinish(message) {
+      console.log(message, 'onFinish');
+      message && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+    },
+    onError(error) {
+      console.error("[Chat] failed ", error);
+    },
+    onController(controller) {
+      console.log(controller, 'onController');
+      sendMsg(params).then((res) => {
+        MsgKey = res.MsgKey
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+  });
+}
+
+
