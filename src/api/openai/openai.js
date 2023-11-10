@@ -12,6 +12,18 @@ export const OpenaiPath = {
   ListModelPath: "v1/models",
 };
 
+const modelConfig = {
+  model: "gpt-3.5-turbo",
+  temperature: 0.5,
+  top_p: 1,
+  max_tokens: 2000,
+  presence_penalty: 0,
+  frequency_penalty: 0,
+  sendMemory: true,
+  historyMessageCount: 4,
+  compressMessageLengthThreshold: 1000,
+}
+
 export function prettyObject(msg) {
   const obj = msg;
   if (typeof msg !== "string") {

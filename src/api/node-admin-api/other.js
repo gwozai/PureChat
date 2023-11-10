@@ -1,6 +1,7 @@
 import http from "@/utils/http/index";
 import { isRobot } from "@/utils/chat/index";
 import { restApi } from './rest';
+import store from "@/store";
 import { api } from "@/api/openai/api";
 
 function fnMsgBody(data) {
@@ -116,7 +117,7 @@ export const imCallback = async (params) => {
 export const sendMsg = async (params, message) => {
   return await restApi({
     params: {
-      To_Account: params.From, From_Account: params.To, Text: message || '|'
+      To_Account: params.From, From_Account: params.To, Text: message || 'loading...'
     },
     funName: "restSendMsg",
   });
@@ -124,7 +125,6 @@ export const sendMsg = async (params, message) => {
 
 export const modifyMsg = async (params, message) => {
   const { From_Account, To_Account, MsgKey } = params
-
   restApi({
     params: {
       From_Account, To_Account, MsgKey, message
@@ -140,15 +140,18 @@ export const modifyMsg = async (params, message) => {
 export const sendMessages = (params) => {
   let MsgKey = ''
   api.chat({
-    messages: params.messages.slice(-6),
-    config: { model: "gpt-3.5-turbo", stream: false },
+    messages: params.messages.slice(-1),
+    config: { model: "gpt-3.5-turbo", stream: true },
     onUpdate(message) {
       console.log(message, 'onUpdate');
-      // modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+      modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+      store.commit("updataScroll", 'instantly');
     },
     onFinish(message) {
       console.log(message, 'onFinish');
-      message && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+      setTimeout(() => {
+        message && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
+      }, 100)
     },
     onError(error) {
       console.error("[Chat] failed ", error);

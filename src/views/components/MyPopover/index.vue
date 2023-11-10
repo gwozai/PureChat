@@ -89,12 +89,12 @@ const setUserProfile = async () => {
   if (chat.value?.userProfile) {
     userProfile.value = chat.value.userProfile;
   }
-  // const userID = cardData.value?.from;
-  // const { code, data } = await getUserProfile(userID);
-  // if (code == 0) {
-  //   userProfile.value = data?.[0];
-  // }
-  // console.log(userProfile.value);
+  const userID = cardData.value?.from;
+  const { code, data } = await getUserProfile(userID);
+  if (code == 0) {
+    userProfile.value = data?.[0];
+  }
+  console.log(userProfile.value);
 };
 const setCardData = (data) => {
   cardData.value = data;
@@ -103,7 +103,9 @@ const openCard = (data) => {
   setPosition(data.seat);
   setCardData(data.cardData);
   setUserProfile();
-  setCard(true);
+  setTimeout(() => {
+    setCard(true);
+  }, 100);
 };
 
 onMounted(() => {

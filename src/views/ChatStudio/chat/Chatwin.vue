@@ -269,12 +269,15 @@ const scrollbar = ({ scrollLeft, scrollTop }) => {
   debouncedFunc();
 };
 
-const updateScrollBarHeight = () => {
-  nextTick(() => {
-    // messageViewRef.value?.firstElementChild?.scrollIntoView();
-    const ViewRef = messageViewRef.value;
-    scrollbarRef.value?.scrollTo(0, ViewRef?.scrollHeight);
-  });
+const updateScrollBarHeight = (data) => {
+  if (data == "instantly") {
+    scrollbarRef.value?.scrollTo(0, messageViewRef.value?.scrollHeight);
+  } else {
+    nextTick(() => {
+      // messageViewRef.value?.firstElementChild?.scrollIntoView();
+      scrollbarRef.value?.scrollTo(0, messageViewRef.value?.scrollHeight);
+    });
+  }
 };
 
 const updateScrollbar = () => {
@@ -516,7 +519,7 @@ emitter.on("updataScroll", (data) => {
   if (data == "bottom") {
     scrollBottom() && updateScrollBarHeight();
   } else {
-    updateScrollBarHeight();
+    updateScrollBarHeight(data);
   }
 });
 

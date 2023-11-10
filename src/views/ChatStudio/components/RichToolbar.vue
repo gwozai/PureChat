@@ -5,20 +5,20 @@
       <svg-icon iconClass="iconxiaolian" class="icon-hover" />
     </span>
     <!-- 图片 -->
-    <span data-title="图片" class="icon" @click="SendImageClick">
+    <span v-show="!isRobot(toAccount)" data-title="图片" class="icon" @click="SendImageClick">
       <svg-icon iconClass="icontupian" class="icon-hover" />
     </span>
     <!-- 文件 -->
-    <span data-title="文件" class="icon" @click="SendFileClick">
+    <span v-show="!isRobot(toAccount)" data-title="文件" class="icon" @click="SendFileClick">
       <svg-icon iconClass="iconwenjianjia" class="icon-hover" />
     </span>
     <!-- 截图 -->
     <span v-if="!production" data-title="截图" class="icon" @click="clickCscreenshot">
       <svg-icon iconClass="iconjietu" class="icon-hover" />
     </span>
-    <span v-if="isRobot(toAccount)" data-title="模型" class="icon">
-      <el-icon class="robot"><Orange /></el-icon>
-      <!-- <svg-icon iconClass="robot" class="icon-hover" /> -->
+    <!-- 机器人配置 -->
+    <span v-show="isRobot(toAccount)" data-title="配置" class="icon" @click="openRobotBox">
+      <el-icon class="robot icon-hover"><Setting /></el-icon>
     </span>
     <!-- 滚动到底部 -->
     <span data-title="滚动到底部" class="chat_vot icon" @click="onTobBottom" v-show="tobottom">
@@ -43,6 +43,7 @@
       accept=".mp4"
       hidden
     /> -->
+    <RobotOptions />
     <EmotionPackBox @SelectEmoticon="SelectEmoticon" />
   </div>
 </template>
@@ -51,6 +52,7 @@
 import html2canvas from "html2canvas";
 import emitter from "@/utils/mitt-bus";
 import EmotionPackBox from "./EmotionPackBox.vue";
+import RobotOptions from "./RobotOptions.vue";
 import { useStore } from "vuex";
 import { ref, defineEmits } from "vue";
 import { dataURLtoFile } from "@/utils/chat/index";
@@ -71,6 +73,9 @@ const { toAccount } = useGetters(["toAccount"]);
 const sendEmojiClick = () => {
   emitter.emit("onEmotionPackBox", true);
 };
+function openRobotBox() {
+  emitter.emit("onRobotBox", true);
+}
 const SelectEmoticon = (item, table) => {
   let url = "";
   if (table == "QQ") {
