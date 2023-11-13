@@ -1,8 +1,5 @@
-import {
-  EventStreamContentType,
-  fetchEventSource,
-} from "@fortaine/fetch-event-source";
-import { REQUEST_TIMEOUT_MS, OpenaiPath, modelConfig, useAccessStore } from './constant';
+import { EventStreamContentType, fetchEventSource } from "@fortaine/fetch-event-source";
+import { REQUEST_TIMEOUT_MS, OpenaiPath, modelConfig, useAccessStore } from "./constant";
 
 export function prettyObject(msg) {
   const obj = msg;
@@ -34,7 +31,7 @@ export class ChatGPTApi {
     if (!openaiUrl) {
       openaiUrl = modelConfig.openaiUrl;
     }
-    return openaiUrl + path
+    return openaiUrl + path;
   }
   extractMessage(res) {
     return res.choices?.at(0)?.message?.content ?? "";
@@ -55,9 +52,9 @@ export class ChatGPTApi {
 
     const requestPayload = {
       messages: messages.slice(-Number(modelConfig.historyMessageCount)), // 上下文
-      stream: options.config.stream,  // 流式传输
+      stream: options.config.stream, // 流式传输
       model: modelConfig.model, // 模型
-      max_tokens: modelConfig.max_tokens,// 单次回复限制
+      max_tokens: modelConfig.max_tokens, // 单次回复限制
       temperature: modelConfig.temperature, // 随机性
       presence_penalty: modelConfig.presence_penalty, //话题新鲜度
       frequency_penalty: modelConfig.frequency_penalty, // 频率惩罚度
@@ -80,10 +77,7 @@ export class ChatGPTApi {
         headers: getHeaders(),
       };
 
-      const requestTimeoutId = setTimeout(
-        () => controller.abort(),
-        REQUEST_TIMEOUT_MS,
-      );
+      const requestTimeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
       // 流式输出
       if (shouldStream) {
         let responseText = "";
@@ -110,17 +104,21 @@ export class ChatGPTApi {
               responseText = await res.clone().text();
               return finish();
             }
-            const onk = !res.ok || !res.headers.get("content-type")?.startsWith(EventStreamContentType) || res.status !== 200
+            console.log(EventStreamContentType);
+            const sse = !contentType?.startsWith(EventStreamContentType);
+            const onk = !res.ok || sse || res.status !== 200;
             if (onk) {
               const responseTexts = [responseText];
               let extraInfo = await res.clone().text();
               try {
                 const resJson = await res.clone().json();
                 extraInfo = prettyObject(resJson);
-              } catch { }
+              } catch (e) {
+                console.log("[resJson]", e);
+              }
 
               if (res.status === 401) {
-                responseTexts.push('401');
+                responseTexts.push("401");
               }
 
               if (extraInfo) {
@@ -131,8 +129,9 @@ export class ChatGPTApi {
 
               return finish();
             } else {
-              console.log(res)
+              console.log(res);
             }
+            options.onStart();
           },
           // 接收一次数据段时回调流式返回
           onmessage(msg) {
@@ -179,7 +178,7 @@ export class ChatGPTApi {
   async models() {
     const res = await fetch(this.path(OpenaiPath.ListModelPath), {
       method: "GET",
-      headers: { ...getHeaders() }
+      headers: { ...getHeaders() },
     });
 
     const resJson = await res.json();
@@ -192,4 +191,3 @@ export class ChatGPTApi {
     }));
   }
 }
-
