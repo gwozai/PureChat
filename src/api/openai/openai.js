@@ -104,9 +104,8 @@ export class ChatGPTApi {
               responseText = await res.clone().text();
               return finish();
             }
-            console.log(EventStreamContentType);
-            const sse = !contentType?.startsWith(EventStreamContentType);
-            const onk = !res.ok || sse || res.status !== 200;
+            const stream = !contentType?.startsWith(EventStreamContentType);
+            const onk = !res.ok || stream || res.status !== 200;
             if (onk) {
               const responseTexts = [responseText];
               let extraInfo = await res.clone().text();
