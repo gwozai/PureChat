@@ -48,191 +48,37 @@
 import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
 import { useBoolean } from "@/utils/hooks/index";
 import emitter from "@/utils/mitt-bus";
+import { deepClone } from "@/utils/common";
 import storage from "storejs";
+import { StoreKey, modelValue, useAccessStore } from "@/api/openai/constant";
+
 const [state, setState] = useBoolean();
+const Settings = ref(null);
 
-const StoreKey = {
-  Access: "access-control",
-};
-
-const DEFAULT_MODELS = [
-  {
-    name: "gpt-4",
-    available: true,
-  },
-  {
-    name: "gpt-4-0314",
-    available: true,
-  },
-  {
-    name: "gpt-4-0613",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k-0314",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k-0613",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0301",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0613",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-16k",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-16k-0613",
-    available: true,
-  },
-  {
-    name: "qwen-v1", // 通义千问
-    available: false,
-  },
-  {
-    name: "ernie", // 文心一言
-    available: false,
-  },
-  {
-    name: "spark", // 讯飞星火
-    available: false,
-  },
-  {
-    name: "llama", // llama
-    available: false,
-  },
-  {
-    name: "chatglm", // chatglm-6b
-    available: false,
-  },
-];
-const Settings = reactive({
-  // Usage: {
-  //   Title: "余额查询",
-  //   SubTitle(used, total) {
-  //     return `本月已使用 $${used}，订阅总额 $${total}`;
-  //   },
-  //   IsChecking: "正在检查…",
-  //   Check: "重新检查",
-  //   NoAccess: "输入 API Key 或访问密码查看余额",
-  // },
-  // AccessCode: {
-  //   Title: "访问密码",
-  //   SubTitle: "管理员已开启加密访问",
-  //   Placeholder: "请输入访问密码",
-  // },
-  // Endpoint: {
-  //   Title: "接口地址",
-  //   SubTitle: "除默认地址外，必须包含 http(s)://",
-  // },
-  Model: {
-    ID: "model",
-    Title: "模型 (model)",
-    SubTitle: "",
-    defaultValue: "gpt-3.5-turbo",
-    options: DEFAULT_MODELS,
-  },
-  Token: {
-    ID: "token",
-    Title: "API Key",
-    SubTitle: "使用自己的 OpenAI API Key",
-    Placeholder: "OpenAI API Key",
-    defaultValue: process.env.VUE_APP_OPENAI_API_KEY || "",
-    password: true,
-  },
-  Temperature: {
-    ID: "temperature",
-    Title: "随机性 (temperature)",
-    SubTitle: "值越大，回复越随机",
-    defaultValue: 0.6,
-    Range: true,
-    step: 0.1,
-    min: 0,
-    max: 1,
-  },
-  TopP: {
-    ID: "top_p",
-    Title: "核采样 (top_p)",
-    SubTitle: "与随机性类似，但不要和随机性一起更改",
-    defaultValue: 0.6,
-    Range: true,
-    step: 0.1,
-    min: 0,
-    max: 1,
-  },
-  MaxTokens: {
-    ID: "max_tokens",
-    Title: "单次回复限制 (max_tokens)",
-    SubTitle: "单次交互所用的最大 Token 数",
-    defaultValue: 1024,
-    Number: true,
-    min: 1024,
-    max: 512000,
-  },
-  PresencePenalty: {
-    ID: "presence_penalty",
-    Title: "话题新鲜度 (presence_penalty)",
-    SubTitle: "值越大，越有可能扩展到新话题",
-    defaultValue: 0.6,
-    Range: true,
-    step: 0.1,
-    min: 0,
-    max: 2,
-  },
-  FrequencyPenalty: {
-    ID: "frequency_penalty",
-    Title: "频率惩罚度 (frequency_penalty)",
-    SubTitle: "值越大，越有可能降低重复字词",
-    defaultValue: 0.6,
-    Range: true,
-    step: 0.1,
-    min: 0,
-    max: 2,
-  },
-  HistoryCount: {
-    ID: "history_count",
-    Title: "附带历史消息数",
-    SubTitle: "每次请求携带的历史消息数",
-    defaultValue: 6,
-    Range: true,
-    step: 1,
-    min: 0,
-    max: 64,
-  },
-});
+function initModel() {
+  const value = deepClone(modelValue);
+  Object.values(value).map((v) => {
+    return (v.defaultValue = useAccessStore()[v.ID]);
+  });
+  Settings.value = value;
+}
 function handleClose(done) {
   done();
 }
 function handleCancel() {
+  storage.remove(StoreKey.Access);
   setState(false);
 }
 function handleConfirm() {
   setState(false);
-  console.log(Settings);
-  // console.log(Object.values(Settings));
-  // storage.set(StoreKey.Access,)
-  const data = Object.values(Settings).map((value) => {
-    return { [value.ID]: value.defaultValue };
+  const model = {};
+  Object.values(Settings.value).map((value) => {
+    model[value.ID] = value.defaultValue;
   });
-  storage.set(StoreKey.Access, data);
-  console.log(data);
+  storage.set(StoreKey.Access, model);
 }
 emitter.on("onRobotBox", (state) => {
+  initModel();
   setState(state);
 });
 </script>

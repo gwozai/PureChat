@@ -2,6 +2,7 @@ import http from "@/utils/http/index";
 import { isRobot } from "@/utils/chat/index";
 import { restApi } from './rest';
 import store from "@/store";
+import { useAccessStore } from "@/api/openai/constant";
 import { api } from "@/api/openai/api";
 
 function fnMsgBody(data) {
@@ -140,8 +141,8 @@ export const modifyMsg = async (params, message) => {
 export const sendMessages = (params) => {
   let MsgKey = ''
   api.chat({
-    messages: params.messages.slice(-1),
-    config: { model: "gpt-3.5-turbo", stream: true },
+    messages: params.messages,
+    config: { model: useAccessStore().model, stream: true },
     onUpdate(message) {
       console.log(message, 'onUpdate');
       modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message)
