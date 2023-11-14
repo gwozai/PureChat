@@ -1,6 +1,6 @@
 <template>
   <div class="message-view__item--text" @click="onClick(message)">
-    <template v-if="message.conversationType == 'GROUP' || 'C2C'">
+    <template v-if="(message?.conversationType || msgType) == 'GROUP' || 'C2C'">
       <!-- 回复消息 -->
       <ReplyElem
         v-if="message.cloudCustomData"
@@ -10,18 +10,6 @@
         <span v-if="item.name === 'text'" class="text-erase">
           <analysis-url :text="item.text" />
         </span>
-        <!-- 文本擦除效果 -->
-        <!-- <div v-if="item.name === 'text'" class="text-erase">
-          <analysis-url :text="item.text" />
-          <p class="eraser" v-if="!self && isRobot">
-            <span class="text"><analysis-url :text="item.text" /></span>
-          </p>
-        </div> -->
-        <!-- preview -->
-        <!-- <span v-if="item.name === 'text'">
-          <v-md-preview :text="item.text" tab-size="0"></v-md-preview>
-        </span> -->
-        <!-- <img v-else-if="item.name === 'img'" class="emoji" :src="item.localSrc" alt="表情包" /> -->
         <img
           v-else-if="item.name === 'img'"
           class="emoji"
@@ -39,6 +27,10 @@ import { toRefs, h } from "vue";
 import ReplyElem from "./ReplyElem.vue";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
 const props = defineProps({
+  msgType: {
+    type: String,
+    default: "",
+  },
   message: {
     type: Object,
     default: null,
@@ -48,7 +40,7 @@ const props = defineProps({
     default: false,
   },
 });
-const { message, self } = toRefs(props);
+const { message, self, msgType } = toRefs(props);
 
 const onClick = (data) => {
   console.log(data);
