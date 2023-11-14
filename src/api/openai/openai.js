@@ -1,5 +1,6 @@
 import { EventStreamContentType, fetchEventSource } from "@fortaine/fetch-event-source";
 import { REQUEST_TIMEOUT_MS, OpenaiPath, modelConfig, useAccessStore } from "./constant";
+import { restApi } from "@/api/node-admin-api/rest";
 
 export function prettyObject(msg) {
   const obj = msg;
@@ -36,6 +37,16 @@ export class ChatGPTApi {
   extractMessage(res) {
     return res.choices?.at(0)?.message?.content ?? "";
   }
+  async sendmsg(params, message) {
+    return await restApi({
+      params: {
+        To_Account: params.From,
+        From_Account: params.To,
+        Text: message || "loading...",
+      },
+      funName: "restSendMsg",
+    });
+  }
   // 聊天
   async chat(options) {
     const messages = options.messages.map((v) => ({
@@ -66,7 +77,6 @@ export class ChatGPTApi {
     const shouldStream = !!options.config.stream;
     const controller = new AbortController();
     options.onController?.(controller);
-
     try {
       const chatPath = this.path(OpenaiPath.ChatPath);
 
@@ -118,6 +128,7 @@ export class ChatGPTApi {
 
               if (res.status === 401) {
                 responseTexts.push("401");
+                options.onError?.(extraInfo);
               }
 
               if (extraInfo) {
@@ -130,7 +141,6 @@ export class ChatGPTApi {
             } else {
               console.log(res);
             }
-            options.onStart();
           },
           // 接收一次数据段时回调流式返回
           onmessage(msg) {

@@ -1,9 +1,11 @@
 import http from "@/utils/http/index";
 import { isRobot } from "@/utils/chat/index";
 import { restApi } from "./rest";
+import { throttle } from "lodash-es";
 import store from "@/store";
 import { useAccessStore } from "@/api/openai/constant";
 import { api } from "@/api/openai/api";
+import { nextTick } from "vue";
 
 function fnMsgBody(data) {
   const { type, Text, To, From } = data;
@@ -125,16 +127,10 @@ export const sendMsg = async (params, message) => {
     funName: "restSendMsg",
   });
 };
-
-export const modifyMsg = async (params, message) => {
+export const modifyMsg = throttle(async (params, message) => {
   const { From_Account, To_Account, MsgKey } = params;
   restApi({
-    params: {
-      From_Account,
-      To_Account,
-      MsgKey,
-      message,
-    },
+    params: { From_Account, To_Account, MsgKey, message, },
     funName: "modifyC2cMsg",
   })
     .then((res) => {
@@ -143,35 +139,27 @@ export const modifyMsg = async (params, message) => {
     .catch((err) => {
       console.log(err);
     });
-};
+}, 50)
 
-export const sendMessages = (params) => {
+export const sendMessages = async (params) => {
   let MsgKey = "";
-  api.chat({
+  const res = await sendMsg(params)
+  MsgKey = res.MsgKey
+  await api.chat({
     messages: params.messages,
     config: { model: useAccessStore().model, stream: true },
-    onStart(message) {
-      sendMsg(params)
-        .then((res) => {
-          MsgKey = res.MsgKey;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     onUpdate(message) {
       console.log(message, "onUpdate");
-      modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
+      // MsgKey && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
       store.commit("updataScroll", "instantly");
     },
     onFinish(message) {
       console.log(message, "onFinish");
-      setTimeout(() => {
-        message && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
-      }, 100);
+      MsgKey && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
     },
     onError(error) {
       console.error("[Chat] failed ", error);
+      sendMsg(params, error).then()
     },
     onController(controller) {
       console.log(controller, "onController");

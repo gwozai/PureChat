@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
+import { ref } from "vue";
 import { useBoolean } from "@/utils/hooks/index";
 import emitter from "@/utils/mitt-bus";
 import { deepClone } from "@/utils/common";
@@ -149,14 +149,14 @@ input[type="range"]::-ms-thumb:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #fff;
-    color: #303030;
-    margin: 2px;
-  }
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  color: #303030;
+  margin: 2px;
 }
 
 input[type="number"],
