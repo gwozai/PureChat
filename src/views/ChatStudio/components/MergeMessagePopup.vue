@@ -3,6 +3,7 @@
     v-model="dialogVisible"
     :title="mergValue.title"
     width="680px"
+    align-center
     :before-close="handleClose"
   >
     <el-scrollbar always>

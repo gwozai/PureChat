@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="state" width="750px" :before-close="handleClose">
+  <el-dialog v-model="state" width="750px" align-center :before-close="handleClose">
     <div>
       <ul class="container">
         <li class="list-item" v-for="(item, index) in Settings" :key="index">
