@@ -34,51 +34,6 @@ function fnMsgBody(data) {
   };
 }
 
-function fetchData(url) {
-  let answer = "";
-  const eventSource = new EventSource(url);
-  eventSource.addEventListener("message", async (event) => {
-    console.log(event);
-    if (event.data === "[DONE]") {
-      eventSource.close();
-      return;
-    }
-    const data = JSON.parse(event.data);
-    if (data.choices[0].delta.content) {
-      answer += data.choices[0].delta.content;
-      console.log(answer);
-    }
-  });
-  eventSource.addEventListener("error", (err) => {
-    eventSource.close();
-  });
-}
-
-function fetchStream(url) {
-  const decoder = new TextDecoder("utf-8");
-  fetch(url)
-    .then((response) => {
-      const reader = response.body.getReader();
-      let answer = "";
-      function read() {
-        return reader.read().then(({ done, value }) => {
-          if (done) {
-            console.log("Stream complete");
-            return;
-          }
-          const chunk = decoder.decode(value);
-          answer += chunk;
-          console.log(answer);
-          return read();
-        });
-      }
-      return read();
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
 export const createForData = ({ files }) => {
   const formData = new FormData();
   formData.append("file", files);
@@ -159,7 +114,6 @@ export const sendMessages = async (params) => {
     },
     onError(error) {
       console.error("[Chat] failed ", error);
-      sendMsg(params, error).then()
     },
     onController(controller) {
       console.log(controller, "onController");
