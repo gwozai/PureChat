@@ -1,5 +1,9 @@
 <template>
-  <div class="message-view__item--text" @click="onClick(message)">
+  <div
+    class="message-view__item--text"
+    :class="self ? 'is-self' : 'is-other'"
+    @click="onClick(message)"
+  >
     <template v-if="(message?.conversationType || msgType) == 'GROUP' || 'C2C'">
       <!-- 回复消息 -->
       <ReplyElem
@@ -48,6 +52,16 @@ const onClick = (data) => {
 </script>
 
 <style lang="scss" scoped>
+.is-self {
+  background: var(--self-msg-color);
+}
+.is-other {
+  background: var(--other-msg-color);
+}
+.emoji {
+  width: 24px;
+  vertical-align: bottom;
+}
 .message-view__item--text {
   width: fit-content;
   padding: 10px 14px;
@@ -57,49 +71,45 @@ const onClick = (data) => {
   border-radius: 3px;
   word-break: break-all;
   white-space: pre-wrap;
-  :deep(.github-markdown-body) {
-    width: 100%;
-    padding: 0;
-    p {
-      margin: 0 !important;
-    }
-    .v-md-hljs-html {
-      margin: 0;
-    }
-  }
+  // :deep(.github-markdown-body) {
+  //   width: 100%;
+  //   padding: 0;
+  //   p {
+  //     margin: 0 !important;
+  //   }
+  //   .v-md-hljs-html {
+  //     margin: 0;
+  //   }
+  // }
 }
-.text-erase {
-  width: 100%;
-  position: relative;
-  // display: inline-block;
-  p {
-    margin: 0;
-  }
-  .eraser {
-    position: absolute;
-    left: 0;
-    top: 0;
-    .text {
-      --p: 5%;
-      background: linear-gradient(to right, #0000 var(--p), #f0f2f5 calc(var(--p) + 100px));
-      color: transparent;
-      animation: erase 5s forwards;
-    }
-  }
-}
-@property --p {
-  syntax: "<percentage>";
-  initial-value: 5%;
-  inherits: false;
-}
+// .text-erase {
+//   width: 100%;
+//   position: relative;
+//   // display: inline-block;
+//   p {
+//     margin: 0;
+//   }
+//   .eraser {
+//     position: absolute;
+//     left: 0;
+//     top: 0;
+//     .text {
+//       --p: 5%;
+//       background: linear-gradient(to right, #0000 var(--p), #f0f2f5 calc(var(--p) + 100px));
+//       color: transparent;
+//       animation: erase 5s forwards;
+//     }
+//   }
+// }
+// @property --p {
+//   syntax: "<percentage>";
+//   initial-value: 5%;
+//   inherits: false;
+// }
 
-@keyframes erase {
-  to {
-    --p: 100%;
-  }
-}
-.emoji {
-  width: 24px;
-  vertical-align: bottom;
-}
+// @keyframes erase {
+//   to {
+//     --p: 100%;
+//   }
+// }
 </style>

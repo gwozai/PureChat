@@ -8,17 +8,28 @@
   >
     <el-scrollbar always>
       <div class="merg-dialog">
-        <div v-for="item in mergValue.payload.messageList" :key="item.ID">
-          <NameComponent :item="item" />
-          {{ formatTime(item.clientTime * 1000) }}
-          <div :class="Megtype(item.messageBody[0].type)">
-            <component
-              :key="mergValue.ID"
-              :is="loadMsgModule(item)"
-              :msgType="mergValue.conversationType"
-              :message="item.messageBody[0]"
+        <div class="flex" v-for="item in mergValue.payload.messageList" :key="item.ID">
+          <div class="avatar">
+            <el-avatar
+              :size="36"
+              shape="square"
+              :src="item.avatar || circleUrl"
+              @error="() => true"
             >
-            </component>
+              <img :src="circleUrl" />
+            </el-avatar>
+          </div>
+          <div class="item">
+            <p class="nick">{{ item.nick }} {{ timeFormat(item.clientTime * 1000, true) }}</p>
+            <div :class="Megtype(item.messageBody[0].type)">
+              <component
+                :key="mergValue.ID"
+                :is="loadMsgModule(item)"
+                :msgType="mergValue.conversationType"
+                :message="item.messageBody[0]"
+              >
+              </component>
+            </div>
           </div>
         </div>
       </div>
@@ -37,12 +48,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
+import { ref } from "vue";
 import emitter from "@/utils/mitt-bus";
 import { useBoolean } from "@/utils/hooks/index";
-import { formatTime } from "@/utils/common";
-import NameComponent from "../components/NameComponent.vue";
-import { Megtype, msgOne } from "../utils/utils";
+import { timeFormat } from "@/utils/chat/index";
+import { Megtype } from "../utils/utils";
+import { circleUrl } from "../utils/menu";
 
 import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
 import RelayElemItem from "../ElemItemTypes/RelayElemItem.vue";
@@ -81,7 +92,6 @@ function handleConfirm() {
   setDialogVisible(false);
 }
 emitter.on("openMergePopup", (data) => {
-  // payload
   mergValue.value = data;
   setDialogVisible(true);
 });
@@ -90,5 +100,19 @@ emitter.on("openMergePopup", (data) => {
 <style lang="scss" scoped>
 .merg-dialog {
   height: 400px;
+  & > div {
+    padding: 10px 0 10px 0;
+  }
+  .avatar {
+    padding: 0 12px 0 0;
+  }
+  .item {
+    .nick {
+      display: flex;
+      gap: 0 5px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
 }
 </style>
