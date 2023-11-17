@@ -3,7 +3,6 @@
   --hover-color: #f3f3f3;
   --color-body-bg: #ffffff;
   --color-text: #000;
-  --color-primary: #335eea;
   --color-primary-bg: #eaeffd;
   --color-secondary: #7a7a7b;
   --color-secondary-bg: #f5f5f7;
@@ -13,17 +12,19 @@
   --html-overflow-y: overlay;
   --color-icon-hover: #409eff;
   --color-aside-list-action: #d9ecff;
+  --color-border-default: rgba(0, 0, 0, 0.09);
+  --color-time-divider: rgba(0, 0, 0, 0.45);
   // 消息框颜色
   --other-msg-color: #f0f2f5;
   --self-msg-color: #c2e8ff;
+  --color-message-active: #f0f2f5;
 }
 
 // 暗黑主题
 [data-theme="dark"] {
   --hover-color: #323232;
   --color-body-bg: #222222;
-  --color-text: #ffffff;
-  --color-primary: #335eea;
+  --color-text: #fff;
   --color-primary-bg: #bbcdff;
   --color-secondary: #7a7a7b;
   --color-secondary-bg: #323232;
@@ -31,6 +32,15 @@
   --color-primary-bg-for-transparent: rgba(255, 255, 255, 0.12);
   --color-secondary-bg-for-transparent: rgba(255, 255, 255, 0.08);
   --color-aside-list-action: #3879ba;
+  --color-message-active: rgb(64 158 255 / 10%);
+  --color-border-default: #90939957;
+  --color-time-divider: #fff;
+  // 消息框颜色
+  --other-msg-color: #000;
+  --self-msg-color: #000;
+  // wangEditor
+  --w-e-textarea-bg-color: #333;
+  --w-e-textarea-color: #fff;
 }
 
 // 调用var(--color-body-bg)

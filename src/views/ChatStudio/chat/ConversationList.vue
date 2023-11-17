@@ -339,12 +339,12 @@ onMounted(() => {});
       .message-time {
         font-family: MicrosoftYaHei;
         font-size: 10px;
-        color: rgba(0, 0, 0, 0.45);
+        // color: rgba(0, 0, 0, 0.45);
       }
     }
     .message-item-right-bottom {
       font-size: 12px;
-      color: rgba(0, 0, 0, 0.45);
+      // color: rgba(0, 0, 0, 0.45);
       overflow: hidden;
       pointer-events: none;
       width: 179px;
@@ -365,4 +365,10 @@ onMounted(() => {});
     }
   }
 }
+.is-active {
+  background: var(--color-message-active) !important;
+}
+// :deep(.is-actives) {
+//   background: rgba(0, 0, 0, 0.03);
+// }
 </style>

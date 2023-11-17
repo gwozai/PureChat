@@ -71,6 +71,7 @@ const onClick = (data) => {
   border-radius: 3px;
   word-break: break-all;
   white-space: pre-wrap;
+  color: var(--color-text);
   // :deep(.github-markdown-body) {
   //   width: 100%;
   //   padding: 0;
