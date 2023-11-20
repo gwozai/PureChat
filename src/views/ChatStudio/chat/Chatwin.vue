@@ -537,7 +537,7 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 @import "@/styles/mixin.scss";
 .message_name {
   margin-bottom: 5px;
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--color-time-divider);
   font-size: 12px;
 }
 .message-view__tips-elem {
@@ -591,11 +591,11 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 }
 .style-select {
   border-radius: 3px;
-  background: hsl(220deg 20% 91%);
+  background: var(--color-multiple-choice);
 }
 .reset-select {
   border-radius: 3px;
-  background: #fff;
+  // background: #fff;
 }
 .style-choice {
   padding-left: 35px;
