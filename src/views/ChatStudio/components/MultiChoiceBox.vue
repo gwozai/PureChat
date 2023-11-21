@@ -192,7 +192,7 @@ export default {
     filterate() {
       let myObj = Object.fromEntries(this.forwardData);
       const obj = Object.values(myObj).map((item) => item);
-      return obj;
+      return obj.sort((a, b) => a.clientTime - b.clientTime);
     },
     shutdown() {
       // 清空多选数据
@@ -227,7 +227,7 @@ export default {
 </script>
 <style lang="scss">
 .tabulation-style {
-  max-height: 200px;
+  max-height: 400px;
   overflow: auto;
   .tabulationHover {
     background: hsl(220, 20%, 91%);

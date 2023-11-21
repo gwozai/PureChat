@@ -1,5 +1,5 @@
 import storage from "storejs";
-export const REQUEST_TIMEOUT_MS = 60000;
+export const REQUEST_TIMEOUT_MS = 6000;
 
 export const StoreKey = {
   Access: "access-control",
@@ -23,7 +23,7 @@ export const modelConfig = {
   openaiUrl: process.env.VUE_APP_BASE_URL,
   historyMessageCount: 4,
   compressMessageLengthThreshold: 1000,
-}
+};
 
 export function useAccessStore() {
   return storage.get(StoreKey.Access) || modelConfig;
@@ -97,16 +97,20 @@ export const DEFAULT_MODELS = [
 ];
 
 export const modelValue = {
-  // Endpoint: {
-  //   Title: "接口地址",
-  //   SubTitle: "除默认地址外，必须包含 http(s)://",
-  // },
   Model: {
     ID: "model",
     Title: "模型 (model)",
     SubTitle: "",
     defaultValue: "",
     options: DEFAULT_MODELS,
+  },
+  OpenaiUrl: {
+    ID: "openaiUrl",
+    Title: "接口地址",
+    SubTitle: "除默认地址外，必须包含 http(s)://",
+    Placeholder: "https://api.openai.com",
+    defaultValue: "",
+    password: true,
   },
   Token: {
     ID: "token",
@@ -175,4 +179,4 @@ export const modelValue = {
     min: 1,
     max: 24,
   },
-}
+};

@@ -1,6 +1,6 @@
 import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
 import { addTimeDivider } from "@/utils/chat/index";
-import { imCallback } from "@/api/node-admin-api/index";
+import { imCallback, restApi } from "@/api/node-admin-api/index";
 import TIM from "@tencentcloud/chat";
 import { nextTick } from "vue";
 import {
@@ -14,13 +14,17 @@ import {
 } from "@/api/im-sdk-api/index";
 
 function transformData(data) {
-  const inputData = data.filter((item) => !item.isTimeDivider && !item.isDeleted && !item.isRevoked);
-  return inputData.map(data => {
-    return {
-      role: data.flow === "in" ? "assistant" : "user",
-      content: data.payload.text
-    };
-  }).reverse();
+  const inputData = data.filter(
+    (item) => !item.isTimeDivider && !item.isDeleted && !item.isRevoked
+  );
+  return inputData
+    .map((data) => {
+      return {
+        role: data.flow === "in" ? "assistant" : "user",
+        content: data.payload.text,
+      };
+    })
+    .reverse();
 }
 
 const getBaseTime = (list) => {

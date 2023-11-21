@@ -3,7 +3,7 @@
     <!-- 搜索 -->
     <div class="header-search">
       <el-input
-        placeholder="搜索"
+        :placeholder="$t('chat.searchFor')"
         v-model="appoint"
         :prefix-icon="Search"
         class="text-input"
@@ -23,7 +23,7 @@
     <el-dialog
       v-model="dialogVisible"
       :title="$t('common.createGroupChat')"
-      width="30%"
+      width="400px"
       :before-close="handleClose"
     >
       <div>
