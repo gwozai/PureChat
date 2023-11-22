@@ -461,7 +461,7 @@ const handleForward = (data) => {};
 // 回复消息
 const handleReplyMsg = (data) => {
   commit("setReplyMsg", data);
-  handleAt(data);
+  !ISown(data) && handleAt(data);
 };
 // 删除消息
 const handleDeleteMsg = async (data) => {
