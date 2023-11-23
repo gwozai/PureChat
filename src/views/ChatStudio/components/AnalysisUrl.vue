@@ -6,7 +6,7 @@
 <script setup>
 import { html2Escape } from "../utils/utils";
 import Autolinker from "autolinker";
-import { ref, toRefs, computed, watch, h } from "vue";
+import { toRefs, h } from "vue";
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
@@ -19,7 +19,7 @@ const { text } = toRefs(props);
 
 function AnalysisUrl(props) {
   const { text } = props;
-  const linkStr = Autolinker.link(text, { className: "linkUrl" });
+  const linkStr = Autolinker.link(text, { stripPrefix: false, className: "linkUrl" });
   return h("span", { innerHTML: linkStr, onClick: () => {} });
 }
 
