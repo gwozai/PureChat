@@ -534,17 +534,12 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 </script>
 
 <style lang="scss" scoped>
+@import url("../ElemItemTypes/elemType.scss");
 @import "@/styles/mixin.scss";
 .message_name {
   margin-bottom: 5px;
   color: var(--color-time-divider);
   font-size: 12px;
-}
-.message-view__tips-elem {
-  margin: auto;
-  .message_name {
-    display: none;
-  }
 }
 .message-info-view-content {
   height: calc(100% - 70px - 206px);
@@ -555,9 +550,6 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 }
 .stlyle-Reply {
   height: calc(100% - 70px - 206px - 60px) !important;
-}
-.message-view__item--index {
-  max-width: 90%;
 }
 .message-view__item--time-divider {
   position: relative;
@@ -619,14 +611,6 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
   .message-view__text {
     width: fit-content;
     margin-bottom: 5px;
-    :deep(.message-view__item--text) {
-      background: var(--other-msg-color);
-    }
-  }
-  .message-view__system {
-    :deep(.message-view__item--text) {
-      background: var(--other-msg-color);
-    }
   }
 }
 .is-self {
@@ -644,7 +628,6 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
   .message-view__img {
     display: flex;
     justify-content: flex-end;
-    // margin-bottom: 5px;
     align-items: center;
     :deep(.image_preview) {
       background: var(--self-msg-color);
@@ -654,18 +637,13 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
   .message-view__file {
     display: flex;
     justify-content: flex-end;
-    // margin-bottom: 5px;
     align-items: center;
   }
 
   .message-view__text {
-    // margin-bottom: 5px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    :deep(.message-view__item--text) {
-      background: var(--self-msg-color);
-    }
   }
 }
 
