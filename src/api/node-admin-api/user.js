@@ -23,7 +23,6 @@ export const register = (data) => {
 // 账号列表
 export const getuser = async () => {
   const data = [
-    { value: "linjx", link: "" },
     { value: "admin", link: "" },
     { value: "zhangal", link: "" },
   ];

@@ -1,5 +1,5 @@
 <template>
-  <div class="message-view__item--text">{{ customMessage() }}</div>
+  <div class="message-view__item--text" @click="onClick">{{ customMessage() }}</div>
 </template>
 
 <script>
@@ -30,6 +30,9 @@ export default {
       } else {
         return "[自定义消息]";
       }
+    },
+    onClick() {
+      console.log(this.message);
     },
   },
 };

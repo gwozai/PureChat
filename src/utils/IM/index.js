@@ -47,6 +47,7 @@ export default class TIMProxy {
     for (const [key, value] of Object.entries(this)) {
       player[key] = value;
     }
+    storage.set("player", player);
   }
   // 更新IM信息
   loadSelfFromLocalStorage() {

@@ -5,7 +5,6 @@ import { login, register, logout, getMenu } from "@/api/node-admin-api/index";
 import emitter from "@/utils/mitt-bus";
 import { verification } from "@/utils/message/index";
 const timProxy = new TIMProxy();
-
 const user = {
   state: {
     timProxy,

@@ -189,12 +189,9 @@ const conversation = {
           break;
         }
         case CONVERSATIONTYPE.MARKE_MESSAGE_AS_READED: {
+          const { convId, message: { unreadCount } } = payload;
+          if (unreadCount === 0) return;
           console.log("[chat] 消息已读 MARKE_MESSAGE_AS_READED:", payload);
-          const {
-            convId,
-            message: { unreadCount },
-          } = payload;
-          if (unreadCount == "0") return;
           setMessageRead(convId);
           break;
         }
