@@ -6,7 +6,7 @@
     align-center
     :before-close="handleClose"
   >
-    <el-scrollbar always>
+    <el-scrollbar>
       <div class="merg-dialog">
         <div
           class="flex"
@@ -53,6 +53,7 @@ import { useBoolean } from "@/utils/hooks/index";
 import { timeFormat } from "@/utils/chat/index";
 import { Megtype, msgOne } from "../utils/utils";
 import { circleUrl } from "../utils/menu";
+import { downloadMergerMessage } from "@/api/im-sdk-api/index";
 
 import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
 import RelayElemItem from "../ElemItemTypes/RelayElemItem.vue";
@@ -89,6 +90,8 @@ function handleClose(done) {
   done();
 }
 emitter.on("openMergePopup", (data) => {
+  console.log(data);
+  downloadMergerMessage(data);
   mergValue.value = data;
   setDialogVisible(true);
 });
