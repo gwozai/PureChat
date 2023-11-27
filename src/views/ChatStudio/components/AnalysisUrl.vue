@@ -19,7 +19,8 @@ const { text } = toRefs(props);
 
 function AnalysisUrl(props) {
   const { text } = props;
-  const linkStr = Autolinker.link(text, { stripPrefix: false, className: "linkUrl" });
+  const escapedUrl = html2Escape(text);
+  const linkStr = Autolinker.link(escapedUrl, { stripPrefix: false, className: "linkUrl" });
   return h("span", { innerHTML: linkStr, onClick: () => {} });
 }
 
