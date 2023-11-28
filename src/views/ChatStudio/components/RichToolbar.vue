@@ -82,7 +82,7 @@ const imagePicker = ref();
 const filePicker = ref();
 const { commit } = useStore();
 
-const emit = defineEmits(["setEmoj", "setPicture", "setParsefile"]);
+const emit = defineEmits(["setToolbar"]);
 const { toAccount } = useGetters(["toAccount"]);
 
 const sendEmojiClick = () => {
@@ -162,6 +162,7 @@ emitter.on("onisbot", (state) => {
   padding: 0 5px;
   display: flex;
   position: relative;
+  background: var(--color-toolbar);
   & > span {
     width: 42px;
     align-items: center;
