@@ -12,8 +12,8 @@ import { useRoute, useRouter } from "vue-router";
 import { ElConfigProvider } from "element-plus";
 import { useState } from "@/utils/hooks/useMapper";
 
-import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import en from "element-plus/lib/locale/lang/en";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import en from "element-plus/dist/locale/en.mjs";
 
 const { setWatermark, clear } = useWatermark();
 const watermarkText = ref("Pure Admin");
