@@ -69,7 +69,7 @@ import emitter from "@/utils/mitt-bus";
 import EmotionPackBox from "./EmotionPackBox.vue";
 import RobotOptions from "./RobotOptions.vue";
 import { useStore } from "vuex";
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { dataURLtoFile } from "@/utils/chat/index";
 import { isRobot } from "@/utils/chat/index";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
