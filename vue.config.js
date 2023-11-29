@@ -7,7 +7,6 @@ const {
   externals,
   devServer,
   production,
-  publicPath,
   optimization,
   performance,
 } = require("./src/config/vue.custom.config");
