@@ -258,26 +258,15 @@ export default class TIMProxy {
   handleUpdateMessage(data, read = true) {
     const convId = getConversationID();
     if (!convId) return;
-    // 收到新消息 且 不为当前选中会话 更新对应ID消息
-    if (data?.[0].conversationID !== convId) {
-      store.commit("SET_HISTORYMESSAGE", {
-        type: "UPDATE_CACHE",
-        payload: {
-          convId: data?.[0].conversationID,
-          message: data,
-        },
-      });
-      return;
-    }
-    read && this.ReportedMessageRead(data); // 消息已读
     // 更新当前会话消息
     store.commit("SET_HISTORYMESSAGE", {
       type: "UPDATE_MESSAGES",
       payload: {
-        convId: convId,
+        convId: data?.[0].conversationID,
         message: cloneDeep(data[0]),
       },
     });
+    read && this.ReportedMessageRead(data); // 消息已读
     // 更新滚动条位置到底部
     store.commit("updataScroll", "bottom");
   }
