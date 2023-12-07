@@ -1,10 +1,11 @@
 import http from "@/utils/http/index";
 import { isRobot } from "@/utils/chat/index";
 import { restApi } from "./rest";
-import { throttle } from "lodash-es";
+import { throttle, cloneDeep } from "lodash-es";
 import store from "@/store";
 import { useAccessStore } from "@/api/openai/constant";
 import { api } from "@/api/openai/api";
+import { createTextMsg } from "@/api/im-sdk-api/index";
 import { nextTick } from "vue";
 
 function fnMsgBody(data) {
@@ -99,8 +100,9 @@ export const modifyMsg = throttle(async (params, message) => {
 
 export const sendMessages = async (params) => {
   let MsgKey = "";
-  const res = await sendMsg(params);
-  MsgKey = res.MsgKey;
+  // const res = await sendMsg(params);
+  // MsgKey = res.MsgKey;
+  const msg = createTextMsg({ convId: params.From, textMsg: "｜" });
   await api.chat({
     messages: params.messages,
     config: { model: useAccessStore().model, stream: true },
@@ -108,10 +110,33 @@ export const sendMessages = async (params) => {
       console.log(message, "onUpdate");
       // MsgKey && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
       store.commit("updataScroll", "instantly");
+      if (msg) {
+        msg.conversationID = "C2C@RBT#001";
+        // `C2C${convId}`;
+        msg.flow = "in";
+        msg.to = "huangyk";
+        msg.from = "@RBT#001";
+        msg.nick = "AI机器人";
+        msg.payload.text = message;
+        console.log(msg.payload.text);
+      }
+      store.commit("SET_HISTORYMESSAGE", {
+        type: "UPDATE_MESSAGES",
+        payload: {
+          convId: "C2C@RBT#001",
+          message: cloneDeep(msg),
+        },
+      });
     },
-    onFinish(message) {
+    async onFinish(message) {
       console.log(message, "onFinish");
-      MsgKey && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
+      store.dispatch("GET_MESSAGE_LIST", {
+        conversationID: "C2C@RBT#001",
+        type: "C2C",
+      });
+      await sendMsg(params, message);
+
+      // MsgKey && modifyMsg({ From_Account: params.From, To_Account: params.To, MsgKey }, message);
     },
     onError(error) {
       console.error("[Chat] failed ", error);
