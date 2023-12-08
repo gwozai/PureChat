@@ -49,7 +49,6 @@ export const createTextMsg = (params) => {
     payload: { text: textMsg },
     cloudCustomData: replyMsgContent,
   });
-  console.log(message);
   return message;
 };
 // 创建 @提醒功能的文本消息
@@ -117,7 +116,6 @@ export const downloadMergerMessage = async (message) => {
   if (message.type === TIM.TYPES.MSG_MERGER && message.payload.downloadKey !== "") {
     try {
       const data = await tim.downloadMergerMessage(message);
-      console.log(data);
     } catch (imError) {
       console.warn("downloadMergerMessage error:", imError);
     }
