@@ -37,13 +37,12 @@ import { editorConfig } from "../utils/configure";
 import emitter from "@/utils/mitt-bus";
 import { onBeforeUnmount, ref, shallowRef, onMounted, watch, nextTick } from "vue";
 import { sendChatMessage, customAlert, parseHTMLToArr, extractFilesInfo } from "../utils/utils";
-import { empty } from "@/utils/common";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
-import { debounce } from "lodash-es";
+import { debounce, isEmpty } from "lodash-es";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -243,9 +242,9 @@ const handleEnter = (event) => {
     return;
   }
   const editor = editorRef.value;
-  const isEmpty = editor.isEmpty(); // 判断当前编辑器内容是否为空
+  const empty = editor.isEmpty(); // 判断当前编辑器内容是否为空
   const { textMsg, aitStr, files, image } = sendMsgBefore();
-  if ((!isEmpty && !empty(textMsg)) || image || aitStr || files) {
+  if ((!empty && !isEmpty(textMsg)) || image || aitStr || files) {
     sendMessage();
   } else {
     clearInputInfo();

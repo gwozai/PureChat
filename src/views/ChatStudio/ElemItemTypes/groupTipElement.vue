@@ -59,9 +59,6 @@ export default {
       }
     },
   },
-  // render() {
-  //   return <div class='group-tip-element-wrapper'>{this.getGroupTipContent(this.message)}</div>;
-  // },
 };
 </script>
 
