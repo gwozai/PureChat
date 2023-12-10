@@ -59,7 +59,7 @@ import {
   nextTick,
 } from "vue";
 import TIM from "@tencentcloud/chat";
-import { useEventListener } from "@/utils/hooks/index";
+import { useEventListener } from "@vueuse/core";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv, isallStaff } from "./utils/utils";
 import { useStore } from "vuex";

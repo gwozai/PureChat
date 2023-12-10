@@ -31,6 +31,7 @@
 <script setup>
 import "../utils/custom-menu";
 import "@wangeditor/editor/dist/css/style.css";
+import { SlateTransforms } from "@wangeditor/editor";
 import { Editor } from "@wangeditor/editor-for-vue";
 import RichToolbar from "../components/RichToolbar.vue";
 import { editorConfig } from "../utils/configure";
@@ -115,8 +116,14 @@ const insertDraft = (value) => {
   const draft = draftMap.get(ID);
   clearInputInfo();
   draft?.forEach((item) => {
-    editorRef.value.insertNode(item.children);
+    editor.insertNode(item.children);
+    // editor.insertBreak();
   });
+  // SlateTransforms.removeNodes(editor);
+  // const node1 = { type: "paragraph", children: [{ text: "aaa" }] };
+  // const node2 = { type: "paragraph", children: [{ text: "bbb" }] };
+  // const nodeList = [node1, node2];
+  // SlateTransforms.insertNodes(editor, draft);
 };
 
 // 更新草稿
