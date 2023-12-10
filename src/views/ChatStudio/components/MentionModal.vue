@@ -17,7 +17,7 @@
 
 <script>
 import { mapState } from "vuex";
-import TIM from "@tencentcloud/chat";
+import TIM from "@/utils/IM/chat/index";
 import { onClickOutside } from "@vueuse/core";
 import { useEventListener } from "@vueuse/core";
 

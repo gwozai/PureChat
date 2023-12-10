@@ -6,7 +6,7 @@
 
 <script>
 import { mapState } from "vuex";
-import TIM from "@tencentcloud/chat";
+import TIM from "@/utils/IM/chat/index";
 export default {
   name: "GroupTipElement",
   props: {

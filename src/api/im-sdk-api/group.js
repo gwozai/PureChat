@@ -1,4 +1,4 @@
-import TIM from "@tencentcloud/chat";
+import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/im-sdk/tim";
 
 // 群类型

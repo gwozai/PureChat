@@ -120,7 +120,7 @@ import { useI18n } from "vue-i18n";
 import AddMemberPopup from "../components/AddMemberPopup.vue";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
 import { showConfirmationBox } from "@/utils/message";
-import TIM from "@tencentcloud/chat";
+import TIM from "@/utils/IM/chat/index";
 // eslint-disable-next-line no-undef
 const props = defineProps({
   groupProfile: {

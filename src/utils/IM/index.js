@@ -1,5 +1,5 @@
 "use strict";
-import TIM from "@tencentcloud/chat";
+import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/im-sdk/tim";
 import storage from "storejs";
 import store from "@/store";
@@ -17,7 +17,7 @@ function getConversationID() {
 
 export default class TIMProxy {
   constructor() {
-    this.robotList = ["C2C@RBT#001"]
+    this.robotList = ["C2C@RBT#001"];
     this.userProfile = {}; // IM用户信息
     this.userID = "";
     this.userSig = "";
@@ -57,6 +57,25 @@ export default class TIMProxy {
     for (const [key, value] of Object.entries(player)) {
       this[key] = value;
     }
+  }
+  create() {
+    const appid = process.env.VUE_APP_SDK_APPID;
+    const level = process.env.VUE_APP_LOG_LEVEL;
+    const options = {
+      SDKAppID: Number(appid),
+    };
+    // 创建 SDK
+    const chat = TIM.create(options);
+    // 设置 SDK 日志输出级别
+    // 0 普通级别，日志量较多，接入时建议使用
+    // 1 release级别，SDK 输出关键信息，生产环境时建议使用
+    // 2 告警级别，SDK 只输出告警和错误级别的日志
+    // 3 错误级别，SDK 只输出错误级别的日志
+    // 4 无日志级别，SDK 将不打印任何日志
+    chat.setLogLevel(level);
+    // 注册 COS SDK 插件
+    chat.registerPlugin({ "tim-upload-plugin": TIMUploadPlugin });
+    return chat;
   }
   // 初始化
   init() {
@@ -259,20 +278,21 @@ export default class TIMProxy {
   handleUpdateMessage(data, read = true) {
     const convId = getConversationID();
     if (!convId) return;
-    const isRobot = this.robotList.includes(data?.[0].conversationID)
+    const isRobot = this.robotList.includes(data?.[0].conversationID);
     if (isRobot) {
       store.dispatch("GET_ROBOT_MESSAGE_LIST", {
         convId: "C2C@RBT#001",
       });
     }
     // 更新当前会话消息
-    !isRobot && store.commit("SET_HISTORYMESSAGE", {
-      type: "UPDATE_MESSAGES",
-      payload: {
-        convId: data?.[0].conversationID,
-        message: cloneDeep(data[0]),
-      },
-    });
+    !isRobot &&
+      store.commit("SET_HISTORYMESSAGE", {
+        type: "UPDATE_MESSAGES",
+        payload: {
+          convId: data?.[0].conversationID,
+          message: cloneDeep(data[0]),
+        },
+      });
     read && this.ReportedMessageRead(data); // 消息已读
     // 更新滚动条位置到底部
     store.commit("updataScroll", "bottom");
