@@ -60,6 +60,7 @@ export class TIMProxy {
     }
   }
   create(options = {}) {
+    if (this.chat) return this.chat;
     const appid = process.env.VUE_APP_SDK_APPID;
     const level = process.env.VUE_APP_LOG_LEVEL;
     // 创建 SDK
@@ -67,7 +68,7 @@ export class TIMProxy {
       SDKAppID: Number(appid),
       ...options,
     });
-    console.log('[create]:', { ...options, })
+    console.log("[create]:", { ...options });
     // 设置 SDK 日志输出级别
     // 0 普通级别，日志量较多，接入时建议使用
     // 1 release级别，SDK 输出关键信息，生产环境时建议使用
@@ -84,6 +85,7 @@ export class TIMProxy {
     if (this.once) return;
     this.once = true;
     this.chat = tim;
+    // this.chat = this.create();
     this.TIM = TIM;
     this.initListener(); // 监听SDK
     console.log("[chat] TIMProxy init");
