@@ -1,6 +1,7 @@
 "use strict";
 import TIM from "@/utils/IM/chat/index";
-import tim from "@/utils/im-sdk/tim";
+import tim from "@/utils/IM/im-sdk/tim";
+import TIMUploadPlugin from "tim-upload-plugin";
 import storage from "storejs";
 import store from "@/store";
 import { useWindowFocus } from "@vueuse/core";
@@ -15,7 +16,7 @@ function getConversationID() {
   return store.state.conversation?.currentConversation?.conversationID;
 }
 
-export default class TIMProxy {
+export class TIMProxy {
   constructor() {
     this.robotList = ["C2C@RBT#001"];
     this.userProfile = {}; // IM用户信息
@@ -58,14 +59,15 @@ export default class TIMProxy {
       this[key] = value;
     }
   }
-  create() {
+  create(options = {}) {
     const appid = process.env.VUE_APP_SDK_APPID;
     const level = process.env.VUE_APP_LOG_LEVEL;
-    const options = {
-      SDKAppID: Number(appid),
-    };
     // 创建 SDK
-    const chat = TIM.create(options);
+    const chat = TIM.create({
+      SDKAppID: Number(appid),
+      ...options,
+    });
+    console.log('[create]:', { ...options, })
     // 设置 SDK 日志输出级别
     // 0 普通级别，日志量较多，接入时建议使用
     // 1 release级别，SDK 输出关键信息，生产环境时建议使用
@@ -337,3 +339,5 @@ export default class TIMProxy {
     }
   }
 }
+
+export const timProxy = new TIMProxy();

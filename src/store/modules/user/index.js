@@ -1,11 +1,11 @@
 import router from "@/router";
 import { ElMessage } from "element-plus";
-import TIMProxy from "@/utils/IM";
+import { timProxy } from "@/utils/IM/index";
 import { login, register, logout, getMenu } from "@/api/node-admin-api/index";
-import chat from "@/utils/im-sdk/tim";
+import chat from "@/utils/IM/im-sdk/tim";
 import emitter from "@/utils/mitt-bus";
 import { verification } from "@/utils/message/index";
-const timProxy = new TIMProxy();
+
 const user = {
   state: {
     timProxy,

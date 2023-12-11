@@ -1,4 +1,4 @@
-import tim from "@/utils/im-sdk/tim";
+import tim from "@/utils/IM/im-sdk/tim";
 import TIM from "@/utils/IM/chat/index";
 import emitter from "@/utils/mitt-bus";
 import { createProgressHandler } from "@/utils/chat/index";
