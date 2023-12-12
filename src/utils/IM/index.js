@@ -49,43 +49,21 @@ export class TIMProxy {
     for (const [key, value] of Object.entries(this)) {
       player[key] = value;
     }
-    storage.set("player", player);
+    storage.set("timProxy", player);
   }
   // 更新IM信息
   loadSelfFromLocalStorage() {
-    const player = storage.get("player");
+    const player = storage.get("timProxy");
     if (!player) return;
     for (const [key, value] of Object.entries(player)) {
       this[key] = value;
     }
-  }
-  create(options = {}) {
-    if (this.chat) return this.chat;
-    const appid = process.env.VUE_APP_SDK_APPID;
-    const level = process.env.VUE_APP_LOG_LEVEL;
-    // 创建 SDK
-    const chat = TIM.create({
-      SDKAppID: Number(appid),
-      ...options,
-    });
-    console.log("[create]:", { ...options });
-    // 设置 SDK 日志输出级别
-    // 0 普通级别，日志量较多，接入时建议使用
-    // 1 release级别，SDK 输出关键信息，生产环境时建议使用
-    // 2 告警级别，SDK 只输出告警和错误级别的日志
-    // 3 错误级别，SDK 只输出错误级别的日志
-    // 4 无日志级别，SDK 将不打印任何日志
-    chat.setLogLevel(level);
-    // 注册 COS SDK 插件
-    chat.registerPlugin({ "tim-upload-plugin": TIMUploadPlugin });
-    return chat;
   }
   // 初始化
   init() {
     if (this.once) return;
     this.once = true;
     this.chat = tim;
-    // this.chat = this.create();
     this.TIM = TIM;
     this.initListener(); // 监听SDK
     console.log("[chat] TIMProxy init");
@@ -190,6 +168,7 @@ export class TIMProxy {
     this.handleUpdateMessage(data, false);
   }
   onNetStateChange({ data }) {
+    console.log("[chat] 网络状态变更 onNetStateChange:", data);
     store.commit("showMessage", fnCheckoutNetState(data.state));
   }
   onFriendApplicationListUpdated({ data }) {
