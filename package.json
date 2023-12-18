@@ -60,6 +60,7 @@
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
+    "pinyin-pro": "^3.18.5",
     "pure-tools": "^0.0.3",
     "qrcode": "^1.5.3",
     "storejs": "^2.0.1",

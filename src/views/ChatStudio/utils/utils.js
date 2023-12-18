@@ -1,3 +1,5 @@
+import store from "@/store/index";
+import { match } from 'pinyin-pro';
 import { useClipboard } from "@vueuse/core";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/chat/index";
 import {
@@ -314,3 +316,35 @@ export const extractFilesInfo = (html) => {
   const link = matchStr?.[1];
   return { fileName, link };
 };
+
+export function extractContentAfterLastAtSymbol(str) {
+  const trimmedStr = str?.trim();
+  if (trimmedStr.length === 0) {
+    return '';
+  }
+  const lastIndex = trimmedStr.lastIndexOf('@');
+  if (lastIndex === -1) {
+    return '';
+  }
+  const result = trimmedStr.substring(lastIndex + 1).trim();
+  return result;
+}
+
+export function searchByPinyin(str) {
+  let pinyin = extractContentAfterLastAtSymbol(str)
+  const indices = [];
+  const list = store.state?.groupinfo?.currentMemberList
+  console.log(list)
+  if (!list) return false;
+  list.forEach((item) => {
+    console.log(item.nick, pinyin)
+    const nickPinyin = match(item.nick, pinyin);
+    console.log(nickPinyin)
+    if (nickPinyin?.length > 0) {
+      indices.push(item);
+    }
+  });
+  console.log(indices)
+  if (!indices.at(0)) return false
+  return indices;
+}

@@ -19,7 +19,7 @@
       ref="mentionRef"
       v-if="isShowModal"
       :isOwner="isOwner"
-      :memberlist="currentMemberList"
+      :memberlist="memberlist"
       @insertMention="insertMention"
     />
     <el-tooltip effect="dark" :content="$t('chat.buttonPrompt')" placement="left-start">
@@ -44,12 +44,14 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
+import { searchByPinyin } from "../utils/utils";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
 const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
 const mentionRef = ref();
+const memberlist = ref([]);
 const initState = ref(false);
 
 const { dispatch, commit } = useStore();
@@ -134,10 +136,24 @@ const updateDraft = debounce((data) => {
   });
 }, 300);
 
+const handleAt = debounce((editor) => {
+  const str = editor.getText();
+  console.log(str);
+  // 群聊才触发@好友
+  // searchByPinyin(str);
+  console.log(searchByPinyin(str));
+  if (searchByPinyin(str)) {
+    memberlist.value = searchByPinyin(str);
+    commit("SET_MENTION_MODAL", true);
+    commit("EMITTER_EMIT", { key: "setMentionModal", value: searchByPinyin(str) });
+  }
+}, 200);
+
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   updateDraft(content);
+  handleAt(editor);
 };
 
 const handleFile = (item) => {

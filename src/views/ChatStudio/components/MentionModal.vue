@@ -17,9 +17,11 @@
 
 <script>
 import { mapState } from "vuex";
+import emitter from "@/utils/mitt-bus";
 import TIM from "@/utils/IM/chat/index";
 import { onClickOutside } from "@vueuse/core";
 import { useEventListener } from "@vueuse/core";
+import { extractContentAfterLastAtSymbol } from "@/views/ChatStudio/utils/utils";
 
 const compareUserID = (a, b) => {
   const aHasRBT = a.userID.includes("@RBT#");
@@ -34,6 +36,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    memberlist: {
+      type: Array,
+      default: () => [],
+    },
   },
   computed: {
     ...mapState({
@@ -41,9 +47,15 @@ export default {
       currentMemberList: (state) => state.groupinfo.currentMemberList,
     }),
     filterList() {
-      return this.currentMemberList
-        .filter((t) => t.userID !== this.currentUserProfile.userID)
-        .sort(compareUserID);
+      if (this.memberlist.length) {
+        return this.memberlist
+          .filter((t) => t.userID !== this.currentUserProfile.userID)
+          .sort(compareUserID);
+      } else {
+        return this.currentMemberList
+          .filter((t) => t.userID !== this.currentUserProfile.userID)
+          .sort(compareUserID);
+      }
     },
     // 根据 <input> value 筛选 list
     searchedList() {
@@ -78,9 +90,7 @@ export default {
         ...this.filterList,
       ];
     },
-    initMention() {
-      // 仅群主支持@全员
-      if (!this.isOwner) this.list.shift();
+    updateMention() {
       // 获取光标位置，定位 modal
       const domSelection = document.getSelection();
       const domRange = domSelection.getRangeAt(0);
@@ -92,12 +102,17 @@ export default {
       // 定位 modal
       this.top = `${selectionRect.top - height - 15}px`;
       this.left = `${selectionRect.left + 5}px`;
+    },
+    initMention() {
+      // 仅群主支持@全员
+      if (!this.isOwner) this.list.shift();
+      this.updateMention();
       onClickOutside(this.$refs.listRef, (event) => {
-        this.hideMentionModal();
+        this.SetMentionStatus();
       });
     },
-    hideMentionModal() {
-      this.$store.commit("SET_MENTION_MODAL", false);
+    SetMentionStatus(status = false) {
+      this.$store.commit("SET_MENTION_MODAL", status);
     },
     inputKeyupHandler(event) {
       if (event.key === "Enter") {
@@ -109,7 +124,7 @@ export default {
     },
     insertMentionHandler(id, name) {
       this.$emit("insertMention", id, name);
-      this.hideMentionModal(); // 隐藏 modal
+      this.SetMentionStatus(); // 隐藏 modal
     },
     onKeydown(event) {
       switch (event.keyCode) {
@@ -149,9 +164,14 @@ export default {
     useEventListener(document, "keydown", (e) => {
       this.onKeydown(e);
     });
+    emitter.on("setMentionModal", (data) => {
+      // this.SetMentionStatus(true);
+      // this.updateMention();
+      console.log(data, "setMentionModal");
+    });
   },
   beforeUnmount() {
-    this.hideMentionModal(); // 隐藏 modal
+    this.SetMentionStatus(); // 隐藏 modal
   },
 };
 </script>
