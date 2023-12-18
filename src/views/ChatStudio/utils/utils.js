@@ -1,5 +1,5 @@
 import store from "@/store/index";
-import { match } from 'pinyin-pro';
+import { match } from "pinyin-pro";
 import { useClipboard } from "@vueuse/core";
 import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/chat/index";
 import {
@@ -317,34 +317,42 @@ export const extractFilesInfo = (html) => {
   return { fileName, link };
 };
 
+/**
+ * 从给定字符串中提取最后一个 "@" 符号后的内容。
+ * @param {string} str - 要提取内容的输入字符串。
+ * @returns {string} - 最后一个 "@" 符号后的内容，如果未找到则返回空字符串。
+ */
 export function extractContentAfterLastAtSymbol(str) {
   const trimmedStr = str?.trim();
   if (trimmedStr.length === 0) {
-    return '';
+    return "";
   }
-  const lastIndex = trimmedStr.lastIndexOf('@');
+  const lastIndex = trimmedStr.lastIndexOf("@");
   if (lastIndex === -1) {
-    return '';
+    return "";
   }
   const result = trimmedStr.substring(lastIndex + 1).trim();
   return result;
 }
 
+/**
+ * 根据拼音搜索成员列表中的匹配项
+ * @param {string} str - 要搜索的拼音字符串
+ * @returns {Array} - 匹配项的数组
+ */
 export function searchByPinyin(str) {
-  let pinyin = extractContentAfterLastAtSymbol(str)
+  let pinyin = extractContentAfterLastAtSymbol(str);
   const indices = [];
-  const list = store.state?.groupinfo?.currentMemberList
-  console.log(list)
-  if (!list) return false;
+  const list = store.state?.groupinfo?.currentMemberList;
+  console.log(list);
+  if (!list) return [];
   list.forEach((item) => {
-    console.log(item.nick, pinyin)
+    console.log(item.nick, pinyin);
     const nickPinyin = match(item.nick, pinyin);
-    console.log(nickPinyin)
+    console.log(nickPinyin);
     if (nickPinyin?.length > 0) {
       indices.push(item);
     }
   });
-  console.log(indices)
-  if (!indices.at(0)) return false
   return indices;
 }

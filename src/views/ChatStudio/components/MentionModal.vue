@@ -8,7 +8,9 @@
           :class="{ active: isActive(item) }"
           @click="insertMentionHandler(item.userID, item.nick)"
         >
-          {{ item.nick }}
+          <img v-if="item.avatar" :src="item.avatar" class="avatar" alt="头像" />
+          <UserAvatar v-else words="3" className="mention" shape="square" nickName="@" />
+          <span class="nick">{{ item.nick }}</span>
         </li>
       </el-scrollbar>
     </ul>
@@ -36,27 +38,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    memberlist: {
-      type: Array,
-      default: () => [],
-    },
   },
   computed: {
     ...mapState({
       currentUserProfile: (state) => state.user.currentUserProfile,
       currentMemberList: (state) => state.groupinfo.currentMemberList,
     }),
-    filterList() {
-      if (this.memberlist.length) {
-        return this.memberlist
-          .filter((t) => t.userID !== this.currentUserProfile.userID)
-          .sort(compareUserID);
-      } else {
-        return this.currentMemberList
-          .filter((t) => t.userID !== this.currentUserProfile.userID)
-          .sort(compareUserID);
-      }
-    },
     // 根据 <input> value 筛选 list
     searchedList() {
       const searchVal = this.searchVal.trim().toLowerCase();
@@ -75,6 +62,7 @@ export default {
       top: "",
       left: "",
       list: [],
+      memberlist: [],
       tabIndex: 0,
       searchVal: "",
     };
@@ -87,8 +75,19 @@ export default {
           userID: TIM.TYPES.MSG_AT_ALL,
           nick: "全体成员",
         },
-        ...this.filterList,
+        ...this.filterList(),
       ];
+    },
+    filterList() {
+      if (this.memberlist.length) {
+        return this.memberlist
+          .filter((t) => t.userID !== this.currentUserProfile.userID)
+          .sort(compareUserID);
+      } else {
+        return this.currentMemberList
+          .filter((t) => t.userID !== this.currentUserProfile.userID)
+          .sort(compareUserID);
+      }
     },
     updateMention() {
       // 获取光标位置，定位 modal
@@ -165,8 +164,10 @@ export default {
       this.onKeydown(e);
     });
     emitter.on("setMentionModal", (data) => {
-      // this.SetMentionStatus(true);
-      // this.updateMention();
+      this.memberlist = data;
+      console.log(this.memberlist);
+      this.initList();
+      this.updateMention();
       console.log(data, "setMentionModal");
     });
   },
@@ -179,10 +180,12 @@ export default {
 <style lang="scss" scoped>
 .mention-modal {
   position: fixed;
-  width: 110px;
-  border: 1px solid #ccc;
+  width: 150px;
+  // border: 1px solid #ccc;
   background-color: var(--color-body-bg);
   padding: 5px;
+  border-radius: 5px;
+  box-shadow: var(--el-box-shadow-lighter);
 }
 .mention-input {
   border: 1px solid #60626652;
@@ -193,13 +196,24 @@ export default {
 .mention-list {
   height: 95px;
   overflow: hidden;
+  .avatar {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+  }
+  .nick {
+    margin-left: 5px;
+  }
+  li {
+    cursor: pointer;
+    padding: 3px 3px;
+    text-align: left;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+  }
 }
-.mention-list li {
-  cursor: pointer;
-  padding: 3px 0;
-  text-align: left;
-  height: 24px;
-}
+
 .mention-modal ul li:hover {
   text-decoration: underline;
 }

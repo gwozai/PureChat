@@ -28,12 +28,12 @@ export const editorConfig = {
 };
 // 显示 modal
 function showModal(e) {
-  console.log(e.getText())
+  console.log(e.getText());
   store.commit("SET_MENTION_MODAL", true);
 }
 // 隐藏 modal
 function hideModal(e) {
-  console.log(e.getText())
-  if (searchByPinyin(e.getText())) return
+  console.log(e.getText());
+  // if (searchByPinyin(e.getText()).length) return;
   store.commit("SET_MENTION_MODAL", false);
 }

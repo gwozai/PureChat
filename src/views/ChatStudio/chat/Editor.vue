@@ -19,7 +19,6 @@
       ref="mentionRef"
       v-if="isShowModal"
       :isOwner="isOwner"
-      :memberlist="memberlist"
       @insertMention="insertMention"
     />
     <el-tooltip effect="dark" :content="$t('chat.buttonPrompt')" placement="left-start">
@@ -51,11 +50,10 @@ const valueHtml = ref(""); // 内容 HTML
 const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
 const mentionRef = ref();
-const memberlist = ref([]);
 const initState = ref(false);
 
 const { dispatch, commit } = useStore();
-const { isOwner, toAccount } = useGetters(["isOwner", "toAccount"]);
+const { isOwner, toAccount, currentType } = useGetters(["isOwner", "toAccount", "currentType"]);
 const {
   currentConversation,
   showMsgBox,
@@ -140,12 +138,16 @@ const handleAt = debounce((editor) => {
   const str = editor.getText();
   console.log(str);
   // 群聊才触发@好友
-  // searchByPinyin(str);
-  console.log(searchByPinyin(str));
-  if (searchByPinyin(str)) {
-    memberlist.value = searchByPinyin(str);
+  if (currentType.value !== "GROUP") return;
+  if (str === "@" && !isShowModal.value) {
+    commit("SET_MENTION_MODAL", true);
+  }
+  if (searchByPinyin(str).length) {
     commit("SET_MENTION_MODAL", true);
     commit("EMITTER_EMIT", { key: "setMentionModal", value: searchByPinyin(str) });
+  } else {
+    // commit("SET_MENTION_MODAL", false);
+    commit("EMITTER_EMIT", { key: "setMentionModal", value: [] });
   }
 }, 200);
 
@@ -153,7 +155,7 @@ const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   updateDraft(content);
-  handleAt(editor);
+  // handleAt(editor);
 };
 
 const handleFile = (item) => {
