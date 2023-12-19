@@ -9,8 +9,14 @@
           @click="insertMentionHandler(item.userID, item.nick)"
         >
           <img v-if="item.avatar" :src="item.avatar" class="avatar" alt="头像" />
-          <UserAvatar v-else words="3" className="mention" shape="square" nickName="@" />
-          <span class="nick">{{ item.nick }}</span>
+          <UserAvatar
+            v-else
+            words="3"
+            className="mention"
+            shape="square"
+            :nickName="item.userID === magAtAll ? '@' : item.nick"
+          />
+          <span class="nick">{{ item.nick || item.userID }}</span>
         </li>
       </el-scrollbar>
     </ul>
@@ -22,14 +28,10 @@ import { mapState } from "vuex";
 import emitter from "@/utils/mitt-bus";
 import TIM from "@/utils/IM/chat/index";
 import { onClickOutside } from "@vueuse/core";
+import { cloneDeep } from "lodash-es";
 import { useEventListener } from "@vueuse/core";
-import { extractContentAfterLastAtSymbol } from "@/views/ChatStudio/utils/utils";
+import { compareUserID } from "@/views/ChatStudio/utils/utils";
 
-const compareUserID = (a, b) => {
-  const aHasRBT = a.userID.includes("@RBT#");
-  const bHasRBT = b.userID.includes("@RBT#");
-  return aHasRBT && !bHasRBT ? -1 : bHasRBT && !aHasRBT ? 1 : 0;
-};
 export default {
   name: "MentionModal",
   props: {
@@ -41,6 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
+      isShowModal: (state) => state.conversation.isShowModal,
       currentUserProfile: (state) => state.user.currentUserProfile,
       currentMemberList: (state) => state.groupinfo.currentMemberList,
     }),
@@ -62,32 +65,37 @@ export default {
       top: "",
       left: "",
       list: [],
+      once: false,
+      searchVal: "", // 中文搜索
+      filtering: false, // 搜索模式
+      searchValue: 0, // 模糊搜索内容长度
       memberlist: [],
       tabIndex: 0,
-      searchVal: "",
+      magAtAll: TIM.TYPES.MSG_AT_ALL,
+      allMembers: {
+        joinTime: 0,
+        userID: TIM.TYPES.MSG_AT_ALL,
+        nick: "全体成员",
+      },
     };
   },
   methods: {
-    initList() {
-      this.list = [
-        {
-          joinTime: 0,
-          userID: TIM.TYPES.MSG_AT_ALL,
-          nick: "全体成员",
-        },
-        ...this.filterList(),
-      ];
+    initList(off = this.isOwner) {
+      this.list = this.filterList();
+      if (off) this.list.unshift(this.allMembers);
+      console.log(this.list);
     },
     filterList() {
-      if (this.memberlist.length) {
-        return this.memberlist
-          .filter((t) => t.userID !== this.currentUserProfile.userID)
-          .sort(compareUserID);
-      } else {
-        return this.currentMemberList
-          .filter((t) => t.userID !== this.currentUserProfile.userID)
-          .sort(compareUserID);
-      }
+      // if (this.memberlist.length && this.filtering) {
+      //   return this.memberlist
+      //     .filter((t) => t.userID !== this.currentUserProfile.userID)
+      //     .sort(compareUserID);
+      // } else {
+
+      // }
+      return this.currentMemberList
+        .filter((t) => t.userID !== this.currentUserProfile.userID)
+        .sort(compareUserID);
     },
     updateMention() {
       // 获取光标位置，定位 modal
@@ -104,10 +112,37 @@ export default {
     },
     initMention() {
       // 仅群主支持@全员
-      if (!this.isOwner) this.list.shift();
+      // if (!this.isOwner) this.list.shift();
+      if (this.once) return;
+      this.once = true;
       this.updateMention();
       onClickOutside(this.$refs.listRef, (event) => {
         this.SetMentionStatus();
+      });
+      useEventListener(document, "keydown", (e) => {
+        this.onKeydown(e);
+      });
+      emitter.on("setMentionModal", (data) => {
+        const { content = [], type, searchlength = 0 } = cloneDeep(data);
+        console.log(content, type, searchlength);
+        // if (type == "all") {
+        //   this.filtering = false;
+        // } else if (data == "empty") {
+        //   this.list = [];
+        //   console.log(this.list);
+        // } else {
+        //   this.memberlist = cloneDeep(data);
+        //   this.filtering = true;
+        // }
+        // console.log(this.memberlist, this.isShowModal);
+        // this.initList(false);
+        // this.updateMention();
+        // if (this.searchValue && this.filtering) {
+        //   this.list = this.list.filter((t) => {
+        //     return t.userID !== this.magAtAll;
+        //   });
+        // }
+        // console.log(data, "setMentionModal");
       });
     },
     SetMentionStatus(status = false) {
@@ -122,8 +157,9 @@ export default {
       }
     },
     insertMentionHandler(id, name) {
-      this.$emit("insertMention", id, name);
+      this.$emit("insertMention", { id, name, deleteDigit: this.searchValue });
       this.SetMentionStatus(); // 隐藏 modal
+      this.searchValue = 0;
     },
     onKeydown(event) {
       switch (event.keyCode) {
@@ -160,16 +196,6 @@ export default {
   },
   mounted() {
     this.initMention();
-    useEventListener(document, "keydown", (e) => {
-      this.onKeydown(e);
-    });
-    emitter.on("setMentionModal", (data) => {
-      this.memberlist = data;
-      console.log(this.memberlist);
-      this.initList();
-      this.updateMention();
-      console.log(data, "setMentionModal");
-    });
   },
   beforeUnmount() {
     this.SetMentionStatus(); // 隐藏 modal
@@ -180,7 +206,7 @@ export default {
 <style lang="scss" scoped>
 .mention-modal {
   position: fixed;
-  width: 150px;
+  width: 168px;
   // border: 1px solid #ccc;
   background-color: var(--color-body-bg);
   padding: 5px;

@@ -290,7 +290,6 @@ const conversation = {
     SET_SESSION_DRAFT(state, action) {
       if (!action) return;
       const { ID, payload } = action;
-      console.log(payload, "payload");
       if (!checkTextNotEmpty(payload)) {
         state.sessionDraftMap.delete(ID);
       } else {

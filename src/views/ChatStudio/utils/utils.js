@@ -268,7 +268,7 @@ export const customAlert = (s, t) => {
 export const chatName = (item) => {
   switch (item.type) {
     case "C2C":
-      return item.userProfile.nick;
+      return item.userProfile.nick || item.userProfile.userID;
     case "GROUP":
       return item.groupProfile.name;
     case "@TIM#SYSTEM":
@@ -318,22 +318,16 @@ export const extractFilesInfo = (html) => {
 };
 
 /**
- * 从给定字符串中提取最后一个 "@" 符号后的内容。
- * @param {string} str - 要提取内容的输入字符串。
- * @returns {string} - 最后一个 "@" 符号后的内容，如果未找到则返回空字符串。
+ * 比较两个用户的 userID，用于排序
+ * @param {Object} a - 第一个用户对象
+ * @param {Object} b - 第二个用户对象
+ * @returns {number} - 返回比较结果，-1 表示 a 在 b 前面，1 表示 b 在 a 前面，0 表示相等
  */
-export function extractContentAfterLastAtSymbol(str) {
-  const trimmedStr = str?.trim();
-  if (trimmedStr.length === 0) {
-    return "";
-  }
-  const lastIndex = trimmedStr.lastIndexOf("@");
-  if (lastIndex === -1) {
-    return "";
-  }
-  const result = trimmedStr.substring(lastIndex + 1).trim();
-  return result;
-}
+export const compareUserID = (a, b) => {
+  const aHasRBT = a.userID.includes("@RBT#");
+  const bHasRBT = b.userID.includes("@RBT#");
+  return aHasRBT && !bHasRBT ? -1 : bHasRBT && !aHasRBT ? 1 : 0;
+};
 
 /**
  * 根据拼音搜索成员列表中的匹配项
@@ -341,18 +335,74 @@ export function extractContentAfterLastAtSymbol(str) {
  * @returns {Array} - 匹配项的数组
  */
 export function searchByPinyin(str) {
-  let pinyin = extractContentAfterLastAtSymbol(str);
   const indices = [];
   const list = store.state?.groupinfo?.currentMemberList;
   console.log(list);
-  if (!list) return [];
+  if (!list) {
+    store.commit("EMITTER_EMIT",
+      {
+        key: "setMentionModal",
+        value: {
+          content: [],
+          type: "empty",
+          searchValue: str,
+          searchlength: str.length + 1
+        }
+      });
+    return
+  }
   list.forEach((item) => {
-    console.log(item.nick, pinyin);
-    const nickPinyin = match(item.nick, pinyin);
-    console.log(nickPinyin);
-    if (nickPinyin?.length > 0) {
-      indices.push(item);
-    }
+    const nickPinyin = match(item.nick, str);
+    if (nickPinyin?.length > 0) indices.push(item);
   });
+  if (indices.length === 0) {
+    store.commit("EMITTER_EMIT", {
+      key: "setMentionModal", value: {
+        type: "empty",
+      }
+    });
+  } else {
+    console.log(indices);
+    store.commit("EMITTER_EMIT", {
+      key: "setMentionModal", value: {
+        content: indices,
+        type: "success",
+        searchValue: str,
+        searchlength: str.length + 1
+      }
+    });
+  }
   return indices;
+}
+
+export function FilterMentionList(str) {
+  if (str === "") {
+    store.commit("SET_MENTION_MODAL", false);
+    return;
+  }
+  if (str === "@") {
+    store.commit("EMITTER_EMIT", {
+      key: "setMentionModal", value: {
+        type: "all",
+        searchValue: str,
+      }
+    });
+    return
+  }
+  const selection = window.getSelection() //光标当前位置
+  const focusOffset = selection.focusOffset
+  const range = selection.getRangeAt(0)
+  console.log(range)
+  const rangeAncestor = range.commonAncestorContainer.data
+  if (!rangeAncestor) return
+  const text = rangeAncestor.substring(0, focusOffset)
+  const lastAtIndex = text.lastIndexOf('@') //@最后一次出现的索引位置 
+  if (lastAtIndex === -1) {
+    store.commit("SET_MENTION_MODAL", false);
+    return
+  }
+  const searchValue = text.substring(lastAtIndex + 1, focusOffset) //从@出现的索引位置截取到输入位置
+  console.log("searchValue:", searchValue)
+  if (!searchValue) return
+  searchByPinyin(searchValue)
 }

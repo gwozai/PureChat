@@ -1,6 +1,6 @@
 import store from "@/store/index";
 import { $t } from "@/plugins/i18n";
-import { searchByPinyin } from "./utils";
+
 // 编辑器配置
 export const editorConfig = {
   // 请输入内容... $t("chat.buttonPrompt")
@@ -28,12 +28,11 @@ export const editorConfig = {
 };
 // 显示 modal
 function showModal(e) {
-  console.log(e.getText());
+  console.log('[@] 显示 showModal:', e.getText());
   store.commit("SET_MENTION_MODAL", true);
 }
 // 隐藏 modal
 function hideModal(e) {
-  console.log(e.getText());
-  // if (searchByPinyin(e.getText()).length) return;
-  store.commit("SET_MENTION_MODAL", false);
+  // console.log('[@] 隐藏 hideModal:', e.getText());
+  // store.commit("SET_MENTION_MODAL", false);
 }

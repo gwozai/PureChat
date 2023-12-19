@@ -43,7 +43,7 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
-import { searchByPinyin } from "../utils/utils";
+import { searchByPinyin, FilterMentionList } from "../utils/utils";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -79,7 +79,7 @@ const handleCreated = (editor) => {
   // editor.disable(); // 只读
   // editor.hidePanelOrModal();
 };
-const insertMention = (id, name, backward = true) => {
+const insertMention = ({ id, name, backward = true, deleteDigit = 0 }) => {
   const editor = editorRef.value;
   const mentionNode = {
     type: "mention", // 必须是 'mention'
@@ -88,7 +88,13 @@ const insertMention = (id, name, backward = true) => {
     children: [{ text: "" }], // 必须有一个空 text 作为 children
   };
   editor?.restoreSelection(); // 恢复选区
-  backward && editor.deleteBackward("character"); // 删除 '@'
+  if (deleteDigit) {
+    for (let i = 0; i < deleteDigit; i++) {
+      editor.deleteBackward("character");
+    }
+  } else if (backward) {
+    editor.deleteBackward("character"); // 删除 '@'
+  }
   editor.insertNode(mentionNode); // 插入 mention
   editor.move(1); // 移动光标
 };
@@ -136,26 +142,16 @@ const updateDraft = debounce((data) => {
 
 const handleAt = debounce((editor) => {
   const str = editor.getText();
-  console.log(str);
   // 群聊才触发@好友
   if (currentType.value !== "GROUP") return;
-  if (str === "@" && !isShowModal.value) {
-    commit("SET_MENTION_MODAL", true);
-  }
-  if (searchByPinyin(str).length) {
-    commit("SET_MENTION_MODAL", true);
-    commit("EMITTER_EMIT", { key: "setMentionModal", value: searchByPinyin(str) });
-  } else {
-    // commit("SET_MENTION_MODAL", false);
-    commit("EMITTER_EMIT", { key: "setMentionModal", value: [] });
-  }
-}, 200);
+  FilterMentionList(str);
+}, 100);
 
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   updateDraft(content);
-  // handleAt(editor);
+  handleAt(editor);
 };
 
 const handleFile = (item) => {
@@ -335,7 +331,7 @@ const setEditHtml = (text) => {
 };
 const onEmitter = () => {
   emitter.on("handleAt", ({ id, name }) => {
-    insertMention(id, name, false);
+    insertMention({ id, name, backward: false });
   });
   emitter.on("handleSetHtml", (text) => {
     text && setEditHtml(text);
