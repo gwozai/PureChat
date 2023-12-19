@@ -78,11 +78,15 @@
               >
                 <CircleCloseFilled />
               </el-icon>
-              <UserAvatar className="avatar-item" :url="item.avatar" :nickName="item.nick" />
+              <UserAvatar
+                className="avatar-item"
+                :url="item.avatar"
+                :nickName="item.nick || item.userID"
+              />
               <div class="admin" :class="item.role" v-if="item.role !== 'Member'">
                 {{ item.role == "Owner" ? "群主" : "管理员" }}
               </div>
-              <span class="nick">{{ item.nick }}</span>
+              <span class="nick">{{ item.nick || item.userID }}</span>
             </div>
           </div>
         </el-scrollbar>

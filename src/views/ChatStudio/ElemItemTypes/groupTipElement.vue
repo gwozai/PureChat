@@ -66,7 +66,7 @@ export default {
 .group-tip-element-wrapper {
   font-size: 12px;
   border-radius: 3px;
-  background: var(--color-group-tip);
+  // background: var(--color-group-tip);
   vertical-align: middle;
   word-wrap: normal;
   word-break: break-all;

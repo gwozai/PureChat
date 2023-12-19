@@ -78,8 +78,8 @@ export default {
   line-height: 16px;
   justify-content: center;
   .withdraw {
-    border-radius: 3px;
-    background: rgba(0, 0, 0, 0.05);
+    // border-radius: 3px;
+    // background: rgba(0, 0, 0, 0.05);
     color: var(--color-time-divider);
     padding: 4px 6px;
   }
