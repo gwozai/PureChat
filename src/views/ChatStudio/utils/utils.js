@@ -330,79 +330,91 @@ export const compareUserID = (a, b) => {
 };
 
 /**
- * 根据拼音搜索成员列表中的匹配项
- * @param {string} str - 要搜索的拼音字符串
- * @returns {Array} - 匹配项的数组
+ * 根据拼音搜索当前成员列表中的匹配项。
+ * @param {string} searchStr - 要搜索的拼音字符串。
+ * @returns {Array} - 匹配项的数组。
  */
-export function searchByPinyin(str) {
+export function searchByPinyin(searchStr) {
+  // 获取当前成员列表
+  const memberList = store.state?.groupinfo?.currentMemberList;
+  // 过滤掉当前用户的信息
+  const filteredList = memberList.filter(
+    (member) => member.userID !== store.state?.user.currentUserProfile.userID
+  );
+  // 如果过滤后的列表为空，触发空结果的事件并返回
+  if (!filteredList || filteredList.length === 0) {
+    store.commit("EMITTER_EMIT", {
+      key: "setMentionModal",
+      value: { type: "empty" },
+    });
+    return;
+  }
+  // 存储匹配项的索引
   const indices = [];
-  const list = store.state?.groupinfo?.currentMemberList;
-  console.log(list);
-  if (!list) {
-    store.commit("EMITTER_EMIT",
-      {
-        key: "setMentionModal",
-        value: {
-          content: [],
-          type: "empty",
-          searchValue: str,
-          searchlength: str.length + 1
-        }
-      });
-    return
-  }
-  list.forEach((item) => {
-    const nickPinyin = match(item.nick, str);
-    if (nickPinyin?.length > 0) indices.push(item);
+  // 遍历过滤后的成员列表
+  filteredList.forEach((item) => {
+    // 使用 match 函数进行拼音匹配
+    const nickPinyin = match(item.nick, searchStr);
+    // 如果拼音匹配结果长度大于 0，将当前项添加到索引数组中
+    if (nickPinyin?.length > 0) {
+      indices.push(item);
+    }
   });
-  if (indices.length === 0) {
-    store.commit("EMITTER_EMIT", {
-      key: "setMentionModal", value: {
-        type: "empty",
-      }
-    });
-  } else {
-    console.log(indices);
-    store.commit("EMITTER_EMIT", {
-      key: "setMentionModal", value: {
-        content: indices,
-        type: "success",
-        searchValue: str,
-        searchlength: str.length + 1
-      }
-    });
-  }
-  return indices;
+  // 触发相应的事件根据匹配结果触发不同的操作
+  const eventType = indices.length === 0 ? "empty" : "success";
+  store.commit("EMITTER_EMIT", {
+    key: "setMentionModal",
+    value: {
+      content: indices,
+      type: eventType,
+      searchlength: searchStr.length + 1,
+    },
+  });
 }
 
-export function FilterMentionList(str) {
-  if (str === "") {
+/**
+ * 根据输入的字符串过滤提及列表并触发相关操作。
+ * @param {string} inputStr - 输入的字符串。
+ */
+export function filterMentionList(inputStr) {
+  // 如果输入字符串为空，关闭提及模态框并返回
+  if (inputStr === "") {
     store.commit("SET_MENTION_MODAL", false);
     return;
   }
-  if (str === "@") {
+  // 如果输入字符串中没有 "@" 符号，直接返回
+  if (inputStr.lastIndexOf("@") == -1) return;
+  // 如果输入字符串仅包含 "@" 符号，触发 setMentionModal 操作并返回
+  if (inputStr === "@") {
     store.commit("EMITTER_EMIT", {
-      key: "setMentionModal", value: {
+      key: "setMentionModal",
+      value: {
         type: "all",
-        searchValue: str,
-      }
+        searchValue: inputStr,
+      },
     });
-    return
+    return;
   }
-  const selection = window.getSelection() //光标当前位置
-  const focusOffset = selection.focusOffset
-  const range = selection.getRangeAt(0)
-  console.log(range)
-  const rangeAncestor = range.commonAncestorContainer.data
-  if (!rangeAncestor) return
-  const text = rangeAncestor.substring(0, focusOffset)
-  const lastAtIndex = text.lastIndexOf('@') //@最后一次出现的索引位置 
+  // 获取当前光标位置和文本范围
+  const selection = window.getSelection();
+  const focusOffset = selection.focusOffset;
+  const range = selection.getRangeAt(0);
+  const rangeAncestor = range.commonAncestorContainer.data;
+  // 如果文本范围不存在，直接返回
+  if (!rangeAncestor) return;
+  // 获取光标位置之前的文本
+  const text = rangeAncestor.substring(0, focusOffset);
+  // 获取最后一个 "@" 符号的索引位置
+  const lastAtIndex = text.lastIndexOf("@");
+  // 如果找不到 "@" 符号，关闭提及模态框并返回
   if (lastAtIndex === -1) {
     store.commit("SET_MENTION_MODAL", false);
-    return
+    return;
   }
-  const searchValue = text.substring(lastAtIndex + 1, focusOffset) //从@出现的索引位置截取到输入位置
-  console.log("searchValue:", searchValue)
-  if (!searchValue) return
-  searchByPinyin(searchValue)
+  // 从 "@" 出现的索引位置截取到光标位置，得到搜索值
+  const searchValue = text.substring(lastAtIndex + 1, focusOffset);
+  console.log("searchValue:", searchValue);
+  if (!searchValue) return;
+  // 执行根据拼音搜索的操作
+  searchByPinyin(searchValue);
 }

@@ -43,7 +43,7 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
-import { searchByPinyin, FilterMentionList } from "../utils/utils";
+import { filterMentionList } from "../utils/utils";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -144,7 +144,7 @@ const handleAt = debounce((editor) => {
   const str = editor.getText();
   // 群聊才触发@好友
   if (currentType.value !== "GROUP") return;
-  FilterMentionList(str);
+  filterMentionList(str);
 }, 100);
 
 const onChange = (editor) => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="mention-modal" :style="{ top: top, left: left }">
+  <div class="mention-modal" :style="{ top: top, left: left }" v-show="isVisibile">
     <ul class="mention-list" ref="listRef">
       <el-scrollbar>
         <li
@@ -59,17 +59,18 @@ export default {
         return false;
       });
     },
+    isVisibile() {
+      return this.filtering !== "empty";
+    },
   },
   data() {
     return {
       top: "",
       left: "",
       list: [],
-      once: false,
       searchVal: "", // 中文搜索
-      filtering: false, // 搜索模式
+      filtering: "", // 搜索模式
       searchValue: 0, // 模糊搜索内容长度
-      memberlist: [],
       tabIndex: 0,
       magAtAll: TIM.TYPES.MSG_AT_ALL,
       allMembers: {
@@ -80,19 +81,15 @@ export default {
     };
   },
   methods: {
-    initList(off = this.isOwner) {
-      this.list = this.filterList();
+    initList(off = this.isOwner, data = []) {
+      this.list = this.filterList(data);
+      // 仅群主支持@全员
       if (off) this.list.unshift(this.allMembers);
-      console.log(this.list);
     },
-    filterList() {
-      // if (this.memberlist.length && this.filtering) {
-      //   return this.memberlist
-      //     .filter((t) => t.userID !== this.currentUserProfile.userID)
-      //     .sort(compareUserID);
-      // } else {
-
-      // }
+    filterList(data) {
+      if (data.length) {
+        return data.sort(compareUserID);
+      }
       return this.currentMemberList
         .filter((t) => t.userID !== this.currentUserProfile.userID)
         .sort(compareUserID);
@@ -111,10 +108,6 @@ export default {
       this.left = `${selectionRect.left + 5}px`;
     },
     initMention() {
-      // 仅群主支持@全员
-      // if (!this.isOwner) this.list.shift();
-      if (this.once) return;
-      this.once = true;
       this.updateMention();
       onClickOutside(this.$refs.listRef, (event) => {
         this.SetMentionStatus();
@@ -124,25 +117,14 @@ export default {
       });
       emitter.on("setMentionModal", (data) => {
         const { content = [], type, searchlength = 0 } = cloneDeep(data);
-        console.log(content, type, searchlength);
-        // if (type == "all") {
-        //   this.filtering = false;
-        // } else if (data == "empty") {
-        //   this.list = [];
-        //   console.log(this.list);
-        // } else {
-        //   this.memberlist = cloneDeep(data);
-        //   this.filtering = true;
-        // }
-        // console.log(this.memberlist, this.isShowModal);
-        // this.initList(false);
-        // this.updateMention();
-        // if (this.searchValue && this.filtering) {
-        //   this.list = this.list.filter((t) => {
-        //     return t.userID !== this.magAtAll;
-        //   });
-        // }
-        // console.log(data, "setMentionModal");
+        // console.log(content, type, searchlength);
+        this.filtering = type; // all success empty
+        if (type == "all") {
+          this.initList();
+        } else if (type == "success") {
+          this.initList(false, content);
+          this.searchValue = searchlength;
+        }
       });
     },
     SetMentionStatus(status = false) {
