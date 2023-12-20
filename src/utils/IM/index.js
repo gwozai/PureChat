@@ -87,6 +87,8 @@ export class TIMProxy {
     tim.on(TIM.EVENT.ERROR, this.onError);
     // 网络监测
     tim.on(TIM.EVENT.NET_STATE_CHANGE, this.onNetStateChange);
+    // 会话未读总数更新
+    tim.on(TIM.EVENT.TOTAL_UNREAD_MESSAGE_COUNT_UPDATED, this.onTotalUnreadMessageCountUpdated);
     // 收到好友申请列表更新通知
     // tim.on(TIM.EVENT.FRIEND_APPLICATION_LIST_UPDATED, this.onFriendApplicationListUpdated);
     // 收到好友分组列表更新通知
@@ -95,6 +97,9 @@ export class TIMProxy {
     // tim.on(TIM.EVENT.USER_STATUS_UPDATED, this.onUserStatusUpdated);
     // 收到消息被修改的通知
     tim.on(TIM.EVENT.MESSAGE_MODIFIED, this.onMessageModified, this);
+  }
+  onTotalUnreadMessageCountUpdated({ data }) {
+    console.log("[chat] onTotalUnreadMessageCountUpdated:", data);
   }
   onReadyStateUpdate({ name }) {
     console.log("[chat] onReadyStateUpdate:", name);

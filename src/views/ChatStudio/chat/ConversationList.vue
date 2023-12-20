@@ -141,7 +141,9 @@ const formatNewsMessage = (data) => {
     return messageForShow;
   }
   if (type == "GROUP" && isOther) {
-    if (lastMessage.nick) {
+    if (lastMessage.type == "TIMGroupTipElem") {
+      return messageForShow;
+    } else if (lastMessage.nick) {
       return `${lastMessage.nick}: ${messageForShow}`;
     } else {
       messageForShow;

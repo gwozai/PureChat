@@ -81,7 +81,7 @@ export default {
           // 不是自己的消息 被管理员撤回
           if (from !== revokerInfo?.userID) {
             const name = this.userProfile.nick == revokerInfo?.nick ? "你" : revokerInfo?.nick;
-            return `${name} 撤回了成员 ${from} 的一条消息`;
+            return `${name} 撤回了成员 ${nick} 的一条消息`;
           }
           return `${nick}撤回了一条消息`;
         }
