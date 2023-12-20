@@ -117,10 +117,12 @@ export default {
       });
       emitter.on("setMentionModal", (data) => {
         const { content = [], type, searchlength = 0 } = cloneDeep(data);
-        // console.log(content, type, searchlength);
+        console.log(content, type, searchlength);
         this.filtering = type; // all success empty
         if (type == "all") {
           this.initList();
+        } else if (type == "empty") {
+          this.SetMentionStatus();
         } else if (type == "success") {
           this.initList(false, content);
           this.searchValue = searchlength;
@@ -180,6 +182,7 @@ export default {
     this.initMention();
   },
   beforeUnmount() {
+    emitter.off("setMentionModal");
     this.SetMentionStatus(); // 隐藏 modal
   },
 };

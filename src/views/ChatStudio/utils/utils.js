@@ -367,7 +367,7 @@ export function searchByPinyin(searchStr) {
     value: {
       content: indices,
       type: eventType,
-      searchlength: searchStr.length + 1,
+      searchlength: searchStr.length + 1, // +1 包含@长度
     },
   });
 }
@@ -377,15 +377,25 @@ export function searchByPinyin(searchStr) {
  * @param {string} inputStr - 输入的字符串。
  */
 export function filterMentionList(inputStr) {
+  // 如果输入字符串中没有 "@" 符号，直接返回
+  if (inputStr.lastIndexOf("@") == -1) {
+    store.commit("SET_MENTION_MODAL", false);
+    return;
+  }
   // 如果输入字符串为空，关闭提及模态框并返回
   if (inputStr === "") {
     store.commit("SET_MENTION_MODAL", false);
     return;
   }
-  // 如果输入字符串中没有 "@" 符号，直接返回
-  if (inputStr.lastIndexOf("@") == -1) return;
-  // 如果输入字符串仅包含 "@" 符号，触发 setMentionModal 操作并返回
-  if (inputStr === "@") {
+  const isShowModal = store.state?.conversation.isShowModal;
+  console.log("isShowModal:", isShowModal);
+  console.log("inputStr:", inputStr);
+  console.log("endsWith@:", inputStr.endsWith("@"));
+  // 如果输入字符串仅包含 "@" 符号，或则字符结尾，触发 setMentionModal 操作并返回
+  if (inputStr === "@" || inputStr.endsWith("@")) {
+    if (!isShowModal) {
+      store.commit("SET_MENTION_MODAL", true);
+    }
     store.commit("EMITTER_EMIT", {
       key: "setMentionModal",
       value: {
