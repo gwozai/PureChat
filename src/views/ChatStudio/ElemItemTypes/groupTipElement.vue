@@ -26,14 +26,18 @@ export default {
   },
   methods: {
     memberJoin(message) {
-      const { groupJoinType, userIDList } = message.payload;
+      const { groupJoinType, userIDList, memberList } = message.payload;
       // groupJoinType 1: "申请加群", 2: "邀请加群",
+      // 被邀请入群
+      if (groupJoinType == "2") {
+        return `${this.details.nick || "管理员"} 邀请 ${message.nick || userIDList[0]} 加入群聊 🎉`;
+      }
       if (userIDList.length == 1) {
         if (this.currentUserProfile?.userID == userIDList[0]) {
           return "你已经是群成员了，和大家打个招呼吧！";
         }
       }
-      return `${message.nick} 加入群聊`;
+      return `${message.nick} 加入群聊 🎉`;
     },
     endGroupChat(message) {
       if (message.payload.text.indexOf("结束群聊") > -1) {

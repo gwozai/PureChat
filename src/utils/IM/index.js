@@ -134,7 +134,8 @@ export class TIMProxy {
     console.log("[chat] 收到新消息 onReceiveMessage:", data);
     this.handleQuitGroupTip(data);
     this.handleNotificationTip(data);
-    this.handleUpdateMessage(data);
+    const current = getConversationID() == data?.[0].conversationID
+    this.handleUpdateMessage(data, current);
   }
   onMessageRevoked({ data }) {
     console.log("[chat] 撤回消息 onMessageRevoked:", data);
