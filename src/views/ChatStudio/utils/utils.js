@@ -8,6 +8,7 @@ import {
   createFiletMsg,
   createImgtMsg,
 } from "@/api/im-sdk-api/index";
+import { getBlob } from '@/utils/chat/message-input-utils';
 
 export const dragControllerDiv = (node) => {
   let svgResize = document.getElementById("svgResize"); //滑块
@@ -59,10 +60,31 @@ export const validatelastMessage = (msglist) => {
 export const handleCopyMsg = async (data) => {
   const { elements } = data;
   const { content, type } = elements[0];
+  console.log(elements[0])
   // 文本
   if (type === "TIMTextElem") {
-    const { text, copy, copied, isSupported } = useClipboard({ source: content.text });
-    copy(content.text);
+    const { text, copy, isSupported } = useClipboard({ source: content.text });
+    if (isSupported) {
+      copy(content.text);
+      store.commit("showMessage", { message: "复制成功", });
+    } else {
+      store.commit("showMessage", { message: "您的浏览器不支持剪贴板API", });
+    }
+  }
+  // 图片
+  if (type === "TIMImageElem") {
+    const url = content.imageInfoArray[2].imageUrl
+    const imageBlob = await getBlob(url)
+    // 创建一个空的 ClipboardItem 对象，并将图片添加到其中
+    const clipboardItem = new ClipboardItem({ 'image/png': imageBlob });
+    // 将 ClipboardItem 对象添加到剪贴板
+    navigator.clipboard.write([clipboardItem])
+      .then(() => {
+        store.commit("showMessage", { message: "图片复制成功", });
+      })
+      .catch((error) => {
+        console.error('写入剪贴板时出错:', error);
+      });
   }
 };
 

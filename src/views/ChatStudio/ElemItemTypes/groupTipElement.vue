@@ -37,7 +37,7 @@ export default {
           return "你已经是群成员了，和大家打个招呼吧！";
         }
       }
-      return `${message.nick} 加入群聊 🎉`;
+      return `${message.nick || userIDList[0]} 加入群聊 🎉`;
     },
     endGroupChat(message) {
       if (message.payload.text.indexOf("结束群聊") > -1) {

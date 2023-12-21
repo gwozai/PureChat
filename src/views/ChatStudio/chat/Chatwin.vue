@@ -119,7 +119,7 @@ import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/store/mutation-typ
 import { deleteMsgList, revokeMsg, translateText, getMsgList } from "@/api/im-sdk-api/index";
 import emitter from "@/utils/mitt-bus";
 import NameComponent from "../components/NameComponent.vue";
-import { download, downloadCopy, timeFormat } from "@/utils/chat/index";
+import { download, timeFormat } from "@/utils/chat/index";
 
 import TextElemItem from "../ElemItemTypes/TextElemItem.vue";
 import RelayElemItem from "../ElemItemTypes/RelayElemItem.vue";
@@ -443,8 +443,7 @@ const handleSave = (data) => {
   const {
     payload: { fileName, fileUrl },
   } = data;
-  // download(fileUrl, fileName);
-  downloadCopy(fileUrl, fileName);
+  download(fileUrl, fileName);
 };
 
 const handleTranslate = (data) => {
