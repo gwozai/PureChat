@@ -1,5 +1,5 @@
 // element-plus国际化
-import elementZhLocale from "element-plus/dist/locale/zh-cn.mjs";
+import elementZhLocale from "element-plus/es/locale/lang/zh-cn";
 export default {
   ...elementZhLocale,
   chat: {
