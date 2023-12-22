@@ -5,6 +5,7 @@
       :preview-src-list="showCheckbox ? null : srcList"
       :hide-on-click-modal="true"
       :initial-index="index"
+      :infinite="false"
       fit="cover"
     />
   </div>

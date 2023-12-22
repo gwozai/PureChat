@@ -150,7 +150,7 @@ async function sendFile(e) {
   });
 }
 const onTobBottom = () => {
-  commit("updataScroll");
+  commit("EMITTER_EMIT", { key: "updataScroll" });
 };
 emitter.on("onisbot", (state) => {
   tobottom.value = !state;

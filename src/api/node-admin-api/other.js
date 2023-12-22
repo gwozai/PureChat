@@ -111,12 +111,12 @@ export const sendMessages = async (params) => {
     config: { model: useAccessStore().model, stream: true },
     onUpdate(message) {
       console.log("[chat] onUpdate:", message);
-      store.commit("updataScroll", "instantly");
+      store.commit("EMITTER_EMIT", { key: "updataScroll", value: "instantly" });
       updataMessage(msg, message)
     },
     async onFinish(message) {
       console.log("[chat] onFinish:", message);
-      store.commit("updataScroll", "instantly");
+      store.commit("EMITTER_EMIT", { key: "updataScroll", value: "instantly" });
       updataMessage(msg, message)
       await sendMsg(params, message);
     },

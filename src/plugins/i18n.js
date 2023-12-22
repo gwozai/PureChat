@@ -1,4 +1,4 @@
-import { SET_UP } from "@/store/mutation-types";
+import { SET_UP } from "@/store/constants";
 import { createI18n } from "vue-i18n";
 import storage from "storejs";
 // User defined lang

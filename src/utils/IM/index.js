@@ -272,9 +272,8 @@ export class TIMProxy {
       store.dispatch("GET_ROBOT_MESSAGE_LIST", {
         convId: "C2C@RBT#001",
       });
-    }
-    // 更新当前会话消息
-    !isRobot &&
+    } else {
+      // 更新会话消息
       store.commit("SET_HISTORYMESSAGE", {
         type: "UPDATE_MESSAGES",
         payload: {
@@ -282,13 +281,15 @@ export class TIMProxy {
           message: cloneDeep(data[0]),
         },
       });
-    read && this.ReportedMessageRead(data); // 消息已读
+    }
+    // 消息已读
+    read && this.reportedMessageRead(data);
     // 更新滚动条位置到底部
-    store.commit("updataScroll", "bottom");
+    store.commit("EMITTER_EMIT", { key: "updataScroll", value: 'bottom' });
   }
   // 上报消息已读
-  ReportedMessageRead(data) {
-    if (!isFocused) return;
+  reportedMessageRead(data) {
+    if (!isFocused.value) return;
     store.commit("SET_HISTORYMESSAGE", {
       type: "MARKE_MESSAGE_AS_READED",
       payload: {
@@ -317,6 +318,7 @@ export class TIMProxy {
   handleNotificationTip(data) {
     const { userID } = this.userProfile || {};
     const { atUserList } = data[0];
+    console.log(data)
     if (atUserList.length > 0) {
       let off = atUserList.includes(userID);
       let all = atUserList.includes(TIM.TYPES.MSG_AT_ALL);

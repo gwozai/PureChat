@@ -1,4 +1,4 @@
-import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/mutation-types";
+import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/constants";
 import { addTimeDivider } from "@/utils/chat/index";
 import { imCallback, restApi } from "@/api/node-admin-api/index";
 import TIM from "@/utils/IM/chat/index";
@@ -327,7 +327,7 @@ const conversation = {
             message: addTimeDividerResponse,
           },
         });
-        commit("updataScroll");
+        commit("EMITTER_EMIT", { key: "updataScroll" });
         if (type == "GROUP") {
           const { groupID } = action.groupProfile;
           dispatch("getGroupMemberList", { groupID });
@@ -364,7 +364,7 @@ const conversation = {
           message: cloneDeep(message[0]),
         },
       });
-      commit("updataScroll");
+      commit("EMITTER_EMIT", { key: "updataScroll" });
     },
     // 新增会话列表
     async CHEC_OUT_CONVERSATION({ state, commit, dispatch }, action) {
@@ -422,7 +422,7 @@ const conversation = {
           message: payload.message,
         },
       });
-      commit("updataScroll");
+      commit("EMITTER_EMIT", { key: "updataScroll" });
       // 发送消息
       const { code, message } = await sendMsg(payload.message);
       if (code == 0) {
@@ -442,7 +442,7 @@ const conversation = {
           message: message,
         },
       });
-      commit("updataScroll");
+      commit("EMITTER_EMIT", { key: "updataScroll" });
       imCallback({
         messages: transformData(state.currentMessageList),
         Text: message.payload.text,
@@ -484,7 +484,7 @@ const conversation = {
       }
       return state.currentConversation.type;
     },
-    totalUnreadCount: (state) => {
+    totalUnreadCount(state) {
       const result = state.conversationList.reduce((count, conversation) => {
         // 当前会话不计算总未读
         if (state.currentConversation.conversationID === conversation.conversationID) {
@@ -495,7 +495,7 @@ const conversation = {
       return result;
     },
     // 用于当前会话的图片预览
-    imgUrlList: (state) => {
+    imgUrlList(state) {
       const filteredMessages = state.currentMessageList.filter(
         (item) => item.type === TIM.TYPES.MSG_IMAGE && !item.isRevoked && !item.isDeleted
       );
