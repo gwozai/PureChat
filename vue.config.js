@@ -1,7 +1,10 @@
 const { defineConfig } = require("@vue/cli-service");
-const { ProgressPlugin } = require("webpack"); // 进度条
-const pkg = require("./package.json");
-const dayjs = require("dayjs");
+const AutoImport = require("unplugin-auto-import/webpack");
+const Components = require("unplugin-vue-components/webpack"); // 组件按需引入
+const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer"); // 打包文件分析工具
+const { __APP_INFO__ } = require("./build/info");
+const path = require("path");
 const {
   cdn,
   css,
@@ -13,25 +16,13 @@ const {
   performance,
 } = require("./src/config/vue.custom.config");
 
-const AutoImport = require("unplugin-auto-import/webpack");
-const Components = require("unplugin-vue-components/webpack"); // 组件按需引入
-const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer"); // 打包文件分析工具
-
-const { dependencies, devDependencies, name, version } = pkg;
-const __APP_INFO__ = {
-  pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-};
-
-const path = require("path");
 const resolve = (dir) => {
   return path.join(__dirname, dir);
 };
 
 module.exports = defineConfig({
   // 是否开启 eslint 校验
-  lintOnSave: false,
+  lintOnSave: true,
   // 开发以及生产环境的路径配置
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   // 打包时输出的文件目录
@@ -58,10 +49,6 @@ module.exports = defineConfig({
       .options({ symbolId: "icon-[name]" });
     // 根路径
     config.resolve.alias.set("@", resolve("src"));
-
-    // 删除预加载
-    // config.plugins.delete('preload');
-    // config.plugins.delete('prefetch');
     config.plugin("html").tap((args) => {
       args[0].title = title; // 修改标题
       args[0].cdn = cdn; // CDN外链
@@ -69,21 +56,22 @@ module.exports = defineConfig({
       return args;
     });
   },
-  // webpack配置
   configureWebpack: {
-    // externals,
     plugins: [
-      // 自动按需引入 vue\vue-router\vuex 等的 api
       AutoImport({
+        // 自动导入 Vue 相关函数，如: ref, reactive, toRef 等
         imports: ["vue"],
+        // 自动导入 Element Plus 相关函数, 如: ElMessage, ElMessageBox... (带样式)
         resolvers: [ElementPlusResolver()],
       }),
-      // 按需引入Element-plus
+      // 按需引入Element-plus组件
       Components({
         resolvers: [ElementPlusResolver()],
       }),
       // new BundleAnalyzerPlugin(),
     ],
+    // 打包忽略项
+    // externals,
     // 配置代码分割
     // optimization,
     // 性能提示

@@ -35,7 +35,16 @@ import { Editor } from "@wangeditor/editor-for-vue";
 import RichToolbar from "../components/RichToolbar.vue";
 import { editorConfig } from "../utils/configure";
 import emitter from "@/utils/mitt-bus";
-import { onBeforeUnmount, ref, shallowRef, onMounted, watch, nextTick } from "vue";
+import {
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  onMounted,
+  watch,
+  nextTick,
+  onActivated,
+  onDeactivated,
+} from "vue";
 import { sendChatMessage, customAlert, parseHTMLToArr, extractFilesInfo } from "../utils/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";

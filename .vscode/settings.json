@@ -52,6 +52,5 @@
   // 显示语言
   "i18n-ally.displayLanguage": "zh-CN",
   // 指定要使用的框架支持。
-  "i18n-ally.enabledFrameworks": ["vue"],
-  "iconify.excludes": ["el"]
+  "i18n-ally.enabledFrameworks": ["vue"]
 }
