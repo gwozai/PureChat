@@ -16,19 +16,10 @@ const proxy = {
 };
 const vueDefaultConfig = {
   production, // 环境配置
-  transpileDependencies: ["vue-echarts", "resize-detector"],
-  //webpack 配置的项目名称
   title: "Pure Admin", // 标题
-  titleSeparator: " - ",
-  titleReverse: false,
-  devPort: "9999",
-  abbreviation: "vt2at",
-  providePlugin: {},
-  build7z: false,
-  startMessage: "",
   // pwa 渐进式网页应用
   pwa: {
-    name: "PURE ADMIN",
+    name: "PureAdmin",
     iconPaths: {
       favicon32: "img/icons/favicon-32x32.png",
     },
@@ -52,14 +43,8 @@ const vueDefaultConfig = {
     proxy: process.env.VUE_APP_PROXY === "false" ? null : proxy,
   },
   cdn: {
-    // https://unpkg.com/browse/vue@2.6.10/
-    css: [
-      // "https://cdn.jsdelivr.net/npm/vant@2.12/lib/index.css"
-    ],
-    js: [
-      //"https://cdn.jsdelivr.net/npm/vue", // Vue
-      //"https://unpkg.com/@element-plus/icons-vue", // ElementPlusIconsVue
-    ],
+    css: [],
+    js: [],
   },
   css: {
     // css文件名是否可省略module,默认为false.
@@ -77,9 +62,7 @@ const vueDefaultConfig = {
     } */
   },
   // 打包忽略项
-  externals: {
-    //vue: "Vue",
-  },
+  externals: {},
   // 用于配置如何展示性能提示，以及如何限制资源体积，从而优化网站性能。
   performance: {
     // 提示类型 error

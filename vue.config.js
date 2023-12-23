@@ -1,3 +1,5 @@
+const { defineConfig } = require("@vue/cli-service");
+const { ProgressPlugin } = require("webpack"); // 进度条
 const pkg = require("./package.json");
 const dayjs = require("dayjs");
 const {
@@ -13,10 +15,8 @@ const {
 
 const AutoImport = require("unplugin-auto-import/webpack");
 const Components = require("unplugin-vue-components/webpack"); // 组件按需引入
-const CompressionPlugin = require("compression-webpack-plugin"); // gzip压缩
 const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer"); // 打包文件分析工具
-// const DefineOptions = require('unplugin-vue-define-options/webpack')
 
 const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
@@ -29,7 +29,7 @@ const resolve = (dir) => {
   return path.join(__dirname, dir);
 };
 
-module.exports = {
+module.exports = defineConfig({
   // 是否开启 eslint 校验
   lintOnSave: false,
   // 开发以及生产环境的路径配置
@@ -46,18 +46,6 @@ module.exports = {
   css,
   // 对内部的webpack配置(比如修改、增加Loader选项)(链式操作).
   chainWebpack(config) {
-    // 为生产环境修改配置...
-    if (production) {
-      // 清除css,js版本号
-      // config.output.filename("static/js/[name].js").end();
-      // config.output.chunkFilename("static/js/[name].js").end();
-      // config.plugin("extract-css").tap((args) => [
-      //   {
-      //     filename: `static/css/[name].css`,
-      //     chunkFilename: `static/css/[name].css`,
-      //   },
-      // ]);
-    }
     // svg-sprite-loader 配置
     config.module.rules.delete("svg");
     config.module
@@ -85,8 +73,6 @@ module.exports = {
   configureWebpack: {
     // externals,
     plugins: [
-      // setup语法糖通过defineOptions定义组件name
-      // DefineOptions()
       // 自动按需引入 vue\vue-router\vuex 等的 api
       AutoImport({
         imports: ["vue"],
@@ -97,17 +83,10 @@ module.exports = {
         resolvers: [ElementPlusResolver()],
       }),
       // new BundleAnalyzerPlugin(),
-      // 压缩配置 用于生成Gzip压缩的文件，从而减小文件的体积，加快网站的加载速度
-      // new CompressionPlugin({
-      //   algorithm: "gzip", // 使用gzip压缩
-      //   test: /\.(js|css|html)?$/i, // 压缩文件格式
-      //   threshold: 10240,
-      //   minRatio: 0.8, // 压缩率小于1才会压缩
-      // }),
     ],
     // 配置代码分割
     // optimization,
     // 性能提示
     // performance,
   },
-};
+});
