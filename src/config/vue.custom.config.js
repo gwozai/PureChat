@@ -44,7 +44,7 @@ const vueDefaultConfig = {
   },
   cdn: {
     css: [],
-    js: [],
+    js: ["https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"],
   },
   css: {
     // css文件名是否可省略module,默认为false.
