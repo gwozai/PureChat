@@ -1,14 +1,14 @@
 import store from "@/store/index";
 import { match } from "pinyin-pro";
 import { useClipboard } from "@vueuse/core";
-import { fileImgToBase64Url, dataURLtoFile, urlToBase64 } from "@/utils/chat/index";
+import { dataURLtoFile } from "@/utils/chat/index";
+import { getBlob } from '@/utils/chat/message-input-utils';
 import {
   createTextMsg,
   createTextAtMsg,
   createFiletMsg,
   createImgtMsg,
 } from "@/api/im-sdk-api/index";
-import { getBlob } from '@/utils/chat/message-input-utils';
 
 export const dragControllerDiv = (node) => {
   let svgResize = document.getElementById("svgResize"); //滑块
