@@ -7,11 +7,7 @@ import {
   createGroup,
   dismissGroup,
 } from "@/api/im-sdk-api/index";
-
-function compareByRole(a, b) {
-  const roles = { Owner: 1, Admin: 2, Member: 3 };
-  return roles[a.role] - roles[b.role];
-}
+import { compareByRole } from '@/utils/chat/index';
 
 export default {
   state: {

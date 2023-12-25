@@ -1,5 +1,5 @@
 import { CONVERSATIONTYPE, GET_MESSAGE_LIST, HISTORY_MESSAGE_COUNT } from "@/store/constants";
-import { addTimeDivider } from "@/utils/chat/index";
+import { addTimeDivider, getBaseTime, checkTextNotEmpty, transformData } from "@/utils/chat/index";
 import { imCallback, restApi } from "@/api/node-admin-api/index";
 import TIM from "@/utils/IM/chat/index";
 import { cloneDeep } from "lodash-es";
@@ -12,32 +12,6 @@ import {
   getMsgList,
   getUnreadMsg,
 } from "@/api/im-sdk-api/index";
-
-function checkTextNotEmpty(arr) {
-  return arr.some((obj) => {
-    return obj.children.some((child) => {
-      return child.text !== "";
-    });
-  });
-}
-
-function transformData(data) {
-  const inputData = data.filter(
-    (item) => !item.isTimeDivider && !item.isDeleted && !item.isRevoked
-  );
-  return inputData
-    .map((data) => {
-      return {
-        role: data.flow === "in" ? "assistant" : "user",
-        content: data.payload.text,
-      };
-    })
-    .reverse();
-}
-
-const getBaseTime = (list) => {
-  return list?.length > 0 ? list.find((t) => t.isTimeDivider).time : 0;
-};
 
 const conversation = {
   // namespaced: true, //命名空间
