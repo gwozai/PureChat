@@ -65,7 +65,7 @@ export default {
         case TIM.TYPES.GRP_TIP_MBR_KICKED_OUT:
           return `${this.details.nick || ""} 将 ${userName} 移出群聊`;
         case TIM.TYPES.GRP_TIP_MBR_SET_ADMIN:
-          return `群成员：${userName} 成为管理员`;
+          return `${userName} 被设置为管理员`;
         case TIM.TYPES.GRP_TIP_MBR_CANCELED_ADMIN:
           return `群成员：${userName} 被撤销管理员`;
         case TIM.TYPES.GRP_TIP_GRP_PROFILE_UPDATED: // 6
