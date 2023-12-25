@@ -28,7 +28,7 @@ export const editorConfig = {
 };
 // 显示 modal
 function showModal(e) {
-  console.log('[@] 显示 showModal:', e.getText());
+  console.log("[@] 显示 showModal:", e.getText());
   store.commit("SET_MENTION_MODAL", true);
 }
 // 隐藏 modal

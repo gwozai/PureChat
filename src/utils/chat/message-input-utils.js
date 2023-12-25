@@ -122,14 +122,14 @@ export function getBlob(url) {
         const blob = xhr.response;
         const image = new Image();
         image.onload = function () {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
           canvas.width = image.width;
           canvas.height = image.height;
           ctx.drawImage(image, 0, 0);
           canvas.toBlob((convertedBlob) => {
             resolve(convertedBlob);
-          }, 'image/png');
+          }, "image/png");
         };
         image.src = URL.createObjectURL(blob);
       }

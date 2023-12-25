@@ -134,7 +134,7 @@ export class TIMProxy {
     console.log("[chat] 收到新消息 onReceiveMessage:", data);
     this.handleQuitGroupTip(data);
     this.handleNotificationTip(data);
-    const current = getConversationID() == data?.[0].conversationID
+    const current = getConversationID() == data?.[0].conversationID;
     this.handleUpdateMessage(data, current);
   }
   onMessageRevoked({ data }) {
@@ -285,7 +285,7 @@ export class TIMProxy {
     // 消息已读
     read && this.reportedMessageRead(data);
     // 更新滚动条位置到底部
-    store.commit("EMITTER_EMIT", { key: "updataScroll", value: 'bottom' });
+    store.commit("EMITTER_EMIT", { key: "updataScroll", value: "bottom" });
   }
   // 上报消息已读
   reportedMessageRead(data) {
@@ -318,7 +318,6 @@ export class TIMProxy {
   handleNotificationTip(data) {
     const { userID } = this.userProfile || {};
     const { atUserList } = data[0];
-    console.log(data)
     if (atUserList.length > 0) {
       let off = atUserList.includes(userID);
       let all = atUserList.includes(TIM.TYPES.MSG_AT_ALL);

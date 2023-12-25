@@ -75,11 +75,11 @@ const store = createStore({
     },
     // 设置 storage
     SET_STORAGE(state, { key, value }) {
-      storage.set(key, value)
+      storage.set(key, value);
     },
     // 触发事件
-    EMITTER_EMIT(state, { key, value = '' }) {
-      console.log("[emit]:", { key, value })
+    EMITTER_EMIT(state, { key, value = "" }) {
+      console.log("[emit]:", { key, value });
       emitter.emit(key, value);
     },
   },

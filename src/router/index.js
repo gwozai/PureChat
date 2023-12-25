@@ -20,9 +20,9 @@ const defaultRoutePath = "/home";
 console.log("[routes]", routes);
 
 const historyMode = {
-  'history': createWebHistory(),
-  "hash": createWebHashHistory()
-}
+  history: createWebHistory(),
+  hash: createWebHashHistory(),
+};
 
 const router = createRouter({
   history: historyMode[process.env.VUE_APP_ROUTER_HISTORY],

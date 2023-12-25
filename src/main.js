@@ -6,9 +6,9 @@ import { getServerConfig } from "./config";
 
 import "@/styles/index.scss";
 // import "element-plus/theme-chalk/src/index.scss";
-import 'element-plus/theme-chalk/el-message-box.css';
-import 'element-plus/theme-chalk/el-message.css';
-import 'element-plus/theme-chalk/el-notification.css';
+import "element-plus/theme-chalk/el-message-box.css";
+import "element-plus/theme-chalk/el-message.css";
+import "element-plus/theme-chalk/el-notification.css";
 
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "v-contextmenu/dist/themes/default.css";
