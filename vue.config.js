@@ -23,7 +23,7 @@ const lifecycle = process.env.npm_lifecycle_event;
 
 module.exports = defineConfig({
   // 是否开启 eslint 校验
-  lintOnSave: true,
+  lintOnSave: false,
   // 开发以及生产环境的路径配置
   publicPath: process.env.VUE_APP_PUBLIC_PATH,
   // 打包时输出的文件目录
@@ -75,7 +75,7 @@ module.exports = defineConfig({
     // 打包忽略项
     // externals,
     // 配置代码分割
-    // optimization,
+    optimization,
     // 性能提示
     // performance,
   },
