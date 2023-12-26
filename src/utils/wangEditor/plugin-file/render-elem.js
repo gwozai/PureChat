@@ -11,7 +11,7 @@ import { renderFileIcon } from "@/views/ChatStudio/utils/utils";
 function renderMention(elem, children, editor) {
   const { fileName = "", link = "", fileSize } = elem;
   const fileType = getFileType(fileName);
-  const selected = DomEditor.isNodeSelected(editor, elem)
+  const selected = DomEditor.isNodeSelected(editor, elem);
   // 附件 icon 图标 vnode
   const iconVnode = h("img", {
     props: { src: renderFileIcon(fileType) },
@@ -69,14 +69,14 @@ function renderMention(elem, children, editor) {
       style: {
         width: "200px",
         height: "60px",
-        display: 'inline-flex',
+        display: "inline-flex",
         alignItems: "center",
         borderRadius: "3px",
-        border: "1px solid #eeeeee",
+        // border: "1px solid #eeeeee",
         // background: "#fafafa",
-        // border: selected // 选中/不选中，样式不一样
-        //   ? '2px solid var(--w-e-textarea-selected-border-color)' // wangEditor 提供了 css var https://www.wangeditor.com/v5/theme.html
-        //   : '2px solid transparent',
+        border: selected // 选中/不选中，样式不一样
+          ? "1px solid var(--w-e-textarea-selected-border-color)" // wangEditor 提供了 css var https://www.wangeditor.com/v5/theme.html
+          : "1px solid #eeeeee",
         userSelect: "none",
       },
       on: {
@@ -91,8 +91,8 @@ function renderMention(elem, children, editor) {
 }
 
 const config = {
-  type: 'attachment',
+  type: "attachment",
   renderElem: renderMention,
-}
+};
 
-export default config
+export default config;

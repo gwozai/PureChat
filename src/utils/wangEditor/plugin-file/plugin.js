@@ -20,4 +20,4 @@ function withMention(editor) {
   return newEditor;
 }
 
-export default withMention
+export default withMention;

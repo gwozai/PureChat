@@ -21,4 +21,4 @@ const parseHtmlConf = {
   parseElemHtml: parseHtml,
 };
 
-export default parseHtmlConf
+export default parseHtmlConf;

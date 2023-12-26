@@ -7,7 +7,7 @@ import {
   createGroup,
   dismissGroup,
 } from "@/api/im-sdk-api/index";
-import { compareByRole } from '@/utils/chat/index';
+import { compareByRole } from "@/utils/chat/index";
 
 export default {
   state: {

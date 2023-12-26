@@ -10,8 +10,8 @@ function mentionToHtml(elem, childrenHtml) {
   return html;
 }
 const config = {
-  type: 'attachment',
+  type: "attachment",
   elemToHtml: mentionToHtml,
-}
+};
 
-export default config
+export default config;
