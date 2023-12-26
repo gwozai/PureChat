@@ -1,5 +1,9 @@
 <template>
-  <div class="image_preview" :class="self ? 'is-text-self' : 'is-text-other'" @click="geiPic(url)">
+  <div
+    class="image_preview select-none"
+    :class="self ? 'is-text-self' : 'is-text-other'"
+    @click="geiPic(url)"
+  >
     <el-image
       :src="url"
       :preview-src-list="showCheckbox ? null : srcList"

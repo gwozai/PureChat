@@ -1,5 +1,5 @@
 <template>
-  <div class="EditorStyle" id="svgDown" v-if="showMsgBox" v-show="!showCheckbox">
+  <div class="wangeditor" id="svgDown" v-if="showMsgBox" v-show="!showCheckbox">
     <!-- 自定义工具栏 -->
     <RichToolbar @setToolbar="setToolbar" />
     <Editor
@@ -376,11 +376,11 @@ watch(showMsgBox, () => {
 });
 onActivated(() => {
   handleEditorKeyDown();
-  console.log("Editor == onActivated");
+  console.log("[Editor]: onActivated");
 });
 onDeactivated(() => {
   offEmitter();
-  console.log("Editor == onDeactivated");
+  console.log("[Editor]: onDeactivated");
 });
 onMounted(() => {
   onEmitter();
@@ -395,7 +395,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 @import "@/styles/mixin.scss";
-.EditorStyle {
+.wangeditor {
   word-break: break-all;
   height: 206px;
   .editor-content {
@@ -411,6 +411,9 @@ onBeforeUnmount(() => {
       font-style: normal;
       font-size: 15px;
       top: 5px;
+    }
+    :deep(.w-e-selected-image-container) {
+      overflow: visible;
     }
     :deep(.w-e-scroll) {
       @include scrollBar;

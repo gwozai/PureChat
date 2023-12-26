@@ -109,6 +109,7 @@ const SendImageClick = () => {
 };
 const SendFileClick = () => {
   let $el = filePicker.value;
+  $el.value = null;
   $el.click();
 };
 // 截图
