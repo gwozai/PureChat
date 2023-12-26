@@ -1,8 +1,3 @@
-/**
- * @description render elem
- * @author wangfupeng
- */
-
 import { h } from "snabbdom";
 import { DomEditor } from "@wangeditor/editor";
 
@@ -29,7 +24,7 @@ function renderMention(elem, children, editor) {
         padding: "0 3px",
       },
     },
-    `@${value}1`
+    `@${value}`
   );
   return vnode;
 }
