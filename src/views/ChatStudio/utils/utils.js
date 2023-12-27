@@ -327,6 +327,13 @@ export function parseHTMLToArr(html) {
   return arr;
 }
 
+export function parseContentFromHTML(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const content = doc.body.textContent.trim();
+  return content;
+}
+
 /**
  * 从 HTML 中提取文件信息
  * @param {string} html - 包含文件信息的 HTML 字符串
@@ -358,7 +365,7 @@ export const compareUserID = (a, b) => {
  * @returns {Array} - 匹配项的数组。
  */
 export function searchByPinyin(searchStr) {
-  // debugger
+  // debugger;
   // 获取当前成员列表
   const memberList = store.state?.groupinfo?.currentMemberList;
   // 过滤掉当前用户的信息
@@ -371,7 +378,7 @@ export function searchByPinyin(searchStr) {
       key: "setMentionModal",
       value: { type: "empty" },
     });
-    return 'empty';
+    return "empty";
   }
   // 存储匹配项的索引
   const indices = [];
@@ -394,16 +401,17 @@ export function searchByPinyin(searchStr) {
       searchlength: searchStr.length + 1, // +1 包含@长度
     },
   });
-  return eventType
+  return eventType;
 }
 
 /**
  * 根据输入的字符串过滤提及列表并触发相关操作。
  * @param {string} inputStr - 输入的字符串。
  */
-export function filterMentionList(inputStr) {
-  // debugger
-  console.log(inputStr)
+export function filterMentionList(inputStr, inputHtml) {
+  // debugger;
+  console.log("inputStr:", inputHtml);
+  console.log("inputHtml:", parseContentFromHTML(inputHtml));
   // 如果当前类型不是群聊
   if (store.getters.currentType !== "GROUP") return;
   // 如果输入字符串中没有 "@" 符号，直接返回
@@ -432,7 +440,7 @@ export function filterMentionList(inputStr) {
         searchValue: inputStr,
       },
     });
-    return 'all';
+    return "all";
   }
   // 获取最后一个 "@" 符号的索引位置
   const lastAtIndex = inputStr.lastIndexOf("@");

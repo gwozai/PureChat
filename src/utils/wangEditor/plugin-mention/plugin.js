@@ -19,11 +19,13 @@ function withMention(editor) {
 
   function hideOnChange() {
     if (pinyinSearch) {
-      // const modal = filterMentionList(newEditor.getText())
-      // const isHide = modal == 'all' || modal == 'success' || modal == 'empty'
-      // console.log(modal, !isHide) // newEditor.selection != null
-      hide();
-      newEditor.off("change", hideOnChange);
+      const modal = filterMentionList(newEditor.getText(), newEditor.getHtml());
+      const isHide = modal == "success"; // || modal == 'all' || modal == 'empty'
+      console.log(modal, isHide);
+      if (!isHide) {
+        hide();
+        newEditor.off("change", hideOnChange);
+      }
     } else if (newEditor.selection != null) {
       hide();
       newEditor.off("change", hideOnChange);

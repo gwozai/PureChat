@@ -34,6 +34,6 @@ function showModal(e) {
 }
 // 隐藏 modal
 function hideModal(e) {
-  console.log('[@] 隐藏 hideModal:', e.getText());
+  console.log("[@] 隐藏 hideModal:", e.getText());
   store.commit("SET_MENTION_MODAL", false);
 }
