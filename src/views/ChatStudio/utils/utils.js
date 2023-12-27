@@ -358,6 +358,7 @@ export const compareUserID = (a, b) => {
  * @returns {Array} - 匹配项的数组。
  */
 export function searchByPinyin(searchStr) {
+  // debugger
   // 获取当前成员列表
   const memberList = store.state?.groupinfo?.currentMemberList;
   // 过滤掉当前用户的信息
@@ -370,7 +371,7 @@ export function searchByPinyin(searchStr) {
       key: "setMentionModal",
       value: { type: "empty" },
     });
-    return;
+    return 'empty';
   }
   // 存储匹配项的索引
   const indices = [];
@@ -393,6 +394,7 @@ export function searchByPinyin(searchStr) {
       searchlength: searchStr.length + 1, // +1 包含@长度
     },
   });
+  return eventType
 }
 
 /**
@@ -400,6 +402,10 @@ export function searchByPinyin(searchStr) {
  * @param {string} inputStr - 输入的字符串。
  */
 export function filterMentionList(inputStr) {
+  // debugger
+  console.log(inputStr)
+  // 如果当前类型不是群聊
+  if (store.getters.currentType !== "GROUP") return;
   // 如果输入字符串中没有 "@" 符号，直接返回
   if (inputStr.lastIndexOf("@") == -1) {
     store.commit("SET_MENTION_MODAL", false);
@@ -426,28 +432,20 @@ export function filterMentionList(inputStr) {
         searchValue: inputStr,
       },
     });
-    return;
+    return 'all';
   }
-  // 获取当前光标位置和文本范围
-  const selection = window.getSelection();
-  const focusOffset = selection.focusOffset;
-  const range = selection.getRangeAt(0);
-  const rangeAncestor = range.commonAncestorContainer.data;
-  // 如果文本范围不存在，直接返回
-  if (!rangeAncestor) return;
-  // 获取光标位置之前的文本
-  const text = rangeAncestor.substring(0, focusOffset);
   // 获取最后一个 "@" 符号的索引位置
-  const lastAtIndex = text.lastIndexOf("@");
+  const lastAtIndex = inputStr.lastIndexOf("@");
   // 如果找不到 "@" 符号，关闭提及模态框并返回
   if (lastAtIndex === -1) {
     store.commit("SET_MENTION_MODAL", false);
     return;
   }
+  const text = inputStr.substring(lastAtIndex);
   // 从 "@" 出现的索引位置截取到光标位置，得到搜索值
-  const searchValue = text.substring(lastAtIndex + 1, focusOffset);
+  const searchValue = text.substring(lastAtIndex + 1, text.length);
   console.log("searchValue:", searchValue);
   if (!searchValue) return;
   // 执行根据拼音搜索的操作
-  searchByPinyin(searchValue);
+  return searchByPinyin(searchValue);
 }

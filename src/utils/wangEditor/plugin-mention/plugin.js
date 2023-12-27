@@ -1,14 +1,5 @@
 import { DomEditor } from "@wangeditor/editor";
-import { debounce } from "lodash-es";
 import { filterMentionList } from "@/views/ChatStudio/utils/utils";
-
-const handleAt = debounce((editor) => {
-  const str = editor.getText();
-  console.log("str", str);
-  // 群聊才触发@好友
-  // if (currentType.value !== "GROUP") return;
-  // filterMentionList(str);
-}, 50);
 
 function getMentionConfig(editor) {
   const { EXTEND_CONF } = editor.getConfig();
@@ -17,7 +8,7 @@ function getMentionConfig(editor) {
 }
 
 function withMention(editor) {
-  const { insertText, onChange, isInline, isVoid } = editor;
+  const { insertText, isInline, isVoid } = editor;
   const newEditor = editor;
   // mention 相关配置
   const { showModal, hideModal, pinyinSearch } = getMentionConfig(newEditor);
@@ -27,7 +18,13 @@ function withMention(editor) {
   }
 
   function hideOnChange() {
-    if (newEditor.selection != null) {
+    if (pinyinSearch) {
+      // const modal = filterMentionList(newEditor.getText())
+      // const isHide = modal == 'all' || modal == 'success' || modal == 'empty'
+      // console.log(modal, !isHide) // newEditor.selection != null
+      hide();
+      newEditor.off("change", hideOnChange);
+    } else if (newEditor.selection != null) {
       hide();
       newEditor.off("change", hideOnChange);
     }
@@ -43,7 +40,9 @@ function withMention(editor) {
     }
     if (t === "@") {
       setTimeout(() => {
-        if (showModal) showModal(newEditor);
+        if (showModal) {
+          showModal(newEditor);
+        }
         setTimeout(() => {
           newEditor.once("fullScreen", hide);
           newEditor.once("unFullScreen", hide);
@@ -56,11 +55,6 @@ function withMention(editor) {
     }
     insertText(t);
   };
-  // 重写 onChange
-  newEditor.onChange = () => {
-    // pinyinSearch && handleAt(newEditor)
-    onChange(editor)
-  }
 
   newEditor.isInline = (elem) => {
     const type = DomEditor.getNodeType(elem);
