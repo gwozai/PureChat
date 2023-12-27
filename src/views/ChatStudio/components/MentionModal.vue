@@ -40,6 +40,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 是否开启拼音搜索
+    pinyinSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapState({

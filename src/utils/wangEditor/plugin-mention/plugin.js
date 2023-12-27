@@ -1,4 +1,14 @@
 import { DomEditor } from "@wangeditor/editor";
+import { debounce } from "lodash-es";
+import { filterMentionList } from "@/views/ChatStudio/utils/utils";
+
+const handleAt = debounce((editor) => {
+  const str = editor.getText();
+  console.log("str", str);
+  // 群聊才触发@好友
+  // if (currentType.value !== "GROUP") return;
+  // filterMentionList(str);
+}, 50);
 
 function getMentionConfig(editor) {
   const { EXTEND_CONF } = editor.getConfig();
@@ -7,9 +17,21 @@ function getMentionConfig(editor) {
 }
 
 function withMention(editor) {
-  const { insertText, isInline, isVoid } = editor;
+  const { insertText, onChange, isInline, isVoid } = editor;
   const newEditor = editor;
+  // mention 相关配置
+  const { showModal, hideModal, pinyinSearch } = getMentionConfig(newEditor);
 
+  function hide() {
+    if (hideModal) hideModal(newEditor);
+  }
+
+  function hideOnChange() {
+    if (newEditor.selection != null) {
+      hide();
+      newEditor.off("change", hideOnChange);
+    }
+  }
   // 重写 insertText
   newEditor.insertText = (t) => {
     // 选过选中了 void 元素
@@ -19,52 +41,36 @@ function withMention(editor) {
       insertText(t);
       return;
     }
-    // mention 相关配置
-    const { showModal, hideModal } = getMentionConfig(newEditor);
-
     if (t === "@") {
       setTimeout(() => {
-        // 展示 modal （异步，以便准确获取光标位置）
         if (showModal) showModal(newEditor);
-
-        // 监听，隐藏 modal（异步，等待 modal 渲染后再监听）
         setTimeout(() => {
-          function _hide() {
-            if (hideModal) hideModal(newEditor);
-          }
-          newEditor.once("fullScreen", _hide);
-          newEditor.once("unFullScreen", _hide);
-          newEditor.once("scroll", _hide);
-          newEditor.once("modalOrPanelShow", _hide);
-          newEditor.once("modalOrPanelHide", _hide);
-
-          function hideOnChange() {
-            if (newEditor.selection != null) {
-              _hide();
-              newEditor.off("change", hideOnChange); // 及时解绑
-            }
-          }
+          newEditor.once("fullScreen", hide);
+          newEditor.once("unFullScreen", hide);
+          newEditor.once("scroll", hide);
+          newEditor.once("modalOrPanelShow", hide);
+          newEditor.once("modalOrPanelHide", hide);
           newEditor.on("change", hideOnChange);
         });
       });
     }
-    // 非 '@' 则执行默认行为
     insertText(t);
   };
+  // 重写 onChange
+  newEditor.onChange = () => {
+    // pinyinSearch && handleAt(newEditor)
+    onChange(editor)
+  }
 
   newEditor.isInline = (elem) => {
     const type = DomEditor.getNodeType(elem);
-    if (type === "mention") {
-      return true;
-    }
+    if (type === "mention") return true;
     return isInline(elem);
   };
 
   newEditor.isVoid = (elem) => {
     const type = DomEditor.getNodeType(elem);
-    if (type === "mention") {
-      return true;
-    }
+    if (type === "mention") return true;
     return isVoid(elem);
   };
   return newEditor;

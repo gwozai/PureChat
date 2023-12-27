@@ -18,6 +18,7 @@
     <mention-modal
       ref="mentionRef"
       v-if="isShowModal"
+      :pinyinSearch="true"
       :isOwner="isOwner"
       @insertMention="insertMention"
     />
@@ -52,7 +53,6 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
-import { filterMentionList } from "../utils/utils";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -83,10 +83,6 @@ const {
 
 const handleCreated = (editor) => {
   editorRef.value = editor;
-  // editor.getConfig()
-  // editor.enable(); //
-  // editor.disable(); // 只读
-  // editor.hidePanelOrModal();
 };
 const insertMention = ({ id, name, backward = true, deleteDigit = 0 }) => {
   const editor = editorRef.value;
@@ -132,13 +128,7 @@ const insertDraft = (value) => {
   clearInputInfo();
   draft?.forEach((item) => {
     editor.insertNode(item.children);
-    // editor.insertBreak();
   });
-  // SlateTransforms.removeNodes(editor);
-  // const node1 = { type: "paragraph", children: [{ text: "aaa" }] };
-  // const node2 = { type: "paragraph", children: [{ text: "bbb" }] };
-  // const nodeList = [node1, node2];
-  // SlateTransforms.insertNodes(editor, draft);
 };
 
 // 更新草稿
@@ -149,18 +139,10 @@ const updateDraft = debounce((data) => {
   });
 }, 300);
 
-const handleAt = debounce((editor) => {
-  const str = editor.getText();
-  // 群聊才触发@好友
-  if (currentType.value !== "GROUP") return;
-  filterMentionList(str);
-}, 100);
-
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   updateDraft(content);
-  handleAt(editor);
 };
 
 const handleFile = (item) => {
