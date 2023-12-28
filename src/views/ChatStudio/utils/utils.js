@@ -330,7 +330,7 @@ export function parseHTMLToArr(html) {
 export function parseContentFromHTML(html) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
-  const content = doc.body.textContent.trim();
+  const content = doc.body.textContent; // trim()
   return content;
 }
 
@@ -391,8 +391,13 @@ export function searchByPinyin(searchStr) {
       indices.push(item);
     }
   });
+  const isShowModal = store.state?.conversation.isShowModal;
+  console.log("isShowModal:", isShowModal);
   // 触发相应的事件根据匹配结果触发不同的操作
   const eventType = indices.length === 0 ? "empty" : "success";
+  if (!isShowModal && eventType === "success") {
+    // store.commit("SET_MENTION_MODAL", true);
+  }
   store.commit("EMITTER_EMIT", {
     key: "setMentionModal",
     value: {
@@ -408,40 +413,46 @@ export function searchByPinyin(searchStr) {
  * 根据输入的字符串过滤提及列表并触发相关操作。
  * @param {string} inputStr - 输入的字符串。
  */
-export function filterMentionList(inputStr, inputHtml) {
+export function filterMentionList(Str, Html) {
   // debugger;
-  console.log("inputStr:", inputHtml);
-  console.log("inputHtml:", parseContentFromHTML(inputHtml));
   // 如果当前类型不是群聊
   if (store.getters.currentType !== "GROUP") return;
-  // 如果输入字符串中没有 "@" 符号，直接返回
-  if (inputStr.lastIndexOf("@") == -1) {
-    store.commit("SET_MENTION_MODAL", false);
-    return;
-  }
+  const inputStr = Str
   // 如果输入字符串为空，关闭提及模态框并返回
   if (inputStr === "") {
     store.commit("SET_MENTION_MODAL", false);
     return;
   }
+  // 如果输入字符串中没有 "@" 符号，直接返回
+  if (inputStr.lastIndexOf("@") == -1) {
+    store.commit("SET_MENTION_MODAL", false);
+    return;
+  }
+  const inputHtml = parseContentFromHTML(Html)
+  console.log("inputStr:", Str);
+  // console.log("inputHtml:", inputHtml);
   const isShowModal = store.state?.conversation.isShowModal;
-  console.log("isShowModal:", isShowModal);
-  console.log("inputStr:", inputStr);
-  console.log("endsWith@:", inputStr.endsWith("@"));
+  // console.log("isShowModal:", isShowModal);
+  // console.log("inputStr:", inputStr);
+  // console.log("endsWith@:", inputStr.endsWith("@"));
   // 如果输入字符串仅包含 "@" 符号，或则字符结尾，触发 setMentionModal 操作并返回
-  if (inputStr === "@" || inputStr.endsWith("@")) {
-    if (!isShowModal) {
-      store.commit("SET_MENTION_MODAL", true);
-    }
-    store.commit("EMITTER_EMIT", {
-      key: "setMentionModal",
-      value: {
-        type: "all",
-        searchValue: inputStr,
-      },
-    });
+  if (inputStr === "@" && inputStr.endsWith("@")) {
+    // if (!isShowModal) {
+    //   store.commit("SET_MENTION_MODAL", true);
+    // }
+    // store.commit("EMITTER_EMIT", {
+    //   key: "setMentionModal",
+    //   value: {
+    //     type: "all",
+    //     searchValue: inputStr,
+    //   },
+    // });
     return "all";
   }
+  store.commit("EMITTER_EMIT", {
+    key: "setMentionModal",
+    value: { type: "updata" },
+  });
   // 获取最后一个 "@" 符号的索引位置
   const lastAtIndex = inputStr.lastIndexOf("@");
   // 如果找不到 "@" 符号，关闭提及模态框并返回
@@ -450,9 +461,8 @@ export function filterMentionList(inputStr, inputHtml) {
     return;
   }
   const text = inputStr.substring(lastAtIndex);
-  // 从 "@" 出现的索引位置截取到光标位置，得到搜索值
-  const searchValue = text.substring(lastAtIndex + 1, text.length);
-  console.log("searchValue:", searchValue);
+  const searchValue = text.substring(1);
+  console.log('searchValue:', searchValue)
   if (!searchValue) return;
   // 执行根据拼音搜索的操作
   return searchByPinyin(searchValue);

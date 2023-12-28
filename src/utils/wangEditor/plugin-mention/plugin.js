@@ -1,5 +1,4 @@
 import { DomEditor } from "@wangeditor/editor";
-import { filterMentionList } from "@/views/ChatStudio/utils/utils";
 
 function getMentionConfig(editor) {
   const { EXTEND_CONF } = editor.getConfig();
@@ -14,19 +13,11 @@ function withMention(editor) {
   const { showModal, hideModal, pinyinSearch } = getMentionConfig(newEditor);
 
   function hide() {
-    if (hideModal) hideModal(newEditor);
+    if (hideModal && !pinyinSearch) hideModal(newEditor);
   }
 
   function hideOnChange() {
-    if (pinyinSearch) {
-      const modal = filterMentionList(newEditor.getText(), newEditor.getHtml());
-      const isHide = modal == "success"; // || modal == 'all' || modal == 'empty'
-      console.log(modal, isHide);
-      if (!isHide) {
-        hide();
-        newEditor.off("change", hideOnChange);
-      }
-    } else if (newEditor.selection != null) {
+    if (newEditor.selection != null) {
       hide();
       newEditor.off("change", hideOnChange);
     }

@@ -53,6 +53,7 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
+import { filterMentionList } from "../utils/utils";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -139,10 +140,15 @@ const updateDraft = debounce((data) => {
   });
 }, 300);
 
+const handleAt = debounce((editor) => {
+  filterMentionList(editor.getText(), editor.getHtml());
+}, 150);
+
 const onChange = (editor) => {
   const content = editor.children;
   messages.value = content;
   updateDraft(content);
+  handleAt(editor);
 };
 
 const handleFile = (item) => {
