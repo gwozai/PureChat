@@ -300,13 +300,13 @@ export const scrollToDomPostion = (msgid) => {
 };
 
 export const createProgressHandler = () => {
-  let lastNum = 0; // 记录上次的 num 值
+  let lastNum = 0;
   const handleProgressUpdate = throttle((progress, cd) => {
     if (progress.num !== lastNum) {
       lastNum = progress.num;
       if (typeof cd === "function") cd();
     }
-  }, 200);
+  }, 100);
   return handleProgressUpdate;
 };
 

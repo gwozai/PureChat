@@ -46,7 +46,13 @@ import {
   onActivated,
   onDeactivated,
 } from "vue";
-import { sendChatMessage, customAlert, parseHTMLToArr, extractFilesInfo } from "../utils/utils";
+import {
+  sendChatMessage,
+  customAlert,
+  parseHTMLToArr,
+  extractFilesInfo,
+  extractAitInfo,
+} from "../utils/utils";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
@@ -275,29 +281,15 @@ const clearInputInfo = () => {
   editor && editor.clear();
 };
 
-const extractAitInfo = () => {
-  let aitStr = "";
-  let aitlist = [];
-  let html = valueHtml.value;
-  if (html.includes("mention")) {
-    aitStr = html.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
-    const newmsg = messages.value[0].children.filter((t) => t.type === "mention");
-    newmsg.forEach((t) => aitlist.push(t.info.id));
-    aitlist = Array.from(new Set(aitlist));
-  }
-  return { aitStr, aitlist };
-};
-
 const sendMsgBefore = () => {
   const editor = editorRef.value;
   const text = editor.getText(); // 纯文本内容
   const HtmlText = editor.getHtml(); // 非格式化的 html
   const image = editor.getElemsByType("image"); // 所有图片
-  const { aitStr, aitlist } = extractAitInfo();
+  const { aitStr, aitlist } = extractAitInfo(editor);
   const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
-  const ElementArray = parseHTMLToArr(HtmlText);
-  console.log(ElementArray);
+  // const ElementArray = parseHTMLToArr(HtmlText);
   return {
     convId: toAccount.value,
     convType: currentConversation.value.type,
@@ -312,6 +304,8 @@ const sendMsgBefore = () => {
 // 发送消息
 const sendMessage = async () => {
   const data = sendMsgBefore();
+  console.log("sendMsgBefore:", data);
+  // return;
   const message = await sendChatMessage(data);
   clearInputInfo();
   dispatch("SESSION_MESSAGE_SENDING", {

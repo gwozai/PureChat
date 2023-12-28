@@ -348,6 +348,25 @@ export const extractFilesInfo = (html) => {
 };
 
 /**
+ * 从编辑器中提取 Ait 信息
+ * @param {Object} editor - 编辑器对象，包含编辑器的内容和方法
+ * @returns {Object} - 包含提及字符串和提及的 id 列表的对象
+ */
+export const extractAitInfo = (editor) => {
+  let aitStr = "";
+  let aitlist = [];
+  let html = editor.getHtml();
+  if (html.includes("mention")) {
+    aitStr = html.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
+    const paragraph = editor.children[0].children;
+    const newmsg = paragraph.filter((t) => t.type === "mention");
+    newmsg.forEach((t) => aitlist.push(t.info.id));
+    aitlist = Array.from(new Set(aitlist));
+  }
+  return { aitStr, aitlist };
+};
+
+/**
  * 比较两个用户的 userID，用于排序
  * @param {Object} a - 第一个用户对象
  * @param {Object} b - 第二个用户对象
