@@ -22,6 +22,7 @@ import { MotionPlugin } from "@vueuse/motion";
 import { registerSvgIcon } from "./assets/icons/index";
 // app loading
 const appLoading = createApp(AppLoading);
+appLoading.mount('#appLoading');
 const app = createApp(App);
 app.directive("contextmenu", directive);
 // 自动加载组件
@@ -30,7 +31,6 @@ loadAllassembly(app);
 registerSvgIcon(app);
 
 getServerConfig(app).then(async (config) => {
-  appLoading.mount('#appLoading');
   app.use(router);
   app.use(store);
   app.use(useI18n);

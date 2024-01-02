@@ -6,7 +6,7 @@ import menuJson from '../db/menu.json';
  */
 export const getMenu = () => {
   // return http({  url: "/menu/query",method: "get", });
-  return menuJson.menu
+  return menuJson
 };
 
 /**

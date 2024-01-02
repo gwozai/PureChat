@@ -376,7 +376,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/mixin.scss";
 .wangeditor {
   word-break: break-all;
   height: 206px;

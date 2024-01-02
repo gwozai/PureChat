@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from "vue";
+import { toRefs } from "vue";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 
 const props = defineProps({
@@ -43,7 +43,7 @@ const index = imgUrlList.value.findIndex((item) => {
 
 const srcList = imgUrlList.value;
 const geiPic = async (url) => {
-  console.log(url);
+  console.log(message.value);
 };
 </script>
 

@@ -278,7 +278,6 @@ onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/mixin.scss";
 .v-contextmenu {
   width: 154px;
   .v-contextmenu-item {
@@ -306,6 +305,7 @@ onMounted(() => {});
   justify-content: center;
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
   color: var(--color-text);
   &:hover {
     background: var(--hover-color);
