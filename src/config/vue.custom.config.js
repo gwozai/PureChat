@@ -60,9 +60,9 @@ const vueDefaultConfig = {
     loaderOptions: {
       sass: {
         // 引入全局scss全局样式
-        prependData: `@import '@/styles/mixin.scss';`
-      }
-    }
+        prependData: `@import '@/styles/mixin.scss';`,
+      },
+    },
   },
   // 打包忽略项
   externals: {},
