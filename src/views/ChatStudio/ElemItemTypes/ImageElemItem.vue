@@ -46,28 +46,24 @@ const index = imgUrlList.value.findIndex((item) => {
 });
 async function initImageSize() {
   try {
-    let width = message?.value.payload.imageInfoArray[1].width;
-    let height = message?.value.payload.imageInfoArray[1].height;
-    if (width > 0 && height > 0) {
-      imgStyle.value = {
-        width: showIMPic(width, height).width,
-        height: showIMPic(width, height).height,
-      };
-    } else {
-      const { width, height } = await getImageSize(url);
-      imgStyle.value = {
-        width: showIMPic(width, height).width,
-        height: showIMPic(width, height).height,
-      };
+    let imageInfo = message?.value.payload.imageInfoArray[1];
+    let width = imageInfo?.width || 0;
+    let height = imageInfo?.height || 0;
+
+    if (width <= 0 || height <= 0) {
+      const { width: newWidth, height: newHeight } = await getImageSize(url);
+      width = newWidth;
+      height = newHeight;
     }
+
+    const { width: finalWidth, height: finalHeight } = showIMPic(width, height);
+    imgStyle.value = { width: finalWidth, height: finalHeight };
   } catch (error) {
     const { width, height } = await getImageSize(url);
-    imgStyle.value = {
-      width: width + "px",
-      height: height + "px",
-    };
+    imgStyle.value = { width: width + "px", height: height + "px" };
   }
 }
+
 initImageSize();
 
 const srcList = imgUrlList.value;
@@ -88,9 +84,12 @@ const loadImg = (e) => {
   background: var(--other-msg-color);
 }
 .image_preview {
-  width: fit-content;
-  padding: 10px 14px;
+  // padding: 10px 14px;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 5px;
+  :deep(.el-image) {
+    border-radius: 5px;
+    vertical-align: bottom;
+  }
 }
 </style>

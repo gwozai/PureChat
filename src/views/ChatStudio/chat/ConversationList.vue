@@ -333,7 +333,7 @@ onMounted(() => {});
       position: absolute;
       right: 0;
       top: 26px;
-      // color: rgb(29 33 41 / 30%);
+      color: var(--color-time-divider);
     }
     .message-item-right-top {
       display: flex;
