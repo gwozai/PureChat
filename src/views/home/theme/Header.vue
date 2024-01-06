@@ -20,7 +20,7 @@
         <div class="user">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <Portrait :size="28" />
+              <UserAvatar type="self" :size="28" />
               <p>{{ userProfile.nick }}</p>
             </span>
             <template #dropdown>
