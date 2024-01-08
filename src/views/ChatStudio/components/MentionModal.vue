@@ -224,6 +224,8 @@ export default {
   }
   .nick {
     margin-left: 5px;
+    max-width: 125px;
+    @include text-ellipsis();
   }
   li {
     cursor: pointer;

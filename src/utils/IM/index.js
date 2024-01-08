@@ -330,6 +330,7 @@ export class TIMProxy {
     const { userID } = this.userProfile || {};
     const { atUserList } = data[0];
     const massage = getConversationList(data);
+    // 消息免打扰
     if (!massage || massage?.[0].messageRemindType === "AcceptNotNotify") return;
     if (atUserList.length > 0) {
       let off = atUserList.includes(userID);
