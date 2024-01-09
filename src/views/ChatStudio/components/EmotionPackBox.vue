@@ -12,11 +12,7 @@
                 :key="item"
                 @click="selectEmoticon(item)"
               >
-                <img
-                  ref="imgRef"
-                  :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])"
-                  :title="item"
-                />
+                <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
               </span>
             </div>
           </template>
@@ -27,14 +23,8 @@
               class="emoji"
               :key="item"
               @click="selectEmoticon(item)"
-              @mouseover="playEmoticon(item)"
-              @mouseout="stopEmoticon(item)"
             >
-              <img
-                ref="imgRef"
-                :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])"
-                :title="item"
-              />
+              <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
             </span>
           </template>
         </div>
@@ -72,8 +62,6 @@ import { getOperatingSystem } from "../utils/utils";
 
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
-
-const imgRef = ref(null);
 const systemOs = ref("");
 const table = ref("QQ");
 const EmotionPackGroup = ref([]);
@@ -88,7 +76,7 @@ const toolDate = [
   },
   {
     title: "我的收藏",
-    icon: "collect",
+    icon: "tiktok", //Tiktok collect
     type: "Tiktok",
   },
 ];
@@ -109,13 +97,6 @@ emitter.on("onEmotionPackBox", (state) => {
   setState(state);
 });
 
-const playEmoticon = (item) => {
-  console.log(item);
-};
-
-const stopEmoticon = (item) => {
-  console.log(item);
-};
 onMounted(() => {
   getParser();
   initEmotion();
