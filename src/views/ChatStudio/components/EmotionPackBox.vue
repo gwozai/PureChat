@@ -1,20 +1,26 @@
 <template>
   <div v-show="state" class="emjio-tion" v-click-outside="onClickOutside">
     <div class="emojis">
-      <el-scrollbar wrap-class="custom-scrollbar-wrap">
-        <div :class="['emoji_QQ', systemOs]" v-if="table == 'QQ'" v-motion-slide-left>
-          <p class="title">最近使用</p>
-          <span
-            v-for="item in emojiQq.emojiName.slice(0, 24)"
-            class="emoji"
-            :key="item"
-            @click="selectEmoticon(item)"
-          >
+      <el-scrollbar wrap-class="custom-scrollbar-wrap" always>
+        <!-- QQ表情包 -->
+        <div :class="['emoji_QQ', systemOs]" v-if="table == 'QQ'">
+          <p class="title" v-show="recently.length">最近使用</p>
+          <span v-for="item in recently" class="emoji" :key="item" @click="selectEmoticon(item)">
             <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
           </span>
           <p class="title">小黄脸表情</p>
+          <template v-if="!rolling">
+            <span
+              v-for="item in emojiQq.emojiName"
+              class="emoji"
+              :key="item"
+              @click="selectEmoticon(item)"
+            >
+              <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
+            </span>
+          </template>
           <!-- 二维数组 css 滚动贴合 -->
-          <template v-if="rolling">
+          <template v-else>
             <div class="scroll-snap" v-for="emoji in EmotionPackGroup" :key="emoji">
               <span
                 v-for="item in emoji"
@@ -26,19 +32,9 @@
               </span>
             </div>
           </template>
-          <!-- mac -->
-          <template v-else>
-            <span
-              v-for="item in emojiQq.emojiName"
-              class="emoji"
-              :key="item"
-              @click="selectEmoticon(item)"
-            >
-              <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
-            </span>
-          </template>
         </div>
-        <div class="emoji_Tiktok" v-if="table == 'Tiktok'" v-motion-slide-right>
+        <!-- 抖音表情包 -->
+        <div class="emoji_Tiktok" v-if="table == 'Tiktok'">
           <span
             v-for="item in emojiDouyin.emojiName"
             class="emoji scroll-content"
@@ -64,6 +60,7 @@
 </template>
 
 <script setup>
+import storage from "storejs";
 import emitter from "@/utils/mitt-bus";
 import { ref, onMounted } from "vue";
 import { useBoolean } from "@/utils/hooks/index";
@@ -74,11 +71,25 @@ import { getOperatingSystem } from "../utils/utils";
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 const rolling = false;
+const recentlyUsed = ref([]);
+const recently = ref([]);
+
 const systemOs = ref("");
 const table = ref("QQ");
 const EmotionPackGroup = ref([]);
 const [state, setState] = useBoolean();
 const emit = defineEmits(["SelectEmoticon"]);
+
+const setClose = () => {
+  setState(false);
+  const used = Array.from(new Set(recentlyUsed.value.slice(0, 13)));
+  if (used) {
+    recently.value = used;
+  }
+  if (recently.value.length) {
+    storage.set("recently", recently.value);
+  }
+};
 
 const toolDate = [
   {
@@ -105,10 +116,12 @@ const getParser = () => {
 };
 const selectEmoticon = (item) => {
   emit("SelectEmoticon", item, table.value);
-  setState(false);
+  recentlyUsed.value.unshift(item);
+  console.log(recently.value);
+  // setClose();
 };
 const onClickOutside = () => {
-  setState(false);
+  setClose();
 };
 emitter.on("onEmotionPackBox", (state) => {
   setState(state);
@@ -117,6 +130,7 @@ emitter.on("onEmotionPackBox", (state) => {
 onMounted(() => {
   getParser();
   initEmotion();
+  recently.value = storage.get("recently") || [];
 });
 </script>
 
