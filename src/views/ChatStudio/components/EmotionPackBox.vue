@@ -4,8 +4,13 @@
       <el-scrollbar wrap-class="custom-scrollbar-wrap" always>
         <!-- QQ表情包 -->
         <div :class="['emoji_QQ', systemOs]" v-if="table == 'QQ'">
-          <p class="title" v-show="recently.length">最近使用</p>
-          <span v-for="item in recently" class="emoji" :key="item" @click="selectEmoticon(item)">
+          <p class="title" v-show="recentlyUsed.length">最近使用</p>
+          <span
+            v-for="item in recentlyUsed"
+            class="emoji"
+            :key="item"
+            @click="selectEmoticon(item)"
+          >
             <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
           </span>
           <p class="title">小黄脸表情</p>
@@ -63,32 +68,33 @@
 import storage from "storejs";
 import emitter from "@/utils/mitt-bus";
 import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
 import { useBoolean } from "@/utils/hooks/index";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { chunk } from "lodash-es";
 import { getOperatingSystem } from "../utils/utils";
 
+import { useState } from "@/utils/hooks/useMapper";
+
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
 const rolling = false;
 const recentlyUsed = ref([]);
-const recently = ref([]);
+// const recently = ref([]);
 
 const systemOs = ref("");
 const table = ref("QQ");
 const EmotionPackGroup = ref([]);
 const [state, setState] = useBoolean();
+const { commit } = useStore();
 const emit = defineEmits(["SelectEmoticon"]);
+const { recently } = useState({
+  recently: (state) => state.conversation.recently,
+});
 
 const setClose = () => {
   setState(false);
-  const used = Array.from(new Set(recentlyUsed.value.slice(0, 13)));
-  if (used) {
-    recently.value = used;
-  }
-  if (recently.value.length) {
-    storage.set("recently", recently.value);
-  }
+  recentlyUsed.value = [...recently.value].reverse();
 };
 
 const toolDate = [
@@ -116,8 +122,10 @@ const getParser = () => {
 };
 const selectEmoticon = (item) => {
   emit("SelectEmoticon", item, table.value);
-  recentlyUsed.value.unshift(item);
-  console.log(recently.value);
+  commit("setRecently", {
+    data: item,
+    type: "add",
+  });
   // setClose();
 };
 const onClickOutside = () => {
@@ -130,7 +138,7 @@ emitter.on("onEmotionPackBox", (state) => {
 onMounted(() => {
   getParser();
   initEmotion();
-  recently.value = storage.get("recently") || [];
+  commit("setRecently", { type: "revert" });
 });
 </script>
 
