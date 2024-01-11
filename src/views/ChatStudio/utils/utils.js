@@ -126,8 +126,7 @@ export const GroupSystemNotice = (message) => {
 };
 
 export const renderFileIcon = (fileType = "") => {
-  console.log(fileType, 'fileType')
-  let type = 'default';
+  let type = "default";
   if (fileType == "xlsx" || fileType == "xls") {
     type = "form";
   } else if (fileType == "doc" || fileType == "docx") {
@@ -140,11 +139,11 @@ export const renderFileIcon = (fileType = "") => {
     type = "txt";
   } else if (fileType == "pdf") {
     type = "pdf";
-  } else if (['png', 'jpg', 'gif', 'jpeg', 'webp'].includes(fileType)) {
+  } else if (["png", "jpg", "gif", "jpeg", "webp"].includes(fileType)) {
     type = "picture";
-  } else if (fileType == 'mp4') {
+  } else if (fileType == "mp4") {
     type = "video";
-  } else if (fileType == 'mp3') {
+  } else if (fileType == "mp3") {
     type = "audio";
   }
   return require(`@/assets/message/${type}.png`);
