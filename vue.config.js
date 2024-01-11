@@ -8,6 +8,7 @@ const path = require("path");
 const {
   cdn,
   css,
+  // pwa,
   title,
   externals,
   devServer,

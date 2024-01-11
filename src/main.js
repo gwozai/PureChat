@@ -21,6 +21,7 @@ import { directive } from "v-contextmenu";
 import { MotionPlugin } from "@vueuse/motion";
 import { motion } from "./directives/index";
 import { registerSvgIcon } from "./assets/icons/index";
+import "./registerServiceWorker";
 // app loading
 const appLoading = createApp(AppLoading);
 appLoading.mount("#appLoading");
