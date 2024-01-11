@@ -268,6 +268,7 @@ const handleEnter = (event) => {
   const editor = editorRef.value;
   const empty = editor.isEmpty(); // 判断当前编辑器内容是否为空
   const { textMsg, aitStr, files, image } = sendMsgBefore();
+  commit("EMITTER_EMIT", { key: "onEmotionPackBox", value: false });
   if ((!empty && !isEmpty(textMsg)) || image || aitStr || files) {
     sendMessage();
   } else {
@@ -384,6 +385,7 @@ onBeforeUnmount(() => {
   .editor-content {
     height: calc(100% - 40px) !important;
     overflow-y: hidden;
+    // :deep(.w-e-image-container) {}
     :deep(.w-e-text-container p) {
       margin: 0;
     }

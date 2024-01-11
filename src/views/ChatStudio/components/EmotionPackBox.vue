@@ -19,7 +19,7 @@
               v-for="item in emojiQq.emojiName"
               class="emoji"
               :key="item"
-              @click="selectEmoticon(item)"
+              @click="selectEmoticon(item, 'QQ')"
             >
               <img :src="require('@/assets/emoji/' + emojiQq.emojiMap[item])" :title="item" />
             </span>
@@ -65,7 +65,6 @@
 </template>
 
 <script setup>
-import storage from "storejs";
 import emitter from "@/utils/mitt-bus";
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -73,30 +72,12 @@ import { useBoolean } from "@/utils/hooks/index";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { chunk } from "lodash-es";
 import { getOperatingSystem } from "../utils/utils";
-
 import { useState } from "@/utils/hooks/useMapper";
 
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
+
 const rolling = false;
-const recentlyUsed = ref([]);
-// const recently = ref([]);
-
-const systemOs = ref("");
-const table = ref("QQ");
-const EmotionPackGroup = ref([]);
-const [state, setState] = useBoolean();
-const { commit } = useStore();
-const emit = defineEmits(["SelectEmoticon"]);
-const { recently } = useState({
-  recently: (state) => state.conversation.recently,
-});
-
-const setClose = () => {
-  setState(false);
-  recentlyUsed.value = [...recently.value].reverse();
-};
-
 const toolDate = [
   {
     title: "默认表情",
@@ -114,23 +95,47 @@ const toolDate = [
     type: "Like",
   },
 ];
+
+const recentlyUsed = ref([]);
+const systemOs = ref("");
+const table = ref("QQ");
+const EmotionPackGroup = ref([]);
+
+const [state, setState] = useBoolean();
+const { commit } = useStore();
+const emit = defineEmits(["SelectEmoticon"]);
+const { recently } = useState({
+  recently: (state) => state.conversation.recently,
+});
+
+const setClose = () => {
+  setState(false);
+  recentlyUsed.value = [...recently.value].reverse();
+};
+
 const initEmotion = () => {
   EmotionPackGroup.value = chunk(emojiQq.emojiName, 12 * 6);
 };
+
 const getParser = () => {
   systemOs.value = getOperatingSystem();
 };
-const selectEmoticon = (item) => {
+
+const selectEmoticon = (item, type = "") => {
   emit("SelectEmoticon", item, table.value);
-  commit("setRecently", {
-    data: item,
-    type: "add",
-  });
+  if (type == "QQ") {
+    commit("setRecently", {
+      data: item,
+      type: "add",
+    });
+  }
   // setClose();
 };
+
 const onClickOutside = () => {
   setClose();
 };
+
 emitter.on("onEmotionPackBox", (state) => {
   setState(state);
 });

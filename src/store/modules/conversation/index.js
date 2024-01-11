@@ -278,12 +278,12 @@ const conversation = {
     setRecently(state, action) {
       const { data, type } = action;
       if (type == "add") {
-        if (state.recently.size > 11) {
+        state.recently.add(data);
+        if (state.recently.size > 12) {
           const iterator = state.recently.values();
           const oldestElement = iterator.next().value;
           state.recently.delete(oldestElement);
         }
-        state.recently.add(data);
         storage.set("recently", [...state.recently]);
       } else if (type == "revert") {
         const recently = storage.get("recently");
