@@ -532,7 +532,6 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 
 <style lang="scss" scoped>
 @import url("../ElemItemTypes/elemType.scss");
-@import "@/styles/mixin.scss";
 .message_name {
   margin-bottom: 5px;
   color: var(--color-time-divider);

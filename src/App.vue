@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { onMounted, nextTick, ref, onBeforeUnmount, computed } from "vue";
+import { onMounted, nextTick, onBeforeUnmount, computed } from "vue";
 import { useWatermark } from "@/utils/hooks/useWatermark";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
