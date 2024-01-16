@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, unref, onMounted, nextTick } from "vue";
+import { ref, unref, onMounted, nextTick, toRefs } from "vue";
 // eslint-disable-next-line no-undef
 const props = defineProps({
   type: {
