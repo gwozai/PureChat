@@ -6,7 +6,7 @@
         <span class="style-text">{{ greetings }}</span>
       </div>
     </el-card>
-    <template v-for="(item, index) in header" :key="index">
+    <template v-for="(item, index) in header" :key="index" v-if="false">
       <el-row :gutter="16" class="style-row">
         <el-col>
           <el-card>
@@ -22,6 +22,18 @@
         </el-col>
       </el-row>
     </template>
+    <Stage
+      v-bind="{
+        initialPieAnimation: true,
+        updateURLHash: true,
+        initialPieLayout: {
+          left: '30%',
+          top: 'center',
+          width: '50%',
+          height: '50%',
+        },
+      }"
+    />
   </el-scrollbar>
 </template>
 
@@ -93,14 +105,11 @@ const openDepot = () => {
 };
 
 onMounted(() => {
-  header.map((t, i) => {
-    var chartDom = document.getElementById(`main${i}`);
-    var myChart = echarts.init(chartDom);
-    option && myChart.setOption(t.option);
-  });
-  // var chartDom = document.getElementById("main0");
-  // var myChart = echarts.init(chartDom);
-  // option && myChart.setOption(option);
+  // header.map((t, i) => {
+  //   var chartDom = document.getElementById(`main${i}`);
+  //   var myChart = echarts.init(chartDom);
+  //   option && myChart.setOption(t.option);
+  // });
 });
 </script>
 <style lang="scss" scoped>
