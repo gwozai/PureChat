@@ -6,7 +6,7 @@
         <span class="style-text">{{ greetings }}</span>
       </div>
     </el-card>
-    <template v-for="(item, index) in header" :key="index" v-if="false">
+    <template v-for="(item, index) in header" :key="index">
       <el-row :gutter="16" class="style-row">
         <el-col>
           <el-card>
@@ -22,23 +22,10 @@
         </el-col>
       </el-row>
     </template>
-    <Stage
-      v-bind="{
-        initialPieAnimation: true,
-        updateURLHash: true,
-        initialPieLayout: {
-          left: '30%',
-          top: 'center',
-          width: '50%',
-          height: '50%',
-        },
-      }"
-    />
   </el-scrollbar>
 </template>
 
 <script setup>
-import * as echarts from "echarts";
 import { computed, ref, onMounted } from "vue";
 const option = {
   tooltip: {
@@ -87,7 +74,7 @@ const header = [
   { title: "GitHub饼图信息", option },
   { title: "Gitee饼图信息", option },
 ];
-let loading = ref(false);
+let loading = ref(true);
 const date = new Date();
 
 let greetings = computed(() => {
