@@ -31,7 +31,6 @@
     "core-js": "^3.33.3",
     "dayjs": "^1.11.2",
     "echarts": "^5.4.3",
-    "echarts-wordcloud": "^2.1.0",
     "element-plus": "^2.4.3",
     "husky": ">=6",
     "linkify-urls": "^4.1.0",

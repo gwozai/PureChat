@@ -9,7 +9,7 @@ import { getServerConfig } from "./config";
 import "@/styles/index.scss";
 import "./registerServiceWorker";
 
-import { setupDirectives } from './directives/index';
+import { setupDirectives } from "./directives/index";
 import { setupPlugins } from "./plugins/index";
 import { loadAllassembly } from "./components/index";
 import { registerSvgIcon } from "./assets/icons/index";

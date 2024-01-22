@@ -26,8 +26,4 @@ const motion = {
   },
 };
 
-export {
-  MotionPlugin,
-  motion
-}
-
+export { MotionPlugin, motion };

@@ -21,7 +21,6 @@ function AnalysisUrl(props) {
   const { text } = props;
   const escapedUrl = html2Escape(text);
   const linkStr = linkifyUrls(escapedUrl, { attributes: { class: "linkUrl", target: "_blank" } });
-  console.log(linkStr);
   return h("span", { innerHTML: linkStr, onClick: () => {} });
 }
 

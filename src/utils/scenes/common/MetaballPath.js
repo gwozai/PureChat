@@ -2,7 +2,7 @@
 // http://paperjs.org/examples/meta-balls/
 // https://medium.com/@tbarrasso/advanced-meta-metaballs-864bbf0a945c
 // https://varun.ca/metaballs/
-import { graphic } from 'echarts/core';
+import { graphic } from "echarts/core";
 
 export class MetaballShape {
   // Source circle
@@ -22,7 +22,6 @@ export class MetaballShape {
 const handleSize = 2.4;
 const v = 0.5;
 
-
 function dist([x1, y1], [x2, y2]) {
   return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
 }
@@ -36,7 +35,7 @@ function getVector([cx, cy], a, r) {
 }
 
 const Metaball = graphic.extendShape({
-  type: 'metaball',
+  type: "metaball",
 
   buildPath(ctx, shape) {
     const HALF_PI = Math.PI / 2;
@@ -48,22 +47,13 @@ const Metaball = graphic.extendShape({
     const maxDist = radius1 + radius2 * 2.5;
     let u1, u2;
 
-    if (
-      radius1 === 0 ||
-      radius2 === 0 ||
-      d > maxDist ||
-      d <= Math.abs(radius1 - radius2)
-    ) {
+    if (radius1 === 0 || radius2 === 0 || d > maxDist || d <= Math.abs(radius1 - radius2)) {
       return;
     }
 
     if (d < radius1 + radius2) {
-      u1 = Math.acos(
-        (radius1 * radius1 + d * d - radius2 * radius2) / (2 * radius1 * d)
-      );
-      u2 = Math.acos(
-        (radius2 * radius2 + d * d - radius1 * radius1) / (2 * radius2 * d)
-      );
+      u1 = Math.acos((radius1 * radius1 + d * d - radius2 * radius2) / (2 * radius1 * d));
+      u2 = Math.acos((radius2 * radius2 + d * d - radius1 * radius1) / (2 * radius2 * d));
     } else {
       u1 = 0;
       u2 = 0;
@@ -75,10 +65,8 @@ const Metaball = graphic.extendShape({
 
     const angle1 = angleBetweenCenters + u1 + (maxSpread - u1) * v;
     const angle2 = angleBetweenCenters - u1 - (maxSpread - u1) * v;
-    const angle3 =
-      angleBetweenCenters + Math.PI - u2 - (Math.PI - u2 - maxSpread) * v;
-    const angle4 =
-      angleBetweenCenters - Math.PI + u2 + (Math.PI - u2 - maxSpread) * v;
+    const angle3 = angleBetweenCenters + Math.PI - u2 - (Math.PI - u2 - maxSpread) * v;
+    const angle4 = angleBetweenCenters - Math.PI + u2 + (Math.PI - u2 - maxSpread) * v;
     // Points
     const p1 = getVector(center1, angle1, radius1);
     const p2 = getVector(center1, angle2, radius1);

@@ -1,4 +1,4 @@
-import Scene from '@/utils/Scene';
+import Scene from "@/utils/Scene";
 // import logoSVG from './data/logoCopy.svg';
 export function getEndingFontSize(chart) {
   return Math.round(chart.getWidth() / 15);
@@ -11,9 +11,9 @@ const option = [
       graphic: {
         elements: [
           {
-            type: 'image',
+            type: "image",
             style: {
-              image: '', // logoSVG
+              image: "", // logoSVG
               x: -size / 2,
               y: -size / 2,
               width: size,
@@ -22,7 +22,7 @@ const option = [
             x: chart.getWidth() / 2 - getEndingFontSize(chart) * 5.5,
             y: chart.getHeight() / 2,
             enterAnimation: {
-              easing: 'cubicOut',
+              easing: "cubicOut",
               duration: 1000,
             },
             enterFrom: {
@@ -30,17 +30,17 @@ const option = [
             },
           },
           {
-            type: 'text',
-            left: 'center',
-            top: 'center',
+            type: "text",
+            left: "center",
+            top: "center",
             style: {
-              text: 'Pure Admin',
+              text: "Pure Admin",
               fontSize: size,
-              fontWeight: 'bold',
+              fontWeight: "bold",
               lineDash: [0, 200],
               lineDashOffset: 0,
-              fill: 'transparent',
-              stroke: '#000',
+              fill: "transparent",
+              stroke: "#000",
               lineWidth: 1,
               fontFamily: `'Open Sans', 'Open Sans Condensed', sans-serif`,
             },
@@ -51,7 +51,7 @@ const option = [
                 {
                   percent: 0.7,
                   style: {
-                    fill: 'transparent',
+                    fill: "transparent",
                     lineDashOffset: 200,
                     lineDash: [200, 0],
                   },
@@ -60,13 +60,13 @@ const option = [
                   // Stop for a while.
                   percent: 0.8,
                   style: {
-                    fill: 'transparent',
+                    fill: "transparent",
                   },
                 },
                 {
                   percent: 1,
                   style: {
-                    fill: 'black',
+                    fill: "black",
                   },
                 },
               ],
@@ -80,7 +80,7 @@ const option = [
 export default new Scene({
   option,
   duration: 5000,
-  file: 'end',
-  title: '',
+  file: "end",
+  title: "",
   dark: false,
 });

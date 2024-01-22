@@ -1,3 +1,3 @@
 import storage from "storejs";
 
-export default storage
+export default storage;

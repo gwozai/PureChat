@@ -107,7 +107,7 @@ import {
   ElPopoverDirective, // v-popover 指令
   ElMessage, // $message 全局属性对象globalProperties
   ElMessageBox, // $msgbox、$alert、$confirm、$prompt 全局属性对象globalProperties
-  ElNotification // $notify 全局属性对象globalProperties
+  ElNotification, // $notify 全局属性对象globalProperties
 } from "element-plus";
 
 const components = [
@@ -217,7 +217,7 @@ const plugins = [
   // ElPopoverDirective,
   ElMessage,
   ElMessageBox,
-  ElNotification
+  ElNotification,
 ];
 
 /** 按需引入`element-plus` */

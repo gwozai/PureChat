@@ -1,5 +1,5 @@
-import Scene from '@/utils/Scene';
-import ghContributions from '@/api/db/gh-contributions-2020.json';
+import Scene from "@/utils/Scene";
+import ghContributions from "@/api/db/gh-contributions-2020.json";
 
 const defaultFont = "'Open Sans Condensed', sans-serif";
 
@@ -18,77 +18,77 @@ const option = [
       min: 0,
       max: 3,
       inRange: {
-        color: ['#0e4429', '#006d32', '#26a641', '#39d353'],
+        color: ["#0e4429", "#006d32", "#26a641", "#39d353"],
       },
       outOfRange: {
-        color: '#001122',
+        color: "#001122",
       },
     },
     calendar: {
-      range: '2020',
-      top: 'center',
+      range: "2020",
+      top: "center",
       right: 10,
       left: 60,
       yearLabel: {
         fontFamily: defaultFont,
       },
       monthLabel: {
-        color: '#fff',
+        color: "#fff",
       },
       dayLabel: {
-        color: '#fff',
+        color: "#fff",
       },
       itemStyle: {
-        color: '#000',
-        borderColor: '#fff',
+        color: "#000",
+        borderColor: "#fff",
       },
     },
     series: {
-      type: 'scatter',
-      coordinateSystem: 'calendar',
-      symbol: 'roundRect',
+      type: "scatter",
+      coordinateSystem: "calendar",
+      symbol: "roundRect",
       symbolSize: Math.min((chart.getWidth() - 70) / 80, 16),
       data: ghContributions,
       itemStyle: {},
       universalTransition: {
         enabled: true,
-        seriesKey: 'calendar',
+        seriesKey: "calendar",
       },
     },
   }),
 
   {
     series: {
-      symbol: 'circle',
+      symbol: "circle",
     },
   },
 
   (chart) => ({
     title: {
-      text: 'Highlight Data with Special Effect',
-      left: 'center',
+      text: "Highlight Data with Special Effect",
+      left: "center",
       top: 20,
       textStyle: {
-        color: '#fff',
+        color: "#fff",
         fontSize: 30,
         fontFamily: defaultFont,
       },
     },
-    animationEasingUpdate: 'linear',
+    animationEasingUpdate: "linear",
     animationDurationUpdate: 1000,
     series: [
       {
-        type: 'scatter',
+        type: "scatter",
         itemStyle: {
           opacity: 0.3,
         },
       },
       {
-        type: 'effectScatter',
-        coordinateSystem: 'calendar',
+        type: "effectScatter",
+        coordinateSystem: "calendar",
         symbolSize: Math.min((chart.getWidth() - 70) / 80, 16),
         rippleEffect: {
-          brushType: 'stroke',
+          brushType: "stroke",
           scale: 4,
         },
         data: highlightedData,
@@ -100,8 +100,8 @@ const option = [
 export default new Scene({
   option,
   duration: [1000, 1000, 3000],
-  file: 'calendarScatter',
-  title: 'Calendar Scatter',
+  file: "calendarScatter",
+  title: "Calendar Scatter",
   dark: false,
   // background: '#cbd4dd',
 });

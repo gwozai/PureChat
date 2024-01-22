@@ -1,4 +1,4 @@
-import { nextTick } from 'vue';
+import { nextTick } from "vue";
 
 function convertToArray(val) {
   return Array.isArray(val) ? val : [val];
@@ -7,9 +7,12 @@ function convertToArray(val) {
 export function chartSetTimeout(chart, cb, time) {
   const animator = chart
     .getZr()
-    .animation.animate({ val: 0 }, {
-      loop: false,
-    })
+    .animation.animate(
+      { val: 0 },
+      {
+        loop: false,
+      }
+    )
     .when(time, {
       val: 1,
     })
@@ -39,11 +42,11 @@ class Scene {
   constructor(opts) {
     this._options = convertToArray(opts.option);
     this._durations = convertToArray(opts.duration);
-    this._title = opts.title || '';
-    this._titleStyle = opts.titleStyle || '';
-    this._background = opts.background || '';
+    this._title = opts.title || "";
+    this._titleStyle = opts.titleStyle || "";
+    this._background = opts.background || "";
     this._dark = opts.dark || false;
-    this._file = opts.file || 'pieEntry';
+    this._file = opts.file || "pieEntry";
   }
 
   getDuration() {
@@ -98,7 +101,7 @@ class Scene {
     }
     const notMerge = this._currentIndex === 0;
     const option = this._options[this._currentIndex];
-    if (typeof option === 'function') {
+    if (typeof option === "function") {
       const ret = option(chart, apiOpts);
       if (ret) {
         chart.setOption(ret, notMerge);
@@ -108,8 +111,7 @@ class Scene {
     }
 
     const duration =
-      this._durations[this._currentIndex] ||
-      this._durations[this._durations.length - 1];
+      this._durations[this._currentIndex] || this._durations[this._durations.length - 1];
     // Play next scene.
     this._timeout = chartSetTimeout(
       chart,
