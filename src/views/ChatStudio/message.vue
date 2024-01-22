@@ -65,7 +65,6 @@ import { dragControllerDiv, isallStaff } from "./utils/utils";
 import { useStore } from "vuex";
 
 import Editor from "./chat/Editor.vue";
-import Sidebar from "./Sidebar.vue";
 import Search from "./components/Search.vue";
 import Header from "./components/Header.vue";
 import ReplyBox from "./components/ReplyBox.vue";

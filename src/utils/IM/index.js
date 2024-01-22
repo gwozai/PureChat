@@ -1,7 +1,7 @@
 "use strict";
 import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/IM/im-sdk/tim";
-import storage from "storejs";
+import storage from "@/utils/localforage/index";
 import store from "@/store";
 import { useWindowFocus } from "@vueuse/core";
 import { scrollToDomPostion } from "@/utils/chat/index";

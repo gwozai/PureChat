@@ -49,7 +49,7 @@ import { ref } from "vue";
 import { useBoolean } from "@/utils/hooks/index";
 import emitter from "@/utils/mitt-bus";
 import { cloneDeep } from "lodash-es";
-import storage from "storejs";
+import storage from "@/utils/localforage/index";
 import { StoreKey, modelValue, useAccessStore } from "@/api/openai/constant";
 
 const [state, setState] = useBoolean();

@@ -4,7 +4,7 @@
       <!-- 侧边栏 -->
       <SideBar />
       <!-- 主体 -->
-      <Theme />
+      <AppMain />
       <!-- 设置 -->
       <Setup />
     </div>
@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import Theme from "./theme/index.vue";
-import SideBar from "./SideBar/index.vue";
+import AppMain from "./appMain/index.vue";
+import SideBar from "./sideBar/index.vue";
 import Setup from "./setup/index.vue";
 </script>
 <style lang="scss" scoped>

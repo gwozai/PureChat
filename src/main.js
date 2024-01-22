@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import { setupRouter } from "./router/index";
+import store from "./store/index";
 import AppLoading from "./views/components/AppLoading/index.vue";
 
 import { getServerConfig } from "./config";
@@ -26,7 +26,8 @@ async function setupApp() {
   setupPlugins(app);
   // 获取全局配置
   await getServerConfig(app);
-  app.use(router);
+  // vue router
+  await setupRouter(app);
   app.use(store);
   appLoading.unmount();
   app.mount("#app");
