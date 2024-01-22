@@ -5,7 +5,7 @@
 
 <script setup>
 import { html2Escape } from "../utils/utils";
-import Autolinker from "autolinker";
+import linkifyUrls from "linkify-urls";
 import { toRefs, h } from "vue";
 
 // eslint-disable-next-line no-undef
@@ -20,7 +20,8 @@ const { text } = toRefs(props);
 function AnalysisUrl(props) {
   const { text } = props;
   const escapedUrl = html2Escape(text);
-  const linkStr = Autolinker.link(escapedUrl, { stripPrefix: false, className: "linkUrl" });
+  const linkStr = linkifyUrls(escapedUrl, { attributes: { class: "linkUrl", target: "_blank" } });
+  console.log(linkStr);
   return h("span", { innerHTML: linkStr, onClick: () => {} });
 }
 
