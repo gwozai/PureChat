@@ -101,6 +101,7 @@ const store = createStore({
         if (!routing) return;
         optimizeTree(routing);
         routing.forEach((item) => {
+          // console.log(item, 'router')
           router.addRoute(item);
         });
       } catch (error) {

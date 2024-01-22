@@ -51,10 +51,10 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { computed, ref, watch, toRefs } from "vue";
+import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useState } from "@/utils/hooks/useMapper";
-import SideBar from "@/views/home/SideBar/index.vue";
+import SideBar from "../SideBar/index.vue";
 import { showConfirmationBox } from "@/utils/message";
 import screenfull from "./screenfull.vue";
 import Tags from "./Tags.vue";

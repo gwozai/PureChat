@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-import Theme from "@/views/home/theme/index.vue";
-import SideBar from "@/views/home/SideBar/index.vue";
-import Setup from "@/views/home/setup/index.vue";
+import Theme from "./theme/index.vue";
+import SideBar from "./SideBar/index.vue";
+import Setup from "./setup/index.vue";
 import AddressBook from "@/views/components/AddressBook/index.vue";
 </script>
 <style lang="scss" scoped>

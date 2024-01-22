@@ -1,4 +1,10 @@
 export default {
+  route: {
+    chatStudio: 'Chat Studio',
+    welcome: 'Welcome',
+    personal: 'Personal',
+    about: 'About'
+  },
   chat: {
     buttonPromptMac: "Press Enter to send the message, Meta⌘ + Enter to wrap",
     buttonPrompt: "Press Enter to send the message, Ctrl + Enter to wrap",

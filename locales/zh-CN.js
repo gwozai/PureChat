@@ -1,4 +1,10 @@
 export default {
+  route: {
+    chatStudio: '聊天工作室',
+    welcome: '首页',
+    personal: '个人中心',
+    about: '关于'
+  },
   chat: {
     buttonPromptMac: "按Enter发送消息, Meta⌘ + Enter 换行",
     buttonPrompt: "按Enter发送消息, Ctrl + Enter 换行",
