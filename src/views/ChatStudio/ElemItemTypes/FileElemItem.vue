@@ -21,10 +21,8 @@
 
 <script setup>
 import { ref, toRefs } from "vue";
-import { bytesToSize } from "@/utils/chat/index";
-import { getFileType } from "@/utils/chat/index";
+import { getFileType, renderFileIcon, bytesToSize } from "@/utils/chat/index";
 import emitter from "@/utils/mitt-bus";
-import { renderFileIcon } from "../utils/utils";
 const props = defineProps({
   message: {
     type: Object,

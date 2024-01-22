@@ -7,8 +7,6 @@
       <Theme />
       <!-- 设置 -->
       <Setup />
-      <!-- 地址本 -->
-      <AddressBook />
     </div>
   </div>
 </template>
@@ -17,7 +15,6 @@
 import Theme from "./theme/index.vue";
 import SideBar from "./SideBar/index.vue";
 import Setup from "./setup/index.vue";
-import AddressBook from "@/views/components/AddressBook/index.vue";
 </script>
 <style lang="scss" scoped>
 .manView {

@@ -32,7 +32,7 @@ const routes = [
   //     {
   //       path: "/chatStudio",
   //       name: "chatStudio",
-  //       component: () => import(/* webpackChunkName: "ChatStudio" */ "@/views/ChatStudio/index"),
+  //       component: () => import(/* webpackChunkName: "ChatStudio" */ "@/views/chatStudio/index"),
   //       meta: {
   //         title: $t('route.chatStudio'),
   //         icon: "ForkSpoon",
@@ -42,7 +42,7 @@ const routes = [
   //     {
   //       path: "/personal",
   //       name: "personal",
-  //       component: () => import(/* webpackChunkName: "Personal" */ "@/views/Personal/index"),
+  //       component: () => import(/* webpackChunkName: "Personal" */ "@/views/personal/index"),
   //       meta: {
   //         title: $t('route.personal'),
   //         icon: "User",
