@@ -19,7 +19,6 @@ const {
 const resolve = (dir) => {
   return path.join(__dirname, dir);
 };
-const lifecycle = process.env.npm_lifecycle_event;
 
 module.exports = defineConfig({
   // 是否开启 eslint 校验
