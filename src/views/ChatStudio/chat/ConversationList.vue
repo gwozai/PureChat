@@ -68,7 +68,7 @@
 <script setup>
 import { h, ref, onMounted } from "vue";
 import { RIGHT_CLICK_CHAT_LIST } from "../utils/menu";
-import VirtualList from "./VirtualList.vue";
+// import VirtualList from "./VirtualList.vue";
 import EmptyMessage from "../components/EmptyMessage.vue";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/chat/index";
