@@ -7,7 +7,6 @@ import AppLoading from "./views/components/AppLoading/index.vue";
 import { getServerConfig } from "./config";
 
 import "@/styles/index.scss";
-import "./registerServiceWorker";
 
 import { setupDirectives } from "./directives/index";
 import { setupPlugins } from "./plugins/index";
