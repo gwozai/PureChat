@@ -1,6 +1,6 @@
 <template>
   <div class="content-wrap">
-    <el-row :gutter="20" v-if="false">
+    <el-row :gutter="20">
       <el-col :span="8">
         <el-card class="box-card">
           <div v-for="o in 10" :key="o" class="text item">
@@ -16,7 +16,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <div class="h-full">
+    <!-- <div class="h-full">
       <Stage
         v-bind="{
           initialPieAnimation: true,
@@ -29,7 +29,7 @@
           },
         }"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
