@@ -1,15 +1,13 @@
 <template>
   <el-scrollbar class="scrollbar-list">
-    <div class="no-msg" v-if="tabList.length == 0">
-      <el-empty :description="$t('el.table.emptyText')" :image-size="150" />
-    </div>
+    <EmptyMessage classNmae="no-msg" :show="tabList.length == 0" />
     <div
       class="message-item"
       v-for="item in tabList"
       :key="item.conversationID"
       :class="fnClass(item)"
       @click="handleConvListClick(item)"
-      @drop="dropHandler(e, item)"
+      @drop="dropHandler($evevt, item)"
       @dragenter="dragenterHandler"
       @dragleave="dragleaveHandler"
       v-contextmenu:contextmenu
@@ -52,6 +50,7 @@
         <svg-icon v-show="isNotify(item)" iconClass="DontDisturb" class="dont" />
       </div>
     </div>
+    <!-- <virtual-list :list="tabList" /> -->
     <!-- 右键菜单 -->
     <contextmenu ref="contextmenu">
       <contextmenu-item
@@ -69,6 +68,8 @@
 <script setup>
 import { h, ref, onMounted } from "vue";
 import { RIGHT_CLICK_CHAT_LIST } from "../utils/menu";
+import VirtualList from "./VirtualList.vue";
+import EmptyMessage from "../components/EmptyMessage.vue";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/chat/index";
 import { useStore } from "vuex";
@@ -272,10 +273,6 @@ onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>
-.no-msg {
-  color: rgba(0, 0, 0, 0.45);
-  margin-top: 50%;
-}
 .scrollbar-list {
   background: var(--color-body-bg);
   height: 100%;

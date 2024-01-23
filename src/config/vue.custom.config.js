@@ -53,9 +53,9 @@ const vueDefaultConfig = {
     // css文件名是否可省略module,默认为false.
     // requireModuleExtension: false,
     // 是否使用css分离插件 默认生产环境下是true, 开发环境下是false.
-    extract: production,
+    // extract: production,
     // 是否为CSS开启source map.设置为true之后可能会影响构建的性能.
-    sourceMap: !production,
+    sourceMap: false,
     // 向CSS相关的loader传递选项(支持:css-loader postcss-loader sass-loader less-loader stylus-loader).
     loaderOptions: {
       sass: {

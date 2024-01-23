@@ -20,9 +20,7 @@
     </div>
     <!-- 聊天框 -->
     <div class="message-right" id="svgBox">
-      <div class="empty" v-if="!conver">
-        <el-empty :description="$t('el.table.emptyText')" :image-size="150" />
-      </div>
+      <EmptyMessage classNmae="empty" :show="!conver" />
       <Header />
       <!-- 聊天窗口 -->
       <Chatwin ref="ChatRef" />
@@ -64,6 +62,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv, isallStaff } from "./utils/utils";
 import { useStore } from "vuex";
 
+import EmptyMessage from "./components/EmptyMessage.vue";
 import Editor from "./chat/Editor.vue";
 import Search from "./components/Search.vue";
 import Header from "./components/Header.vue";
@@ -180,11 +179,5 @@ watchEffect(() => {
   align-items: center;
   color: #fff;
   cursor: pointer;
-}
-.empty {
-  height: 100%;
-  :deep(.el-empty) {
-    height: 100%;
-  }
 }
 </style>
