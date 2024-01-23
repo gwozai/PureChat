@@ -68,7 +68,7 @@
 
 <script setup>
 import { h, ref, onMounted } from "vue";
-import { squareUrl, RIGHT_CLICK_CHAT_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
+import { RIGHT_CLICK_CHAT_LIST } from "../utils/menu";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import { timeFormat } from "@/utils/chat/index";
 import { useStore } from "vuex";
@@ -76,7 +76,7 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { pinConversation } from "@/api/im-sdk-api/index";
 import Label from "../components/Label.vue";
 import emitter from "@/utils/mitt-bus";
-import { chatName, isallStaff } from "../utils/utils";
+import { chatName } from "../utils/utils";
 
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
