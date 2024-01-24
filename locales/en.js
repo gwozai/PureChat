@@ -1,11 +1,12 @@
 export default {
   route: {
-    chatStudio: 'Chat Studio',
-    welcome: 'Welcome',
-    personal: 'Personal',
-    about: 'About'
+    chatStudio: "Chat Studio",
+    welcome: "Welcome",
+    personal: "Personal",
+    about: "About",
   },
   chat: {
+    message: "Message",
     buttonPromptMac: "Press Enter to send the message, Meta⌘ + Enter to wrap",
     buttonPrompt: "Press Enter to send the message, Ctrl + Enter to wrap",
     sending: "Sending",
@@ -15,9 +16,9 @@ export default {
     picture: "Picture",
     file: "File",
     screenshot: "Screenshot",
-    configuration: 'Configuration',
-    windowJitter: 'Window Jitter',
-    scrollToTheBottom: 'Scroll To The Bottom',
+    configuration: "Configuration",
+    windowJitter: "Window Jitter",
+    scrollToTheBottom: "Scroll To The Bottom",
   },
   group: {
     GroupDetails: "Group Details",

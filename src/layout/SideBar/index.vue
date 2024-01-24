@@ -1,5 +1,5 @@
 <template>
-  <div class="select-none" :class="['sidebar-container']" v-show="vislbile || sidebar">
+  <div class="sidebar-container" v-show="vislbile || sidebar">
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         ref="menuRef"
@@ -63,6 +63,7 @@ const handleClose = (key, keyPath) => {
   height: 100%;
 }
 .sidebar-container {
+  user-select: none;
   background: var(--color-body-bg);
   box-shadow: 0 0 1px #888;
   z-index: 11;

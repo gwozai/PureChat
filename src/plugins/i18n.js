@@ -15,6 +15,31 @@ const localesConfigs = {
 };
 const lang = storage.get(SET_UP)?.lang || "zh-CN";
 
+/**
+ * 国际化转换工具函数（自动读取根目录locales文件夹下文件进行国际化匹配）
+ * @param message message
+ * @returns 转化后的message
+ */
+export function transformI18n(message) {
+  if (!message) {
+    return "";
+  }
+
+  if (typeof message === "object") {
+    const locale = i18n.global.locale;
+    return message[locale?.value];
+  }
+
+  const key = message.match(/(\S*)\./)?.[1];
+  if (key && Object.keys(zhLocale).includes(key)) {
+    return i18n.global.t.call(i18n.global.locale, message);
+  } else if (!key && Object.keys(zhLocale).includes(message)) {
+    return i18n.global.t.call(i18n.global.locale, message);
+  } else {
+    return message;
+  }
+}
+
 export const i18n = createI18n({
   legacy: false,
   locale: lang,
