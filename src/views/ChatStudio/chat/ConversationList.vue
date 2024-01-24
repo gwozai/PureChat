@@ -42,7 +42,7 @@
         </div>
         <!-- 未读消息红点 -->
         <el-badge
-          v-show="!isShowCount(item) && !isNotify(item)"
+          v-show="!isShowCount(item) && !isNotify(item) && item.type !== '@TIM#SYSTEM'"
           :value="item.unreadCount"
           :max="99"
         />
