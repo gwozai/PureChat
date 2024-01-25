@@ -137,6 +137,9 @@ input[type="range"]::-ms-thumb:hover {
       font-size: 12px;
       font-weight: 400;
     }
+    .el-select {
+      max-width: 190px;
+    }
   }
 }
 .range {
