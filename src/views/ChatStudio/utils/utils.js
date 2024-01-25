@@ -480,6 +480,11 @@ export const showIMPic = (width, height) => {
       width: 140 + "px",
       height: Math.round((140 / width) * height) + "px",
     };
+  } else if (width <= 35) {
+    picStyle = {
+      width: 45 + "px",
+      height: Math.round((45 / width) * height) + "px",
+    };
   } else {
     picStyle = {
       width: width + "px",

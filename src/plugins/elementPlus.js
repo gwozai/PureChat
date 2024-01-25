@@ -111,7 +111,7 @@ import {
 } from "element-plus";
 
 const components = [
-  ElAffix,
+  // ElAffix,
   ElAlert,
   ElAutocomplete,
   ElAutoResizer,
@@ -205,7 +205,7 @@ const components = [
   ElTooltip,
   ElTransfer,
   ElTree,
-  ElTreeSelect,
+  // ElTreeSelect,
   // ElTreeV2,
   // ElUpload,
   // ElWatermark,

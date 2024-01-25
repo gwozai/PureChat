@@ -6,6 +6,9 @@ export default {
     about: "关于",
   },
   chat: {
+    whole: "全部",
+    unread: "未读",
+    mention: "{'@'}我",
     message: "消息",
     buttonPromptMac: "按Enter发送消息, Meta⌘ + Enter 换行",
     buttonPrompt: "按Enter发送消息, Ctrl + Enter 换行",

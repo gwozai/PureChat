@@ -109,7 +109,9 @@ const getBreadcrumb = (value) => {
       return t?.title === title;
     });
   }
-  const tag = label ? [...label, { title, path: value }] : [{ title, path: value }];
+  const tag = label
+    ? [...label, { title, path: value, name: route.name }]
+    : [{ title, path: value, name: route.name }];
   if (index == -1) {
     commit("UPDATE_USER_INFO", { key: "elTag", value: tag });
   }

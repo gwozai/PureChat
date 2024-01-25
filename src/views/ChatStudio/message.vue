@@ -6,9 +6,9 @@
       <Search />
       <!-- tabs切换 -->
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-        <el-tab-pane label="全部" name="whole"></el-tab-pane>
+        <el-tab-pane :label="$t('chat.whole')" name="whole"></el-tab-pane>
         <el-tab-pane :label="unread" name="unread"></el-tab-pane>
-        <el-tab-pane label="@我" name="mention"></el-tab-pane>
+        <el-tab-pane :label="$t('chat.mention')" name="mention"></el-tab-pane>
         <!-- <el-tab-pane label="群聊" name="groupChat"></el-tab-pane> -->
       </el-tabs>
       <div class="scroll-container" :class="{ 'style-net': !networkStatus }">
@@ -56,6 +56,7 @@ import {
   watchEffect,
   nextTick,
 } from "vue";
+import { $t } from "@/plugins/i18n";
 import TIM from "@/utils/IM/chat/index";
 import { useEventListener } from "@vueuse/core";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
@@ -74,7 +75,7 @@ import ConversationList from "./chat/ConversationList.vue";
 import MultiChoiceBox from "./components/MultiChoiceBox.vue";
 import MergeMessagePopup from "./components/MergeMessagePopup.vue";
 
-const unread = ref("未读");
+const unread = ref("");
 const ChatRef = ref(null);
 const activeName = ref("whole");
 const { dispatch, commit } = useStore();
@@ -91,7 +92,7 @@ const fnTotalUnreadMsg = () => {
   const unreadCount = totalUnreadMsg.value;
   const isUnread = unreadCount > 0;
   const num = unreadCount > 99 ? "99+" : unreadCount;
-  unread.value = isUnread ? `未读(${num})` : "未读";
+  unread.value = isUnread ? `${$t("chat.unread")}(${num})` : $t("chat.unread");
 };
 const handleClick = ({ props }, event) => {
   const { label, name } = props;

@@ -6,6 +6,9 @@ export default {
     about: "About",
   },
   chat: {
+    whole: "Whole",
+    unread: "Unread",
+    mention: "Mention",
     message: "Message",
     buttonPromptMac: "Press Enter to send the message, Meta⌘ + Enter to wrap",
     buttonPrompt: "Press Enter to send the message, Ctrl + Enter to wrap",
