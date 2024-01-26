@@ -543,6 +543,7 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
   height: calc(100% - 70px - 206px - 60px) !important;
 }
 .message-view__item--time-divider {
+  user-select: none;
   position: relative;
   top: 8px;
   margin: 20px 0;

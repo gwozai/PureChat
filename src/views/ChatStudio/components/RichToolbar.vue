@@ -72,7 +72,7 @@
       accept=".mp4"
       hidden
     /> -->
-    <RobotOptions />
+    <RobotOptions v-if="isRobot(toAccount)" />
     <EmotionPackBox @SelectEmoticon="SelectEmoticon" />
   </div>
 </template>

@@ -17,7 +17,7 @@ const props = defineProps({
 
 function AnalysisUrl(props) {
   const { text } = props;
-  const escapedUrl = html2Escape(text);
+  const escapedUrl = text; // html2Escape(text);
   const linkStr = linkifyUrls(escapedUrl);
   return h("span", { innerHTML: linkStr, onClick: () => {} });
 }

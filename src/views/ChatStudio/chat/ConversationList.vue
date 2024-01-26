@@ -280,6 +280,7 @@ onMounted(() => {});
 }
 .message-item {
   padding: 12px 12px 12px 16px;
+  user-select: none;
   height: 64px;
   display: flex;
   align-items: center;
