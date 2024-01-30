@@ -129,6 +129,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 .demo-tabs {
+  user-select: none;
   :deep(.el-tabs__header) {
     margin: 0;
     padding: 0 16px;
