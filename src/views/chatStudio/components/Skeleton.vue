@@ -1,0 +1,60 @@
+<template>
+  <el-skeleton class="style-skeleton" :loading="loading" :throttle="200" animated :count="10">
+    <template #template>
+      <div class="message-skeleton">
+        <div>
+          <el-skeleton-item variant="image" style="width: 40px; height: 40px" />
+        </div>
+        <div class="message-skeleton-item">
+          <div class="flex justify-between">
+            <el-skeleton-item style="width: 40%" variant="text" />
+            <el-skeleton-item style="width: 15%" variant="text" />
+          </div>
+          <el-skeleton-item variant="text" />
+        </div>
+      </div>
+    </template>
+  </el-skeleton>
+</template>
+
+<script>
+export default {
+  name: "Skeleton",
+  components: {},
+  computed: {},
+  props: {
+    list: {
+      type: Object,
+      default: () => {},
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+};
+</script>
+
+<style lang="scss" scoped>
+.message-skeleton {
+  padding: 12px 12px 12px 16px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  .message-skeleton-item {
+    width: 200px;
+    margin-left: 14px;
+    height: 44px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
+</style>

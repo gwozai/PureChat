@@ -20,7 +20,7 @@
     </div>
     <!-- 聊天框 -->
     <div class="message-right" id="svgBox">
-      <EmptyMessage classNmae="empty" :show="!conver" />
+      <EmptyMessage classNmae="empty" v-if="!conver" />
       <Header />
       <!-- 聊天窗口 -->
       <Chatwin ref="ChatRef" />
