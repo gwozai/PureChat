@@ -1,9 +1,9 @@
 <template>
-  <el-skeleton class="style-skeleton" :loading="loading" :throttle="200" animated :count="10">
+  <el-skeleton :loading="loading" :throttle="50" animated :count="10">
     <template #template>
       <div class="message-skeleton">
         <div>
-          <el-skeleton-item variant="image" style="width: 40px; height: 40px" />
+          <el-skeleton-item variant="image" class="image" />
         </div>
         <div class="message-skeleton-item">
           <div class="flex justify-between">
@@ -55,6 +55,11 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+  }
+  .image {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
   }
 }
 </style>

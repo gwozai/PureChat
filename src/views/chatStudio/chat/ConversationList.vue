@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar class="scrollbar-list">
     <EmptyMessage classNmae="no-msg" v-if="tabList.length == 0" />
-    <Skeleton v-if="activetab == 'whole'" :loading="false" />
+    <Skeleton v-else-if="activetab == 'whole'" :loading="false" />
     <div
       class="message-item"
       v-for="item in tabList"
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { h, ref } from "vue";
+import { h, ref, watch, onMounted, nextTick } from "vue";
 import { RIGHT_CLICK_CHAT_LIST } from "../utils/menu";
 // import VirtualList from "./VirtualList.vue";
 import Skeleton from "../components/Skeleton.vue";
@@ -81,6 +81,7 @@ import Label from "../components/Label.vue";
 import emitter from "@/utils/mitt-bus";
 import { chatName } from "../utils/utils";
 
+const loading = ref(true);
 const isShowMenu = ref(false);
 const contextMenuItemInfo = ref([]);
 
@@ -271,6 +272,22 @@ const pingConv = async (data, off) => {
     isPinned,
   });
 };
+watch(
+  () => tabList.value,
+  (value) => {
+    if (value.length === 0) {
+      loading.value = false;
+    }
+  },
+  {
+    deep: true,
+  }
+);
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1500);
+});
 </script>
 
 <style lang="scss" scoped>
