@@ -4,6 +4,12 @@ export default {
     welcome: "首页",
     personal: "个人中心",
     about: "关于",
+    system: "系统管理",
+    menu: "菜单",
+    role: "角色",
+    user: "用户",
+    assembly: "组件",
+    jigsaw: "拼图游戏",
   },
   chat: {
     whole: "全部",

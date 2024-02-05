@@ -4,6 +4,12 @@ export default {
     welcome: "Welcome",
     personal: "Personal",
     about: "About",
+    system: "System",
+    menu: "Menu",
+    role: "Role",
+    user: "User",
+    assembly: "Assembly",
+    jigsaw: "Jigsaw",
   },
   chat: {
     whole: "Whole",

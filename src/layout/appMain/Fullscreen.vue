@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-full" @click="toggle" :title="isFullscreen ? '退出全屏' : '全屏'">
+  <div class="full" @click="toggle" :title="isFullscreen ? '退出全屏' : '打开全屏'">
     <FontIcon iconName="FullScreen" class="icon-hover" />
   </div>
 </template>
@@ -10,7 +10,7 @@ const { isFullscreen, toggle } = useFullscreen();
 </script>
 
 <style lang="scss" scoped>
-.screen-full {
+.full {
   width: 36px;
   height: 48px;
   display: flex;
