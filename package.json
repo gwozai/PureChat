@@ -72,7 +72,7 @@
     "webpack-bundle-analyzer": "^4.6.1"
   },
   "engines": {
-    "node": ">=16.20.1"
+    "node": ">=16"
   },
   "peerDependencies": {
     "snabbdom": "^3.5.1"
