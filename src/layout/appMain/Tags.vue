@@ -183,7 +183,7 @@ function closing(tag) {
 
   .arrow-left,
   .arrow-right {
-    min-width: 40px;
+    min-width: 38px;
     min-height: 38px;
     color: #00000073;
     display: flex;

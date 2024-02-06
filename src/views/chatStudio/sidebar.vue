@@ -17,7 +17,9 @@
           <FontIcon v-if="item?.type == 'el-icon'" :iconName="item.icon" class="style-svg" />
           <svg-icon v-else :iconClass="item.icon" class="style-svg" />
         </el-badge>
-        <div class="icon-title">{{ item.title }}</div>
+        <div class="icon-title" :title="item.title">
+          {{ item.locale ? $t(`chat.${item.locale}`) : item.title }}
+        </div>
       </div>
     </div>
     <!-- 上传头像弹框 -->
@@ -86,9 +88,11 @@ function toggle(item) {
     background: var(--color-aside-list-action) !important;
   }
   .icon-title {
+    padding: 0 5px;
     color: var(--color-text);
     font-size: 12px;
     margin-top: 3px;
+    @include text-ellipsis;
   }
 }
 

@@ -12,9 +12,12 @@ export default {
     jigsaw: "Jigsaw",
   },
   chat: {
+    noMore: "No More",
     whole: "Whole",
     unread: "Unread",
     mention: "Mention",
+    document: "Document",
+    more: "More",
     message: "Message",
     buttonPromptMac: "Press Enter to send the message, Meta⌘ + Enter to wrap",
     buttonPrompt: "Press Enter to send the message, Ctrl + Enter to wrap",

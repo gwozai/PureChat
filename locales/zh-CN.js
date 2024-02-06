@@ -12,9 +12,12 @@ export default {
     jigsaw: "拼图游戏",
   },
   chat: {
+    noMore: "没有更多了",
     whole: "全部",
     unread: "未读",
     mention: "{'@'}我",
+    document: "文档",
+    more: "更多",
     message: "消息",
     buttonPromptMac: "按Enter发送消息, Meta⌘ + Enter 换行",
     buttonPrompt: "按Enter发送消息, Ctrl + Enter 换行",
