@@ -14,7 +14,6 @@
 import { useState } from "@/utils/hooks/useMapper";
 
 import sidebar from "./sidebar.vue";
-import application from "./application.vue";
 import Message from "./message.vue";
 import test from "./test.vue";
 import frameView from "./frameView.vue";
@@ -28,7 +27,6 @@ const frame = [
   // "gitee"
 ];
 const Component = {
-  electron: application, // 应用
   test: test, // 测试
 };
 const { outside, outsideList } = useState({
