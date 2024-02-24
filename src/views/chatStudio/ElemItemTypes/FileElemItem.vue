@@ -19,7 +19,7 @@
           <span class="file-icon" v-show="isStatus('success') && self">
             <img src="@/assets/message/check.png" alt="" />
           </span>
-          <HandleFolder />
+          <HandleFolder v-if="false" :folder="payload" ref="folderRef" />
         </div>
       </div>
     </div>
@@ -49,6 +49,7 @@ const { message, status } = toRefs(props);
 const { payload } = message.value;
 
 const backgroundStyle = ref("");
+const folderRef = ref(null);
 const FileType = getFileType(payload?.fileName);
 
 const isStatus = (value) => {
@@ -56,7 +57,7 @@ const isStatus = (value) => {
 };
 
 function handleOpen() {
-  console.log("handleOpen");
+  folderRef.value.handleOpen();
 }
 const backstyle = (status = 0, percentage = 0) => {
   if (percentage === 100) {
