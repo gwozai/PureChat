@@ -73,10 +73,10 @@
 
 <script setup>
 import { ref, onMounted, shallowRef, watch, onUnmounted } from "vue";
-import { useUrlSearchParams } from "@vueuse/core";
-import { useEventListener } from "@vueuse/core";
-import { init } from "echarts/core";
-import definedScenes from "@/utils/scenes/index";
+// import { useUrlSearchParams } from "@vueuse/core";
+// import { useEventListener } from "@vueuse/core";
+// import { init } from "echarts/core";
+// import definedScenes from "@/utils/scenes/index";
 
 const props = defineProps();
 const scenes = shallowRef(definedScenes);

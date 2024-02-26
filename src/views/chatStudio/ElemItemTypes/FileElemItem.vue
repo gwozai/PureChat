@@ -57,7 +57,7 @@ const isStatus = (value) => {
 };
 
 function handleOpen() {
-  folderRef.value.handleOpen();
+  folderRef.value?.handleOpen();
 }
 const backstyle = (status = 0, percentage = 0) => {
   if (percentage === 100) {
@@ -69,12 +69,12 @@ const backstyle = (status = 0, percentage = 0) => {
 };
 backgroundStyle.value = backstyle();
 
-const uploading = ({ uuid, num }) => {
+const uploading = ({ uuid, num }, off) => {
   try {
     const dom = document.getElementById(`${uuid}`);
     dom.style.background = backstyle(1, num);
     const progress = dom.querySelector(".progress");
-    if (progress && !isStatus("success")) {
+    if (progress && off) {
       progress.innerText = num + "%";
     }
   } catch (error) {
@@ -84,7 +84,7 @@ const uploading = ({ uuid, num }) => {
 
 onMounted(() => {
   emitter.on("fileUploading", (data) => {
-    uploading(data);
+    uploading(data, !isStatus("success"));
   });
 });
 onBeforeUnmount(() => {
