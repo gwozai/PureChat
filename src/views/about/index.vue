@@ -122,6 +122,7 @@ const data = [
   },
 ];
 const words = [
+  "@babel/core",
   "@vue/cli-service",
   "@vueuse/core",
   "mitt",
