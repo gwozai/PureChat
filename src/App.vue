@@ -26,7 +26,7 @@ const currentLocale = computed(() => {
   return lang.value === "zh-CN" ? zhCn : en;
 });
 
-onMounted(async () => {
+onMounted(() => {
   // dispatch("reloadRoute");
   setTimeout(() => {
     if (route.name == "login") return;
