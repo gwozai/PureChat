@@ -9,6 +9,7 @@ import { verification } from "@/utils/message/index";
 const user = {
   state: {
     timProxy,
+    verifyCode: "",
     message: null,
     showload: false, // 登录按钮加载状态
     currentPage: 0,
@@ -24,6 +25,7 @@ const user = {
     reset(state) {
       Object.assign(state, {
         showload: false,
+        verifyCode: "",
         currentPage: 0,
         userProfile: {},
       });
@@ -38,6 +40,10 @@ const user = {
         duration: options.duration || 2000,
         offset: 30,
       });
+    },
+    // 设置验证码
+    SET_VERIFYCODE(state, code) {
+      state.verifyCode = code;
     },
   },
   actions: {

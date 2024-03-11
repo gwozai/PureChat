@@ -18,9 +18,7 @@ const defaultSettings = {
 
 // 默认用户信息
 const defaultData = {
-  verifyCode: "",
   user: null,
-  token: null,
   elTag: [], // Tag 标签
   routeTable: null, // 路由表  Route Table
 };
@@ -72,7 +70,6 @@ const store = createStore({
     },
     // 触发事件
     EMITTER_EMIT(state, { key, value = "" }) {
-      console.log("[emit]:", { key, value });
       emitter.emit(key, value);
     },
   },
@@ -99,10 +96,6 @@ const store = createStore({
       } catch (error) {
         console.error(error);
       }
-    },
-    // 设置验证码
-    SET_VERIFYCODE({ state }, code) {
-      state.data.verifyCode = code;
     },
     // 清除 eltag 标签
     CLEAR_EL_TAG({ state }) {
