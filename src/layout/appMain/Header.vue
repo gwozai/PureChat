@@ -4,10 +4,10 @@
       <div class="flex">
         <div
           class="container"
-          :title="isActive ? '点击展开' : '点击折叠'"
-          @click="toggleClick(isActive)"
+          :title="isCollapse ? '点击展开' : '点击折叠'"
+          @click="toggleClick(isCollapse)"
         >
-          <FontIcon class="icon-hover" :iconName="isActive ? 'Expand' : 'Fold'" />
+          <FontIcon class="icon-hover" :iconName="isCollapse ? 'Expand' : 'Fold'" />
         </div>
         <el-breadcrumb>
           <el-breadcrumb-item v-for="item in breadcrumbItems" :key="item.title">
@@ -29,7 +29,7 @@
                   <FontIcon iconName="user" />
                   个人中心
                 </el-dropdown-item>
-                <el-dropdown-item @click="Logout">
+                <el-dropdown-item @click="logout">
                   <FontIcon iconName="switch-button" />
                   退出登录
                 </el-dropdown-item>
@@ -37,7 +37,7 @@
             </template>
           </el-dropdown>
         </div>
-        <div class="setup" @click="opensetup(setswitch)">
+        <div class="setup" @click="openSetup()">
           <FontIcon class="icon-hover" iconName="setting" />
         </div>
       </div>
@@ -55,6 +55,7 @@ import SideBar from "../sideBar/index.vue";
 import { showConfirmationBox } from "@/utils/message";
 import Fullscreen from "./Fullscreen.vue";
 import Tags from "./Tags.vue";
+import uniqBy from "lodash-es/uniqBy";
 
 export default {
   name: "Header",
@@ -65,10 +66,10 @@ export default {
   },
   computed: {
     ...mapState({
-      userProfile: (state) => state.user.currentUserProfile,
+      userProfile: (state) => state.user.userProfile,
       tags: (state) => state.data.elTag,
-      sidebar: (state) => !state.settings.sidebar,
-      isActive: (state) => state.settings.isCollapse,
+      sidebar: (state) => state.settings.sidebar,
+      isCollapse: (state) => state.settings.isCollapse,
       setswitch: (state) => state.settings.setswitch,
     }),
     breadcrumbItems() {
@@ -91,38 +92,36 @@ export default {
   },
   mounted() {},
   methods: {
-    getBreadcrumb(value) {
+    getBreadcrumb(path) {
       const { name, meta } = this.$route;
       const { title, locale } = meta;
       const label = this.tags;
       let index = -1;
       if (label) {
         index = label.findIndex((t) => {
-          return t?.title === title;
+          return t?.path === path;
         });
       }
-      const tag = label
-        ? [{ title, path: value, name, locale }, ...label]
-        : [{ title, path: value, name }];
+      const append = { title, name, locale, path };
+      const tag = label ? [...label, append] : [append];
+      const uniqueData = uniqBy(tag, "name");
       if (index === -1) {
-        console.log(this.tags);
-        this.$store.commit("UPDATE_USER_INFO", { key: "elTag", value: tag });
+        this.$store.commit("UPDATE_USER_INFO", { key: "elTag", value: uniqueData });
       }
     },
     toggleClick(val) {
-      if (this.sidebar) this.drawer = true;
-      commit("UPDATE_USER_SETUP", {
+      if (!this.sidebar) this.drawer = true;
+      this.$store.commit("UPDATE_USER_SETUP", {
         key: "isCollapse",
-        value: this.sidebar ? false : !val,
+        value: !this.sidebar ? false : !val,
       });
     },
-    async Logout() {
-      const message = { message: "确定退出登录?", iconType: "warning" };
-      const result = await showConfirmationBox(message);
-      if (result == "cancel") return;
+    async logout() {
+      const result = await showConfirmationBox({ message: "确定退出登录?", iconType: "warning" });
+      if (result === "cancel") return;
       this.$store.dispatch("LOG_OUT");
     },
-    opensetup() {
+    openSetup() {
       this.$store.commit("UPDATE_USER_SETUP", {
         key: "setswitch",
         value: true,

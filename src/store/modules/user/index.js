@@ -12,20 +12,20 @@ const user = {
     message: null,
     showload: false, // 登录按钮加载状态
     currentPage: 0,
-    currentUserProfile: {}, // IM用户信息
+    userProfile: {}, // IM用户信息
   },
   mutations: {
     setCurrentPage(state, num) {
       state.currentPage = num;
     },
     setCurrentUserProfile(state, profile) {
-      state.currentUserProfile = profile;
+      state.userProfile = profile;
     },
     reset(state) {
       Object.assign(state, {
         showload: false,
         currentPage: 0,
-        currentUserProfile: {},
+        userProfile: {},
       });
     },
     showMessage(state, options) {
