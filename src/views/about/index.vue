@@ -24,7 +24,7 @@
           align="left"
         >
           <el-tag v-if="item?.tag">{{ item.tag }}</el-tag>
-          <a v-else :href="item.url" target="_blank">
+          <a v-else-if="item?.url" :href="item.url" target="_blank">
             <span class="style-color"> {{ item.title }} </span>
           </a>
         </el-descriptions-item>
