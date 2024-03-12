@@ -2,6 +2,7 @@ import { reactive } from "vue";
 import store from "@/store/index";
 import storage from "@/utils/localforage/index";
 import { $t } from "@/plugins/i18n";
+import { ACCOUNT } from "@/store/constants";
 
 /** 6位数字验证码正则 */
 const REGEXP_SIX = /^\d{6}$/;
@@ -12,7 +13,7 @@ const REGEXP_PWD =
 
 const pattern = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
 
-const { username, password, keep } = storage.get("ACCOUNT") || {};
+const { username, password, keep } = storage.get(ACCOUNT) || {};
 
 export const user = reactive({
   username: username || "",
