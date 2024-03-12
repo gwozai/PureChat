@@ -65,9 +65,6 @@ const user = {
         commit("UPDATE_USER_INFO", { key: "user", value: result });
         commit("ACCOUNT_INFORMATION", data);
         router.push("/welcome");
-        // setTimeout(() => {
-        //   router.push("/welcome");
-        // }, 1000);
       } else {
         verification(code, msg);
       }

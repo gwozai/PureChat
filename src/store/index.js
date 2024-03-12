@@ -43,8 +43,6 @@ requireModules.keys().forEach((filePath) => {
   };
 });
 
-console.log(modules, "modules");
-
 const store = createStore({
   modules,
   state: {
@@ -109,5 +107,4 @@ const store = createStore({
 // 刷新页面保存当前主题色
 changeAppearance(store.state.settings.appearance);
 
-console.log(store, "store实例");
 export default store;
