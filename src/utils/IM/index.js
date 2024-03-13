@@ -1,4 +1,3 @@
-"use strict";
 import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/IM/im-sdk/tim";
 import storage from "@/utils/localforage/index";

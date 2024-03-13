@@ -3,7 +3,6 @@ import { ACCESS_TOKEN } from "@/store/constants";
 import { setPageTitle } from "@/utils/common";
 import NProgress from "@/utils/progress";
 import storage from "@/utils/localforage/index";
-import routes from "./routes";
 
 // hack router push callback
 const originalPush = createRouter.prototype.push;
@@ -12,8 +11,13 @@ createRouter.prototype.push = function push(location, onResolve, onReject) {
   return originalPush.call(this, location).catch((err) => err);
 };
 
-let isF = false;
+const routes = [];
+const files = require.context("./modules/", false, /\.js$/);
+files.keys().forEach((key) => {
+  routes.push(...files(key).default);
+});
 
+let isF = false;
 const historyMode = {
   history: createWebHistory(),
   hash: createWebHashHistory(),
