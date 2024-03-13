@@ -40,7 +40,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (from.path === to.path) return;
   setPageTitle(to.meta.title);
   const token = storage.get(ACCESS_TOKEN);
@@ -61,14 +61,14 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-router.afterEach(async (to, from, next) => {
+router.afterEach((to, from, next) => {
   NProgress.done();
 });
 
 /** setup vue router. - [安装vue路由] */
 export async function setupRouter(app) {
   app.use(router);
-  // await router.isReady();
+  await router.isReady();
 }
 
 export default router;
