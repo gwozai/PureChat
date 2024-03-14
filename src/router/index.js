@@ -4,13 +4,6 @@ import { setPageTitle } from "@/utils/common";
 import NProgress from "@/utils/progress";
 import storage from "@/utils/localforage/index";
 
-// hack router push callback
-const originalPush = createRouter.prototype.push;
-createRouter.prototype.push = function push(location, onResolve, onReject) {
-  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject);
-  return originalPush.call(this, location).catch((err) => err);
-};
-
 const routes = [];
 const files = require.context("./modules/", false, /\.js$/);
 files.keys().forEach((key) => {
