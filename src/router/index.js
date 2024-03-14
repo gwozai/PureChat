@@ -4,12 +4,15 @@ import { setPageTitle } from "@/utils/common";
 import NProgress from "@/utils/progress";
 import { scrollBehavior } from "./utils";
 import storage from "@/utils/localforage/index";
+import remainingRouter from "./modules/remaining";
 
 const routes = [];
 const files = require.context("./modules/", false, /\.js$/);
 files.keys().forEach((key) => {
+  if (key === "./remaining.js") return;
   routes.push(...files(key).default);
 });
+routes.unshift(...remainingRouter);
 
 let isF = false;
 const historyMode = {
