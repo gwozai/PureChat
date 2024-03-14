@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from "vue-router
 import { ACCESS_TOKEN } from "@/store/constants";
 import { setPageTitle } from "@/utils/common";
 import NProgress from "@/utils/progress";
+import { scrollBehavior } from "./utils";
 import storage from "@/utils/localforage/index";
 
 const routes = [];
@@ -19,22 +20,7 @@ const historyMode = {
 const router = createRouter({
   history: historyMode[process.env.VUE_APP_ROUTER_HISTORY],
   routes,
-  /*
-   * 自定义路由切换时页面如何滚动
-   * 参考 https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
-   */
-  scrollBehavior(to, from, savedPosition) {
-    return new Promise((resolve) => {
-      if (savedPosition) {
-        return savedPosition;
-      } else {
-        if (from.meta.saveSrollTop) {
-          const top = document.documentElement.scrollTop || document.body.scrollTop;
-          resolve({ left: 0, top });
-        }
-      }
-    });
-  },
+  scrollBehavior,
 });
 
 router.beforeEach((to, from, next) => {
