@@ -1,6 +1,6 @@
 <template>
-  <div class="manView">
-    <div class="flex h-full w-full view">
+  <div class="w-full">
+    <div class="flex h-full w-full relative">
       <!-- 侧边栏 -->
       <SideBar />
       <!-- 主体 -->
@@ -16,12 +16,3 @@ import AppMain from "./appMain/index.vue";
 import SideBar from "./sideBar/index.vue";
 import Setup from "./setup/index.vue";
 </script>
-<style lang="scss" scoped>
-.manView {
-  width: 100%;
-  // height: 100%;
-  .view {
-    position: relative;
-  }
-}
-</style>
