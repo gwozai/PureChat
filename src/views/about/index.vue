@@ -108,7 +108,7 @@ const data = [
   {
     label: "QQ交流群",
     url: "https://jq.qq.com/?_wv=1027&k=Cd4Ihd2J",
-    title: "点击链接加入群聊【PureAdmin交流群】",
+    title: "点击链接加入群聊【PureChat交流群】",
   },
   {
     label: "Github",

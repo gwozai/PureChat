@@ -28,7 +28,7 @@ export default defineComponent({
   },
   mounted() {
     // dispatch("reloadRoute");
-    setWatermark("Pure Admin");
+    setWatermark("PureChat");
     this.loginAgain(this.$route);
   },
   methods: {
