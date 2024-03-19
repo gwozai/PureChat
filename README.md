@@ -25,18 +25,18 @@
 [![MacOS][MacOS-image]][download-url]
 
 [web-url]: https://pureadmin.cn
-[download-url]: https://github.com/Hyk260/PureAdmin/releases
+[download-url]: https://github.com/Hyk260/PureChat/releases
 [Web-image]: https://img.shields.io/badge/Web-PWA-orange?logo=microsoftedge
 [Windows-image]: https://img.shields.io/badge/-Windows-blue?logo=windows
 [MacOS-image]: https://img.shields.io/badge/-MacOS-black?logo=apple
 
-[![GitHub license](https://img.shields.io/github/license/Hyk260/PureAdmin)](https://github.com/Hyk260/PureAdmin/blob/master/LICENSE) [![Stars](https://img.shields.io/github/stars/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/stargazers) [![Forks](https://img.shields.io/github/forks/Hyk260/PureAdmin.svg)](https://github.com/Hyk260/PureAdmin/network/members)
+[![GitHub license](https://img.shields.io/github/license/Hyk260/PureChat)](https://github.com/Hyk260/PureChat/blob/master/LICENSE) [![Stars](https://img.shields.io/github/stars/Hyk260/PureChat.svg)](https://github.com/Hyk260/PureChat/stargazers) [![Forks](https://img.shields.io/github/forks/Hyk260/PureChat.svg)](https://github.com/Hyk260/PureChat/network/members)
 
 ## 简介
 
-[反馈](https://github.com/Hyk260/PureAdmin/issues) / [QQ 群](https://github.com/Hyk260/PureAdmin/discussions/2) / [打赏开发者](./images/weix.png) / [文档](https://hyk260.github.io/pure-docs)
+[反馈](https://github.com/Hyk260/PureChat/issues) / [QQ 群](https://github.com/Hyk260/PureChat/discussions/2) / [打赏开发者](./images/weix.png) / [文档](https://hyk260.github.io/pure-docs)
 
-[PureChat](https://github.com/Hyk260/PureAdmin) 是一个基于 Vue3、Element-Plus 的清新优雅的聊天工作室(腾讯 IM 即时通讯) 用于学习参考。
+[PureChat](https://github.com/Hyk260/PureChat) 是一个基于 Vue3、Element-Plus 的清新优雅的聊天工作室(腾讯 IM 即时通讯) 用于学习参考。
 
 ### 🎉 特性
 
@@ -60,7 +60,7 @@
 克隆代码
 
 ```bash
-git clone https://github.com/Hyk260/PureAdmin.git
+git clone https://github.com/Hyk260/PureChat.git
 ```
 
 安装依赖

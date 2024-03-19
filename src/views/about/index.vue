@@ -117,7 +117,7 @@ const data = [
   },
   {
     label: "gitee",
-    url: "https://gitee.com/H260788/PureAdmin",
+    url: "https://gitee.com/H260788/PureChat",
     title: "gitee",
   },
 ];

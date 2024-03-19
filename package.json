@@ -74,7 +74,7 @@
     "snabbdom": "^3.5.1"
   },
   "bugs": {
-    "url": "https://github.com/Hyk260/PureAdmin/issues"
+    "url": "https://github.com/Hyk260/PureChat/issues"
   },
   "husky": {
     "hooks": {
@@ -106,6 +106,6 @@
     ]
   },
   "repository": {
-    "url": "https://github.com/Hyk260/PureAdmin.git"
+    "url": "https://github.com/Hyk260/PureChat.git"
   }
 }
