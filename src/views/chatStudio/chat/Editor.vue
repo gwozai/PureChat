@@ -65,6 +65,7 @@ import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
+import { createCustomMsg } from "@/api/im-sdk-api/message";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -132,6 +133,9 @@ const setToolbar = (item) => {
       break;
     case "setParsefile":
       setParsefile(data.files);
+      break;
+    case "shake":
+      console.log("shake");
       break;
   }
 };
@@ -317,6 +321,11 @@ const sendMessage = async () => {
   const data = sendMsgBefore();
   console.log("sendMsgBefore:", data);
   const message = await sendChatMessage(data);
+  // const message = await createCustomMsg({
+  //   convId: toAccount.value,
+  //   convType: currentConversation.value.type,
+  //   customType: "dithering",
+  // });
   console.log("sendChatMessage:", message);
   clearInputInfo();
   dispatch("SESSION_MESSAGE_SENDING", {
