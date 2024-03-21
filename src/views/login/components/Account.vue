@@ -114,13 +114,10 @@ const querySearch = (queryString, cb) => {
 const loginBtn = async (formEl) => {
   if (!formEl) return;
   await formEl.validate((valid) => {
-    if (valid) Signin();
+    if (valid) dispatch("LOG_IN", user);
   });
 };
 
-const Signin = () => {
-  dispatch("LOG_IN", user);
-};
 const onClick = async ({ title }) => {
   if (title === "GitHub") {
     window.open(
