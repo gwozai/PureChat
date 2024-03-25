@@ -8,10 +8,8 @@
 import { mapState } from "vuex";
 import { defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
-import { useWatermark } from "@/utils/hooks/useWatermark";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import en from "element-plus/dist/locale/en.mjs";
-// const { setWatermark } = useWatermark();
 
 export default defineComponent({
   name: "app",
@@ -28,7 +26,6 @@ export default defineComponent({
   },
   mounted() {
     // dispatch("reloadRoute");
-    // setWatermark("PureChat");
     this.loginAgain(this.$route);
   },
   methods: {
