@@ -62,6 +62,8 @@ import { useEventListener } from "@vueuse/core";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { dragControllerDiv, isallStaff } from "./utils/utils";
 import { useStore } from "vuex";
+import Favico from "@/utils/favico";
+const favicon = new Favico({ animation: "slide" });
 
 import EmptyMessage from "./components/EmptyMessage.vue";
 import Editor from "./chat/Editor.vue";
@@ -93,6 +95,8 @@ const fnTotalUnreadMsg = () => {
   const isUnread = unreadCount > 0;
   const num = unreadCount > 99 ? "99+" : unreadCount;
   unread.value = isUnread ? `${$t("chat.unread")}(${num})` : $t("chat.unread");
+  favicon.badge(unreadCount);
+  // favicon.reset();
 };
 const handleClick = ({ props }, event) => {
   const { label, name } = props;
