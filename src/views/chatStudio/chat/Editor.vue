@@ -174,7 +174,8 @@ const onChange = (editor) => {
 
 const handleFile = (item) => {
   const type = item.type;
-  let pasteFile = item.getAsFile();
+  let trans = Object.prototype.toString.call(item) === "[object DataTransferItem]";
+  let pasteFile = trans ? item.getAsFile() : item;
   if (type.match("^image/")) {
     parsepicture(pasteFile);
   } else {
@@ -271,7 +272,7 @@ const parsepicture = async (file) => {
     style: { width: "125px" },
     children: [{ text: "" }],
   };
-  editorRef.value.insertNode(ImageElement);
+  editorRef.value?.insertNode(ImageElement);
 };
 // 回车
 const handleEnter = (event) => {
@@ -321,11 +322,6 @@ const sendMessage = async () => {
   const data = sendMsgBefore();
   console.log("sendMsgBefore:", data);
   const message = await sendChatMessage(data);
-  // const message = await createCustomMsg({
-  //   convId: toAccount.value,
-  //   convType: currentConversation.value.type,
-  //   customType: "dithering",
-  // });
   console.log("sendChatMessage:", message);
   clearInputInfo();
   dispatch("SESSION_MESSAGE_SENDING", {
@@ -350,11 +346,15 @@ const onEmitter = () => {
   emitter.on("handleInsertDraft", (value) => {
     value && insertDraft(value);
   });
+  emitter.on("handleFileDrop", (file) => {
+    handleFile(file);
+  });
 };
 function offEmitter() {
   emitter.off("handleAt");
   emitter.off("handleSetHtml");
   emitter.off("handleInsertDraft");
+  emitter.off("setHandleFile");
 }
 
 watch(showMsgBox, () => {
