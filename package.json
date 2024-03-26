@@ -22,6 +22,7 @@
     "@vueuse/core": "^8.4.2",
     "@wangeditor/editor": "^5.0.1",
     "@wangeditor/editor-for-vue": "^5.1.11",
+    "animate.css": "^4.1.1",
     "axios": "^0.26.1",
     "core-js": "^3.33.3",
     "dayjs": "^1.11.2",
