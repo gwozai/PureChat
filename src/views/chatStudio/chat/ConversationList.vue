@@ -74,7 +74,7 @@ import { RIGHT_CLICK_CHAT_LIST } from "../utils/menu";
 import Skeleton from "../components/Skeleton.vue";
 import EmptyMessage from "../components/EmptyMessage.vue";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
-import { timeFormat } from "@/utils/chat/index";
+import { timeFormat } from "pure-tools";
 import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { pinConversation, setMessageRead } from "@/api/im-sdk-api/index";
