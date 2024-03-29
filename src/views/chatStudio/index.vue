@@ -12,11 +12,11 @@
 
 <script setup>
 import { useState } from "@/utils/hooks/useMapper";
-
 import sidebar from "./sidebar.vue";
 import Message from "./message.vue";
 import test from "./test.vue";
 import frameView from "./frameView.vue";
+
 const showChat = (value) => {
   return outsideList.value[0].only.includes(value);
 };
