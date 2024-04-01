@@ -1,5 +1,11 @@
 <template>
-  <div class="wangeditor" id="svgDown" v-if="showMsgBox" v-show="!showCheckbox">
+  <div
+    class="wangeditor"
+    :class="{ 'style-wang': fullScreen }"
+    id="svgDown"
+    v-if="showMsgBox"
+    v-show="!showCheckbox"
+  >
     <!-- 自定义工具栏 -->
     <RichToolbar @setToolbar="setToolbar" />
     <Editor
@@ -83,6 +89,7 @@ const {
   isShowModal,
   currentReplyMsg,
   sessionDraftMap,
+  fullScreen,
 } = useState({
   lang: (state) => state.settings.lang,
   sessionDraftMap: (state) => state.conversation.sessionDraftMap,
@@ -91,6 +98,7 @@ const {
   showMsgBox: (state) => state.conversation.showMsgBox,
   isShowModal: (state) => state.conversation.isShowModal,
   currentReplyMsg: (state) => state.conversation.currentReplyMsg,
+  fullScreen: (state) => state.settings.fullScreen,
 });
 
 const handleEditor = (editor, created = true) => {
@@ -407,5 +415,8 @@ onBeforeUnmount(() => {
   position: absolute;
   bottom: 8px;
   right: 16px;
+}
+.style-wang {
+  height: calc(100% - 60px);
 }
 </style>
