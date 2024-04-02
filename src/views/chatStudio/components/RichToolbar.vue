@@ -35,7 +35,11 @@
         <DArrowLeft />
       </el-icon>
     </span>
-    <span title="全屏输入" class="style-enlarge" @click="onEnlarge(fullScreen)">
+    <span
+      :title="fullScreen ? '恢复' : '全屏输入'"
+      class="style-enlarge"
+      @click="onEnlarge(fullScreen)"
+    >
       <svg-icon v-if="fullScreen" iconClass="narrow" class="icon-hover" />
       <svg-icon v-else iconClass="enlarge" class="icon-hover" />
     </span>
@@ -145,7 +149,6 @@ const onShake = () => {
 };
 const onEnlarge = (value) => {
   commit("UPDATE_USER_SETUP", { key: "fullScreen", value: !value });
-  console.log(value);
 };
 
 async function sendImage(e) {
