@@ -6,7 +6,7 @@ import { useWindowFocus } from "@vueuse/core";
 import { scrollToDomPostion } from "@/utils/chat/index";
 import { ElNotification } from "element-plus";
 import { cloneDeep } from "lodash-es";
-import { TIM_PROXY } from "@/store/constants";
+import { TIM_PROXY } from "@/constants/index";
 import {
   kickedOutReason,
   fnCheckoutNetState,

@@ -110,7 +110,7 @@ import Checkbox from "../components/Checkbox.vue";
 import Stateful from "../components/Stateful.vue";
 import LoadMore from "../components/LoadMore.vue";
 import MyPopover from "@/views/components/MyPopover/index.vue";
-import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/store/constants";
+import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/constants/index";
 import { deleteMsgList, revokeMsg, translateText, getMsgList } from "@/api/im-sdk-api/index";
 import emitter from "@/utils/mitt-bus";
 import NameComponent from "../components/NameComponent.vue";
