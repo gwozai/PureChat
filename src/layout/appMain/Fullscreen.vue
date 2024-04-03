@@ -1,11 +1,17 @@
 <template>
-  <div class="full" @click="toggle" :title="isFullscreen ? '退出全屏' : '打开全屏'">
+  <div
+    v-show="!isMobile"
+    class="full"
+    @click="toggle"
+    :title="isFullscreen ? '退出全屏' : '打开全屏'"
+  >
     <FontIcon iconName="FullScreen" class="icon-hover" />
   </div>
 </template>
 
 <script setup>
 import { useFullscreen } from "@vueuse/core";
+import { isMobile } from "@/utils/common";
 const { isFullscreen, toggle } = useFullscreen();
 </script>
 
