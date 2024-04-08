@@ -159,6 +159,7 @@ watchEffect(() => {
 }
 .style-h-full {
   height: 0px !important;
+  border-bottom: none;
 }
 .style-full {
   width: 100% !important;
