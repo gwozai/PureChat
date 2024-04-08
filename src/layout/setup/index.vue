@@ -53,7 +53,7 @@
         </el-select>
       </li>
       <li>
-        <span>水印</span>
+        <span>{{ t("common.watermark") }}</span>
         <el-switch
           v-model="mark"
           inline-prompt
