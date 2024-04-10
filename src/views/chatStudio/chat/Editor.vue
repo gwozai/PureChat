@@ -55,6 +55,8 @@ import {
   onBeforeUnmount,
 } from "vue";
 import {
+  convertEmoji,
+  extractImageInfo,
   sendChatMessage,
   customAlert,
   getMessageElemItem,
@@ -70,7 +72,7 @@ import { useStore } from "vuex";
 import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
-import { fileImgToBase64Url, convertEmoji } from "@/utils/chat/index";
+import { fileImgToBase64Url } from "@/utils/chat/index";
 import { debounce, isEmpty } from "lodash-es";
 import { createCustomMsg } from "@/api/im-sdk-api/message";
 
@@ -81,7 +83,7 @@ const mode = "simple"; // 'default' 或 'simple'
 const mentionRef = ref();
 
 const { dispatch, commit } = useStore();
-const { isOwner, toAccount } = useGetters(["isOwner", "toAccount"]);
+const { isOwner, toAccount, currentType } = useGetters(["isOwner", "toAccount", "currentType"]);
 const {
   lang,
   currentConversation,
@@ -305,21 +307,20 @@ const clearInputInfo = () => {
   editor && editor.clear();
 };
 
-const sendMsgBefore = () => {
-  const editor = editorRef.value;
+const sendMsgBefore = (editor = editorRef.value) => {
   const text = editor.getText(); // 纯文本内容
-  const HtmlText = editor.getHtml(); // 非格式化的 html
-  const image = editor.getElemsByType("image"); // 所有图片
+  // const image = editor.getElemsByType("image"); // 所有图片
   const { aitStr, aitlist } = extractAitInfo(editor);
-  const { fileName, link } = extractFilesInfo(HtmlText);
-  const emoticons = convertEmoji(HtmlText, image);
-  // console.log(emoticons, text);
+  const { fileName, link } = extractFilesInfo(editor);
+  const { images } = extractImageInfo(editor);
+  const emoticons = convertEmoji(editor);
+  console.log(images);
   return {
     convId: toAccount.value,
-    convType: currentConversation.value.type,
+    convType: currentType.value,
     textMsg: emoticons || text,
-    image: image?.length > 0 && !emoticons ? image : null,
-    aitStr: emoticons || aitStr,
+    image: images,
+    aitStr: aitlist.length ? emoticons || aitStr : "",
     aitlist,
     files: link ? { fileName, src: link } : null,
     reply: currentReplyMsg.value,

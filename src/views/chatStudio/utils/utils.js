@@ -237,7 +237,7 @@ export function sendChatMessage(options) {
     flag = false;
   }
   // 如果包含图片，则创建相应的图片消息
-  if (image) {
+  if (image.length) {
     let file = dataURLtoFile(image[0].src);
     TextMsg = createImgtMsg({
       convId: convId,
@@ -429,11 +429,52 @@ export function parseContentFromHTML(html) {
 }
 
 /**
+ * 将包含表情图像的 HTML 字符串转换为对应的表情符号文本
+ * @param {string} html - 待转换的 HTML 字符串
+ * @param {Array} emojiMap - 表情符号和对应的图像数据数组
+ * @returns {string} - 转换后的结果
+ * <p>12<img src="*" alt="[我最美]" />333</p>
+ * 12[我最美]333
+ */
+export function convertEmoji(editor) {
+  const html = editor.getHtml(); // 非格式化的 html
+  const emojiMap = editor.getElemsByType("image"); // 所有图片
+  if (!html || !emojiMap || !Array.isArray(emojiMap)) return "";
+  const filtered = emojiMap.filter((item) => item.class === "EmoticonPack");
+  if (filtered.length == 0) return "";
+  const convertedData = filtered.map((item) => ({ [item.src]: item.alt }));
+  const extended = { ...Object.assign(...convertedData) };
+  // 清除文件消息包含的字符串
+  const fileRegex = /<span\s+data-w-e-type="attachment"[^>]*>(.*?)<\/span>/g;
+  let str = html.replace(fileRegex, "");
+  // 替换表情包图片为字符串 -> '[**]'
+  const regex = /<img src="([^"]+)"[^>]+>/g;
+  const result = str.replace(regex, (match, src) => {
+    const emojiText = extended[src] || "";
+    return emojiText;
+  });
+  const text = result.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, "");
+  return text;
+}
+
+/**
+ * 提取图片信息
+ */
+export const extractImageInfo = (editor) => {
+  let images = null;
+  const image = editor.getElemsByType("image");
+  images = image.filter((item) => item.class !== "EmoticonPack");
+  console.log(images);
+  return { images };
+};
+
+/**
  * 从 HTML 中提取文件信息
  * @param {string} html - 包含文件信息的 HTML 字符串
  * @returns {Object} - 包含文件名和链接的对象
  */
-export const extractFilesInfo = (html) => {
+export const extractFilesInfo = (editor) => {
+  const html = editor.getHtml();
   const matchStr = html.match(/data-link="([^"]*)"/);
   const matchStrName = html.match(/data-fileName="([^"]*)"/);
   const fileName = matchStrName?.[1];
