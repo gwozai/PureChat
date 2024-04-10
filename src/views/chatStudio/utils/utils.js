@@ -220,7 +220,7 @@ export const html2Escape = (str) => {
  * @returns {Promise<Object>} - 返回聊天消息对象
  *
  */
-export async function sendChatMessage(options) {
+export function sendChatMessage(options) {
   let TextMsg;
   let flag = true;
   const { convId, convType, textMsg, aitStr, aitlist, files, image, reply } = options;
@@ -341,6 +341,8 @@ export function parseHTMLToArr(editor) {
   // const image = editor.getElemsByType("image"); // 所有图片
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
+  // console.log(doc.body.children);
+  // .children[0].childNodes
   const elements = Array.from(doc.body.children[0].childNodes);
   const { aitStr, aitlist } = extractAitInfo(editor);
   const replyMsg = store.state.conversation.currentReplyMsg;

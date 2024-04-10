@@ -313,6 +313,7 @@ const sendMsgBefore = () => {
   const { aitStr, aitlist } = extractAitInfo(editor);
   const { fileName, link } = extractFilesInfo(HtmlText);
   const emoticons = convertEmoji(HtmlText, image);
+  // console.log(emoticons, text);
   return {
     convId: toAccount.value,
     convType: currentConversation.value.type,
@@ -326,33 +327,36 @@ const sendMsgBefore = () => {
 };
 // 发送消息
 const sendMessage = async (editor) => {
-  // const data = sendMsgBefore();
-  // console.log("sendMsgBefore:", data);
-  // const message = await sendChatMessage(data);
-  // console.log("sendChatMessage:", message);
-  // clearInputInfo();
-  // dispatch("SESSION_MESSAGE_SENDING", {
-  //   payload: {
-  //     convId: currentConversation.value.conversationID,
-  //     message,
-  //   },
-  // });
-  const elementArray = parseHTMLToArr(editor);
-  const data = {
-    convId: toAccount.value,
-    convType: currentConversation.value.type,
-    elementArray,
-  };
-  const elemItem = getMessageElemItem(data);
+  const data = sendMsgBefore();
+  console.log("sendMsgBefore:", data);
+  const message = sendChatMessage(data);
+  console.log("sendChatMessage:", message);
   clearInputInfo();
-  elemItem.map((message) => {
-    dispatch("SESSION_MESSAGE_SENDING", {
-      payload: {
-        convId: currentConversation.value.conversationID,
-        message,
-      },
-    });
+  dispatch("SESSION_MESSAGE_SENDING", {
+    payload: {
+      convId: currentConversation.value.conversationID,
+      message,
+    },
   });
+
+  // const elementArray = parseHTMLToArr(editor);
+  // const datas = {
+  //   convId: toAccount.value,
+  //   convType: currentConversation.value.type,
+  //   elementArray,
+  // };
+  // console.log(elementArray);
+  // const elemItem = getMessageElemItem(datas);
+  // console.log(elemItem);
+  // clearInputInfo();
+  // elemItem.map((message) => {
+  //   dispatch("SESSION_MESSAGE_SENDING", {
+  //     payload: {
+  //       convId: currentConversation.value.conversationID,
+  //       message,
+  //     },
+  //   });
+  // });
 };
 const setEditHtml = (text) => {
   const editor = editorRef.value;
