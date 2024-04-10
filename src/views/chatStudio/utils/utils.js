@@ -226,9 +226,10 @@ export function sendChatMessage(options) {
   const { convId, convType, textMsg, aitStr, aitlist, files, image, reply } = options;
   console.log(options);
   // 如果包含文件，则创建相应的文件消息
-  if (files) {
-    const { fileName, src } = files;
-    let file = dataURLtoFile(src, fileName);
+  if (files.length) {
+    const { fileName, link } = files[0];
+    console.log(fileName, link);
+    let file = dataURLtoFile(link, fileName);
     TextMsg = createFiletMsg({
       convId: convId,
       convType: convType,
@@ -464,22 +465,15 @@ export const extractImageInfo = (editor) => {
   let images = null;
   const image = editor.getElemsByType("image");
   images = image.filter((item) => item.class !== "EmoticonPack");
-  console.log(images);
   return { images };
 };
 
 /**
- * 从 HTML 中提取文件信息
- * @param {string} html - 包含文件信息的 HTML 字符串
- * @returns {Object} - 包含文件名和链接的对象
+ * 提取文件信息
  */
 export const extractFilesInfo = (editor) => {
-  const html = editor.getHtml();
-  const matchStr = html.match(/data-link="([^"]*)"/);
-  const matchStrName = html.match(/data-fileName="([^"]*)"/);
-  const fileName = matchStrName?.[1];
-  const link = matchStr?.[1];
-  return { fileName, link };
+  const files = editor.getElemsByType("attachment");
+  return { files };
 };
 
 /**
@@ -488,14 +482,19 @@ export const extractFilesInfo = (editor) => {
  * @returns {Object} - 包含提及字符串和提及的 id 列表的对象
  */
 export const extractAitInfo = (editor) => {
+  const files = editor.getElemsByType("mention");
+  // let aitlist = [];
+  // files.forEach((t) => aitlist.push(t.info.id));
+  // aitlist = Array.from(new Set(aitlist));
+  // console.log(files);
+  // return { aitStr: "", aitlist };
+
   let aitStr = "";
   let aitlist = [];
   let html = editor.getHtml();
   if (html.includes("mention")) {
     aitStr = html.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
-    const paragraph = editor.children[0].children;
-    const newmsg = paragraph.filter((t) => t.type === "mention");
-    newmsg.forEach((t) => aitlist.push(t.info.id));
+    files.forEach((t) => aitlist.push(t.info.id));
     aitlist = Array.from(new Set(aitlist));
   }
   return { aitStr, aitlist };

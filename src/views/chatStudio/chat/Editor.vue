@@ -309,9 +309,8 @@ const clearInputInfo = () => {
 
 const sendMsgBefore = (editor = editorRef.value) => {
   const text = editor.getText(); // 纯文本内容
-  // const image = editor.getElemsByType("image"); // 所有图片
   const { aitStr, aitlist } = extractAitInfo(editor);
-  const { fileName, link } = extractFilesInfo(editor);
+  const { files } = extractFilesInfo(editor);
   const { images } = extractImageInfo(editor);
   const emoticons = convertEmoji(editor);
   console.log(images);
@@ -322,7 +321,7 @@ const sendMsgBefore = (editor = editorRef.value) => {
     image: images,
     aitStr: aitlist.length ? emoticons || aitStr : "",
     aitlist,
-    files: link ? { fileName, src: link } : null,
+    files: files,
     reply: currentReplyMsg.value,
   };
 };
@@ -332,13 +331,13 @@ const sendMessage = async (editor) => {
   console.log("sendMsgBefore:", data);
   const message = sendChatMessage(data);
   console.log("sendChatMessage:", message);
-  clearInputInfo();
-  dispatch("SESSION_MESSAGE_SENDING", {
-    payload: {
-      convId: currentConversation.value.conversationID,
-      message,
-    },
-  });
+  // clearInputInfo();
+  // dispatch("SESSION_MESSAGE_SENDING", {
+  //   payload: {
+  //     convId: currentConversation.value.conversationID,
+  //     message,
+  //   },
+  // });
 
   // const elementArray = parseHTMLToArr(editor);
   // const datas = {
