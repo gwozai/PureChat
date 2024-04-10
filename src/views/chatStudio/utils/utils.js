@@ -229,7 +229,7 @@ export async function sendChatMessage(options) {
   if (files) {
     const { fileName, src } = files;
     let file = dataURLtoFile(src, fileName);
-    TextMsg = await createFiletMsg({
+    TextMsg = createFiletMsg({
       convId: convId,
       convType: convType,
       files: file,
@@ -239,7 +239,7 @@ export async function sendChatMessage(options) {
   // 如果包含图片，则创建相应的图片消息
   if (image) {
     let file = dataURLtoFile(image[0].src);
-    TextMsg = await createImgtMsg({
+    TextMsg = createImgtMsg({
       convId: convId,
       convType: convType,
       image: file,
@@ -248,7 +248,7 @@ export async function sendChatMessage(options) {
   }
   // 如果包含艾特，则创建相应的艾特消息
   if (aitStr) {
-    TextMsg = await createTextAtMsg({
+    TextMsg = createTextAtMsg({
       convId: convId,
       convType: convType,
       textMsg: aitStr,
@@ -258,7 +258,7 @@ export async function sendChatMessage(options) {
   }
   // 否则创建文本消息
   else if (flag) {
-    TextMsg = await createTextMsg({
+    TextMsg = createTextMsg({
       convId: convId,
       convType: convType,
       textMsg: textMsg,
@@ -357,6 +357,7 @@ export function parseHTMLToArr(editor) {
       }
     } else if (element.dataset?.["wEType"] === "attachment") {
       obj.elem_type = "file";
+      obj.file_name = element.dataset["filename"];
       obj.file_path = element.dataset["link"];
     } else {
       obj.elem_type = "text";
@@ -371,6 +372,51 @@ export function parseHTMLToArr(editor) {
   });
   console.log(arr);
   return mergeData(arr);
+}
+export function getMessageElemItem({ elementArray, convId, convType }) {
+  let msg = [];
+  // msg = elementArray;
+  elementArray.map((item) => {
+    // debugger;
+    if (item.elem_type === "text" && item.text_content !== "") {
+      let data = null;
+      if (item.aitlist.length) {
+        data = createTextAtMsg({
+          convId,
+          convType,
+          textMsg: item.text_content,
+          atUserList: item.aitlist,
+          reply: item.replyMsg,
+        });
+      } else {
+        data = createTextMsg({
+          convId,
+          convType,
+          textMsg: item.text_content,
+          reply: item.replyMsg,
+        });
+      }
+      msg.push(data);
+    } else if (item.elem_type === "img") {
+      msg.push(
+        createImgtMsg({
+          convId,
+          convType,
+          image: dataURLtoFile(item.file_path),
+        })
+      );
+    } else if (item.elem_type === "file") {
+      console.log(dataURLtoFile(item.file_path, item.file_name));
+      msg.push(
+        createFiletMsg({
+          convId,
+          convType,
+          files: dataURLtoFile(item.file_path, item.file_name),
+        })
+      );
+    }
+  });
+  return msg;
 }
 
 export function parseContentFromHTML(html) {
