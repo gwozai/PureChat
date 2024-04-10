@@ -330,7 +330,13 @@ const sendMessage = async (editor) => {
   // console.log("sendMsgBefore:", data);
   // const message = await sendChatMessage(data);
   // console.log("sendChatMessage:", message);
-
+  // clearInputInfo();
+  // dispatch("SESSION_MESSAGE_SENDING", {
+  //   payload: {
+  //     convId: currentConversation.value.conversationID,
+  //     message,
+  //   },
+  // });
   const elementArray = parseHTMLToArr(editor);
   const data = {
     convId: toAccount.value,
@@ -338,8 +344,6 @@ const sendMessage = async (editor) => {
     elementArray,
   };
   const elemItem = getMessageElemItem(data);
-  console.log(elementArray);
-  console.log(elemItem);
   clearInputInfo();
   elemItem.map((message) => {
     dispatch("SESSION_MESSAGE_SENDING", {
@@ -349,13 +353,6 @@ const sendMessage = async (editor) => {
       },
     });
   });
-  // clearInputInfo();
-  // dispatch("SESSION_MESSAGE_SENDING", {
-  //   payload: {
-  //     convId: currentConversation.value.conversationID,
-  //     message,
-  //   },
-  // });
 };
 const setEditHtml = (text) => {
   const editor = editorRef.value;
