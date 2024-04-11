@@ -60,6 +60,7 @@ import {
   sendChatMessage,
   customAlert,
   extractFilesInfo,
+  extractVideoInfo,
   extractAitInfo,
   getOperatingSystem,
   handleToggleLanguage,
@@ -306,9 +307,11 @@ const sendMsgBefore = (editor = editorRef.value) => {
   const text = editor.getText(); // 纯文本内容
   const { aitStr, aitlist } = extractAitInfo(editor);
   const { files } = extractFilesInfo(editor);
+  const { video } = extractVideoInfo(editor);
   const { images } = extractImageInfo(editor);
   const emoticons = convertEmoji(editor);
-  const have = images.length || files.length || aitlist.length || aitStr || emoticons || text;
+  const have =
+    video.length || images.length || files.length || aitlist.length || aitStr || emoticons || text;
   return {
     convId: toAccount.value,
     convType: currentType.value,
@@ -317,6 +320,7 @@ const sendMsgBefore = (editor = editorRef.value) => {
     aitStr: aitlist.length ? emoticons || aitStr : "",
     aitlist,
     files: files,
+    video,
     reply: currentReplyMsg.value,
     isHave: Boolean(have),
   };

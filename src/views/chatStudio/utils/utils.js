@@ -2,13 +2,12 @@ import { nextTick } from "vue";
 import store from "@/store/index";
 import { match } from "pinyin-pro";
 import { useClipboard } from "@vueuse/core";
-import { dataURLtoFile } from "@/utils/chat/index";
-import { getBlob } from "@/utils/chat/message-input-utils";
-import { emojiName } from "@/utils/emoji/emoji-map";
+import { dataURLtoFile, getBlob, getFileType } from "@/utils/chat/index";
 import emitter from "@/utils/mitt-bus";
 import {
   createTextMsg,
   createTextAtMsg,
+  createVideoMsg,
   createFiletMsg,
   createImgtMsg,
   createCustomMsg,
@@ -211,7 +210,7 @@ export const html2Escape = (str) => {
 export function sendChatMessage(options) {
   console.log("options", options);
   let Message = [];
-  const { convId, convType, textMsg, aitStr, aitlist, files, image, reply } = options;
+  const { convId, convType, textMsg, aitStr, aitlist, files, video, image, reply } = options;
   // @消息
   if (aitStr) {
     Message.push(
@@ -222,16 +221,22 @@ export function sendChatMessage(options) {
   else if (textMsg) {
     Message.push(createTextMsg({ convId, convType, textMsg, reply }));
   }
+  // 图片消息
+  if (image.length) {
+    image.map((t) => {
+      Message.push(createImgtMsg({ convId, convType, image: dataURLtoFile(t.src) }));
+    });
+  }
   // 文件消息
   if (files.length) {
     files.map((t) => {
       Message.push(createFiletMsg({ convId, convType, files: dataURLtoFile(t.link, t.fileName) }));
     });
   }
-  // 图片消息
-  if (image.length) {
-    image.map((t) => {
-      Message.push(createImgtMsg({ convId, convType, image: dataURLtoFile(t.src) }));
+  // 视频消息
+  if (video.length) {
+    video.map((t) => {
+      Message.push(createVideoMsg({ convId, convType, video: dataURLtoFile(t.link, t.fileName) }));
     });
   }
   return Message;
@@ -314,13 +319,29 @@ export const extractImageInfo = (editor) => {
   images = image.filter((item) => item.class !== "EmoticonPack");
   return { images };
 };
-
+function isVideoFile(fileName) {
+  const videoFormats = ["mp4", "wmv", "webm"];
+  const fileExtension = fileName.toLowerCase();
+  const regex = new RegExp(`(${videoFormats.join("|")})$`, "i");
+  return regex.test(fileExtension);
+}
 /**
  * 提取文件信息
  */
 export const extractFilesInfo = (editor) => {
+  const file = [];
   const files = editor.getElemsByType("attachment");
-  return { files };
+  files.map((t) => !isVideoFile(getFileType(t.fileName)) && files.push(t));
+  return { files: file };
+};
+/**
+ * 提取视频信息
+ */
+export const extractVideoInfo = (editor) => {
+  const video = [];
+  const files = editor.getElemsByType("attachment");
+  files.map((t) => isVideoFile(getFileType(t.fileName)) && video.push(t));
+  return { video };
 };
 
 /**
