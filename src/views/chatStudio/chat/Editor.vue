@@ -59,8 +59,6 @@ import {
   extractImageInfo,
   sendChatMessage,
   customAlert,
-  getMessageElemItem,
-  parseHTMLToArr,
   extractFilesInfo,
   extractAitInfo,
   getOperatingSystem,
@@ -73,12 +71,12 @@ import { useState, useGetters } from "@/utils/hooks/useMapper";
 import MentionModal from "../components/MentionModal.vue";
 import { bytesToSize } from "@/utils/chat/index";
 import { fileImgToBase64Url } from "@/utils/chat/index";
-import { debounce, isEmpty } from "lodash-es";
+import { debounce } from "lodash-es";
 import { createCustomMsg } from "@/api/im-sdk-api/message";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
-const messages = ref(null); //编辑器内容 对象格式
+// const messages = ref(null); //编辑器内容 对象格式
 const mode = "simple"; // 'default' 或 'simple'
 const mentionRef = ref();
 
@@ -144,9 +142,6 @@ const setToolbar = (item) => {
     case "setParsefile":
       setParsefile(data.files);
       break;
-    case "shake":
-      console.log("shake");
-      break;
   }
 };
 // 插入草稿
@@ -177,7 +172,7 @@ const handleAt = debounce((editor) => {
 
 const onChange = (editor) => {
   const content = editor.children;
-  messages.value = content;
+  // messages.value = content;
   updateDraft(content);
   handleAt(editor);
 };
@@ -293,8 +288,8 @@ const handleEnter = (event) => {
   }
   const editor = editorRef.value;
   const empty = editor.isEmpty(); // 判断当前编辑器内容是否为空
-  const { textMsg, aitStr, files, image } = sendMsgBefore();
-  if ((!empty && !isEmpty(textMsg)) || image || aitStr || files) {
+  const { isHave } = sendMsgBefore();
+  if (!empty && isHave) {
     sendMessage(editor);
   } else {
     clearInputInfo();
@@ -313,7 +308,7 @@ const sendMsgBefore = (editor = editorRef.value) => {
   const { files } = extractFilesInfo(editor);
   const { images } = extractImageInfo(editor);
   const emoticons = convertEmoji(editor);
-  console.log(images);
+  const have = images.length || files.length || aitlist.length || aitStr || emoticons || text;
   return {
     convId: toAccount.value,
     convType: currentType.value,
@@ -323,40 +318,24 @@ const sendMsgBefore = (editor = editorRef.value) => {
     aitlist,
     files: files,
     reply: currentReplyMsg.value,
+    isHave: Boolean(have),
   };
 };
 // 发送消息
-const sendMessage = async (editor) => {
+const sendMessage = () => {
   const data = sendMsgBefore();
   console.log("sendMsgBefore:", data);
   const message = sendChatMessage(data);
   console.log("sendChatMessage:", message);
-  // clearInputInfo();
-  // dispatch("SESSION_MESSAGE_SENDING", {
-  //   payload: {
-  //     convId: currentConversation.value.conversationID,
-  //     message,
-  //   },
-  // });
-
-  // const elementArray = parseHTMLToArr(editor);
-  // const datas = {
-  //   convId: toAccount.value,
-  //   convType: currentConversation.value.type,
-  //   elementArray,
-  // };
-  // console.log(elementArray);
-  // const elemItem = getMessageElemItem(datas);
-  // console.log(elemItem);
-  // clearInputInfo();
-  // elemItem.map((message) => {
-  //   dispatch("SESSION_MESSAGE_SENDING", {
-  //     payload: {
-  //       convId: currentConversation.value.conversationID,
-  //       message,
-  //     },
-  //   });
-  // });
+  clearInputInfo();
+  message.map((message) => {
+    dispatch("SESSION_MESSAGE_SENDING", {
+      payload: {
+        convId: currentConversation.value.conversationID,
+        message,
+      },
+    });
+  });
 };
 const setEditHtml = (text) => {
   const editor = editorRef.value;

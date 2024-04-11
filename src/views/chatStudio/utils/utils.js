@@ -207,67 +207,34 @@ export const html2Escape = (str) => {
 
 /**
  * 发送聊天消息
- * @param {string} convId - 会话ID
- * @param {string} convType - 会话类型（单聊/群聊）
- * @param {Object} options - 消息选项
- * @param {string} [options.textMsg] - 文本消息内容（可选）
- * @param {string[]} [options.aitlist] - 艾特用户列表（可选）
- * @param {Object[]} [options.files] - 文件（可选）
- * @param {string} [options.files.fileName] - 文件名（可选）
- * @param {string} [options.files.src] - 文件数据URL（可选）
- * @param {Object[]} [options.image] - 图片（可选）
- * @param {string} [options.image.src] - 图片数据URL（可选）
- * @returns {Promise<Object>} - 返回聊天消息对象
- *
  */
 export function sendChatMessage(options) {
-  let TextMsg;
-  let flag = true;
+  console.log("options", options);
+  let Message = [];
   const { convId, convType, textMsg, aitStr, aitlist, files, image, reply } = options;
-  console.log(options);
-  // 如果包含文件，则创建相应的文件消息
-  if (files.length) {
-    const { fileName, link } = files[0];
-    console.log(fileName, link);
-    let file = dataURLtoFile(link, fileName);
-    TextMsg = createFiletMsg({
-      convId: convId,
-      convType: convType,
-      files: file,
-    });
-    flag = false;
-  }
-  // 如果包含图片，则创建相应的图片消息
-  if (image.length) {
-    let file = dataURLtoFile(image[0].src);
-    TextMsg = createImgtMsg({
-      convId: convId,
-      convType: convType,
-      image: file,
-    });
-    flag = false;
-  }
-  // 如果包含艾特，则创建相应的艾特消息
+  // @消息
   if (aitStr) {
-    TextMsg = createTextAtMsg({
-      convId: convId,
-      convType: convType,
-      textMsg: aitStr,
-      atUserList: aitlist,
-      reply,
+    Message.push(
+      createTextAtMsg({ convId, convType, textMsg: aitStr, atUserList: aitlist, reply })
+    );
+  }
+  // 文本消息
+  else if (textMsg) {
+    Message.push(createTextMsg({ convId, convType, textMsg, reply }));
+  }
+  // 文件消息
+  if (files.length) {
+    files.map((t) => {
+      Message.push(createFiletMsg({ convId, convType, files: dataURLtoFile(t.link, t.fileName) }));
     });
   }
-  // 否则创建文本消息
-  else if (flag) {
-    TextMsg = createTextMsg({
-      convId: convId,
-      convType: convType,
-      textMsg: textMsg,
-      reply,
+  // 图片消息
+  if (image.length) {
+    image.map((t) => {
+      Message.push(createImgtMsg({ convId, convType, image: dataURLtoFile(t.src) }));
     });
   }
-  TextMsg.status = "unSend";
-  return TextMsg;
+  return Message;
 }
 
 export const customAlert = (s, t) => {
@@ -308,127 +275,6 @@ export const isallStaff = (item, field = "all_staff") => {
   return item?.groupProfile?.groupCustomField?.[0]?.value == field;
 };
 
-function mergeData(data) {
-  let mergedData = {
-    elem_type: "text",
-    text_content: "",
-    aitlist: [],
-    replyMsg: null,
-  };
-  let otherData = [];
-  data.forEach((item) => {
-    if (item.elem_type === "text") {
-      mergedData.text_content += item.text_content;
-      if (item.aitlist) {
-        mergedData.aitlist = item.aitlist;
-      }
-      if (item.replyMsg) {
-        mergedData.replyMsg = item.replyMsg;
-      }
-    } else {
-      otherData.push(item);
-    }
-  });
-  return [mergedData, ...otherData];
-}
-/**
- * 将给定的 HTML 字符串解析为 数组
- * @param {string} html - 要解析的 HTML 字符串
- * @returns {Array} - 解析后的 数组
- */
-export function parseHTMLToArr(editor) {
-  let flag = false;
-  const html = editor.getHtml(); // 非格式化的 html
-  // const image = editor.getElemsByType("image"); // 所有图片
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-  // console.log(doc.body.children);
-  // .children[0].childNodes
-  const elements = Array.from(doc.body.children[0].childNodes);
-  const { aitStr, aitlist } = extractAitInfo(editor);
-  const replyMsg = store.state.conversation.currentReplyMsg;
-  const arr = elements.map((element) => {
-    console.log(element);
-    const obj = {};
-    if (element.tagName === "IMG") {
-      if (emojiName.includes(element.alt)) {
-        obj.elem_type = "text";
-        obj.text_content = element.alt;
-      } else {
-        obj.elem_type = "img";
-        obj.file_path = element.getAttribute("src");
-      }
-    } else if (element.dataset?.["wEType"] === "attachment") {
-      obj.elem_type = "file";
-      obj.file_name = element.dataset["filename"];
-      obj.file_path = element.dataset["link"];
-    } else {
-      obj.elem_type = "text";
-      obj.text_content = element.textContent.trim();
-      if (!flag) {
-        obj.aitlist = aitlist;
-        if (replyMsg) obj.replyMsg = replyMsg;
-        flag = true;
-      }
-    }
-    return obj;
-  });
-  console.log(arr);
-  return mergeData(arr);
-}
-export function getMessageElemItem({ elementArray, convId, convType }) {
-  let msg = [];
-  // msg = elementArray;
-  elementArray.map((item) => {
-    // debugger;
-    if (item.elem_type === "text" && item.text_content !== "") {
-      let data = null;
-      if (item.aitlist.length) {
-        data = createTextAtMsg({
-          convId,
-          convType,
-          textMsg: item.text_content,
-          atUserList: item.aitlist,
-          reply: item.replyMsg,
-        });
-      } else {
-        data = createTextMsg({
-          convId,
-          convType,
-          textMsg: item.text_content,
-          reply: item.replyMsg,
-        });
-      }
-      msg.push(data);
-    } else if (item.elem_type === "img") {
-      msg.push(
-        createImgtMsg({
-          convId,
-          convType,
-          image: dataURLtoFile(item.file_path),
-        })
-      );
-    } else if (item.elem_type === "file") {
-      console.log(dataURLtoFile(item.file_path, item.file_name));
-      msg.push(
-        createFiletMsg({
-          convId,
-          convType,
-          files: dataURLtoFile(item.file_path, item.file_name),
-        })
-      );
-    }
-  });
-  return msg;
-}
-
-export function parseContentFromHTML(html) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-  const content = doc.body.textContent; // trim()
-  return content;
-}
-
 /**
  * 将包含表情图像的 HTML 字符串转换为对应的表情符号文本
  * @param {string} html - 待转换的 HTML 字符串
@@ -464,6 +310,7 @@ export function convertEmoji(editor) {
 export const extractImageInfo = (editor) => {
   let images = null;
   const image = editor.getElemsByType("image");
+  // 过滤表情包消息
   images = image.filter((item) => item.class !== "EmoticonPack");
   return { images };
 };
@@ -482,19 +329,17 @@ export const extractFilesInfo = (editor) => {
  * @returns {Object} - 包含提及字符串和提及的 id 列表的对象
  */
 export const extractAitInfo = (editor) => {
-  const files = editor.getElemsByType("mention");
-  // let aitlist = [];
-  // files.forEach((t) => aitlist.push(t.info.id));
-  // aitlist = Array.from(new Set(aitlist));
-  // console.log(files);
-  // return { aitStr: "", aitlist };
-
   let aitStr = "";
   let aitlist = [];
-  let html = editor.getHtml();
-  if (html.includes("mention")) {
-    aitStr = html.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
-    files.forEach((t) => aitlist.push(t.info.id));
+  const html = editor.getHtml();
+  const mention = editor.getElemsByType("mention");
+  if (mention.length) {
+    // 清除文件消息包含的字符串
+    const fileRegex = /<span\s+data-w-e-type="attachment"[^>]*>(.*?)<\/span>/g;
+    let str = html.replace(fileRegex, "");
+    // 清除 HTML 标签和 &nbsp
+    aitStr = str.replace(/<[^>]+>/g, "").replace(/&nbsp;/gi, "");
+    mention.forEach((t) => aitlist.push(t.info.id));
     aitlist = Array.from(new Set(aitlist));
   }
   return { aitStr, aitlist };
@@ -560,6 +405,13 @@ export function searchByPinyin(searchStr) {
     },
   });
   return eventType;
+}
+
+function parseContentFromHTML(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const content = doc.body.textContent; // trim()
+  return content;
 }
 
 /**
