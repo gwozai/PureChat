@@ -19,6 +19,7 @@ import RelayElemItem from "../ElemItemTypes/RelayElemItem.vue";
 import TipsElemItem from "../ElemItemTypes/TipsElemItem.vue";
 import ImageElemItem from "../ElemItemTypes/ImageElemItem.vue";
 import FileElemItem from "../ElemItemTypes/FileElemItem.vue";
+import VideoElemItem from "../ElemItemTypes/VideoElemItem.vue";
 import CustomElemItem from "../ElemItemTypes/CustomElemItem.vue";
 import groupTipElement from "../ElemItemTypes/groupTipElement.vue";
 import GroupSystemNoticeElem from "../ElemItemTypes/GroupSystemNoticeElem.vue";
@@ -183,6 +184,7 @@ export const loadMsgModule = (item) => {
     TIMRelayElem: RelayElemItem, // 合并转发消息
     TIMImageElem: ImageElemItem, // 图片消息
     TIMFileElem: FileElemItem, // 文件消息
+    TIMVideoFileElem: VideoElemItem, // 视频消息
     TIMCustomElem: CustomElemItem, // 自定义消息
     TIMGroupTipElem: groupTipElement, // 群消息提示
     TIMGroupSystemNoticeElem: GroupSystemNoticeElem, // 系统通知
