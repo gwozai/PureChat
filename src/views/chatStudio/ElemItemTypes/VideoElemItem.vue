@@ -1,6 +1,6 @@
 <template>
   <div class="message-view_video">
-    <div ref="artRef" :style="style"></div>
+    <div class="artplayer" ref="artRef" :style="style"></div>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import Artplayer from "artplayer";
 import state from "../icons/state";
 import indicator from "../icons/indicator";
-
+const loading = require("../icons/ploading.gif");
 export default {
   data() {
     return {
@@ -16,10 +16,7 @@ export default {
       option: {
         url: "",
       },
-      style: {
-        width: "240px",
-        height: "135px",
-      },
+      style: {},
     };
   },
   props: {
@@ -27,6 +24,8 @@ export default {
       type: Object,
       default: () => {},
     },
+    // snapshotUrl 视频封面图
+    // videoSize 视频大小，单位：Byte
   },
   mounted() {
     this.initArt();
@@ -45,10 +44,9 @@ export default {
         lang: "zh-cn",
         theme: "#23ade5",
         fullscreen: true,
-
         icons: {
           state,
-          // loading,
+          loading: `<img width="50" heigth="50" src="${loading}">`,
           indicator,
         },
       });
@@ -62,6 +60,15 @@ export default {
 };
 </script>
 <style lang="scss">
+.message-view_video {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.artplayer {
+  width: 240px;
+  height: 135px;
+}
 .art-state {
   svg {
     width: 50px;
@@ -69,10 +76,5 @@ export default {
 }
 .art-control-volume {
   display: none !important;
-}
-.message-view_video {
-  position: relative;
-  border-radius: 6px;
-  overflow: hidden;
 }
 </style>

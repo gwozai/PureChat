@@ -322,10 +322,10 @@ export const extractImageInfo = (editor) => {
   return { images };
 };
 function isVideoFile(fileName) {
-  const videoFormats = ["mp4", "wmv", "webm"];
-  const fileExtension = fileName.toLowerCase();
-  const regex = new RegExp(`(${videoFormats.join("|")})$`, "i");
-  return regex.test(fileExtension);
+  const video = ["mp4", "wmv", "webm"];
+  const name = fileName.toLowerCase();
+  const regex = new RegExp(`(${video.join("|")})$`, "i");
+  return regex.test(name);
 }
 /**
  * 提取文件信息
@@ -333,7 +333,7 @@ function isVideoFile(fileName) {
 export const extractFilesInfo = (editor) => {
   const file = [];
   const files = editor.getElemsByType("attachment");
-  files.map((t) => !isVideoFile(getFileType(t.fileName)) && files.push(t));
+  files.map((t) => !isVideoFile(getFileType(t.fileName)) && file.push(t));
   return { files: file };
 };
 /**

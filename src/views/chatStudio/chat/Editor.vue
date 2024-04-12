@@ -221,19 +221,23 @@ const dropHandler = (event) => {
 };
 // 插入文件
 const parsefile = async (file) => {
+  if (file.size / (1024 * 1024) > 100) {
+    commit("showMessage", { message: "文件不能大于100MB", type: "warning" });
+    return;
+  }
   try {
     const { size, name } = file;
     const fileSize = bytesToSize(size);
     const base64Url = await fileImgToBase64Url(file);
-    const FileElement = {
+    const element = {
       type: "attachment",
       fileName: name,
       fileSize: fileSize,
       link: base64Url,
-      children: [{ text: "" }], // void 元素必须有一个 children ，其中只有一个空字符串，重要！！！
+      children: [{ text: "" }],
     };
     editorRef.value.restoreSelection(); // 恢复选区
-    editorRef.value.insertNode(FileElement);
+    editorRef.value.insertNode(element);
     editorRef.value.move(1); // 移动光标
   } catch (error) {
     console.log(error);
