@@ -84,13 +84,12 @@ const emjRef = ref();
 const tobottom = ref();
 const imagePicker = ref();
 const filePicker = ref();
-const { commit, dispatch } = useStore();
+const { commit } = useStore();
 
 const emit = defineEmits(["setToolbar"]);
 const { toAccount, currentType } = useGetters(["toAccount", "currentType"]);
-const { currentConversation, fullScreen } = useState({
+const { fullScreen } = useState({
   fullScreen: (state) => state.settings.fullScreen,
-  currentConversation: (state) => state.conversation.currentConversation,
 });
 
 const sendEmojiClick = () => {
@@ -129,20 +128,16 @@ const onEnlarge = (value) => {
   commit("UPDATE_USER_SETUP", { key: "fullScreen", value: !value });
 };
 
-async function sendImage(e) {
+function sendImage(e) {
   emit("setToolbar", {
-    data: {
-      files: e.target.files[0],
-    },
     key: "setPicture",
+    data: { files: e.target.files[0] },
   });
 }
-async function sendFile(e) {
+function sendFile(e) {
   emit("setToolbar", {
-    data: {
-      files: e.target.files[0],
-    },
     key: "setParsefile",
+    data: { files: e.target.files[0] },
   });
 }
 const onTobBottom = () => {
