@@ -124,13 +124,13 @@ const onClick = async ({ icon }) => {
 };
 
 const onHandle = (index) => {
-  if (index === 3) {
-    commit("showMessage", {
-      message: "待开发",
-      type: "warning",
-    });
-    return;
-  }
+  // if (index === 3) {
+  //   commit("showMessage", {
+  //     message: "待开发",
+  //     type: "warning",
+  //   });
+  //   return;
+  // }
   commit("setCurrentPage", index);
 };
 

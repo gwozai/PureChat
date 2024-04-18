@@ -16,6 +16,7 @@ import sidebar from "./sidebar.vue";
 import Message from "./message.vue";
 import test from "./test.vue";
 import frameView from "./frameView.vue";
+import AddressBook from "./AddressBook/index.vue";
 
 const showChat = (value) => {
   return outsideList.value[0].only.includes(value);
@@ -28,6 +29,7 @@ const frame = [
 ];
 const Component = {
   test: test, // 测试
+  // notebook: AddressBook,
 };
 const { outside, outsideList } = useState({
   outsideList: (state) => state.sidebar.outsideList,
