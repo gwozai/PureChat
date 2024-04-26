@@ -39,7 +39,9 @@
 [反馈](https://github.com/Hyk260/PureChat/issues) / 
 [QQ 群](https://github.com/Hyk260/PureChat/discussions/2) / 
 [打赏开发者](./images/weix.png) / 
-[文档](https://hyk260.github.io/pure-docs)
+[文档](https://hyk260.github.io/pure-docs) /
+[更新日志](https://hyk260.github.io/pure-docs/other/logs.html)
+
 
 [PureChat](https://github.com/Hyk260/PureChat) 是一个聊天工作室(腾讯IM即时通讯) 集成ChatGPT(openai)
 
