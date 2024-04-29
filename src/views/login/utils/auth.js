@@ -1,10 +1,10 @@
-import { openAuthUrl } from "@/api/node-admin-api/index";
+import { openAuthUrl, githubAuth } from "@/api/node-admin-api/index";
+
 export const oauthAuthorize = async (id) => {
-  let params = null;
-  if (id === "github") {
-    params = { client_id: process.env.VUE_APP_CLIENT_ID };
-  }
-  const res = await openAuthUrl(id, params);
+  const res = await openAuthUrl(id);
   window.open(res, "_self");
-  console.log(res);
+};
+
+export const authorizedLogin = async (code) => {
+  const res = await githubAuth({ code });
 };
