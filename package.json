@@ -7,7 +7,8 @@
     "email": "2607881950@qq.com"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --fix",
     "build:dev": "vue-cli-service build --mode development",
