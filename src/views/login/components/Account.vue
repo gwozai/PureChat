@@ -67,7 +67,7 @@
     </el-button>
   </div>
   <!-- 第三方登录 -->
-  <el-form-item v-if="false">
+  <el-form-item>
     <el-divider>
       <p class="text-gray-500 text-xs">{{ $t("login.thirdLogin") }}</p>
     </el-divider>
