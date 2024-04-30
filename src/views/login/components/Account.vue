@@ -56,7 +56,7 @@
     </el-button>
   </el-form>
   <!-- other hidden -->
-  <div class="mt-20 flex justify-between">
+  <div class="mt-20 flex justify-between" hidden>
     <el-button
       v-for="item in operates"
       :key="item.title"
@@ -67,7 +67,7 @@
     </el-button>
   </div>
   <!-- 第三方登录 -->
-  <el-form-item v-if="true">
+  <el-form-item v-if="false">
     <el-divider>
       <p class="text-gray-500 text-xs">{{ $t("login.thirdLogin") }}</p>
     </el-divider>
@@ -126,13 +126,6 @@ const onClick = async ({ icon }) => {
 };
 
 const onHandle = (index) => {
-  // if (index === 3) {
-  //   commit("showMessage", {
-  //     message: "待开发",
-  //     type: "warning",
-  //   });
-  //   return;
-  // }
   commit("setCurrentPage", index);
 };
 
