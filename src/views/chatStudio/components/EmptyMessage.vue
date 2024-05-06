@@ -1,7 +1,11 @@
 <template>
   <div :class="[classNmae]">
     <el-empty :description="$t('el.table.emptyText')" :image-size="150" />
-    <div v-if="classNmae == 'no-msg'" class="flex justify-center launch" @click="launch">
+    <div
+      v-if="classNmae == 'no-msg' && activetab == 'whole'"
+      class="flex justify-center launch"
+      @click="launch"
+    >
       发起聊天
     </div>
   </div>
@@ -9,12 +13,15 @@
 
 <script setup>
 import { useStore } from "vuex";
-
+import { useState } from "@/utils/hooks/useMapper";
 const props = defineProps({
   classNmae: {
     type: String,
     default: "",
   },
+});
+const { activetab } = useState({
+  activetab: (state) => state.conversation.activetab,
 });
 const { commit } = useStore();
 function launch() {
