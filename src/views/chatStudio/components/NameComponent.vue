@@ -1,8 +1,9 @@
 <template>
   <div class="message_name" v-show="!shouldDisplay">
     <span v-if="isGroup" class="isGroup" @click="handleAt">
-      {{ item.nick }}
-      <span>@</span>
+      <span class="nick">{{ item.nick }}</span>
+      <span class="mention">@</span>
+      <span v-if="groupProfile?.ownerID == item.from"> (群主) </span>
     </span>
     <span v-else-if="isSystem" class="isSystem">系统</span>
     <span v-else class="isFound">管理员</span>
@@ -11,11 +12,17 @@
 
 <script>
 import emitter from "@/utils/mitt-bus";
+import { mapGetters, mapState } from "vuex";
 export default {
   props: {
     item: Object,
   },
+  components: {},
   computed: {
+    ...mapGetters(["isOwner"]),
+    ...mapState({
+      groupProfile: (state) => state.groupinfo.groupProfile,
+    }),
     from() {
       return this.item.from;
     },
@@ -50,14 +57,18 @@ export default {
   color: var(--color-time-divider);
   font-size: 12px;
 }
+
 .isGroup {
   cursor: pointer;
-  span {
+
+  .mention {
     visibility: hidden;
   }
+
   &:hover {
-    color: rgb(84, 180, 239);
-    span {
+    .mention,
+    .nick {
+      color: rgb(84, 180, 239);
       visibility: visible;
     }
   }
