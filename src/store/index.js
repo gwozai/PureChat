@@ -1,11 +1,11 @@
-import { createStore } from "vuex";
-import saveToLocalStorage from "./plugins/localStorage"; // 自定义插件
-import { changeAppearance } from "@/utils/common";
+import { USER_MODEL, USER_SETUP } from "@/constants/index";
 import router from "@/router";
+import { convertToTree, optimizeTree } from "@/utils/ToTree";
+import { changeAppearance } from "@/utils/common";
 import storage from "@/utils/localforage/index";
 import emitter from "@/utils/mitt-bus";
-import { convertToTree, optimizeTree } from "@/utils/ToTree";
-import { USER_MODEL, USER_SETUP } from "@/constants/index";
+import { createStore } from "vuex";
+import saveToLocalStorage from "./plugins/localStorage"; // 自定义插件
 
 // 默认设置
 const defaultSettings = {

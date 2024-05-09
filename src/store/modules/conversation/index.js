@@ -8,6 +8,7 @@ import { addTimeDivider, getBaseTime, checkTextNotEmpty, transformData } from "@
 import { chatService } from "@/api/openai/index";
 import TIM from "@/utils/IM/chat/index";
 import { cloneDeep } from "lodash-es";
+import emitter from "@/utils/mitt-bus";
 import {
   deleteConversation,
   getConversationProfile,
@@ -328,7 +329,7 @@ const conversation = {
             message: addTimeDivider(messageList).reverse(), // 添加时间
           },
         });
-        commit("EMITTER_EMIT", { key: "updataScroll" });
+         emitter.emit("updataScroll");
         if (type == "GROUP") {
           const { groupID } = action.groupProfile;
           dispatch("getGroupMemberList", { groupID });
@@ -365,7 +366,7 @@ const conversation = {
           message: cloneDeep(message[0]),
         },
       });
-      commit("EMITTER_EMIT", { key: "updataScroll" });
+       emitter.emit("updataScroll");
     },
     // 新增会话列表
     async CHEC_OUT_CONVERSATION({ commit, dispatch }, action) {
@@ -416,7 +417,7 @@ const conversation = {
         type: "UPDATE_MESSAGES",
         payload: { convId, message },
       });
-      commit("EMITTER_EMIT", { key: "updataScroll" });
+      emitter.emit("updataScroll");
       // 发送消息
       const { code, message: result } = await sendMsg(message);
       if (code === 0) {
@@ -437,7 +438,7 @@ const conversation = {
         type: "UPDATE_MESSAGES",
         payload: { convId, message },
       });
-      commit("EMITTER_EMIT", { key: "updataScroll" });
+      emitter.emit("updataScroll");
     },
     IM_CHAT_CALLBACK({ state }, action) {
       console.log("IM_CHAT_CALLBACK", action);

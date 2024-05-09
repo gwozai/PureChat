@@ -1,4 +1,5 @@
 import store from "@/store";
+import emitter from "@/utils/mitt-bus";
 import { restApi } from "@/api/node-admin-api/rest";
 import { cloneDeep } from "lodash-es";
 import { useAccessStore } from "@/api/openai/constant";
@@ -50,12 +51,12 @@ export const chatService = async (params) => {
     config: { model: useAccessStore().model, stream: true },
     onUpdate(message) {
       console.log("[chat] onUpdate:", message);
-      store.commit("EMITTER_EMIT", { key: "updataScroll", value: "instantly" });
+      emitter.emit("updataScroll", "instantly");
       updataMessage(msg, message);
     },
     async onFinish(message) {
       console.log("[chat] onFinish:", message);
-      store.commit("EMITTER_EMIT", { key: "updataScroll", value: "instantly" });
+      emitter.emit("updataScroll", "instantly");
       if (message) {
         updataMessage(msg, message);
         await restSendMsg(chat, message);
