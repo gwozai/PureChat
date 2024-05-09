@@ -29,9 +29,9 @@
       <el-icon class="icon-hover"><Iphone /></el-icon>
     </span>
     <!-- 自定义消息 -->
-    <!-- <span @click="customMessage">
+    <span @click="customMessage" v-if="false">
       <el-icon class="icon-hover"><Sunny /></el-icon>
-    </span> -->
+    </span>
     <!-- 滚动到底部 -->
     <span
       :title="$t('chat.scrollToTheBottom')"
@@ -107,10 +107,8 @@ function openRobotBox() {
 const setEmoji = (item, table) => {
   let url = "";
   if (table == "QQ") {
-    // url = emojiQq.emojiUrl + emojiQq.emojiMap[item];
     url = require("@/assets/emoji/" + emojiQq.emojiMap[item]);
   } else {
-    // url = emojiDouyin.emojiUrl + emojiDouyin.emojiMap[item];
     url = require("@/assets/emoji/" + emojiDouyin.emojiMap[item]);
   }
   emit("setToolbar", { data: { url, item }, key: "setEmoj" });
