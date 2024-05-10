@@ -1,18 +1,17 @@
-import * as FontIcon from "./FontIcon";
-import * as UserAvatar from "./UserAvatar";
-import * as QrCode from "./QrCode";
-import * as SideItem from "./SideItem";
+function importModules(app) {
+  // 自动导入指定目录下的所有以index.vue结尾的文件
+  const requireModules = require.context("./", true, /\.vue$/);
 
-const components = [
-  { name: "FontIcon", component: FontIcon.default },
-  { name: "UserAvatar", component: UserAvatar.default },
-  { name: "QrCode", component: QrCode.default },
-  { name: "SideItem", component: SideItem.default },
-];
+  requireModules.keys().forEach((filePath) => {
+    const module = requireModules(filePath);
+    // 从文件路径中提取模块名称，如'./FontIcon/index.vue' => 'FontIcon'
+    const moduleName = filePath.replace(/\.\/(.*)\/index\.vue/, "$1");
+    if (moduleName === "SvgIcon") return;
+    app.component(moduleName, module.default);
+  });
+}
 
 /** 自动加载全局组件 */
 export function loadAllassembly(app) {
-  components.forEach(({ name, component }) => {
-    app.component(name, component);
-  });
+  importModules(app);
 }

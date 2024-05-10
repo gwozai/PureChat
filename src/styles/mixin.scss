@@ -14,11 +14,9 @@
   &::-webkit-scrollbar-track-piece {
     background: #fff;
   }
-
   &::-webkit-scrollbar {
     width: 6px;
   }
-
   &::-webkit-scrollbar-thumb {
     background: #90939957;
     border-radius: 20px;
@@ -44,6 +42,12 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: $clamp;
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 // @import "@/styles/mixin.scss";

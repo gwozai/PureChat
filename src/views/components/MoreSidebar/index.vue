@@ -12,38 +12,45 @@
       <div class="container" v-for="item in list" :key="item.title">
         <p class="left-text">{{ item.title }}</p>
         <div class="edit-area h-full" :class="item.class">
-          <draggable
-            class="dragArea list-group w-full"
-            :list="fnSelect(item.list)"
-            tag="transition-group"
-            filter=".fixed"
-            :move="onMove"
-            @update="onUpdate"
-            @remove="onRemove"
-            @start="onStart"
-            @end="onEnd"
-            :group="fnSelect(item.group)"
-            ghostClass="ghost"
-            dragClass="chosen"
-            animation="300"
-          >
-            <template v-for="element in fnSelect(item.type)" :key="element.only">
-              <div class="list-group-item" :class="element?.class">
-                <!-- 删除 -->
-                <FontIcon iconName="RemoveFilled" class="reduce" @click="reduce(element)" />
-                <!-- 添加 -->
-                <FontIcon iconName="CirclePlusFilled" class="add" @click="increase(element)" />
-                <FontIcon
-                  v-if="element?.type == 'el-icon'"
-                  :iconName="element.icon"
-                  class="style-svg"
-                />
-                <svg-icon v-else :iconClass="element.icon" class="style-svg" />
-                <span>{{ element.title }}</span>
-                <FontIcon iconName="Rank" class="rank" />
-              </div>
-            </template>
-          </draggable>
+          <el-scrollbar wrap-class="scrollbar-wrapper">
+            <draggable
+              class="dragArea list-group w-full"
+              :list="fnSelect(item.list)"
+              tag="transition-group"
+              filter=".fixed"
+              :move="onMove"
+              @update="onUpdate"
+              @remove="onRemove"
+              @start="onStart"
+              @end="onEnd"
+              :group="fnSelect(item.group)"
+              ghostClass="ghost"
+              dragClass="chosen"
+              animation="300"
+            >
+              <!-- leftEdit rightEdit -->
+              <template v-for="element in fnSelect(item.type)" :key="element.only">
+                <div class="list-group-item" :class="element?.class">
+                  <!-- 删除 -->
+                  <FontIcon iconName="RemoveFilled" class="reduce" @click="reduce(element)" />
+                  <!-- 添加 -->
+                  <FontIcon iconName="CirclePlusFilled" class="add" @click="increase(element)" />
+                  <!-- 图标 -->
+                  <FontIcon
+                    v-if="element?.type == 'el-icon'"
+                    :iconName="element.icon"
+                    class="style-svg"
+                  />
+                  <SvgIcon v-else :iconClass="element.icon" class="style-svg" />
+                  <span>{{ element.title }}</span>
+                  <FontIcon iconName="Rank" class="rank" />
+                </div>
+              </template>
+            </draggable>
+            <div class="empty h-full" v-if="fnSelect(item.type).length == 0">
+              全部都显示在侧边栏了
+            </div>
+          </el-scrollbar>
         </div>
       </div>
     </div>
@@ -57,11 +64,11 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
 import emitter from "@/utils/mitt-bus";
 import { cloneDeep, uniqBy } from "lodash-es";
-import { mapState } from "vuex";
+import { defineComponent } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
+import { mapState } from "vuex";
 export default defineComponent({
   components: {
     draggable: VueDraggableNext,
@@ -227,7 +234,7 @@ export default defineComponent({
 }
 .draggable {
   justify-content: space-between;
-  height: 400px;
+  // height: 200px;
   .container {
     border-radius: 4px;
     width: 195px;
@@ -267,5 +274,11 @@ export default defineComponent({
       margin-left: auto;
     }
   }
+}
+.empty {
+  @include flex-center;
+  opacity: 0.5;
+  height: 384px;
+  user-select: none;
 }
 </style>

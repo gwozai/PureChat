@@ -15,6 +15,8 @@ const outsideList = [
     icon: "Notebook",
     locale: "",
     title: "通讯录",
+    class: "fixed",
+    if_fixed: 1,
     type: "el-icon",
   },
   {
