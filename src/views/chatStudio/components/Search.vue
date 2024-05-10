@@ -13,7 +13,7 @@
       >
       </el-input>
       <div class="header-search-add">
-        <el-icon @click="opendialog"><Plus /></el-icon>
+        <FontIcon @click="opendialog" iconName="Plus" />
       </div>
     </div>
     <!-- 搜索结果 -->
@@ -22,9 +22,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { Search, Plus } from "@element-plus/icons-vue";
 import { showConfirmationBox } from "@/utils/message";
+import { Search } from "@element-plus/icons-vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 import SearchBox from "./SearchBox.vue";
 

@@ -35,7 +35,7 @@
         clearable
       >
         <template #prefix>
-          <el-icon class="el-input__icon"><Key /></el-icon>
+          <FontIcon class="el-input__icon" iconName="Key" />
         </template>
         <template #append>
           <ImageVerify v-model:code="imgCode" />
@@ -80,15 +80,15 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { Lock, User, Key } from "@element-plus/icons-vue";
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { getuser } from "@/api/node-admin-api/index";
-import { operates, thirdParty } from "../utils/enums";
-import { oauthAuthorize, authorizedLogin } from "../utils/auth";
-import { useStore } from "vuex";
-import { user, rules } from "../utils/validation";
 import ImageVerify from "@/views/components/ImageVerify/index.vue";
+import { Lock, User } from "@element-plus/icons-vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { authorizedLogin, oauthAuthorize } from "../utils/auth";
+import { operates, thirdParty } from "../utils/enums";
+import { rules, user } from "../utils/validation";
 import loadingSvg from "./loadingSvg";
 const { production } = require("@/config/vue.custom.config");
 

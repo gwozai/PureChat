@@ -13,9 +13,9 @@
     "
   >
     <!-- 发送中 -->
-    <el-icon class="is-loading" v-show="isShow('unSend')"><Loading /></el-icon>
+    <FontIcon class="is-loading" iconName="Loading" v-show="isShow('unSend')" />
     <!-- 发送失败 -->
-    <!-- <el-icon class="is-error" v-show="isShow('fail')"><WarningFilled /></el-icon> -->
+    <FontIcon class="is-error" iconName="WarningFilled" v-show="isShow('fail')" />
   </div>
 </template>
 

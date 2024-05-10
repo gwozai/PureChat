@@ -26,11 +26,11 @@
       :title="$t('chat.windowJitter')"
       @click="onShake"
     >
-      <el-icon class="icon-hover"><Iphone /></el-icon>
+      <FontIcon class="icon-hover" iconName="Iphone" />
     </span>
     <!-- 自定义消息 -->
     <span @click="customMessage" v-if="false">
-      <el-icon class="icon-hover"><Sunny /></el-icon>
+      <FontIcon class="icon-hover" iconName="Sunny" />
     </span>
     <!-- 滚动到底部 -->
     <span
@@ -39,9 +39,7 @@
       @click="onTobBottom"
       v-show="tobottom"
     >
-      <el-icon class="svg-left icon-hover">
-        <DArrowLeft />
-      </el-icon>
+      <FontIcon class="svg-left icon-hover" iconName="DArrowLeft" />
     </span>
     <span
       :title="fullScreen ? $t('chat.recover') : $t('chat.launch')"

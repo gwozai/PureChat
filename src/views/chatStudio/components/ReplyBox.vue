@@ -1,6 +1,6 @@
 <template>
   <div class="reply-box" v-show="currentReplyMsg">
-    <el-icon class="close" @click="onClose"><CircleCloseFilled /></el-icon>
+    <FontIcon class="close" iconName="CircleCloseFilled" @click="onClose" />
     <div class="reply-box-content">
       <div class="nick">{{ currentReplyMsg?.nick }} :</div>
       <div class="text" v-if="currentReplyMsg">
@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import { useState } from "@/utils/hooks/useMapper";
 import { fnReplyContent } from "@/utils/chat/index";
-import DynamicContent from "./DynamicContent.vue";
+import { useState } from "@/utils/hooks/useMapper";
 import { useStore } from "vuex";
+import DynamicContent from "./DynamicContent.vue";
 
 const { commit } = useStore();
 const { currentReplyMsg } = useState({

@@ -14,10 +14,9 @@
       <div class="upload-content flex">
         <div class="avatar">
           <!-- <div class="status-label">
-            <el-icon class="upload-success"><Plus /></el-icon>
           </div> -->
           <img v-if="option.url" :src="option.url" alt="头像" />
-          <el-icon class="plus" @click="imageClick"><Plus /></el-icon>
+          <FontIcon class="plus" iconName="Plus" @click="imageClick" />
         </div>
         <!-- <div class="preview"></div> -->
       </div>
@@ -42,13 +41,11 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
-import { cloneDeep } from "lodash-es";
-import emitter from "@/utils/mitt-bus";
-import { useStore } from "vuex";
-import { uploadFiles } from "@/api/node-admin-api/index";
 import { updateMyProfile } from "@/api/im-sdk-api/index";
-import { squareUrl } from "../utils/menu";
+import { uploadFiles } from "@/api/node-admin-api/index";
+import emitter from "@/utils/mitt-bus";
+import { reactive, ref } from "vue";
+import { useStore } from "vuex";
 
 const { commit } = useStore();
 const imagePicker = ref();

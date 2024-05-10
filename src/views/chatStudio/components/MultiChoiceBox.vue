@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox-style" id="svgDown" v-if="showCheckbox">
-    <el-icon class="close" @click="onClose"><CircleCloseFilled /></el-icon>
+    <FontIcon class="close" iconName="CircleCloseFilled" @click="onClose" />
     <div v-for="item in buttonList" :key="item.icon">
       <div class="icon" :class="disabled ? 'disabled' : ''" @click="onClock(item)">
         <svg-icon :class="item.class" :iconClass="item.icon" />
@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import { createForwardMsg, createMergerMsg, sendMsg, deleteMsgList } from "@/api/im-sdk-api/index";
+import { createForwardMsg, createMergerMsg, deleteMsgList, sendMsg } from "@/api/im-sdk-api/index";
 import { showConfirmationBox } from "@/utils/message";
+import { mapMutations, mapState } from "vuex";
 import MagforwardingPopup from "./MagforwardingPopup.vue";
 const buttonList = [
   {

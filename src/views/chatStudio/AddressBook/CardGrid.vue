@@ -10,9 +10,10 @@
     </div>
     <div class="right-item">
       <p>{{ item.Name || item.name || item.nick }}</p>
-      <el-icon @click="onFriend({ id: item.GroupId || item.groupID || item.userID })">
-        <Position />
-      </el-icon>
+      <FontIcon
+        iconName="Position"
+        @click="onFriend({ id: item.GroupId || item.groupID || item.userID })"
+      />
     </div>
   </div>
 </template>

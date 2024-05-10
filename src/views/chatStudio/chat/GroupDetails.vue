@@ -70,14 +70,13 @@
               :key="item.userID"
               @click="navigate(item)"
             >
-              <el-icon
+              <FontIcon
+                iconName="CircleCloseFilled"
                 class="style-close"
                 v-show="isOwner"
-                :class="{ isown: userProfile.userID === item.userID }"
+                :class="{ hidden: userProfile.userID === item.userID }"
                 @click.stop="removeGroupMemberBtn(item)"
-              >
-                <CircleCloseFilled />
-              </el-icon>
+              />
               <UserAvatar :url="item.avatar" :nickName="item.nick || item.userID" />
               <div class="admin" :class="item.role" v-if="item.role !== 'Member'">
                 {{ item.role === "Owner" ? "群主" : "管理员" }}
@@ -112,17 +111,16 @@
 </template>
 
 <script setup>
-import { ref, toRefs, watchEffect, onMounted, onBeforeUnmount } from "vue";
-import { useState, useGetters } from "@/utils/hooks/useMapper";
-import { useStore } from "vuex";
-import { updateGroupProfile, addGroupMember, deleteGroupMember } from "@/api/im-sdk-api/index";
+import { addGroupMember, deleteGroupMember, updateGroupProfile } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/index";
+import { useBoolean } from "@/utils/hooks/index";
+import { useGetters, useState } from "@/utils/hooks/useMapper";
+import { showConfirmationBox } from "@/utils/message";
+import emitter from "@/utils/mitt-bus";
+import { onBeforeUnmount, onMounted, ref, toRefs, watchEffect } from "vue";
+import { useStore } from "vuex";
 import AddMemberPopup from "../components/AddMemberPopup.vue";
 import AnalysisUrl from "../components/AnalysisUrl.vue";
-import { showConfirmationBox } from "@/utils/message";
-import { useBoolean } from "@/utils/hooks/index";
-import TIM from "@/utils/IM/chat/index";
-import emitter from "@/utils/mitt-bus";
 // eslint-disable-next-line no-undef
 const props = defineProps({
   groupProfile: {

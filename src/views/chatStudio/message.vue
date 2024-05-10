@@ -24,7 +24,7 @@
       </div>
       <div class="layoutkit-center">
         <div @click="onRight(arrowRight)">
-          <el-icon> <ArrowRight v-if="arrowRight" /><ArrowLeft v-else /> </el-icon>
+          <FontIcon :iconName="arrowRight ? 'ArrowRight' : 'ArrowLeft'" />
         </div>
       </div>
     </div>

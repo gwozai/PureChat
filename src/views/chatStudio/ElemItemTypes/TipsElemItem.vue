@@ -4,22 +4,21 @@
       <span>
         {{ getChangeType() }}
       </span>
-      <el-icon
+      <FontIcon
         class="close"
+        iconName="CircleCloseFilled"
         @click.stop="onClose()"
         v-show="!isReEdit && message.type !== 'TIMCustomElem'"
-      >
-        <CircleCloseFilled />
-      </el-icon>
+      />
     </span>
     <span @click.stop="onEdit()" v-if="isReEdit" class="edit">重新编辑</span>
   </div>
 </template>
 
 <script>
-import emitter from "@/utils/mitt-bus";
-import { mapState, mapGetters } from "vuex";
 import { deleteMsgList } from "@/api/im-sdk-api/index";
+import emitter from "@/utils/mitt-bus";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "TipsElemItem",
   props: {

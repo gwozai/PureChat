@@ -12,7 +12,7 @@
       <div class="container" v-for="item in list" :key="item.title">
         <p class="left-text">{{ item.title }}</p>
         <div class="edit-area h-full" :class="item.class">
-          <el-scrollbar wrap-class="scrollbar-wrapper">
+          <el-scrollbar>
             <draggable
               class="dragArea list-group w-full"
               :list="fnSelect(item.list)"
