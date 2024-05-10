@@ -30,11 +30,11 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
 import { useState } from "@/utils/hooks/useMapper";
+import emitter from "@/utils/mitt-bus";
 import UploadAvatarDialog from "@/views/chatStudio/components/UploadAvatarDialog.vue";
 import SidebarEditDialog from "@/views/components/MoreSidebar/index.vue";
-import emitter from "@/utils/mitt-bus";
+import { useStore } from "vuex";
 
 const { commit } = useStore();
 const { outside, unreadMsg, outsideList } = useState({
@@ -50,7 +50,9 @@ function openUploadAvatarDialog() {
   // emitter.emit("uploadAvatarDialog", true);
 }
 function toggle(item) {
-  if (item?.mode == "other") {
+  if (item?.openType) {
+    window.open(item?.url, "_blank");
+  } else if (item?.mode == "other") {
     emitter.emit("SidebarEditDialog", true);
   } else {
     commit("TAGGLE_OUE_SIDE", item.only);

@@ -23,6 +23,8 @@ const outsideList = [
     locale: "document",
     title: "文档",
     type: "el-icon",
+    openType: "outside",
+    url: "https://hyk260.github.io/pure-docs",
   },
   {
     only: "test",
@@ -45,12 +47,16 @@ const moreList = [
     only: "github",
     icon: "github",
     title: "github",
+    openType: "outside",
+    url: "https://github.com/Hyk260",
   },
   {
     only: "gitee",
     icon: "IceTea",
     title: "gitee",
     type: "el-icon",
+    openType: "outside",
+    url: "https://gitee.com/H260788/PureChat",
   },
 ];
 
