@@ -25,28 +25,28 @@ import VideoElemItem from "../ElemItemTypes/VideoElemItem.vue";
 import groupTipElement from "../ElemItemTypes/groupTipElement.vue";
 
 export const dragControllerDiv = (node) => {
-  let svgResize = document.getElementById("svgResize"); //滑块
-  let svgTop = document.getElementById("svgTop"); //聊天框
-  let svgDown = document.getElementById("svgDown"); //编辑器
-  let svgBox = document.getElementById("svgBox"); //整个盒子
+  let dragElement = document.getElementById("svgResize"); //滑块
+  let chatBox = document.getElementById("svgTop"); //聊天框
+  let editor = document.getElementById("svgDown"); //编辑器
+  let container = document.getElementById("svgBox"); //整个盒子
   // 按下鼠标执行
-  svgResize.onmousedown = (e) => {
+  dragElement.onmousedown = (e) => {
     let startY = e.clientY; //鼠标按下 起始Y
-    svgResize.top = svgResize.offsetTop;
+    dragElement.top = dragElement.offsetTop;
     // 事件会在鼠标指针移到指定的对象时发生。
     document.onmousemove = (e) => {
       let endY = e.clientY; //鼠标移动 结束得y
-      //移动距离 = 原来高度+（结束y-开始y）
-      let moveLen = svgResize.top + (endY - startY);
-      let boxHeight = svgBox.clientHeight;
+      // 移动距离 = 原来高度+（结束y-开始y）
+      let moveLen = dragElement.top + (endY - startY);
+      let boxHeight = container.clientHeight;
       // 最大移动距离 = 整个盒子高度 - 现在高度
-      let maxT = boxHeight - svgResize.offsetHeight;
+      let maxT = boxHeight - dragElement.offsetHeight;
       // 控制移动最小
       if (moveLen < 200) moveLen = 200;
       // 控制移动最大
       if (moveLen > maxT - 200) moveLen = maxT - 200;
-      svgTop.style.height = moveLen - 60 + "px";
-      svgDown.style.height = boxHeight - moveLen - 3 + "px";
+      chatBox.style.height = moveLen - 60 + 3 + "px";
+      editor.style.height = boxHeight - moveLen - 3 + "px";
     };
     // 鼠标按键被松开时执行
     document.onmouseup = () => {

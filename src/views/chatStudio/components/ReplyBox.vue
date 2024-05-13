@@ -29,7 +29,7 @@ const onClose = () => {
 .reply-box {
   height: 60px;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  border-top: 1px solid rgba(0, 0, 0, 0.09);
   padding: 0 10px;
   display: flex;
   align-items: center;

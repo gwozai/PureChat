@@ -36,16 +36,17 @@
       <Chatwin ref="chatRef" :class="{ 'style-h-full': fullScreen }" />
       <!-- 消息回复框 -->
       <ReplyBox />
+      <!-- Resize -->
       <div
         id="svgResize"
         :class="{ 'resize-hover': !fullScreen }"
         @mouseover="dragControllerDiv(chatRef)"
         v-if="showMsgBox"
       ></div>
-      <!-- 多选框 -->
-      <MultiChoiceBox />
       <!-- 编辑器 -->
       <Editor />
+      <!-- 多选框 -->
+      <MultiChoiceBox />
     </div>
     <!-- 合并消息弹框 -->
     <MergeMessagePopup />
@@ -185,7 +186,7 @@ watchEffect(() => {
 
 #svgResize {
   position: absolute;
-  height: 2.5px;
+  height: 3px;
   z-index: 10;
   width: 100%;
   border-radius: 5px;
