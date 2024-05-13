@@ -4,6 +4,7 @@ import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/IM/im-sdk/tim";
 import { scrollToDomPostion } from "@/utils/chat/index";
 import storage from "@/utils/localforage/index";
+import emitter from "@/utils/mitt-bus";
 import { useWindowFocus } from "@vueuse/core";
 import { ElNotification } from "element-plus";
 import { cloneDeep } from "lodash-es";
