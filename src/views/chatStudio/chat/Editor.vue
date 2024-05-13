@@ -39,42 +39,40 @@
 </template>
 
 <script setup>
-import "../utils/custom-menu";
-import "@wangeditor/editor/dist/css/style.css";
-import { Editor } from "@wangeditor/editor-for-vue";
-import RichToolbar from "../components/RichToolbar.vue";
-import { editorConfig, placeholderMap } from "../utils/configure";
-import emitter from "@/utils/mitt-bus";
+import { bytesToSize, fileImgToBase64Url } from "@/utils/chat/index";
 import { isMobile } from "@/utils/common";
+import { useGetters, useState } from "@/utils/hooks/useMapper";
+import emitter from "@/utils/mitt-bus";
+import { Editor } from "@wangeditor/editor-for-vue";
+import "@wangeditor/editor/dist/css/style.css";
+import { debounce } from "lodash-es";
 import {
+  onActivated,
+  onBeforeUnmount,
+  onDeactivated,
+  onMounted,
   ref,
   shallowRef,
-  onMounted,
   watch,
-  onActivated,
-  onDeactivated,
-  onBeforeUnmount,
 } from "vue";
+import { useStore } from "vuex";
+import MentionModal from "../components/MentionModal.vue";
+import RichToolbar from "../components/RichToolbar.vue";
+import { editorConfig, placeholderMap } from "../utils/configure";
+import "../utils/custom-menu";
 import {
   convertEmoji,
-  extractImageInfo,
-  sendChatMessage,
   customAlert,
-  extractFilesInfo,
-  extractVideoInfo,
   extractAitInfo,
-  getOperatingSystem,
-  handleToggleLanguage,
+  extractFilesInfo,
+  extractImageInfo,
+  extractVideoInfo,
   filterMentionList,
+  getOperatingSystem,
   handleEditorKeyDown,
+  handleToggleLanguage,
+  sendChatMessage,
 } from "../utils/utils";
-import { useStore } from "vuex";
-import { useState, useGetters } from "@/utils/hooks/useMapper";
-import MentionModal from "../components/MentionModal.vue";
-import { bytesToSize } from "@/utils/chat/index";
-import { fileImgToBase64Url } from "@/utils/chat/index";
-import { debounce } from "lodash-es";
-import { createCustomMsg } from "@/api/im-sdk-api/message";
 
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(""); // 内容 HTML
@@ -304,6 +302,7 @@ const handleEnter = (event) => {
 // 清空输入框
 const clearInputInfo = () => {
   commit("setReplyMsg", null);
+  commit("UPDATE_USER_SETUP", { key: "fullScreen", value: false });
   const editor = editorRef.value;
   editor && editor.clear();
 };
@@ -395,7 +394,8 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .wangeditor {
   word-break: break-all;
-  height: 206px;
+  border-top: 1px solid var(--color-border-default);
+  height: 200px;
   .editor-content {
     height: calc(100% - 40px) !important;
     overflow-y: hidden;

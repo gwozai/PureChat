@@ -5,6 +5,7 @@ import {
   createTextMsg,
   createVideoMsg,
 } from "@/api/im-sdk-api/index";
+import { MIN_RESIZE_HEIGHT } from "@/constants/index";
 import store from "@/store/index";
 import { dataURLtoFile, getBlob, getFileType } from "@/utils/chat/index";
 import emitter from "@/utils/mitt-bus";
@@ -37,27 +38,77 @@ export const dragControllerDiv = (node) => {
       let endY = e.clientY; //鼠标移动 结束得y
       //移动距离 = 原来高度+（结束y-开始y）
       let moveLen = svgResize.top + (endY - startY);
+      let boxHeight = svgBox.clientHeight;
       // 最大移动距离 = 整个盒子高度 - 现在高度
-      let maxT = svgBox.clientHeight - svgResize.offsetHeight;
+      let maxT = boxHeight - svgResize.offsetHeight;
       // 控制移动最小
       if (moveLen < 200) moveLen = 200;
       // 控制移动最大
       if (moveLen > maxT - 200) moveLen = maxT - 200;
-      svgResize.style.top = moveLen;
       svgTop.style.height = moveLen - 60 + "px";
-      svgDown.style.height = svgBox.clientHeight - moveLen - 5 + "px";
+      svgDown.style.height = boxHeight - moveLen - 3 + "px";
     };
     // 鼠标按键被松开时执行
-    document.onmouseup = (evt) => {
+    document.onmouseup = () => {
       document.onmousemove = null;
       document.onmouseup = null;
-      svgResize.releaseCapture && svgResize.releaseCapture();
       // 手动更新滚动条高度
       node.updateScrollbar();
     };
-    svgResize.setCapture && svgResize.setCapture();
     return false;
   };
+};
+
+/**
+ * 拖拽控制器，用于调整div的高度。
+ * @param {Object} node - 一个对象，该对象需包含一个用于更新滚动条的方法updateScrollbar。
+ */
+export const dragControllerDivCopy = (node) => {
+  // 获取相关的dom元素，避免在事件处理函数中重复查询
+  const svgElements = {
+    resize: document.getElementById("svgResize"), // 滑块元素
+    top: document.getElementById("svgTop"), // 聊天框元素
+    down: document.getElementById("svgDown"), // 编辑器元素
+    box: document.getElementById("svgBox"), // 整个盒子元素
+  };
+
+  // 鼠标按下事件处理函数
+  const handleMouseDown = (e) => {
+    const startY = e.clientY; // 记录鼠标按下时的位置
+    let startTop = svgElements.resize.offsetTop; // 记录滑块初始位置
+
+    // 鼠标移动事件处理函数
+    const handleMouseMove = (e) => {
+      const endY = e.clientY; // 当前鼠标位置
+      let moveLen = startTop + (endY - startY); // 计算滑块应移动的距离
+
+      // 限制移动范围
+      const maxHeight = svgElements.box.clientHeight - svgElements.resize.offsetHeight;
+      moveLen = Math.min(Math.max(moveLen, MIN_RESIZE_HEIGHT), maxHeight - MIN_RESIZE_HEIGHT);
+
+      // 更新元素样式
+      svgElements.resize.style.top = `${moveLen}px`;
+      svgElements.top.style.height = `${moveLen - 60}px`;
+      svgElements.down.style.height = `${svgElements.box.clientHeight - moveLen - 5}px`;
+    };
+
+    // 鼠标抬起事件处理函数
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      // 更新滚动条
+      node.updateScrollbar();
+    };
+
+    // 绑定鼠标移动和抬起事件
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    // 阻止默认行为（如选中文字）
+    e.preventDefault();
+  };
+
+  // 绑定鼠标按下事件
+  svgElements.resize.addEventListener("mousedown", handleMouseDown);
 };
 
 export const validatelastMessage = (list) => {

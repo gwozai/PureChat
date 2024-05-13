@@ -87,36 +87,35 @@
 </template>
 
 <script setup>
+import { showConfirmationBox } from "@/utils/message";
 import {
+  nextTick,
+  onBeforeUnmount,
+  onBeforeUpdate,
+  onMounted,
+  onUnmounted,
+  onUpdated,
   ref,
   watch,
-  nextTick,
-  onMounted,
-  onUpdated,
-  onUnmounted,
-  onBeforeUpdate,
-  onBeforeUnmount,
 } from "vue";
-import { handleCopyMsg, validatelastMessage, msgType, msgOne, loadMsgModule } from "../utils/utils";
-import { circleUrl, MENU_LIST, AVATAR_LIST, RIGHT_CLICK_MENU_LIST } from "../utils/menu";
 import { useStore } from "vuex";
-import { showConfirmationBox } from "@/utils/message";
+import { AVATAR_LIST, MENU_LIST, RIGHT_CLICK_MENU_LIST, circleUrl } from "../utils/menu";
+import { handleCopyMsg, loadMsgModule, msgOne, msgType, validatelastMessage } from "../utils/utils";
 
+import { deleteMsgList, getMsgList, revokeMsg, translateText } from "@/api/im-sdk-api/index";
+import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/constants/index";
 import TIM from "@/utils/IM/chat/index";
+import { download, isRobot } from "@/utils/chat/index";
+import { useGetters, useState } from "@/utils/hooks/useMapper";
+import emitter from "@/utils/mitt-bus";
+import MyPopover from "@/views/components/MyPopover/index.vue";
 import { debounce } from "lodash-es";
-import { useState, useGetters } from "@/utils/hooks/useMapper";
+import { timeFormat } from "pure-tools";
 import { Contextmenu, ContextmenuItem } from "v-contextmenu";
 import Checkbox from "../components/Checkbox.vue";
-import Stateful from "../components/Stateful.vue";
 import LoadMore from "../components/LoadMore.vue";
-import MyPopover from "@/views/components/MyPopover/index.vue";
-import { HISTORY_MESSAGE_COUNT, MULTIPLE_CHOICE_MAX } from "@/constants/index";
-import { deleteMsgList, revokeMsg, translateText, getMsgList } from "@/api/im-sdk-api/index";
-import emitter from "@/utils/mitt-bus";
 import NameComponent from "../components/NameComponent.vue";
-import { download } from "@/utils/chat/index";
-import { timeFormat } from "pure-tools";
-import { isRobot } from "@/utils/chat/index";
+import Stateful from "../components/Stateful.vue";
 
 const timeout = ref(false);
 const isRight = ref(true);
@@ -278,10 +277,9 @@ const getMoreMsg = async () => {
     const conv = currentConversation.value;
     const msglist = currentMessageList.value;
     const { conversationID } = conv;
-    const { ID } = validatelastMessage(msglist);
     const result = await getMsgList({
       conversationID: conversationID,
-      nextReqMessageID: ID,
+      nextReqMessageID: validatelastMessage(msglist).ID,
     });
     const { isCompleted, messageList, nextReqMessageID } = result;
     let noMore = true;
@@ -502,15 +500,15 @@ defineExpose({ updateScrollbar, updateScrollBarHeight });
 <style lang="scss" scoped>
 @import url("../style/elemType.scss");
 .message-info-view-content {
-  height: calc(100% - 70px - 206px);
-  border-bottom: 1px solid var(--color-border-default);
+  height: calc(100% - 60px - 200px);
+  // border-bottom: 1px solid var(--color-border-default);
   // transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .style-MsgBox {
   height: calc(100% - 60px) !important;
 }
 .stlyle-Reply {
-  height: calc(100% - 70px - 206px - 60px) !important;
+  height: calc(100% - 60px - 200px - 60px) !important;
 }
 .message-view__item--time-divider {
   user-select: none;
