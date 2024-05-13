@@ -67,13 +67,13 @@
 </template>
 
 <script setup>
-import { Close, Check } from "@element-plus/icons-vue";
-import { computed, onMounted } from "vue";
+import { setTheme } from "@/utils/common";
 import { useState } from "@/utils/hooks/useMapper";
-import { useStore } from "vuex";
-import { changeAppearance } from "@/utils/common";
-import { useI18n } from "vue-i18n";
 import { useWatermark } from "@/utils/hooks/useWatermark";
+import { Check, Close } from "@element-plus/icons-vue";
+import { computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import { useStore } from "vuex";
 import { languages, options } from "./enums";
 
 const { locale, t } = useI18n();
@@ -125,7 +125,7 @@ const themecolor = computed({
       key: "appearance",
       value: val,
     });
-    changeAppearance(val);
+    setTheme(val);
   },
 });
 

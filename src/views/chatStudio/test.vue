@@ -2,11 +2,11 @@
   <div>
     <el-button type="primary" @click="setTheme('light')">白色</el-button>
     <el-button type="primary" @click="setTheme('dark')">黑色</el-button>
-    <p>设置主题色 {{ theme }}</p>
+    <p>设置主题色 {{ appearance }}</p>
     <br />
-    <el-button type="primary" @click="setState(true)">true</el-button>
+    <!-- <el-button type="primary" @click="setState(true)">true</el-button>
     <el-button type="primary" @click="setState(false)">false</el-button>
-    <p>useBoolean {{ state }}</p>
+    <p>useBoolean {{ state }}</p> -->
     <br />
     <el-button v-for="{ title, onclick } in buttons" :key="title" type="primary" @click="onclick">
       {{ title }}
@@ -25,16 +25,17 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, reactive, onMounted, onBeforeUnmount } from "vue";
-import { mapState, mapMutations, mapActions } from "vuex";
-import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
-import { useBoolean } from "@/utils/hooks/index";
+import { defineComponent } from "vue";
+import { mapActions, mapMutations, mapState } from "vuex";
+// import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
+import { setTheme } from "@/utils/common";
 
 export default defineComponent({
   name: "Test",
   components: {},
   computed: {
     ...mapState({
+      appearance: (state) => state.settings.appearance,
       groupList: (state) => state.groupinfo.groupList,
       timProxy: (state) => state.user.timProxy,
     }),
@@ -42,6 +43,7 @@ export default defineComponent({
   props: {},
   data() {
     return {
+      setTheme,
       buttons: [
         {
           title: "文件上传",
@@ -102,21 +104,21 @@ export default defineComponent({
     fileupload() {},
     async callApi() {},
   },
-  setup(props, { attrs, emit, expose, slots }) {
-    const data = reactive({ text: "" });
-    const { theme, setTheme } = useDataThemeChange();
-    const [state, setState] = useBoolean();
+  // setup(props, { attrs, emit, expose, slots }) {
+  //   const data = reactive({ text: "" });
+  //   // const { theme, setTheme } = useDataThemeChange();
+  //   const [state, setState] = useBoolean();
 
-    onMounted(() => {});
-    onBeforeUnmount(() => {});
-    return {
-      state,
-      setState,
-      theme,
-      setTheme,
-      ...toRefs(data),
-    };
-  },
+  //   onMounted(() => {});
+  //   onBeforeUnmount(() => {});
+  //   return {
+  //     state,
+  //     setState,
+  //     // theme,
+  //     // setTheme,
+  //     ...toRefs(data),
+  //   };
+  // },
 });
 </script>
 

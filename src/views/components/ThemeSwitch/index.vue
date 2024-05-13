@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, computed, reactive, onMounted, onBeforeUnmount } from "vue";
+import { setTheme } from "@/utils/common";
 import { useState } from "@/utils/hooks/useMapper";
+import { computed, defineComponent, onBeforeUnmount, onMounted, toRefs } from "vue";
 import { useStore } from "vuex";
-import { changeAppearance } from "@/utils/common";
 export default defineComponent({
   name: "ThemeSwitch",
   components: {},
@@ -36,7 +36,7 @@ export default defineComponent({
         key: "appearance",
         value: val,
       });
-      changeAppearance(val);
+      setTheme(val);
     };
     onMounted(() => {});
     onBeforeUnmount(() => {});

@@ -1,6 +1,6 @@
 import { USER_MODEL, USER_SETUP } from "@/constants/index";
 import { convertToTree } from "@/utils/ToTree";
-import { changeAppearance } from "@/utils/common";
+import { setTheme } from "@/utils/common";
 import storage from "@/utils/localforage/index";
 import emitter from "@/utils/mitt-bus";
 import { createStore } from "vuex";
@@ -81,6 +81,6 @@ const store = createStore({
 });
 
 // 刷新页面保存当前主题色
-changeAppearance(store.state.settings.appearance);
+setTheme(store.state.settings.appearance);
 
 export default store;

@@ -3,36 +3,23 @@ const { title } = require("@/config/vue.custom.config");
 
 /**
  * 切换主题风格
- * @param {string}  appearance light || dark
+ * @param {string}  appearance light || dark || auto
  */
-export function changeAppearance(appearance = "light") {
-  if (appearance === "auto") {
-    // 查询系统主题色
-    const media = window.matchMedia("(prefers-color-scheme: light)");
-    media.onchange = autotaggTheme;
-    appearance = media.matches ? "light" : "dark";
-  }
-  // 设置element主题色
-  if (appearance == "dark") {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-  // 自定义主题设色
-  document.body.setAttribute("data-theme", appearance);
-}
+export function setTheme(appearance = "light") {
+  const isAuto = appearance === "auto";
+  const systemThemeQuery = window.matchMedia("(prefers-color-scheme: light)");
 
-/**
- * 根据系统主题颜色自动切换
- * @param {event}
- */
-export function autotaggTheme(e) {
-  if (e.matches) {
-    document.body.setAttribute("data-theme", "light");
-    document.documentElement.classList.remove("dark");
-  } else {
-    document.body.setAttribute("data-theme", "dark");
-    document.documentElement.classList.add("dark");
+  const theme = isAuto ? (systemThemeQuery.matches ? "light" : "dark") : appearance;
+  document.body.setAttribute("data-theme", theme);
+  document.documentElement.classList[theme === "dark" ? "add" : "remove"]("dark");
+
+  // 监听系统主题变化，仅在自动模式下生效
+  if (isAuto) {
+    systemThemeQuery.addEventListener("change", (e) => {
+      const theme = e.matches ? "light" : "dark";
+      document.body.setAttribute("data-theme", theme);
+      document.documentElement.classList[theme === "dark" ? "add" : "remove"]("dark");
+    });
   }
 }
 
