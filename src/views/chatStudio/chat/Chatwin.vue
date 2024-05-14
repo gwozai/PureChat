@@ -425,6 +425,11 @@ const handleForward = (data) => {};
 const handleReplyMsg = (data) => {
   commit("setReplyMsg", data);
   !ISown(data) && handleAt(data);
+  // 重置编辑器高度
+  const chatBox = document.getElementById("svgTop"); //聊天框
+  const editor = document.getElementById("svgDown");
+  chatBox.style.height = `calc(100% - 60px - 200px)`;
+  editor.style.height = `${200}px`;
 };
 // 删除消息
 const handleDeleteMsg = async (data) => {

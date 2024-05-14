@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
     <!-- 表情包 -->
-    <span :title="$t('chat.emoji')" class="emoticon" @click="sendEmojiClick">
+    <span v-show="!fullScreen" :title="$t('chat.emoji')" class="emoticon" @click="sendEmojiClick">
       <svg-icon iconClass="iconxiaolian" class="icon-hover" />
     </span>
     <!-- 图片 -->
@@ -46,8 +46,7 @@
       class="style-enlarge"
       @click="onEnlarge(fullScreen)"
     >
-      <svg-icon v-if="fullScreen" iconClass="narrow" class="icon-hover" />
-      <svg-icon v-else iconClass="enlarge" class="icon-hover" />
+      <svg-icon :iconClass="fullScreen ? 'narrow' : 'enlarge'" class="icon-hover" />
     </span>
     <input
       type="file"

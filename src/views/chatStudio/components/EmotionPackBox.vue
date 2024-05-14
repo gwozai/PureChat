@@ -61,13 +61,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useStore } from "vuex";
 import { useBoolean } from "@/utils/hooks/index";
+import { useState } from "@/utils/hooks/useMapper";
 import { ClickOutside as vClickOutside } from "element-plus";
 import { chunk } from "lodash-es";
+import { onMounted, ref } from "vue";
+import { useStore } from "vuex";
 import { getOperatingSystem } from "../utils/utils";
-import { useState } from "@/utils/hooks/useMapper";
 
 const emojiQq = require("@/utils/emoji/emoji-map-qq");
 const emojiDouyin = require("@/utils/emoji/emoji-map-douyin");
@@ -140,8 +140,9 @@ defineExpose({ setFlag });
 <style lang="scss" scoped>
 .emjio-tion {
   position: absolute;
+  z-index: 1;
   border-radius: 5px;
-  bottom: 55px;
+  bottom: 46px;
   background: #fff;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
   :deep(.custom-scrollbar-wrap) {
@@ -150,7 +151,7 @@ defineExpose({ setFlag });
 }
 .emojis {
   width: 400px;
-  height: 180px;
+  height: 152px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -174,7 +175,7 @@ defineExpose({ setFlag });
   }
 }
 .tool {
-  height: 50px;
+  height: 40px;
   display: flex;
   align-items: center;
   padding: 0 10px;

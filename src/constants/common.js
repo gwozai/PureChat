@@ -16,6 +16,7 @@ export const CHATGPT_ROBOT = "@RBT#001";
 export const GET_MESSAGE_LIST = "GET_MESSAGE_LIST"; //获取消息列表
 export const HISTORY_MESSAGE_COUNT = 20; //历史消息计数
 export const MULTIPLE_CHOICE_MAX = 20; //多选消息最大计数
+export const MIN_RESIZE_HEIGHT = 250;
 
 export const CONVERSATIONTYPE = {
   UPDATE_NOMORE: "UPDATE_NOMORE", //更新加载更多
