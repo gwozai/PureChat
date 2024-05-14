@@ -24,6 +24,7 @@ export function setTheme(appearance = "light") {
 }
 
 export function setPageTitle(routerTitle) {
+  if (isElectron) return;
   document.title = routerTitle ? `${routerTitle} | ${title}` || title : title;
 }
 

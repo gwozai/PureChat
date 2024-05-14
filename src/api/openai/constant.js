@@ -7,16 +7,22 @@ export const StoreKey = {
 
 export const ModelProvider = {
   GPT: "GPT",
-  GeminiPro: "GeminiPro",
-  Claude: "Claude",
+  // GeminiPro: "GeminiPro",
+  // Claude: "Claude",
+  ChatGLM: "ChatGLM",
 };
 
 export const OpenaiPath = {
   ChatPath: "v1/chat/completions", // chatgpt 聊天接口
-  UsagePath: "v1/dashboard/billing/usage", // 用量查询，数据单位为 token
-  SubsPath: "v1/dashboard/billing/subscription", // 总量查询，数据单位为 token
-  ListModelPath: "v1/models", // 查询可用模型
-  EmbeddingPath: "v1/embeddings", // 文本向量化
+  // UsagePath: "v1/dashboard/billing/usage", // 用量查询，数据单位为 token
+  // SubsPath: "v1/dashboard/billing/subscription", // 总量查询，数据单位为 token
+  // ListModelPath: "v1/models", // 查询可用模型
+  // EmbeddingPath: "v1/embeddings", // 文本向量化
+};
+
+export const ChatGLMPath = {
+  // https://open.bigmodel.cn/api/paas/v4/
+  ChatPath: "chat/completions",
 };
 // 默认配置
 export const modelConfig = {
@@ -51,75 +57,57 @@ export const modelConfig = {
   compressMessageLengthThreshold: 1000,
 };
 
+const openaiModels = [
+  "gpt-3.5-turbo",
+  "gpt-3.5-turbo-0301",
+  "gpt-3.5-turbo-0613",
+  // "gpt-3.5-turbo-1106",
+  // "gpt-3.5-turbo-0125",
+  "gpt-3.5-turbo-16k",
+  "gpt-3.5-turbo-16k-0613",
+  "gpt-4",
+  // "gpt-4-0613",
+  // "gpt-4-32k",
+  // "gpt-4-32k-0613",
+  // "gpt-4-turbo",
+  // "gpt-4-turbo-preview",
+  // "gpt-4-vision-preview",
+  // "gpt-4-turbo-2024-04-09",
+];
+
+const zhipuModels = ["glm-4", "glm-4v", "glm-3-turbo"];
+
 export function useAccessStore() {
   return storage.get(StoreKey.Access) || modelConfig;
 }
 
 export const DEFAULT_MODELS = [
-  {
-    name: "gpt-4",
+  ...openaiModels.map((name) => ({
+    name,
     available: true,
-  },
-  {
-    name: "gpt-4-0314",
-    available: true,
-  },
-  {
-    name: "gpt-4-0613",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k-0314",
-    available: true,
-  },
-  {
-    name: "gpt-4-32k-0613",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0301",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-0613",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-16k",
-    available: true,
-  },
-  {
-    name: "gpt-3.5-turbo-16k-0613",
-    available: true,
-  },
-  {
-    name: "qwen-v1", // 通义千问
-    available: false,
-  },
-  {
-    name: "ernie", // 文心一言
-    available: false,
-  },
-  {
-    name: "spark", // 讯飞星火
-    available: false,
-  },
-  {
-    name: "llama", // llama
-    available: false,
-  },
-  {
-    name: "chatglm", // chatglm-6b
-    available: false,
-  },
+    provider: {
+      id: "openai",
+      providerName: "OpenAI",
+      providerType: "openai",
+    },
+  })),
+  // ...zhipuModels.map((name) => ({
+  //   name,
+  //   available: true,
+  //   provider: {
+  //     id: "zhipu",
+  //     providerName: "ZhiPu",
+  //     providerType: "zhipu",
+  //   },
+  // })),
+  // {
+  //   name: "qwen-v1", // 通义千问
+  //   available: false,
+  // },
+  // {
+  //   name: "ernie", // 文心一言
+  //   available: false,
+  // },
 ];
 
 export const modelValue = {
