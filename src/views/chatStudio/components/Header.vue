@@ -25,15 +25,26 @@
 </template>
 
 <script setup>
+import { useAccessStore } from "@/api/openai/constant";
+import { getModelType } from "@/utils/chat/index";
 import { useGetters, useState } from "@/utils/hooks/useMapper";
 import emitter from "@/utils/mitt-bus";
 import Label from "@/views/chatStudio/components/Label.vue";
+import { watch } from "vue";
+import { useStore } from "vuex";
 
-const { currentType } = useGetters(["currentType"]);
+const { commit } = useStore();
+const { currentType, toAccount } = useGetters(["currentType", "toAccount"]);
 const { chat, model } = useState({
   chat: (state) => state.conversation.currentConversation,
   model: (state) => state.robot.model,
 });
+
+const updataModel = () => {
+  const value = getModelType(toAccount.value);
+  const model = useAccessStore(value)?.model;
+  model && commit("setRobotModel", model);
+};
 
 const chatType = (type) => {
   return currentType.value === type;
@@ -54,7 +65,12 @@ const chatNick = (type, chat) => {
 const openSetup = () => {
   emitter.emit("onGroupDrawer", true);
 };
+
 const openUser = () => {};
+
+watch(toAccount, (data) => {
+  updataModel();
+});
 </script>
 
 <style lang="scss" scoped>

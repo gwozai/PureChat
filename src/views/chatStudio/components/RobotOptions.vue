@@ -2,17 +2,18 @@
   <el-dialog v-model="state" width="750px" align-center :before-close="handleClose">
     <div>
       <ul class="container">
-        <li class="list-item" v-for="(item, index) in Settings" :key="index">
+        <li class="list-item" v-for="(item, index) in modelData" :key="item.ID">
           <div>
             <div class="title">{{ item.Title }}</div>
             <div class="subTitle">{{ item.SubTitle }}</div>
           </div>
+          <!-- 模型 -->
           <el-select v-if="item.options" v-model="item.defaultValue" placeholder="Select">
             <el-option
               v-for="item in item.options"
-              v-show="item.available"
+              v-show="item.available && item.provider.convId == toAccount"
               :key="item.name"
-              :label="item.name"
+              :label="item.name + `(${item.provider.providerName})`"
               :value="item.name"
             />
           </el-select>
@@ -45,40 +46,57 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { StoreKey, modelValue, useAccessStore } from "@/api/openai/constant";
+import { getModelType } from "@/utils/chat/index";
 import { useBoolean } from "@/utils/hooks/index";
+import { useGetters } from "@/utils/hooks/useMapper";
+import storage from "@/utils/localforage/index";
 import emitter from "@/utils/mitt-bus";
 import { cloneDeep } from "lodash-es";
-import storage from "@/utils/localforage/index";
-import { StoreKey, modelValue, useAccessStore } from "@/api/openai/constant";
+import { ref } from "vue";
 import { useStore } from "vuex";
 
 const { commit } = useStore();
 const [state, setState] = useBoolean();
-const Settings = ref(null);
+const modelData = ref(null);
+
+const { toAccount } = useGetters(["toAccount"]);
 
 function initModel() {
-  const value = cloneDeep(modelValue);
+  const model = getModelType(toAccount.value);
+  const value = cloneDeep(modelValue[model]);
   Object.values(value).map((v) => {
-    return (v.defaultValue = useAccessStore()[v.ID]);
+    return (v.defaultValue = useAccessStore(model)[v.ID]);
   });
-  Settings.value = value;
+  console.log(value);
+  modelData.value = value;
 }
 function handleClose(done) {
   done();
 }
+function storeRobotModel(model) {
+  const access = storage.get(StoreKey.Access);
+  const account = getModelType(toAccount.value);
+  if (access) {
+    storage.set(StoreKey.Access, { ...access, [account]: { ...model } });
+  } else {
+    storage.set(StoreKey.Access, { [account]: { ...model } });
+  }
+  commit("setRobotModel", model.model);
+}
+// 重置
 function handleCancel() {
   storage.remove(StoreKey.Access);
   setState(false);
 }
+// 保存
 function handleConfirm() {
   setState(false);
   const model = {};
-  Object.values(Settings.value).map((value) => {
-    model[value.ID] = value.defaultValue;
+  Object.values(modelData.value).map((t) => {
+    model[t.ID] = t.defaultValue;
   });
-  storage.set(StoreKey.Access, model);
-  commit("setModel", model.model);
+  storeRobotModel(model);
 }
 emitter.on("onRobotBox", (state) => {
   initModel();

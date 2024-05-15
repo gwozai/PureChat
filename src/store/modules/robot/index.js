@@ -1,10 +1,9 @@
-import { useAccessStore } from "@/api/openai/constant";
 export default {
   state: {
-    model: useAccessStore()?.model,
+    model: "",
   },
   mutations: {
-    setModel(state, value) {
+    setRobotModel(state, value) {
       state.model = value;
     },
   },

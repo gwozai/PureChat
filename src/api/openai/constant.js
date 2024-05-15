@@ -1,3 +1,4 @@
+import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/constants/index";
 import storage from "@/utils/localforage/index";
 export const REQUEST_TIMEOUT_MS = 6000;
 
@@ -6,10 +7,9 @@ export const StoreKey = {
 };
 
 export const ModelProvider = {
-  GPT: "GPT",
-  // GeminiPro: "GeminiPro",
-  // Claude: "Claude",
-  ChatGLM: "ChatGLM",
+  GPT: "GPT", // chatgpt
+  ChatGLM: "ChatGLM", // 智谱
+  ZeroOne: "ZeroOne", // 零一万物
 };
 
 export const OpenaiPath = {
@@ -21,11 +21,10 @@ export const OpenaiPath = {
 };
 
 export const ChatGLMPath = {
-  // https://open.bigmodel.cn/api/paas/v4/
   ChatPath: "chat/completions",
 };
-// 默认配置
-export const modelConfig = {
+
+export const OpenaiConfig = {
   model: "gpt-3.5-turbo",
   /**
    * 生成文本的随机度量，用于控制文本的创造性和多样性
@@ -57,6 +56,21 @@ export const modelConfig = {
   compressMessageLengthThreshold: 1000,
 };
 
+export const ZhiPuConfig = {
+  model: "glm-3-turbo",
+  historyMessageCount: 5,
+  temperature: 0.95,
+  top_p: 0.7,
+  max_tokens: 1024,
+  token: process.env.VUE_APP_ZHIPU_API_KEY,
+  openaiUrl: process.env.VUE_APP_ZHIPU_BASE_URL,
+};
+// 默认配置
+export const modelConfig = {
+  [ModelProvider.GPT]: { ...OpenaiConfig },
+  [ModelProvider.ChatGLM]: { ...ZhiPuConfig },
+};
+
 const openaiModels = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0301",
@@ -77,8 +91,13 @@ const openaiModels = [
 
 const zhipuModels = ["glm-4", "glm-4v", "glm-3-turbo"];
 
-export function useAccessStore() {
-  return storage.get(StoreKey.Access) || modelConfig;
+export function useAccessStore(model = ModelProvider.GPT) {
+  try {
+    return storage.get(StoreKey.Access)?.[model] || modelConfig[model];
+  } catch (error) {
+    storage.remove(StoreKey.Access);
+    return {};
+  }
 }
 
 export const DEFAULT_MODELS = [
@@ -87,30 +106,24 @@ export const DEFAULT_MODELS = [
     available: true,
     provider: {
       id: "openai",
+      convId: CHATGPT_ROBOT,
       providerName: "OpenAI",
       providerType: "openai",
     },
   })),
-  // ...zhipuModels.map((name) => ({
-  //   name,
-  //   available: true,
-  //   provider: {
-  //     id: "zhipu",
-  //     providerName: "ZhiPu",
-  //     providerType: "zhipu",
-  //   },
-  // })),
-  // {
-  //   name: "qwen-v1", // 通义千问
-  //   available: false,
-  // },
-  // {
-  //   name: "ernie", // 文心一言
-  //   available: false,
-  // },
+  ...zhipuModels.map((name) => ({
+    name,
+    available: true,
+    provider: {
+      id: "zhipu",
+      convId: CHATGLM_ROBOT,
+      providerName: "ZhiPu",
+      providerType: "zhipu",
+    },
+  })),
 ];
 
-export const modelValue = {
+export const openaiModelValue = {
   Model: {
     ID: "model",
     Title: "模型 (model)",
@@ -154,15 +167,15 @@ export const modelValue = {
     min: 0,
     max: 1,
   },
-  // MaxTokens: {
-  //   ID: "max_tokens",
-  //   Title: "单次回复限制 (max_tokens)",
-  //   SubTitle: "单次交互所用的最大 Token 数",
-  //   defaultValue: "",
-  //   Number: true,
-  //   min: 1024,
-  //   max: 512000,
-  // },
+  MaxTokens: {
+    ID: "max_tokens",
+    Title: "单次回复限制 (max_tokens)",
+    SubTitle: "单次交互所用的最大 Token 数",
+    defaultValue: "",
+    Number: true,
+    min: 1024,
+    max: 8192,
+  },
   PresencePenalty: {
     ID: "presence_penalty",
     Title: "话题新鲜度 (presence_penalty)",
@@ -193,4 +206,73 @@ export const modelValue = {
     min: 1,
     max: 24,
   },
+};
+
+export const zhipuModelValue = {
+  Model: {
+    ID: "model",
+    Title: "模型 (model)",
+    SubTitle: "",
+    defaultValue: "",
+    options: DEFAULT_MODELS,
+  },
+  OpenaiUrl: {
+    ID: "openaiUrl",
+    Title: "接口地址",
+    SubTitle: "除默认地址外，必须包含 http(s)://",
+    Placeholder: "https://open.bigmodel.cn",
+    defaultValue: "",
+    password: true,
+  },
+  Token: {
+    ID: "token",
+    Title: "API Key",
+    SubTitle: "使用自己的 ZhiPu API Key",
+    Placeholder: "ZhiPu API Key",
+    defaultValue: "",
+    password: true,
+  },
+  Temperature: {
+    ID: "temperature",
+    Title: "随机性 (temperature)",
+    SubTitle: "值越大，回复越随机",
+    defaultValue: "",
+    Range: true,
+    step: 0.01,
+    min: 0,
+    max: 1,
+  },
+  TopP: {
+    ID: "top_p",
+    Title: "核采样 (top_p)",
+    SubTitle: "与随机性类似，但不要和随机性一起更改",
+    defaultValue: "",
+    Range: true,
+    step: 0.1,
+    min: 0,
+    max: 1,
+  },
+  MaxTokens: {
+    ID: "max_tokens",
+    Title: "单次回复限制 (max_tokens)",
+    SubTitle: "单次交互所用的最大 Token 数",
+    defaultValue: "",
+    Number: true,
+    min: 1024,
+    max: 512000,
+  },
+  historyMessageCount: {
+    ID: "historyMessageCount",
+    Title: "附带历史消息数",
+    SubTitle: "每次请求携带的历史消息数",
+    defaultValue: "",
+    Range: true,
+    step: 1,
+    min: 1,
+    max: 24,
+  },
+};
+export const modelValue = {
+  [ModelProvider.GPT]: openaiModelValue,
+  [ModelProvider.ChatGLM]: zhipuModelValue,
 };

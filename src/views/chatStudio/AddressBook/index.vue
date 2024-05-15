@@ -14,12 +14,13 @@
 </template>
 
 <script>
+import { getUserProfile } from "@/api/im-sdk-api/index";
+import { restApi } from "@/api/node-admin-api/index";
+import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/constants/index";
+import emitter from "@/utils/mitt-bus";
+import { mapState } from "vuex";
 import CardGrid from "./CardGrid";
 import ListGrid from "./ListGrid";
-import emitter from "@/utils/mitt-bus";
-import { restApi } from "@/api/node-admin-api/index";
-import { getUserProfile } from "@/api/im-sdk-api/index";
-import { mapState } from "vuex";
 
 export default {
   name: "AddressBook",
@@ -49,7 +50,7 @@ export default {
   },
   methods: {
     async init() {
-      let list = ["huangyk", "admin", "linjx", "@RBT#001", "jinwx", "zhangal"];
+      let list = [CHATGPT_ROBOT, CHATGLM_ROBOT, "huangyk", "admin", "linjx", "jinwx", "zhangal"];
       // 获取好友列表
       const { code, data } = await getUserProfile(list);
       this.friend = data;

@@ -1,25 +1,25 @@
 import {
-  CONVERSATIONTYPE,
-  GET_MESSAGE_LIST,
-  HISTORY_MESSAGE_COUNT,
-  CHATGPT_ROBOT,
-} from "@/constants/index";
-import { addTimeDivider, getBaseTime, checkTextNotEmpty, transformData } from "@/utils/chat/index";
-import { chatService } from "@/api/openai/index";
-import TIM from "@/utils/IM/chat/index";
-import { cloneDeep } from "lodash-es";
-import emitter from "@/utils/mitt-bus";
-import {
   deleteConversation,
   getConversationProfile,
-  setMessageRead,
-  setMessageRemindType,
-  sendMsg,
   getMsgList,
   getUnreadMsg,
+  sendMsg,
+  setMessageRead,
+  setMessageRemindType,
 } from "@/api/im-sdk-api/index";
+import { chatService } from "@/api/openai/index";
+import {
+  CONVERSATIONTYPE,
+  EMOJI_RECENTLY,
+  GET_MESSAGE_LIST,
+  HISTORY_MESSAGE_COUNT,
+  ROBOT_COLLECT,
+} from "@/constants/index";
+import TIM from "@/utils/IM/chat/index";
+import { addTimeDivider, checkTextNotEmpty, getBaseTime, transformData } from "@/utils/chat/index";
 import storage from "@/utils/localforage/index";
-import { EMOJI_RECENTLY } from "@/constants/index";
+import emitter from "@/utils/mitt-bus";
+import { cloneDeep } from "lodash-es";
 
 const conversation = {
   // namespaced: true, //命名空间
@@ -329,7 +329,7 @@ const conversation = {
             message: addTimeDivider(messageList).reverse(), // 添加时间
           },
         });
-         emitter.emit("updataScroll");
+        emitter.emit("updataScroll");
         if (type == "GROUP") {
           const { groupID } = action.groupProfile;
           dispatch("getGroupMemberList", { groupID });
@@ -366,7 +366,7 @@ const conversation = {
           message: cloneDeep(message[0]),
         },
       });
-       emitter.emit("updataScroll");
+      emitter.emit("updataScroll");
     },
     // 新增会话列表
     async CHEC_OUT_CONVERSATION({ commit, dispatch }, action) {
@@ -444,7 +444,7 @@ const conversation = {
       console.log("IM_CHAT_CALLBACK", action);
       const { message, list } = action;
       const { to } = message;
-      if (to !== CHATGPT_ROBOT) return;
+      if (!ROBOT_COLLECT.includes(to)) return;
       chatService({ messages: list, chat: message });
     },
   },

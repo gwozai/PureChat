@@ -12,6 +12,10 @@ export const EMOJI_RECENTLY = "Emoji-Recently";
 export const TIM_PROXY = "timProxy";
 // chatgpt机器人id
 export const CHATGPT_ROBOT = "@RBT#001";
+// zhipu机器人id
+export const CHATGLM_ROBOT = "@RBT#002";
+
+export const ROBOT_COLLECT = [CHATGPT_ROBOT, CHATGLM_ROBOT];
 
 export const GET_MESSAGE_LIST = "GET_MESSAGE_LIST"; //获取消息列表
 export const HISTORY_MESSAGE_COUNT = 20; //历史消息计数

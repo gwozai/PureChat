@@ -1,5 +1,5 @@
 import { EventStreamContentType, fetchEventSource } from "@fortaine/fetch-event-source";
-import { REQUEST_TIMEOUT_MS, OpenaiPath, modelConfig, useAccessStore } from "./constant";
+import { ModelProvider, OpenaiPath, REQUEST_TIMEOUT_MS, useAccessStore } from "./constant";
 
 export function prettyObject(msg) {
   const obj = msg;
@@ -15,23 +15,22 @@ export function prettyObject(msg) {
   return ["```json", msg, "```"].join("\n");
 }
 
-export function getHeaders() {
-  let headers = {
-    "Content-Type": "application/json",
-    "x-requested-with": "XMLHttpRequest",
-  };
-  const makeBearer = (token) => `Bearer ${token.trim()}`;
-  headers.Authorization = makeBearer(useAccessStore().token);
-  return headers;
-}
-
 export class ChatGPTApi {
   path(path) {
-    let openaiUrl = useAccessStore().openaiUrl;
-    if (!openaiUrl) {
-      openaiUrl = modelConfig.openaiUrl;
-    }
+    let openaiUrl = this.accessStore().openaiUrl;
     return openaiUrl + path;
+  }
+  accessStore(model = ModelProvider.GPT) {
+    return useAccessStore(model);
+  }
+  getHeaders() {
+    let headers = {
+      "Content-Type": "application/json",
+      "x-requested-with": "XMLHttpRequest",
+    };
+    const makeBearer = (token) => `Bearer ${token.trim()}`;
+    headers.Authorization = makeBearer(this.accessStore().token);
+    return headers;
   }
   extractMessage(res) {
     return res.choices?.at(0)?.message?.content ?? "";
@@ -41,7 +40,7 @@ export class ChatGPTApi {
       messages: messages.slice(-Number(modelConfig.historyMessageCount)), // 上下文
       stream: options.stream, // 流式传输
       model: modelConfig.model, // 模型
-      // max_tokens: modelConfig.max_tokens, // 单次回复限制
+      max_tokens: modelConfig.max_tokens, // 单次回复限制
       temperature: Number(modelConfig.temperature), // 随机性
       presence_penalty: modelConfig.presence_penalty, //话题新鲜度
       frequency_penalty: modelConfig.frequency_penalty, // 频率惩罚度
@@ -56,7 +55,7 @@ export class ChatGPTApi {
     }));
 
     const modelConfig = {
-      ...useAccessStore(),
+      ...this.accessStore(),
       ...{
         model: options.config.model,
       },
@@ -76,7 +75,7 @@ export class ChatGPTApi {
         method: "POST",
         body: JSON.stringify(requestPayload),
         signal: controller.signal,
-        headers: getHeaders(),
+        headers: this.getHeaders(),
       };
 
       const requestTimeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -199,7 +198,7 @@ export class ChatGPTApi {
   // 列出模型
   async models() {
     const url = this.path(OpenaiPath.ListModelPath);
-    const res = await fetch(url, { method: "GET", headers: { ...getHeaders() } });
+    const res = await fetch(url, { method: "GET", headers: { ...this.getHeaders() } });
     const resJson = await res.json();
     const chatModels = resJson.data.filter((m) => m.id.startsWith("gpt-"));
     // console.log("[Models]", chatModels);
