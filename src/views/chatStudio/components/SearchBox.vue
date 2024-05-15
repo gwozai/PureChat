@@ -24,10 +24,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, computed, watch, nextTick } from "vue";
+import { useState } from "@/utils/hooks/useMapper";
 import { onClickOutside } from "@vueuse/core";
+import { ref } from "vue";
 import { useStore } from "vuex";
-import { useState, useGetters } from "@/utils/hooks/useMapper";
 import { squareUrl } from "../utils/menu";
 const activeName = ref("comprehensive");
 const showSearchBox = ref(false);
@@ -50,7 +50,6 @@ const handleClick = (tab, event) => {
   }
 };
 const handleGroupClick = (item) => {
-  console.log(item);
   setModal(false);
   dispatch("CHEC_OUT_CONVERSATION", { convId: `GROUP${item.groupID}` });
 };

@@ -202,7 +202,6 @@ export default defineComponent({
     // 关闭弹框回调
     onClose() {
       if (!this.showdialog) return;
-      console.log("onClose");
       this.reduction();
     },
     setDialog(flg) {

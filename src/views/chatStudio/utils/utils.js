@@ -71,7 +71,6 @@ export const validatelastMessage = (list) => {
 export const handleCopyMsg = async (data) => {
   const { elements } = data;
   const { content, type } = elements[0];
-  console.log(elements[0]);
   // 文本
   if (type === "TIMTextElem") {
     const { text, copy, isSupported } = useClipboard({ source: content.text });
@@ -242,7 +241,6 @@ export function sendChatMessage(options) {
 }
 
 export const customAlert = (s, t) => {
-  console.log(s, t);
   switch (t) {
     case "success":
       console.log("success");
@@ -407,7 +405,6 @@ export function searchByPinyin(searchStr) {
     }
   });
   const isShowModal = store.state?.conversation.isShowModal;
-  console.log("isShowModal:", isShowModal);
   // 触发相应的事件根据匹配结果触发不同的操作
   const eventType = indices.length === 0 ? "empty" : "success";
   if (!isShowModal && eventType === "success") {
@@ -447,13 +444,6 @@ export function filterMentionList(Str, Html) {
     store.commit("SET_MENTION_MODAL", false);
     return;
   }
-  // const inputHtml = parseContentFromHTML(Html);
-  console.log("inputStr:", Str);
-  // console.log("inputHtml:", inputHtml);
-  const isShowModal = store.state?.conversation.isShowModal;
-  // console.log("isShowModal:", isShowModal);
-  // console.log("inputStr:", inputStr);
-  // console.log("endsWith@:", inputStr.endsWith("@"));
   // 如果输入字符串仅包含 "@" 符号，或则字符结尾，触发 setMentionModal 操作并返回
   if (inputStr === "@" && inputStr.endsWith("@")) {
     return "all";
@@ -468,7 +458,6 @@ export function filterMentionList(Str, Html) {
   }
   const text = inputStr.substring(lastAtIndex);
   const searchValue = text.substring(1);
-  console.log("searchValue:", searchValue);
   if (!searchValue) return;
   // 执行根据拼音搜索的操作
   return searchByPinyin(searchValue);
@@ -564,18 +553,15 @@ function setOverStyle(item, type) {
 let lastEnterElem = null;
 // 释放（放置）在目标对象上时触发
 export const dropHandler = (e, item, fn) => {
-  console.log("drop", e, item);
   e.preventDefault();
   setOverStyle(item, "remove");
   const files = e.dataTransfer.files || [];
-  console.log(files[0]);
   fn(item);
   emitter.emit("handleFileDrop", files[0]);
 };
 
 // 拖动对象进入目标对象时触发
 export const dragenterHandler = (e, item) => {
-  // console.log("enter", e);
   e.preventDefault();
   if (!e.target.classList.contains("message-item")) return;
   lastEnterElem = e.target;
@@ -583,7 +569,6 @@ export const dragenterHandler = (e, item) => {
 };
 // 拖动对象离开目标对象时触发
 export const dragleaveHandler = (e, item) => {
-  // console.log("leave", e);
   e.preventDefault();
   if (!e.target.classList.contains("message-item")) return;
   if (lastEnterElem === e.target) return;

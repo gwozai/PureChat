@@ -23,16 +23,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useStore } from "vuex";
-import Label from "@/views/chatStudio/components/Label.vue";
-import { useState } from "@/utils/hooks/useMapper";
-import { isRobot } from "@/utils/chat/index";
-import { onClickOutside, onLongPress, useElementBounding } from "@vueuse/core";
-import { squareUrl, circleUrl } from "../../chatStudio/utils/menu";
 import { getUserProfile } from "@/api/im-sdk-api/index";
-import emitter from "@/utils/mitt-bus";
+import { isRobot } from "@/utils/chat/index";
 import { useBoolean } from "@/utils/hooks/index";
+import { useState } from "@/utils/hooks/useMapper";
+import emitter from "@/utils/mitt-bus";
+import Label from "@/views/chatStudio/components/Label.vue";
+import { onClickOutside } from "@vueuse/core";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { squareUrl } from "../../chatStudio/utils/menu";
 const [card, setCard] = useBoolean();
 
 const cardRef = ref();
@@ -92,9 +92,7 @@ const setUserProfile = async () => {
   const { code, data } = await getUserProfile([userID]);
   if (code == 0) {
     userProfile.value = data?.[0];
-    console.log(data);
   }
-  console.log(userProfile.value);
 };
 const setCardData = (data) => {
   if (data?.conversationID === "@TIM#SYSTEM") {

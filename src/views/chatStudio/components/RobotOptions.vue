@@ -68,7 +68,6 @@ function initModel() {
   Object.values(value).map((v) => {
     return (v.defaultValue = useAccessStore(model)[v.ID]);
   });
-  console.log(value);
   modelData.value = value;
 }
 function handleClose(done) {

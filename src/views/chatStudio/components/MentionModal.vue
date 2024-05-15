@@ -25,13 +25,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import emitter from "@/utils/mitt-bus";
 import TIM from "@/utils/IM/chat/index";
-import { onClickOutside } from "@vueuse/core";
-import { cloneDeep } from "lodash-es";
-import { useEventListener } from "@vueuse/core";
+import emitter from "@/utils/mitt-bus";
 import { compareUserID } from "@/views/chatStudio/utils/utils";
+import { onClickOutside, useEventListener } from "@vueuse/core";
+import { cloneDeep } from "lodash-es";
+import { mapState } from "vuex";
 
 export default {
   name: "MentionModal",
@@ -93,9 +92,7 @@ export default {
       if (off) this.list.unshift(this.allMembers);
     },
     filterList(data) {
-      if (data.length) {
-        return data.sort(compareUserID);
-      }
+      if (data.length) return data.sort(compareUserID);
       return this.currentMemberList
         .filter((t) => t.userID !== this.userProfile.userID)
         .sort(compareUserID);
