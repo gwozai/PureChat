@@ -22,8 +22,8 @@ module.exports = {
   rules: {
     "no-undef": "off", // 禁用未声明的变量
     "no-unused-vars": "off", // 禁止未使用过的变量
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-console": "off",
+    "no-debugger": "off",
     "no-case-declarations": "off", // 不允许在case/default子句中使用词法声明
     "arrow-parens": ["error", "always"], // 规则用于控制箭头函数的参数括号，'always'表示参数必须加上括号。
     // "arrow-body-style": ["error", "always"], // 该规则可以强制或禁止箭头函数体使用大括号。

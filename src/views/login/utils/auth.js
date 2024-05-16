@@ -1,4 +1,5 @@
-import { openAuthUrl, githubAuth } from "@/api/node-admin-api/index";
+import { githubAuth, openAuthUrl } from "@/api/node-admin-api/index";
+import { isDev } from "@/config/env";
 import store from "@/store";
 
 // github 授权
@@ -11,7 +12,7 @@ export const oauthAuthorize = async (id) => {
 export const authorizedLogin = async (_code = "") => {
   let code = _code;
   // 生产环境 hash
-  if (process.env.NODE_ENV === "production") {
+  if (!isDev) {
     const queryParams = window.location.search;
     const params = new URLSearchParams(queryParams);
     code = params.get("code");

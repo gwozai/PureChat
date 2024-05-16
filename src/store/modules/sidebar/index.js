@@ -1,4 +1,4 @@
-const { production } = require("@/config/vue.custom.config");
+import { isDev } from "@/config/env";
 
 const outsideList = [
   {
@@ -32,7 +32,7 @@ const outsideList = [
     only: "test",
     icon: "SwitchFilled",
     title: "web",
-    show: production ? "hide" : "",
+    show: isDev ? "" : "hide",
     type: "el-icon",
   },
   {

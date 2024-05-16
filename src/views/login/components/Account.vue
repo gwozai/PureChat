@@ -81,6 +81,7 @@
 
 <script setup>
 import { getuser } from "@/api/node-admin-api/index";
+import { isDev } from "@/config/env";
 import ImageVerify from "@/views/components/ImageVerify/index.vue";
 import { Lock, User } from "@element-plus/icons-vue";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -90,7 +91,6 @@ import { authorizedLogin, oauthAuthorize } from "../utils/auth";
 import { operates, thirdParty } from "../utils/enums";
 import { rules, user } from "../utils/validation";
 import loadingSvg from "./loadingSvg";
-const { production } = require("@/config/vue.custom.config");
 
 const router = useRouter();
 const restaurants = ref([]);
@@ -148,9 +148,7 @@ onBeforeUnmount(() => {
 watch(imgCode, (value) => {
   commit("UPDATE_USER_INFO", { key: "verifyCode", value });
   // 测试环境自动填充图形验证码
-  if (!production) {
-    user.verifyCode = value;
-  }
+  if (isDev) user.verifyCode = value;
 });
 watch(
   () => router.currentRoute.value.query,

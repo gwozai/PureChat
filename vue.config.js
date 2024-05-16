@@ -11,11 +11,10 @@ const {
   title,
   externals,
   devServer,
-  production,
   optimization,
   performance,
 } = require("./src/config/vue.custom.config");
-
+const isDev = process.env.NODE_ENV === "development";
 const resolve = (dir) => {
   return path.join(__dirname, dir);
 };
@@ -28,7 +27,7 @@ module.exports = defineConfig({
   // 打包时输出的文件目录
   outputDir: "dist",
   //是否为生产环境构建生成 source map?
-  productionSourceMap: true,
+  productionSourceMap: isDev,
   // 加快编译速度 在多核机器下会默认开启
   parallel: require("os").cpus().length > 1,
   // 配置 webpack-dev-server
