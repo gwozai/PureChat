@@ -1,4 +1,4 @@
-import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/constants/index";
+import { CHATGLM_ROBOT, CHATGPT_ROBOT, CHATYI_ROBOT } from "@/constants/index";
 import storage from "@/utils/localforage/index";
 export const REQUEST_TIMEOUT_MS = 6000;
 
@@ -66,10 +66,23 @@ export const ZhiPuConfig = {
   openaiUrl: process.env.VUE_APP_ZHIPU_BASE_URL,
 };
 
+export const YiConfig = {
+  model: "yi-large",
+  temperature: 0.6,
+  top_p: 1,
+  max_tokens: 1024,
+  presence_penalty: 0,
+  frequency_penalty: 0,
+  token: process.env.VUE_APP_YI_API_KEY,
+  openaiUrl: process.env.VUE_APP_YI_BASE_URL,
+  historyMessageCount: 10,
+};
+console.log(YiConfig);
 // 默认配置
 export const modelConfig = {
   [ModelProvider.GPT]: { ...OpenaiConfig },
   [ModelProvider.ChatGLM]: { ...ZhiPuConfig },
+  [ModelProvider.ZeroOne]: { ...YiConfig },
 };
 
 const openaiModels = [
@@ -91,6 +104,8 @@ const openaiModels = [
 ];
 
 const zhipuModels = ["glm-4", "glm-4v", "glm-3-turbo"];
+
+const yiModels = ["yi-large"];
 
 export const useAccessStore = (model = ModelProvider.GPT) => {
   try {
@@ -120,6 +135,16 @@ export const DEFAULT_MODELS = [
       convId: CHATGLM_ROBOT,
       providerName: "ZhiPu",
       providerType: "zhipu",
+    },
+  })),
+  ...yiModels.map((name) => ({
+    name,
+    available: true,
+    provider: {
+      id: "zeroone",
+      convId: CHATYI_ROBOT,
+      providerName: "ZeroOne",
+      providerType: "zeroone",
     },
   })),
 ];
@@ -274,7 +299,93 @@ export const zhipuModelValue = {
   },
 };
 
+export const yiModelValue = {
+  Model: {
+    ID: "model",
+    Title: "模型 (model)",
+    SubTitle: "ChatGPT 模型",
+    defaultValue: "",
+    options: DEFAULT_MODELS.filter((t) => t.provider.convId === CHATYI_ROBOT),
+  },
+  OpenaiUrl: {
+    ID: "openaiUrl",
+    Title: "接口地址",
+    SubTitle: "除默认地址外，必须包含 http(s)://",
+    Placeholder: "https://api.openai.com",
+    defaultValue: "",
+    password: true,
+  },
+  Token: {
+    ID: "token",
+    Title: "API Key",
+    SubTitle: "使用自己的 OpenAI API Key",
+    Placeholder: "OpenAI API Key",
+    defaultValue: "",
+    password: true,
+  },
+  Temperature: {
+    ID: "temperature",
+    Title: "随机性 (temperature)",
+    SubTitle: "值越大，回复越随机",
+    defaultValue: "",
+    Range: true,
+    step: 0.1,
+    min: 0,
+    max: 1,
+  },
+  TopP: {
+    ID: "top_p",
+    Title: "核采样 (top_p)",
+    SubTitle: "与随机性类似，但不要和随机性一起更改",
+    defaultValue: "",
+    Range: true,
+    step: 0.1,
+    min: 0,
+    max: 1,
+  },
+  MaxTokens: {
+    ID: "max_tokens",
+    Title: "单次回复限制 (max_tokens)",
+    SubTitle: "单次交互所用的最大 Token 数",
+    defaultValue: "",
+    Number: true,
+    min: 1024,
+    max: 8192,
+  },
+  PresencePenalty: {
+    ID: "presence_penalty",
+    Title: "话题新鲜度 (presence_penalty)",
+    SubTitle: "值越大，越有可能扩展到新话题",
+    defaultValue: "",
+    Range: true,
+    step: 0.1,
+    min: 0,
+    max: 2,
+  },
+  FrequencyPenalty: {
+    ID: "frequency_penalty",
+    Title: "频率惩罚度 (frequency_penalty)",
+    SubTitle: "值越大，越有可能降低重复字词",
+    defaultValue: "",
+    Range: true,
+    step: 0.1,
+    min: 0,
+    max: 2,
+  },
+  historyMessageCount: {
+    ID: "historyMessageCount",
+    Title: "附带历史消息数",
+    SubTitle: "每次请求携带的历史消息数",
+    defaultValue: "",
+    Range: true,
+    step: 1,
+    min: 1,
+    max: 24,
+  },
+};
+
 export const modelValue = {
   [ModelProvider.GPT]: openaiModelValue,
   [ModelProvider.ChatGLM]: zhipuModelValue,
+  [ModelProvider.ZeroOne]: yiModelValue,
 };

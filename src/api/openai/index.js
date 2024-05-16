@@ -2,7 +2,7 @@ import { createCustomMsg } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/rest";
 import { ClientApi } from "@/api/openai/api";
 import { ModelProvider, useAccessStore } from "@/api/openai/constant";
-import { CHATGLM_ROBOT } from "@/constants/index";
+import { CHATGLM_ROBOT, CHATYI_ROBOT } from "@/constants/index";
 import store from "@/store";
 import { getModelType } from "@/utils/chat/index";
 import emitter from "@/utils/mitt-bus";
@@ -31,10 +31,11 @@ const updataMessage = (msg, message = "") => {
 const robotAvatar = {
   [ModelProvider.GPT]: "open-ai-icon.png",
   [ModelProvider.ChatGLM]: "zhipu.svg",
+  [ModelProvider.ZeroOne]: "ZeroOne.svg",
 };
 
 const avatar = (id) => {
-  const suffix = robotAvatar[getModelType(id)];
+  const suffix = robotAvatar[getModelType(id)] || "";
   return `https://ljx-1307934606.cos.ap-beijing.myqcloud.com/${suffix}`;
 };
 
@@ -58,8 +59,10 @@ export const chatService = async (params) => {
   let api;
   if (chat.to.startsWith(CHATGLM_ROBOT)) {
     api = new ClientApi(ModelProvider.ChatGLM);
+  } else if (chat.to.startsWith(CHATYI_ROBOT)) {
+    api = new ClientApi(ModelProvider.ZeroOne);
   } else {
-    api = new ClientApi(ModelProvider.GPT);
+    api = new ClientApi();
   }
   const mode = getModelType(chat.to);
   const msg = fnCreateLodMsg(chat);
