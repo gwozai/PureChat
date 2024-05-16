@@ -1,12 +1,12 @@
 <template>
-  <div class="message_name" v-show="!shouldDisplay">
-    <span v-if="isGroup" class="isGroup" @click="handleAt">
+  <div class="message_name" v-show="this.isGroup && !shouldDisplay">
+    <span v-if="isSystem" class="isSystem">系统通知</span>
+    <span v-else-if="isFound" class="isFound">管理员</span>
+    <span v-else-if="isGroup" class="isGroup" @click="handleAt">
       <span :class="styleNick">{{ item.nick }}</span>
       <span class="mention">@</span>
       <span v-if="groupProfile?.ownerID == item.from"> (群主) </span>
     </span>
-    <span v-else-if="isSystem" class="isSystem">系统</span>
-    <span v-else class="isFound">管理员</span>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
       return this.item.conversationType;
     },
     isGroup() {
-      return this.chatType !== "C2C" && this.from !== "@TLS#NOT_FOUND";
+      return this.chatType !== "C2C";
     },
     isSystem() {
       return this.from === "@TIM#SYSTEM";
@@ -39,7 +39,6 @@ export default {
       return this.from === "@TLS#NOT_FOUND";
     },
     shouldDisplay() {
-      if (this.chatType === "C2C") return true;
       return this.item.isRevoked || this.item.type === "TIMGroupTipElem";
     },
     styleNick() {
@@ -64,11 +63,9 @@ export default {
 
 .isGroup {
   cursor: pointer;
-
   .mention {
     visibility: hidden;
   }
-
   &:hover {
     .mention,
     .nick {
