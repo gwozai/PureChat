@@ -65,6 +65,7 @@ export const ZhiPuConfig = {
   token: process.env.VUE_APP_ZHIPU_API_KEY,
   openaiUrl: process.env.VUE_APP_ZHIPU_BASE_URL,
 };
+
 // 默认配置
 export const modelConfig = {
   [ModelProvider.GPT]: { ...OpenaiConfig },
@@ -127,9 +128,9 @@ export const openaiModelValue = {
   Model: {
     ID: "model",
     Title: "模型 (model)",
-    SubTitle: "",
+    SubTitle: "ChatGPT 模型",
     defaultValue: "",
-    options: DEFAULT_MODELS,
+    options: DEFAULT_MODELS.filter((t) => t.provider.convId === CHATGPT_ROBOT),
   },
   OpenaiUrl: {
     ID: "openaiUrl",
@@ -212,9 +213,9 @@ export const zhipuModelValue = {
   Model: {
     ID: "model",
     Title: "模型 (model)",
-    SubTitle: "",
+    SubTitle: "ChatGLM 模型",
     defaultValue: "",
-    options: DEFAULT_MODELS,
+    options: DEFAULT_MODELS.filter((t) => t.provider.convId === CHATGLM_ROBOT),
   },
   OpenaiUrl: {
     ID: "openaiUrl",

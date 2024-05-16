@@ -11,7 +11,7 @@
           <el-select v-if="item.options" v-model="item.defaultValue" placeholder="Select">
             <el-option
               v-for="item in item.options"
-              v-show="item.available && item.provider.convId == toAccount"
+              v-show="item.available"
               :key="item.name"
               :label="item.name + `(${item.provider.providerName})`"
               :value="item.name"

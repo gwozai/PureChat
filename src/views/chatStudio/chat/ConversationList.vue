@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar class="scrollbar-list">
     <EmptyMessage classNmae="no-msg" v-if="tabList.length == 0" />
-    <!-- <Skeleton v-else-if="activetab === 'whole'" :loading="false" /> -->
+    <!-- <Skeleton :loading="true" /> -->
     <div
       class="message-item"
       v-for="item in tabList"
@@ -55,7 +55,7 @@
     </div>
     <!-- <virtual-list :list="tabList" /> -->
     <!-- 右键菜单 -->
-    <contextmenu ref="contextmenu">
+    <contextmenu ref="contextmenu" :disabled="!isRight">
       <contextmenu-item
         v-for="item in RIGHT_CLICK_CHAT_LIST"
         :key="item.id"
@@ -88,7 +88,7 @@ import {
 } from "../utils/utils";
 
 const loading = ref(true);
-const isShowMenu = ref(true);
+const isRight = ref(true);
 const contextMenuItemInfo = ref([]);
 
 const { dispatch, commit } = useStore();
@@ -194,9 +194,13 @@ const CustomMention = (props) => {
 // 消息列表 右键菜单
 const handleContextMenuEvent = (e, item) => {
   const { type } = item;
-  const isStystem = type == "@TIM#SYSTEM";
+  const isStystem = type === "@TIM#SYSTEM";
   // 系统通知屏蔽右键菜单
-  // isShowMenu.value = !isStystem;
+  if (isStystem) {
+    isRight.value = false;
+    return;
+  }
+  isRight.value = true;
   contextMenuItemInfo.value = item;
   // 会话
   RIGHT_CLICK_CHAT_LIST.map((t) => {
