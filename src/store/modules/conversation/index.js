@@ -52,16 +52,17 @@ const conversation = {
       switch (type) {
         case CONVERSATIONTYPE.ADD_MESSAGE: {
           console.log("[chat] 添加消息 ADD_MESSAGE:", payload);
-          const { convId, message } = payload;
+          const { convId, isDone, message } = payload;
           state.historyMessageList.set(convId, message);
           if (state.currentConversation) {
             state.currentMessageList = state.historyMessageList.get(convId);
           } else {
             state.currentMessageList = [];
           }
-          // 当前会话少于历史条数关闭loading
           const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
-          state.noMore = isMore;
+          // 是否已经拉完所有消息 '没有更多' : '显示loading'
+          console.log("isDone:", isMore || isDone ? "没有更多" : "显示loading");
+          state.noMore = isMore || isDone;
           break;
         }
         case CONVERSATIONTYPE.ADD_MORE_MESSAGE: {
@@ -176,32 +177,24 @@ const conversation = {
     SET_CONVERSATION(state, action) {
       const { type, payload } = action;
       switch (type) {
-        // 切换 跳转 会话
+        // 切换会话
         case CONVERSATIONTYPE.UPDATE_CURRENT_SELECTED_CONVERSATION: {
           if (payload) {
-            const { conversationID, toAccount } = payload;
-            let oldConvId = state.currentConversation?.conversationID;
-
-            if (conversationID == oldConvId) return;
-
+            const { conversationID: convId } = payload;
+            const oldConvId = state.currentConversation?.conversationID;
+            if (convId == oldConvId) return;
             state.currentConversation = payload;
             // 系统消息关闭聊天框
-            state.showMsgBox = conversationID == "@TIM#SYSTEM" ? false : true;
+            state.showMsgBox = convId !== "@TIM#SYSTEM";
             state.showCheckbox = false;
             if (state.currentConversation) {
-              const history = state.historyMessageList.get(conversationID);
-              state.currentMessageList = history;
+              state.currentMessageList = state.historyMessageList.get(convId);
             } else {
               state.currentMessageList = [];
             }
-
-            // state.needScrollDown = 0;
             // 当前会话少于历史条数关闭loading
-            if (state.currentMessageList?.length < HISTORY_MESSAGE_COUNT) {
-              state.noMore = true;
-            } else {
-              state.noMore = false;
-            }
+            const isMore = state.currentMessageList?.length < HISTORY_MESSAGE_COUNT;
+            state.noMore = isMore;
           }
           break;
         }
@@ -318,14 +311,14 @@ const conversation = {
       let status = !state.currentMessageList || state.currentMessageList?.length == 0;
       // 当前会话有值
       if (state.currentConversation && isSDKReady && status) {
-        const { messageList } = await getMsgList({
+        const { messageList, isCompleted } = await getMsgList({
           conversationID: conversationID,
-          count: 15,
         });
         commit("SET_HISTORYMESSAGE", {
           type: "ADD_MESSAGE",
           payload: {
             convId: conversationID,
+            isDone: isCompleted,
             message: addTimeDivider(messageList).reverse(), // 添加时间
           },
         });
@@ -355,7 +348,6 @@ const conversation = {
       const { convId } = action;
       const { messageList } = await getMsgList({
         conversationID: convId,
-        count: 15,
       });
       const message = addTimeDivider(messageList).reverse();
       state.historyMessageList.set(convId, message);

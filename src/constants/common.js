@@ -18,7 +18,7 @@ export const CHATGLM_ROBOT = "@RBT#002";
 export const ROBOT_COLLECT = [CHATGPT_ROBOT, CHATGLM_ROBOT];
 
 export const GET_MESSAGE_LIST = "GET_MESSAGE_LIST"; //获取消息列表
-export const HISTORY_MESSAGE_COUNT = 20; //历史消息计数
+export const HISTORY_MESSAGE_COUNT = 15; //历史消息计数
 export const MULTIPLE_CHOICE_MAX = 20; //多选消息最大计数
 export const MIN_RESIZE_HEIGHT = 250;
 

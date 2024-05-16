@@ -91,14 +91,14 @@ const openaiModels = [
 
 const zhipuModels = ["glm-4", "glm-4v", "glm-3-turbo"];
 
-export function useAccessStore(model = ModelProvider.GPT) {
+export const useAccessStore = (model = ModelProvider.GPT) => {
   try {
     return storage.get(StoreKey.Access)?.[model] || modelConfig[model];
   } catch (error) {
     storage.remove(StoreKey.Access);
     return {};
   }
-}
+};
 
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
@@ -272,6 +272,7 @@ export const zhipuModelValue = {
     max: 24,
   },
 };
+
 export const modelValue = {
   [ModelProvider.GPT]: openaiModelValue,
   [ModelProvider.ChatGLM]: zhipuModelValue,

@@ -212,7 +212,7 @@ const handleContextMenuEvent = (e, item) => {
 
 // 会话点击
 const handleConvListClick = (data) => {
-  console.log(data, "会话点击");
+  console.log("会话点击 handleConvListClick:", data);
   if (chat.value) {
     const { conversationID: id } = chat.value;
     if (id == data?.conversationID) return;
@@ -255,8 +255,8 @@ const disableRecMsg = async (data) => {
 };
 // 删除会话
 const removeConv = async (data) => {
-  const { conversationID } = data;
-  dispatch("DELETE_SESSION", { convId: conversationID });
+  const { conversationID: convId } = data;
+  dispatch("DELETE_SESSION", { convId });
 };
 const fnPostpone = (data) => {
   if (data !== "whole") return;

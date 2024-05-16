@@ -4,15 +4,16 @@ import { ChatGPTApi } from "./openai";
 export class ChatZhipuApi extends ChatGPTApi {
   constructor() {
     super();
+    this.model = ModelProvider.ChatGLM;
   }
-  accessStore(model = ModelProvider.ChatGLM) {
+  accessStore(model = this.model) {
     return super.accessStore(model);
   }
   path() {
-    let openaiUrl = useAccessStore(ModelProvider.ChatGLM).openaiUrl;
+    let openaiUrl = useAccessStore(this.model).openaiUrl;
     return openaiUrl + ChatGLMPath.ChatPath;
   }
   getHeaders() {
-    return super.getHeaders(useAccessStore(ModelProvider.ChatGLM).token);
+    return super.getHeaders(useAccessStore(this.model).token);
   }
 }
