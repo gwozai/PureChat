@@ -61,9 +61,7 @@ const onFocus = () => {};
   }
 }
 .header-search-add {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   width: 32px;
   height: 32px;
   background: #54b4ef;

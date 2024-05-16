@@ -197,6 +197,7 @@ watchEffect(() => {
   background: #22222230;
 }
 .back-to-the-bottom {
+  @include flex-center;
   position: absolute;
   width: 70px;
   height: 20px;
@@ -205,9 +206,6 @@ watchEffect(() => {
   right: 15px;
   z-index: 1;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: #fff;
   cursor: pointer;
 }

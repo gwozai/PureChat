@@ -11,7 +11,6 @@
 import { useState } from "@/utils/hooks/useMapper";
 import Loader from "@/views/components/Loader/index.vue";
 
-// eslint-disable-next-line no-undef
 const props = defineProps({
   index: {
     type: Number,
@@ -26,9 +25,7 @@ const { noMore, currentMessageList } = useState({
 
 <style lang="scss" scoped>
 .viewref {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   width: 100%;
   overflow: hidden;
 }

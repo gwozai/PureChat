@@ -100,8 +100,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs } from "vue";
-import * as ElIcons from "@element-plus/icons-vue";
+import { reactive, ref, toRefs } from "vue";
 
 const props = defineProps({
   IofoText: {
@@ -184,11 +183,9 @@ defineExpose({ dialogFormVisible });
 }
 
 .dropdown {
+  @include flex-center;
   width: 50px;
   height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .style-select {

@@ -281,12 +281,10 @@ watch(activetab, (data) => {
   height: 100%;
 }
 .message-item {
+  @include flex-center;
   padding: 12px 12px 12px 16px;
   user-select: none;
   height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   position: relative;
   box-sizing: border-box;

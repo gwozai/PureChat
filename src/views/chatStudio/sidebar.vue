@@ -67,9 +67,7 @@ function toggle(item) {
   box-shadow: 1px 0px 5px 0px rgb(0 0 0 / 10%);
 }
 .aside-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   .aside-list {
     width: 54px;
     height: 54px;

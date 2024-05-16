@@ -11,12 +11,10 @@ const router = useRouter();
 
 <style lang="scss" scoped>
 .back {
+  @include flex-center;
   position: relative;
   top: 50%;
   left: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 200px;
   height: 200px;
   cursor: pointer;
