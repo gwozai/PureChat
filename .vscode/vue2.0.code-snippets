@@ -7,7 +7,7 @@
       "</template>\n",
       "<script>",
       "export default {",
-      "\tname: 'Name',",
+      "\tname: '',",
       "\tcomponents: {},",
       "\tcomputed: {},",
       "\tprops: {},",
