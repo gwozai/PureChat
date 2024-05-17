@@ -1,5 +1,8 @@
-import { isArray } from "lodash-es";
 const duration = 5 * 60;
+
+const isArray = (obj) => {
+  return Object.prototype.toString.call(obj) === "[object Array]";
+};
 
 const isInFiveTime = (curTime, baseTime) => {
   return Math.abs(curTime - baseTime) <= duration;

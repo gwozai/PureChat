@@ -21,7 +21,7 @@
           </div>
           <!-- 消息体 -->
           <div
-            v-else-if="!isTime(item) && !item.isDeleted"
+            v-else-if="item.ID && !isTime(item) && !item.isDeleted"
             class="message-view__item"
             :class="[
               ISown(item) ? 'is-self' : 'is-other',

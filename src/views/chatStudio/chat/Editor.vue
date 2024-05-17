@@ -393,6 +393,8 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .wangeditor {
+  position: relative;
+  z-index: 2;
   word-break: break-all;
   border-top: 1px solid var(--color-border-default);
   height: 200px;
