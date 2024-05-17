@@ -77,7 +77,6 @@ export const YiConfig = {
   openaiUrl: process.env.VUE_APP_YI_BASE_URL,
   historyMessageCount: 10,
 };
-console.log(YiConfig);
 // 默认配置
 export const modelConfig = {
   [ModelProvider.GPT]: { ...OpenaiConfig },
@@ -303,7 +302,7 @@ export const yiModelValue = {
   Model: {
     ID: "model",
     Title: "模型 (model)",
-    SubTitle: "ChatGPT 模型",
+    SubTitle: "01.AI 零一万物 模型",
     defaultValue: "",
     options: DEFAULT_MODELS.filter((t) => t.provider.convId === CHATYI_ROBOT),
   },
@@ -311,15 +310,15 @@ export const yiModelValue = {
     ID: "openaiUrl",
     Title: "接口地址",
     SubTitle: "除默认地址外，必须包含 http(s)://",
-    Placeholder: "https://api.openai.com",
+    Placeholder: "https://api.lingyiwanwu.com/",
     defaultValue: "",
     password: true,
   },
   Token: {
     ID: "token",
     Title: "API Key",
-    SubTitle: "使用自己的 OpenAI API Key",
-    Placeholder: "OpenAI API Key",
+    SubTitle: "使用自己的 01.AI 零一万物 API Key",
+    Placeholder: "ZeroOne API Key",
     defaultValue: "",
     password: true,
   },
