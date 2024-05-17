@@ -1,38 +1,39 @@
 <template>
   <div>
+    <p>设置主题色</p>
     <el-button type="primary" @click="setTheme('light')">白色</el-button>
     <el-button type="primary" @click="setTheme('dark')">黑色</el-button>
-    <p>设置主题色 {{ appearance }}</p>
     <br />
-    <!-- <el-button type="primary" @click="setState(true)">true</el-button>
-    <el-button type="primary" @click="setState(false)">false</el-button>
-    <p>useBoolean {{ state }}</p> -->
+
+    <p>礼花🎉</p>
+    <el-button type="primary" @click="confetti()">🎉</el-button>
     <br />
+
+    <p>useBoolean {{ flag }}</p>
+    <el-button type="primary" @click="setFlag(true)">true</el-button>
+    <el-button type="primary" @click="setFlag(false)">false</el-button>
+    <br />
+
     <el-button v-for="{ title, onclick } in buttons" :key="title" type="primary" @click="onclick">
       {{ title }}
     </el-button>
+
     <el-button type="primary" @click="test">测试</el-button>
     <el-button type="primary" @click="test1">获取群组列表</el-button>
     <el-button type="primary" @click="test2"> 查询帐号 </el-button>
     <el-button type="primary" @click="test3"> 拉取运营数据 </el-button>
-
-    <div v-for="item in groupList" :key="item.groupID">
-      <p @click="handleGroupClick(item.groupID)">
-        {{ item.name }}
-      </p>
-    </div>
   </div>
 </template>
 
 <script>
+import { setTheme } from "@/utils/common";
+import { useBoolean } from "@/utils/hooks/index";
 import { defineComponent } from "vue";
 import { mapActions, mapMutations, mapState } from "vuex";
-// import { useDataThemeChange } from "@/utils/hooks/useDataThemeChange";
-import { setTheme } from "@/utils/common";
+const [flag, setFlag] = useBoolean();
 
 export default defineComponent({
   name: "Test",
-  components: {},
   computed: {
     ...mapState({
       appearance: (state) => state.settings.appearance,
@@ -43,6 +44,8 @@ export default defineComponent({
   props: {},
   data() {
     return {
+      flag,
+      setFlag,
       setTheme,
       buttons: [
         {
@@ -80,13 +83,19 @@ export default defineComponent({
           },
         },
       ],
-      message: "Hello, world!",
     };
   },
   methods: {
     ...mapMutations(["TAGGLE_OUE_SIDE", "UPDATE_USER_SETUP"]),
     ...mapActions(["getGroupList", "CHEC_OUT_CONVERSATION"]),
-    openAddress() {},
+    confetti() {
+      if (!confetti) return;
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    },
     openSetup() {
       this.UPDATE_USER_SETUP({ key: "setswitch", value: true });
     },
@@ -104,21 +113,6 @@ export default defineComponent({
     fileupload() {},
     async callApi() {},
   },
-  // setup(props, { attrs, emit, expose, slots }) {
-  //   const data = reactive({ text: "" });
-  //   // const { theme, setTheme } = useDataThemeChange();
-  //   const [state, setState] = useBoolean();
-
-  //   onMounted(() => {});
-  //   onBeforeUnmount(() => {});
-  //   return {
-  //     state,
-  //     setState,
-  //     // theme,
-  //     // setTheme,
-  //     ...toRefs(data),
-  //   };
-  // },
 });
 </script>
 

@@ -43,6 +43,8 @@ const vueDefaultConfig = {
   cdn: {
     css: [],
     js: [
+      // #https://github.com/catdad/canvas-confetti/
+      "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js",
       // "https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
       // "https://cdn.jsdelivr.net/npm/pinyin-pro@3.18.5/dist/index.js"
     ],

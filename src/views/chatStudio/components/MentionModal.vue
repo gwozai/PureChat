@@ -188,6 +188,7 @@ export default {
     this.initList();
   },
   mounted() {
+    document.body.appendChild(this.$el);
     this.initMention();
   },
   beforeUnmount() {
