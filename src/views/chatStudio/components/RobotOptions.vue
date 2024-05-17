@@ -1,8 +1,14 @@
 <template>
-  <el-dialog v-model="state" width="750px" align-center :before-close="handleClose">
+  <el-dialog
+    v-model="state"
+    :append-to-body="true"
+    width="750px"
+    align-center
+    :before-close="handleClose"
+  >
     <div>
       <ul class="container">
-        <li class="list-item" v-for="(item, index) in modelData" :key="item.ID">
+        <li class="list-item" v-for="item in modelData" :key="item.ID">
           <div>
             <div class="title">{{ item.Title }}</div>
             <div class="subTitle">{{ item.SubTitle }}</div>
@@ -46,8 +52,8 @@
 </template>
 
 <script setup>
-import { StoreKey, modelValue, useAccessStore } from "@/api/openai/constant";
-import { getModelType } from "@/utils/chat/index";
+import { StoreKey, modelValue } from "@/ai/constant";
+import { getModelType, useAccessStore } from "@/ai/utils";
 import { useBoolean } from "@/utils/hooks/index";
 import { useGetters } from "@/utils/hooks/useMapper";
 import storage from "@/utils/localforage/index";

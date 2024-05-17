@@ -1,7 +1,7 @@
-import { ModelProvider } from "./constant";
-import { ChatGPTApi } from "./openai";
-import { ChatYiApi } from "./zeroone";
-import { ChatZhipuApi } from "./zhipu";
+import { ModelProvider } from "@/ai/constant";
+import { ChatGPTApi } from "@/ai/platforms/openai/index";
+import { ChatYiApi } from "@/ai/platforms/zeroone/index";
+import { ChatZhipuApi } from "@/ai/platforms/zhipu/index";
 
 export class ClientApi {
   constructor(provider = ModelProvider.GPT) {

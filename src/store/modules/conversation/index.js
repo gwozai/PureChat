@@ -1,3 +1,5 @@
+import { ROBOT_COLLECT } from "@/ai/constant";
+import { chatService } from "@/ai/index";
 import {
   deleteConversation,
   getConversationProfile,
@@ -7,13 +9,11 @@ import {
   setMessageRead,
   setMessageRemindType,
 } from "@/api/im-sdk-api/index";
-import { chatService } from "@/api/openai/index";
 import {
   CONVERSATIONTYPE,
   EMOJI_RECENTLY,
   GET_MESSAGE_LIST,
   HISTORY_MESSAGE_COUNT,
-  ROBOT_COLLECT,
 } from "@/constants/index";
 import TIM from "@/utils/IM/chat/index";
 import { addTimeDivider, checkTextNotEmpty, getBaseTime, transformData } from "@/utils/chat/index";

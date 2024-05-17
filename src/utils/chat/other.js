@@ -1,6 +1,3 @@
-import { ModelProvider } from "@/api/openai/constant";
-import { CHATGLM_ROBOT, CHATGPT_ROBOT, CHATYI_ROBOT } from "@/constants/index";
-import { isRobot } from "@/utils/chat/index";
 import ScreenShot from "js-web-screen-shot";
 
 export function checkTextNotEmpty(arr) {
@@ -61,14 +58,4 @@ export function screenshot(fn) {
     completeCallback: fn,
     closeCallback: fn,
   });
-}
-
-export function getModelType(modelId) {
-  if (!isRobot(modelId)) return null;
-  const modelMapping = {
-    [CHATGPT_ROBOT]: [ModelProvider.GPT],
-    [CHATGLM_ROBOT]: [ModelProvider.ChatGLM],
-    [CHATYI_ROBOT]: [ModelProvider.ZeroOne],
-  };
-  return modelMapping[modelId] || null;
 }

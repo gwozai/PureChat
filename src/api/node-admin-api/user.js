@@ -1,5 +1,5 @@
-import { ACCESS_TOKEN, USER_SETUP, USER_MODEL } from "@/constants/index";
-import { StoreKey } from "@/api/openai/constant";
+import { StoreKey } from "@/ai/constant";
+import { ACCESS_TOKEN, USER_MODEL, USER_SETUP } from "@/constants/index";
 import http from "@/utils/http/index";
 import storage from "@/utils/localforage/index";
 

@@ -25,8 +25,7 @@
 </template>
 
 <script setup>
-import { useAccessStore } from "@/api/openai/constant";
-import { getModelType } from "@/utils/chat/index";
+import { getModelType, useAccessStore } from "@/ai/utils";
 import { useGetters, useState } from "@/utils/hooks/useMapper";
 import emitter from "@/utils/mitt-bus";
 import Label from "@/views/chatStudio/components/Label.vue";

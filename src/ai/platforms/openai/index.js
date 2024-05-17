@@ -1,5 +1,6 @@
+import { ModelProvider, OpenaiPath, REQUEST_TIMEOUT_MS } from "@/ai/constant";
+import { useAccessStore } from "@/ai/utils";
 import { EventStreamContentType, fetchEventSource } from "@fortaine/fetch-event-source";
-import { ModelProvider, OpenaiPath, REQUEST_TIMEOUT_MS, useAccessStore } from "./constant";
 
 export function prettyObject(msg) {
   const obj = msg;

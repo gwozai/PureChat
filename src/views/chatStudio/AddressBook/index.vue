@@ -14,9 +14,9 @@
 </template>
 
 <script>
+import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/ai/constant";
 import { getUserProfile } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/index";
-import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/constants/index";
 import emitter from "@/utils/mitt-bus";
 import { mapState } from "vuex";
 import CardGrid from "./CardGrid";

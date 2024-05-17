@@ -1,10 +1,12 @@
+import { ClientApi } from "@/ai/api";
+import { ModelProvider } from "@/ai/constant";
+import { useAccessStore } from "@/ai/utils";
+
+import { CHATGLM_ROBOT, CHATYI_ROBOT } from "@/ai/constant";
+import { getModelType } from "@/ai/utils";
 import { createCustomMsg } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/rest";
-import { ClientApi } from "@/api/openai/api";
-import { ModelProvider, useAccessStore } from "@/api/openai/constant";
-import { CHATGLM_ROBOT, CHATYI_ROBOT } from "@/constants/index";
 import store from "@/store";
-import { getModelType } from "@/utils/chat/index";
 import emitter from "@/utils/mitt-bus";
 import { cloneDeep } from "lodash-es";
 
@@ -56,6 +58,7 @@ const fnCreateLodMsg = (params) => {
 
 export const chatService = async (params) => {
   const { messages, chat } = params;
+
   let api;
   if (chat.to.startsWith(CHATGLM_ROBOT)) {
     api = new ClientApi(ModelProvider.ChatGLM);
@@ -64,6 +67,7 @@ export const chatService = async (params) => {
   } else {
     api = new ClientApi();
   }
+  console.log(api);
   const mode = getModelType(chat.to);
   const msg = fnCreateLodMsg(chat);
   await api.llm.chat({

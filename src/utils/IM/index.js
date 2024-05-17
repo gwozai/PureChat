@@ -1,4 +1,5 @@
-import { CHATGLM_ROBOT, CHATGPT_ROBOT, CHATYI_ROBOT, TIM_PROXY } from "@/constants/index";
+import { C2C_ROBOT_COLLECT } from "@/ai/constant";
+import { TIM_PROXY } from "@/constants/index";
 import store from "@/store";
 import TIM from "@/utils/IM/chat/index";
 import tim from "@/utils/IM/im-sdk/tim";
@@ -19,7 +20,7 @@ const isFocused = useWindowFocus(); // 判断浏览器窗口是否在前台可�
 
 export class TIMProxy {
   constructor() {
-    this.robotList = [`C2C${CHATGPT_ROBOT}`, `C2C${CHATGLM_ROBOT}`, `C2C${CHATYI_ROBOT}`];
+    this.robotList = C2C_ROBOT_COLLECT;
     this.userProfile = {}; // IM用户信息
     this.userID = "";
     this.userSig = "";

@@ -1,5 +1,6 @@
-import { ModelProvider, OpenaiPath, useAccessStore } from "./constant";
-import { ChatGPTApi } from "./openai";
+import { ModelProvider, OpenaiPath } from "@/ai/constant";
+import { ChatGPTApi } from "@/ai/platforms/openai/index";
+import { useAccessStore } from "@/ai/utils";
 
 export class ChatYiApi extends ChatGPTApi {
   constructor() {
