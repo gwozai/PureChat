@@ -67,7 +67,6 @@ import { useEventListener } from "@vueuse/core";
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { dragControllerDiv, isallStaff } from "./utils/utils";
-// import { Favico } from "pure-tools";
 
 import Chatwin from "./chat/Chatwin.vue";
 import ConversationList from "./chat/ConversationList.vue";
@@ -85,7 +84,6 @@ const unread = ref("");
 const chatRef = ref(null);
 const activeName = ref("whole");
 const { dispatch, commit } = useStore();
-// const favicon = new Favico({ animation: "none" });
 
 const { isGroupChat } = useGetters(["isGroupChat"]);
 const { networkStatus, conver, showMsgBox, totalUnreadMsg, arrowRight, fullScreen } = useState({
@@ -102,7 +100,6 @@ const fnTotalUnreadMsg = () => {
   const isUnread = unreadCount > 0;
   const num = unreadCount > 99 ? "99+" : unreadCount;
   unread.value = isUnread ? `${$t("chat.unread")}(${num})` : $t("chat.unread");
-  // isUnread ? favicon.badge(num) : favicon.reset();
 };
 const handleClick = ({ props }, event) => {
   const { label, name } = props;

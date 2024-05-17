@@ -280,8 +280,9 @@ const parsePicture = async (file, editor = editorRef.value) => {
     style: { width: "125px" },
     children: [{ text: "" }],
   };
-  editor?.insertNode(element);
-  editor?.focus();
+  editor.restoreSelection(); // 恢复选区
+  editor.insertNode(element);
+  editor.move(1); // 移动光标
 };
 // 回车
 const handleEnter = (event) => {

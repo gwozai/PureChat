@@ -5,7 +5,7 @@
     <span v-else-if="isGroup" class="isGroup" @click="handleAt">
       <span :class="styleNick">{{ item.nick }}</span>
       <span class="mention">@</span>
-      <span v-if="groupProfile?.ownerID == item.from"> (群主) </span>
+      <span class="admin" v-if="isLeader">群主</span>
     </span>
   </div>
 </template>
@@ -14,6 +14,7 @@
 import emitter from "@/utils/mitt-bus";
 import { mapGetters, mapState } from "vuex";
 export default {
+  name: "NameComponent",
   props: {
     item: Object,
   },
@@ -23,6 +24,9 @@ export default {
       showCheckbox: (state) => state.conversation.showCheckbox,
       groupProfile: (state) => state.groupinfo.groupProfile,
     }),
+    isLeader() {
+      return this.groupProfile?.ownerID === this.item.from;
+    },
     from() {
       return this.item.from;
     },
@@ -60,7 +64,16 @@ export default {
   color: var(--color-time-divider);
   font-size: 12px;
 }
-
+.admin {
+  white-space: nowrap;
+  background: #e6f7ff;
+  border: 1px solid rgb(145, 213, 255);
+  color: #1890ff;
+  border-radius: 2px;
+  font-size: 10px;
+  padding: 0 4px;
+  display: inline-block;
+}
 .isGroup {
   cursor: pointer;
   .mention {
