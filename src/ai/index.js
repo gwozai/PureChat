@@ -32,7 +32,7 @@ const updataMessage = (msg, message = "") => {
 
 const robotAvatar = {
   [ModelProvider.GPT]: "open-ai-icon.png",
-  [ModelProvider.ChatGLM]: "zhipu.svg",
+  [ModelProvider.ChatGLM]: "chatglm.svg",
   [ModelProvider.ZeroOne]: "ZeroOne.svg",
 };
 
