@@ -1,4 +1,4 @@
-import { ModelProvider, OpenaiPath } from "@/ai/constant";
+import { ModelProvider, ZeroOnePath } from "@/ai/constant";
 import { ChatGPTApi } from "@/ai/platforms/openai/index";
 import { useAccessStore } from "@/ai/utils";
 
@@ -12,7 +12,7 @@ export class ChatYiApi extends ChatGPTApi {
   }
   path() {
     let openaiUrl = useAccessStore(this.model).openaiUrl;
-    return openaiUrl + OpenaiPath.ChatPath;
+    return openaiUrl + ZeroOnePath.ChatPath;
   }
   getHeaders() {
     return super.getHeaders(useAccessStore(this.model).token);

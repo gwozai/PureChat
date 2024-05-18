@@ -41,6 +41,10 @@ export const ChatGLMPath = {
   ChatPath: "chat/completions",
 };
 
+export const ZeroOnePath = {
+  ChatPath: "v1/chat/completions",
+};
+
 const openaiModels = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0301",
@@ -59,7 +63,7 @@ const openaiModels = [
   // "gpt-4-turbo-2024-04-09",
 ];
 
-const zhipuModels = ["glm-4", "glm-4v", "glm-3-turbo"];
+const zhipuModels = ["glm-3-turbo", "glm-4", "glm-4v"];
 
 const yiModels = ["yi-large"];
 

@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { StoreKey, modelValue } from "@/ai/constant";
+import { StoreKey, modelValue, modelConfig } from "@/ai/constant";
 import { getModelType, useAccessStore } from "@/ai/utils";
 import { useBoolean } from "@/utils/hooks/index";
 import { useGetters } from "@/utils/hooks/useMapper";
@@ -89,9 +89,19 @@ function storeRobotModel(model) {
   }
   commit("setRobotModel", model.model);
 }
+function resetRobotModel() {
+  const access = storage.get(StoreKey.Access);
+  if (!access) return;
+  const account = getModelType(toAccount.value);
+  const filteredConfig = Object.fromEntries(
+    Object.entries(access).filter(([key, _]) => !key.includes(account))
+  );
+  storage.set(StoreKey.Access, filteredConfig);
+  commit("setRobotModel", modelConfig[account].model);
+}
 // 重置
 function handleCancel() {
-  storage.remove(StoreKey.Access);
+  resetRobotModel();
   setState(false);
 }
 // 保存
