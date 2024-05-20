@@ -54,10 +54,10 @@ const openaiModels = [
   "gpt-3.5-turbo-16k",
   "gpt-3.5-turbo-16k-0613",
   "gpt-4",
-  // "gpt-4-0613",
-  // "gpt-4-32k",
-  // "gpt-4-32k-0613",
-  // "gpt-4-turbo",
+  "gpt-4-0613",
+  "gpt-4-32k",
+  "gpt-4-32k-0613",
+  "gpt-4-turbo",
   // "gpt-4-turbo-preview",
   // "gpt-4-vision-preview",
   // "gpt-4-turbo-2024-04-09",
@@ -65,7 +65,17 @@ const openaiModels = [
 
 const zhipuModels = ["glm-3-turbo", "glm-4", "glm-4v"];
 
-const yiModels = ["yi-large"];
+const yiModels = [
+  "yi-large",
+  "yi-medium",
+  "yi-vision",
+  "yi-medium-200k",
+  "yi-spark",
+  "yi-large-rag",
+  "yi-large-turbo",
+  "yi-large-preview",
+  "yi-large-rag-preview",
+];
 
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({

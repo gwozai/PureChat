@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { CHATGLM_ROBOT, CHATGPT_ROBOT } from "@/ai/constant";
+import { ROBOT_COLLECT } from "@/ai/constant";
 import { getUserProfile } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/index";
 import emitter from "@/utils/mitt-bus";
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     async init() {
-      let list = [CHATGPT_ROBOT, CHATGLM_ROBOT, "huangyk", "admin", "linjx", "jinwx", "zhangal"];
+      let list = ["huangyk", "admin", "linjx", "jinwx", "zhangal", ...ROBOT_COLLECT];
       // 获取好友列表
       const { code, data } = await getUserProfile(list);
       this.friend = data;
