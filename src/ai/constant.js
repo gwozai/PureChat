@@ -6,6 +6,8 @@ import { ZhiPuConfig } from "@/ai/platforms/zhipu/config";
 import { zhipuModelValue } from "@/ai/platforms/zhipu/modelValue";
 import { prefixRobotIDs } from "./utils";
 
+export const ROLES = ["system", "user", "assistant"];
+
 // chatgpt机器人id
 export const CHATGPT_ROBOT = "@RBT#001";
 // 智谱机器人id
@@ -21,6 +23,7 @@ export const REQUEST_TIMEOUT_MS = 6000;
 
 export const StoreKey = {
   Access: "access-control",
+  Prompt: "prompt-store", // 提示词 预设
 };
 
 export const ModelProvider = {

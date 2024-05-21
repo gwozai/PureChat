@@ -58,7 +58,6 @@ const fnCreateLodMsg = (params) => {
 
 export const chatService = async (params) => {
   const { messages, chat } = params;
-
   let api;
   if (chat.to.startsWith(CHATGLM_ROBOT)) {
     api = new ClientApi(ModelProvider.ChatGLM);

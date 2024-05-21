@@ -37,8 +37,15 @@ export class ChatGPTApi {
     return res.choices?.at(0)?.message?.content ?? "";
   }
   generateRequestPayload(messages, modelConfig, options) {
+    let message = [];
+    const countMessage = messages.slice(-Number(modelConfig.historyMessageCount));
+    if (this.accessStore()?.prompt) {
+      message = [...this.accessStore().prompt, ...countMessage]; // prompt
+    } else {
+      message = countMessage; // 上下文
+    }
     return {
-      messages: messages.slice(-Number(modelConfig.historyMessageCount)), // 上下文
+      messages: message,
       stream: options.stream, // 流式传输
       model: modelConfig.model, // 模型
       max_tokens: modelConfig.max_tokens, // 单次回复限制
