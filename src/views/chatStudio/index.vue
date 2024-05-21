@@ -6,17 +6,18 @@
     <Message v-show="showChat(outside)" />
     <!-- iframe -->
     <frameView v-if="frame.includes(outside)" :type="outside" />
+    <!-- component -->
     <component v-else-if="Component[outside]" :is="Component[outside]" />
   </div>
 </template>
 
 <script setup>
 import { useState } from "@/utils/hooks/useMapper";
-import sidebar from "./sidebar.vue";
-import Message from "./message.vue";
-import test from "./test.vue";
-import frameView from "./frameView.vue";
 import AddressBook from "./AddressBook/index.vue";
+import frameView from "./frameView.vue";
+import Message from "./message.vue";
+import sidebar from "./sidebar.vue";
+import test from "./test.vue";
 
 const showChat = (value) => {
   return outsideList.value[0].only.includes(value);

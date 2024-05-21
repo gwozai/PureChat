@@ -1,19 +1,32 @@
 <template>
-  <div class="items-box" v-for="item in item" :key="item.GroupId || item.groupID || item.userID">
+  <div
+    class="items-box"
+    @click="onFriend({ id: item.GroupId || item.groupID || item.userID })"
+    v-for="item in item"
+    :key="item.GroupId || item.groupID || item.userID"
+  >
     <div class="left-item">
       <UserAvatar
         words="3"
-        shape="circle"
+        shape="square"
         :nickName="item.Name || item.name || item.nick"
         :url="item.avatar || ''"
       />
     </div>
-    <div class="right-item">
+    <div
+      class="right-item"
+      :class="{
+        between: item.selfSignature,
+      }"
+    >
       <p>{{ item.Name || item.name || item.nick }}</p>
-      <FontIcon
+      <p class="describe">
+        {{ item.selfSignature }}
+      </p>
+      <!-- <FontIcon
         iconName="Position"
         @click="onFriend({ id: item.GroupId || item.groupID || item.userID })"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -53,12 +66,13 @@ export default {
 <style lang="scss" scoped>
 .items-box {
   display: flex;
-  width: 218px;
   min-height: 50px;
-  border: 1px solid #eeeaea;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 10px;
   box-sizing: border-box;
+  &:hover {
+    background: var(--hover-color);
+  }
   .left-item {
     img {
       width: 40px;
@@ -67,13 +81,21 @@ export default {
   }
   .right-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 150px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
     padding-left: 10px;
+    .describe {
+      @include text-ellipsis();
+      font-size: 12px;
+      color: var(--color-time-divider);
+    }
     .el-icon {
       cursor: pointer;
     }
   }
+}
+.between {
+  justify-content: space-between !important;
 }
 </style>

@@ -23,12 +23,16 @@ export default {
     return {
       data: [
         {
-          title: "我的好友",
+          title: "常用联系人",
           icon: "ForkSpoon",
         },
         {
           title: "我的群聊",
           icon: "IceCreamRound",
+        },
+        {
+          title: "机器人",
+          icon: "Sugar",
         },
         // {
         //   title: "公开群聊",
@@ -39,9 +43,9 @@ export default {
     };
   },
   methods: {
-    onClick({ icon }) {
-      this.active = icon;
-      emitter.emit("onActive", icon);
+    onClick(data) {
+      this.active = data.icon;
+      emitter.emit("onActive", data);
     },
   },
 };
