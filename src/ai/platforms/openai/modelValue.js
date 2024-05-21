@@ -14,7 +14,6 @@ export const openaiModelValue = (DEFAULT_MODELS) => {
       SubTitle: "除默认地址外，必须包含 http(s)://",
       Placeholder: "https://api.openai.com",
       defaultValue: "",
-      password: true,
     },
     Token: {
       ID: "token",
@@ -22,7 +21,6 @@ export const openaiModelValue = (DEFAULT_MODELS) => {
       SubTitle: "使用自己的 OpenAI API Key",
       Placeholder: "OpenAI API Key",
       defaultValue: "",
-      password: true,
     },
     Temperature: {
       ID: "temperature",
@@ -49,7 +47,6 @@ export const openaiModelValue = (DEFAULT_MODELS) => {
       Title: "单次回复限制 (max_tokens)",
       SubTitle: "单次交互所用的最大 Token 数",
       defaultValue: "",
-      Number: true,
       min: 1024,
       max: 8192,
     },

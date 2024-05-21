@@ -15,7 +15,6 @@ export const zhipuModelValue = (models) => {
       SubTitle: "除默认地址外，必须包含 http(s)://",
       Placeholder: "https://open.bigmodel.cn",
       defaultValue: "",
-      password: true,
     },
     Token: {
       ID: "token",
@@ -23,7 +22,6 @@ export const zhipuModelValue = (models) => {
       SubTitle: "使用自己的 ZhiPu API Key",
       Placeholder: "ZhiPu API Key",
       defaultValue: "",
-      password: true,
     },
     Temperature: {
       ID: "temperature",

@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     v-model="state"
+    title="配置"
     :append-to-body="true"
     width="750px"
     align-center
@@ -8,22 +9,34 @@
   >
     <div>
       <ul class="container">
+        <!-- <div class="prompt" v-for="item in mask" :key="item.name">
+          <el-select class="prompt-select" v-model="item.prompt.role">
+            <el-option v-for="item in ROLES" :key="item.id" :label="item" :value="item" />
+          </el-select>
+          <el-input
+            class="prompt-input"
+            v-model="item.prompt.content"
+            :autosize="{ minRows: 1, maxRows: 3 }"
+            type="textarea"
+            placeholder="Please input"
+          />
+          <el-icon v-show="false" @click="onClose"><CircleCloseFilled /></el-icon>
+        </div> -->
         <li class="list-item" v-for="item in modelData" :key="item.ID">
           <div>
             <div class="title">{{ item.Title }}</div>
             <div class="subTitle">{{ item.SubTitle }}</div>
           </div>
           <!-- 模型 -->
-          <el-select v-if="item.options" v-model="item.defaultValue" placeholder="Select">
+          <el-select v-if="item.options" v-model="item.defaultValue">
             <el-option
               v-for="item in item.options"
-              v-show="item.available"
               :key="item.name"
               :label="item.name + `(${item.provider.providerName})`"
               :value="item.name"
             />
           </el-select>
-          <div class="range" v-if="item.Range">
+          <div class="range" v-else-if="item.Range">
             {{ item.defaultValue }}
             <input
               v-model="item.defaultValue"
@@ -33,11 +46,16 @@
               type="range"
             />
           </div>
-          <div class="number" v-else-if="item.Number">
+          <div class="number" v-else-if="['max_tokens'].includes(item.ID)">
             <input v-model="item.defaultValue" :min="item.min" :max="item.max" type="number" />
           </div>
-          <div class="password-input" v-else-if="item.password">
-            <input v-model="item.defaultValue" :placeholder="item.Placeholder" type="text" />
+          <div class="input" v-else-if="['token', 'openaiUrl'].includes(item.ID)">
+            <el-input
+              v-model="item.defaultValue"
+              :placeholder="item.Placeholder"
+              :type="item.ID === 'token' ? 'password' : 'text'"
+              :show-password="item.ID === 'token'"
+            />
           </div>
         </li>
       </ul>
@@ -52,7 +70,8 @@
 </template>
 
 <script setup>
-import { StoreKey, modelValue, modelConfig } from "@/ai/constant";
+import { StoreKey, modelConfig, modelValue } from "@/ai/constant";
+import masks from "@/ai/platforms/openai/masks";
 import { getModelType, useAccessStore } from "@/ai/utils";
 import { useBoolean } from "@/utils/hooks/index";
 import { useGetters } from "@/utils/hooks/useMapper";
@@ -65,6 +84,7 @@ import { useStore } from "vuex";
 const { commit } = useStore();
 const [state, setState] = useBoolean();
 const modelData = ref(null);
+const mask = ref(masks);
 
 const { toAccount } = useGetters(["toAccount"]);
 
@@ -74,6 +94,8 @@ function initModel() {
   Object.values(value).map((v) => {
     return (v.defaultValue = useAccessStore(model)[v.ID]);
   });
+  //  const prompt = mask.value[0].prompt;
+  // console.log(useAccessStore(model)?.prompt);
   modelData.value = value;
 }
 function handleClose(done) {
@@ -113,6 +135,7 @@ function handleConfirm() {
   });
   storeRobotModel(model);
 }
+function onClose() {}
 emitter.on("onRobotBox", (state) => {
   initModel();
   setState(state);
@@ -120,6 +143,9 @@ emitter.on("onRobotBox", (state) => {
 </script>
 
 <style lang="scss" scoped>
+.el-input {
+  width: 200px;
+}
 @mixin thumb() {
   appearance: none;
   height: 8px;
@@ -152,6 +178,23 @@ input[type="range"]::-moz-range-thumb:hover {
 }
 input[type="range"]::-ms-thumb:hover {
   @include thumbHover();
+}
+.prompt {
+  padding: 20px;
+  @include flex-center;
+  .el-icon {
+    margin: 0 10px;
+    color: #4498ef;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .prompt-select {
+    width: 125px;
+    margin-right: 10px;
+  }
+  .prompt-input {
+    // width: 430px;
+  }
 }
 
 .container {
