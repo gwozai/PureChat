@@ -50,6 +50,8 @@ export default {
     light: "浅色",
     dark: "深色",
     watermark: "水印",
+    exitfullScreen: "退出全屏",
+    openFullScreen: "打开全屏",
   },
   status: {
     hsLoad: "加载中...",

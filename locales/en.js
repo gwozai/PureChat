@@ -49,6 +49,8 @@ export default {
     light: "Light",
     dark: "Dark",
     watermark: "Watermark",
+    exitfullScreen: "Exit full screen",
+    openFullScreen: "Open full screen",
   },
   status: {
     hsLoad: "Loading...",

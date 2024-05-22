@@ -51,12 +51,12 @@
 </template>
 
 <script>
+import { showConfirmationBox } from "@/utils/message";
+import uniqBy from "lodash-es/uniqBy";
 import { mapState } from "vuex";
 import SideBar from "../sideBar/index.vue";
-import { showConfirmationBox } from "@/utils/message";
 import Fullscreen from "./Fullscreen.vue";
 import Tags from "./Tags.vue";
-import uniqBy from "lodash-es/uniqBy";
 
 export default {
   name: "Header",
@@ -191,6 +191,9 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+.el-icon {
+  cursor: pointer;
 }
 .icon {
   font-size: 15px !important;

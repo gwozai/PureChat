@@ -43,7 +43,7 @@
                   />
                   <svg-icon v-else :iconClass="element.icon" class="style-svg" />
                   <span>{{ element.title }}</span>
-                  <FontIcon iconName="Rank" class="rank" />
+                  <svg-icon iconClass="drag" class="dragIcon" />
                 </div>
               </template>
             </draggable>
@@ -69,6 +69,7 @@ import { cloneDeep, uniqBy } from "lodash-es";
 import { defineComponent } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 import { mapState } from "vuex";
+
 export default defineComponent({
   components: {
     draggable: VueDraggableNext,
@@ -269,7 +270,8 @@ export default defineComponent({
       font-size: 17px;
       margin-right: 5px;
     }
-    .rank {
+    .dragIcon {
+      cursor: grab;
       margin-left: auto;
     }
   }
