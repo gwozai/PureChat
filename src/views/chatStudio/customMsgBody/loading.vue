@@ -1,9 +1,15 @@
 <template>
-  <Loader />
+  <div>
+    <svg-icon iconClass="Loader" />
+  </div>
 </template>
 
-<script setup>
-import Loader from "@/views/components/Loader/index.vue";
-</script>
+<script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.svg-icon {
+  stroke: none;
+  fill: rgb(153, 153, 153);
+  width: 32px;
+}
+</style>

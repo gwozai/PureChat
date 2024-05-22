@@ -41,7 +41,7 @@
                     :iconName="element.icon"
                     class="style-svg"
                   />
-                  <SvgIcon v-else :iconClass="element.icon" class="style-svg" />
+                  <svg-icon v-else :iconClass="element.icon" class="style-svg" />
                   <span>{{ element.title }}</span>
                   <FontIcon iconName="Rank" class="rank" />
                 </div>
