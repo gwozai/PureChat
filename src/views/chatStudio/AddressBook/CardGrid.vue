@@ -11,6 +11,7 @@
         shape="square"
         :nickName="item.Name || item.name || item.nick"
         :url="item.avatar || ''"
+        :type="isGroup ? 'group' : 'single'"
       />
     </div>
     <div
@@ -41,10 +42,14 @@ export default {
     },
     type: {
       type: String,
-      default: "group", // friend  group
+      default: "GROUP", // C2C  GROUP
     },
   },
-  computed: {},
+  computed: {
+    isGroup() {
+      return this.type === "GROUP";
+    },
+  },
   data() {
     return {};
   },
@@ -69,6 +74,7 @@ export default {
   min-height: 50px;
   border-radius: 6px;
   padding: 10px;
+  cursor: pointer;
   box-sizing: border-box;
   &:hover {
     background: var(--hover-color);
