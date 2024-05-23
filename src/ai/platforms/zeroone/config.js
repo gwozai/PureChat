@@ -5,5 +5,5 @@ export const YiConfig = {
   max_tokens: 1024,
   token: process.env.VUE_APP_ZEROONE_API_KEY,
   openaiUrl: process.env.VUE_APP_ZEROONE_BASE_URL,
-  historyMessageCount: 10,
+  historyMessageCount: 5,
 };

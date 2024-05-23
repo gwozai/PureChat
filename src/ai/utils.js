@@ -32,6 +32,20 @@ export function getModelType(modelId) {
   return modelMapping[modelId] || "";
 }
 
+export function prettyObject(msg) {
+  const obj = msg;
+  if (typeof msg !== "string") {
+    msg = JSON.stringify(msg, null, "  ");
+  }
+  if (msg === "{}") {
+    return obj.toString();
+  }
+  if (msg.startsWith("```json")) {
+    return msg;
+  }
+  return ["```json", msg, "```"].join("\n");
+}
+
 export function prefixRobotIDs(robotIDs) {
   return robotIDs.map((id) => "C2C" + id);
 }

@@ -1,27 +1,16 @@
-import { ModelProvider, OpenaiPath, REQUEST_TIMEOUT_MS } from "@/ai/constant";
-import { useAccessStore } from "@/ai/utils";
+import { OpenaiPath, REQUEST_TIMEOUT_MS } from "@/ai/constant";
+import { prettyObject, useAccessStore } from "@/ai/utils";
 import { EventStreamContentType, fetchEventSource } from "@fortaine/fetch-event-source";
 
-export function prettyObject(msg) {
-  const obj = msg;
-  if (typeof msg !== "string") {
-    msg = JSON.stringify(msg, null, "  ");
-  }
-  if (msg === "{}") {
-    return obj.toString();
-  }
-  if (msg.startsWith("```json")) {
-    return msg;
-  }
-  return ["```json", msg, "```"].join("\n");
-}
-
 export class ChatGPTApi {
+  constructor(provider) {
+    this.provider = provider;
+  }
   path(path) {
     let openaiUrl = this.accessStore().openaiUrl;
     return openaiUrl + path;
   }
-  accessStore(model = ModelProvider.GPT) {
+  accessStore(model = this.provider) {
     return useAccessStore(model);
   }
   getHeaders() {

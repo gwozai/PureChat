@@ -1,9 +1,6 @@
 import { ClientApi } from "@/ai/api";
-import { ModelProvider } from "@/ai/constant";
-import { useAccessStore } from "@/ai/utils";
-
-import { CHATGLM_ROBOT, CHATYI_ROBOT } from "@/ai/constant";
-import { getModelType } from "@/ai/utils";
+import { CHATGLM_ROBOT, CHATYI_ROBOT, ModelProvider } from "@/ai/constant";
+import { getModelType, useAccessStore } from "@/ai/utils";
 import { createCustomMsg } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/rest";
 import store from "@/store";
@@ -66,14 +63,19 @@ export const chatService = async (params) => {
   } else {
     api = new ClientApi();
   }
-  console.log(api);
   const mode = getModelType(chat.to);
   const msg = fnCreateLodMsg(chat);
+  if (!api.config().token) {
+    setTimeout(() => {
+      updataMessage(msg, "API Key 不正确或为空，请检查 API Key 后重试");
+    }, 1000);
+    return;
+  }
   await api.llm.chat({
     messages,
     config: { model: useAccessStore(mode).model, stream: true },
     onUpdate(message) {
-      console.log("[chat] onUpdate:", message);
+      // console.log("[chat] onUpdate:", message);
       emitter.emit("updataScroll", "instantly");
       updataMessage(msg, message);
     },
