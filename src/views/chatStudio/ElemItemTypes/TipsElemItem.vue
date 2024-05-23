@@ -49,7 +49,7 @@ export default {
         await deleteMsgList([data]);
         this.$store.commit("SET_HISTORYMESSAGE", {
           type: "DELETE_MESSAGE",
-          payload: { convId: data.conversationID, message: data },
+          payload: { convId: data.conversationID },
         });
       } catch (error) {
         console.log(error);

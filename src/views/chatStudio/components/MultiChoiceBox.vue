@@ -102,13 +102,10 @@ export default {
       const forwardData = this.filterate();
       const { code } = await deleteMsgList([...forwardData]);
       if (code !== 0) return;
-      const { conversationID, toAccount, to } = this.currentConversation;
+      const { conversationID } = this.currentConversation;
       this.$store.commit("SET_HISTORYMESSAGE", {
         type: "DELETE_MESSAGE",
-        payload: {
-          convId: conversationID,
-          message: null,
-        },
+        payload: { convId: conversationID },
       });
       this.shutdown();
     },

@@ -14,7 +14,7 @@
         >
           <!-- 加载更多 -->
           <LoadMore :index="index" />
-          <div class="message-view__item--blank"></div>
+          <!-- <div class="message-view__item--blank"></div> -->
           <!-- 时间 -->
           <div v-if="isTime(item)" class="message-view__item--time-divider">
             {{ timeFormat(item.time * 1000, true) }}
@@ -441,9 +441,10 @@ const handleDeleteMsg = async (data) => {
     if (result === "cancel") return;
     const { code } = await deleteMsgList([data]);
     if (code !== 0) return;
-    const { conversationID } = data;
-    const payload = { convId: conversationID, message: data };
-    commit("SET_HISTORYMESSAGE", { type: "DELETE_MESSAGE", payload });
+    commit("SET_HISTORYMESSAGE", {
+      type: "DELETE_MESSAGE",
+      payload: { convId: data.conversationID },
+    });
   } catch (error) {
     console.log(error);
   }

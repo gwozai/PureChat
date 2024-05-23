@@ -113,6 +113,12 @@ export const DEFAULT_MODELS = [
   })),
 ];
 
+export const RobotAvatar = {
+  [ModelProvider.GPT]: "open-ai-icon.png",
+  [ModelProvider.ChatGLM]: "chatglm.svg",
+  [ModelProvider.ZeroOne]: "ZeroOne.svg",
+};
+
 // 默认配置
 export const modelConfig = {
   [ModelProvider.GPT]: { ...OpenaiConfig },

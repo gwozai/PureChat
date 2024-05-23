@@ -1,5 +1,5 @@
 import { ClientApi } from "@/ai/api";
-import { CHATGLM_ROBOT, CHATYI_ROBOT, ModelProvider } from "@/ai/constant";
+import { CHATGLM_ROBOT, CHATYI_ROBOT, ModelProvider, RobotAvatar } from "@/ai/constant";
 import { getModelType, useAccessStore } from "@/ai/utils";
 import { createCustomMsg } from "@/api/im-sdk-api/index";
 import { restApi } from "@/api/node-admin-api/rest";
@@ -27,14 +27,8 @@ const updataMessage = (msg, message = "") => {
   });
 };
 
-const robotAvatar = {
-  [ModelProvider.GPT]: "open-ai-icon.png",
-  [ModelProvider.ChatGLM]: "chatglm.svg",
-  [ModelProvider.ZeroOne]: "ZeroOne.svg",
-};
-
 const avatar = (id) => {
-  const suffix = robotAvatar[getModelType(id)] || "";
+  const suffix = RobotAvatar[getModelType(id)] || "";
   return `https://ljx-1307934606.cos.ap-beijing.myqcloud.com/${suffix}`;
 };
 
@@ -75,7 +69,7 @@ export const chatService = async (params) => {
     messages,
     config: { model: useAccessStore(mode).model, stream: true },
     onUpdate(message) {
-      // console.log("[chat] onUpdate:", message);
+      console.log("[chat] onUpdate:", message);
       emitter.emit("updataScroll", "instantly");
       updataMessage(msg, message);
     },

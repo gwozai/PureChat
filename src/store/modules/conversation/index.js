@@ -105,6 +105,7 @@ const conversation = {
           if (state.currentConversation) {
             if (state.currentConversation.conversationID === convId) {
               state.currentMessageList = newMessageList;
+              console.log(newMessageList);
             }
             state.needScrollDown = 0;
           }
@@ -112,18 +113,13 @@ const conversation = {
         }
         case CONVERSATIONTYPE.DELETE_MESSAGE: {
           console.log("[chat] 删除消息 DELETE_MESSAGE:", payload);
-          const { convId, message } = payload;
+          const { convId } = payload;
           const history = state.historyMessageList.get(convId);
           if (!history) return;
-          const newHistory = history.filter((item) => !item.isTimeDivider && !item.isDeleted);
-          const newHistoryList = addTimeDivider(newHistory.reverse()).reverse();
+          const newHistory = history.reverse();
+          const newHistoryList = addTimeDivider(newHistory).reverse();
           state.historyMessageList.set(convId, newHistoryList);
           state.currentMessageList = newHistoryList;
-          break;
-        }
-        case CONVERSATIONTYPE.SET_CURRENT_REPLY_MSG: {
-          console.log("[chat] 回复消息 SET_CURRENT_REPLY_MSG:", payload);
-          state.currentReplyMsg = payload;
           break;
         }
         case CONVERSATIONTYPE.CLEAR_HISTORY: {
@@ -261,6 +257,7 @@ const conversation = {
     },
     // 回复消息
     setReplyMsg(state, payload) {
+      console.log("[chat] 回复消息 setReplyMsg:", payload);
       state.currentReplyMsg = payload;
     },
     SET_CONVERSATION_VALUE(state, { key, value }) {
@@ -350,7 +347,7 @@ const conversation = {
         conversationID: convId,
       });
       const message = addTimeDivider(messageList).reverse();
-      state.historyMessageList.set(convId, message);
+      state.historyMessageList.set(convId, cloneDeep(message));
       commit("SET_HISTORYMESSAGE", {
         type: "UPDATE_MESSAGES",
         payload: {
