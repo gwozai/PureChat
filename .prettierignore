@@ -1,5 +1,25 @@
 # Prettier 会忽略的文件
-dist
+
+# general
 node_modules
 *.local
 *.d.ts
+.vscode
+.husky
+.npmrc
+
+# dependencies
+node_modules
+*.log
+*.lock
+package-lock.json
+
+# production
+dist
+
+# image
+*.webp
+*.gif
+*.png
+*.jpg
+*.svg
