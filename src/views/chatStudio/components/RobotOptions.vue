@@ -9,19 +9,23 @@
   >
     <div>
       <ul class="container">
-        <!-- <div class="prompt" v-for="item in mask" :key="item.name">
-          <el-select class="prompt-select" v-model="item.prompt.role">
-            <el-option v-for="item in ROLES" :key="item.id" :label="item" :value="item" />
-          </el-select>
-          <el-input
-            class="prompt-input"
-            v-model="item.prompt.content"
-            :autosize="{ minRows: 1, maxRows: 3 }"
-            type="textarea"
-            placeholder="Please input"
-          />
-          <el-icon v-show="false" @click="onClose"><CircleCloseFilled /></el-icon>
-        </div> -->
+        <!-- prompt -->
+        <div class="prompt" v-for="item in maskData" :key="item.id">
+          <template v-for="(m, i) in item.prompt" :key="i">
+            <svg-icon v-show="false" iconClass="drag" class="dragIcon" />
+            <el-select class="prompt-select" v-model="m.role">
+              <el-option v-for="item in ROLES" :key="item.id" :label="item" :value="item" />
+            </el-select>
+            <el-input
+              class="prompt-input"
+              v-model="m.content"
+              :autosize="{ minRows: 1, maxRows: 4 }"
+              type="textarea"
+              placeholder="prompt"
+            />
+            <el-icon v-show="false" @click="onClose"><CircleCloseFilled /></el-icon>
+          </template>
+        </div>
         <li class="list-item" v-for="item in modelData" :key="item.ID">
           <div>
             <div class="title">{{ item.Title }}</div>
@@ -70,9 +74,8 @@
 </template>
 
 <script setup>
-import { StoreKey, modelConfig, modelValue } from "@/ai/constant";
-import masks from "@/ai/platforms/openai/masks";
-import { getModelType, useAccessStore } from "@/ai/utils";
+import { ROLES, StoreKey, modelConfig, modelValue } from "@/ai/constant";
+import { getModelType, useAccessStore, usePromptStore } from "@/ai/utils";
 import { useBoolean } from "@/utils/hooks/index";
 import { useGetters } from "@/utils/hooks/useMapper";
 import storage from "@/utils/localforage/index";
@@ -81,11 +84,11 @@ import { cloneDeep } from "lodash-es";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
+const modelData = ref(null);
+const maskData = ref([]);
+
 const { commit } = useStore();
 const [state, setState] = useBoolean();
-const modelData = ref(null);
-const mask = ref(masks);
-
 const { toAccount } = useGetters(["toAccount"]);
 
 function initModel() {
@@ -94,13 +97,18 @@ function initModel() {
   Object.values(value).map((v) => {
     return (v.defaultValue = useAccessStore(model)[v.ID]);
   });
-  //  const prompt = mask.value[0].prompt;
-  // console.log(useAccessStore(model)?.prompt);
+  if (model === "GPT") {
+    maskData.value = cloneDeep(usePromptStore(model));
+  } else {
+    maskData.value = [];
+  }
   modelData.value = value;
 }
+
 function handleClose(done) {
   done();
 }
+
 function storeRobotModel(model) {
   const access = storage.get(StoreKey.Access);
   const account = getModelType(toAccount.value);
@@ -111,6 +119,17 @@ function storeRobotModel(model) {
   }
   commit("setRobotModel", model.model);
 }
+
+function storeRobotMask(model) {
+  const access = storage.get(StoreKey.Prompt);
+  const account = getModelType(toAccount.value);
+  if (access) {
+    storage.set(StoreKey.Prompt, { ...access, [account]: { ...model } });
+  } else {
+    storage.set(StoreKey.Prompt, { [account]: { ...model } });
+  }
+}
+
 function resetRobotModel() {
   const access = storage.get(StoreKey.Access);
   if (!access) return;
@@ -124,6 +143,7 @@ function resetRobotModel() {
 // 重置
 function handleCancel() {
   resetRobotModel();
+  storage.remove(StoreKey.Prompt);
   setState(false);
 }
 // 保存
@@ -134,8 +154,11 @@ function handleConfirm() {
     model[t.ID] = t.defaultValue;
   });
   storeRobotModel(model);
+  if (model === "GPT") storeRobotMask(maskData.value);
 }
+
 function onClose() {}
+
 emitter.on("onRobotBox", (state) => {
   initModel();
   setState(state);
@@ -191,6 +214,10 @@ input[type="range"]::-ms-thumb:hover {
   .prompt-select {
     width: 125px;
     margin-right: 10px;
+  }
+  .dragIcon {
+    margin-right: 5px;
+    cursor: grab;
   }
   .prompt-input {
     // width: 430px;

@@ -48,6 +48,14 @@ export const ZeroOnePath = {
   ChatPath: "v1/chat/completions",
 };
 
+export const prompt = [
+  {
+    id: "0",
+    lang: "cn",
+    prompt: [{ role: "system", content: "" }],
+  },
+];
+
 const openaiModels = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0301",

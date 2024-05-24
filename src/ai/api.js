@@ -2,7 +2,7 @@ import { ModelProvider } from "@/ai/constant";
 import { ChatGPTApi } from "@/ai/platforms/openai/index";
 import { ChatYiApi } from "@/ai/platforms/zeroone/index";
 import { ChatZhipuApi } from "@/ai/platforms/zhipu/index";
-import { useAccessStore } from "@/ai/utils";
+import { useAccessStore, usePromptStore } from "@/ai/utils";
 
 const API_PROVIDERS = {
   [ModelProvider.ChatGLM]: ChatZhipuApi,
@@ -13,6 +13,7 @@ const API_PROVIDERS = {
 export class ClientApi {
   constructor(provider = ModelProvider.GPT) {
     this._config = useAccessStore(provider);
+    this._prompts = usePromptStore(provider);
     this.llm = this.createLLM(provider);
   }
   createLLM(provider) {
@@ -22,7 +23,9 @@ export class ClientApi {
   config() {
     return this._config;
   }
-  prompts() {}
+  prompts() {
+    return this._prompts[0].prompt.filter((t) => t.content) || [];
+  }
   masks() {}
   async share() {}
 }

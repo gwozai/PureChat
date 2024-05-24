@@ -65,9 +65,10 @@ export const chatService = async (params) => {
     }, 1000);
     return;
   }
+  const prompts = api.prompts();
   await api.llm.chat({
     messages,
-    config: { model: useAccessStore(mode).model, stream: true },
+    config: { model: useAccessStore(mode).model, prompts, stream: true },
     onUpdate(message) {
       console.log("[chat] onUpdate:", message);
       emitter.emit("updataScroll", "instantly");

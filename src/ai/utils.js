@@ -5,6 +5,7 @@ import {
   ModelProvider,
   StoreKey,
   modelConfig,
+  prompt,
 } from "@/ai/constant";
 import { isRobot } from "@/utils/chat/index";
 import storage from "@/utils/localforage/index";
@@ -17,6 +18,16 @@ export const useAccessStore = (model = ModelProvider.GPT) => {
     return {};
   }
 };
+
+export const usePromptStore = (model = ModelProvider.GPT) => {
+  try {
+    return storage.get(StoreKey.Prompt)?.[model] || prompt;
+  } catch (error) {
+    storage.remove(StoreKey.Prompt);
+    return {};
+  }
+};
+
 /**
  * 根据提供的模型ID获取模型类型。
  * @param {string} modelId - 模型ID，用于识别不同的模型类型。

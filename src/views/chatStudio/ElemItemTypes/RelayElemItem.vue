@@ -13,9 +13,9 @@
 </template>
 
 <script setup>
-import { toRefs, computed } from "vue";
-import emitter from "@/utils/mitt-bus";
 import { useState } from "@/utils/hooks/useMapper";
+import emitter from "@/utils/mitt-bus";
+import { computed, toRefs } from "vue";
 
 const props = defineProps({
   message: {
@@ -37,7 +37,6 @@ const abstractList = computed(() => {
   return message.value.payload.abstractList?.slice(0, 3) || [];
 });
 function onClick() {
-  console.log(message.value);
   if (showCheckbox.value) return;
   emitter.emit("openMergePopup", message.value);
 }

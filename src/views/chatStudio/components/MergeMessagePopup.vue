@@ -47,14 +47,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import emitter from "@/utils/mitt-bus";
-import { useBoolean } from "@/utils/hooks/index";
-import { timeFormat } from "pure-tools";
-import { msgType, msgOne } from "../utils/utils";
-import { circleUrl } from "../utils/menu";
 import { downloadMergerMessage } from "@/api/im-sdk-api/index";
-import { loadMsgModule } from "../utils/utils";
+import { useBoolean } from "@/utils/hooks/index";
+import emitter from "@/utils/mitt-bus";
+import { timeFormat } from "pure-tools";
+import { ref } from "vue";
+import { circleUrl } from "../utils/menu";
+import { loadMsgModule, msgOne, msgType } from "../utils/utils";
 
 const [dialogVisible, setDialogVisible] = useBoolean();
 const mergValue = ref({});
@@ -68,7 +67,6 @@ function handleClose(done) {
   done();
 }
 emitter.on("openMergePopup", (data) => {
-  console.log(data);
   downloadMergerMessage(data);
   mergValue.value = data;
   setDialogVisible(true);

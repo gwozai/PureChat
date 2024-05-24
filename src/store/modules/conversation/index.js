@@ -105,7 +105,6 @@ const conversation = {
           if (state.currentConversation) {
             if (state.currentConversation.conversationID === convId) {
               state.currentMessageList = newMessageList;
-              console.log(newMessageList);
             }
             state.needScrollDown = 0;
           }
@@ -257,7 +256,6 @@ const conversation = {
     },
     // 回复消息
     setReplyMsg(state, payload) {
-      console.log("[chat] 回复消息 setReplyMsg:", payload);
       state.currentReplyMsg = payload;
     },
     SET_CONVERSATION_VALUE(state, { key, value }) {

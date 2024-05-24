@@ -28,8 +28,8 @@ export class ChatGPTApi {
   generateRequestPayload(messages, modelConfig, options) {
     let message = [];
     const countMessage = messages.slice(-Number(modelConfig.historyMessageCount));
-    if (this.accessStore()?.prompt) {
-      message = [...this.accessStore().prompt, ...countMessage]; // prompt
+    if (options.prompts.at(0)) {
+      message = [...options.prompts, ...countMessage]; // prompt
     } else {
       message = countMessage; // 上下文
     }
