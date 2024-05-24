@@ -7,6 +7,9 @@
     "wix.vscode-import-cost",
     "MS-CEINTL.vscode-language-pack-zh-hans",
     "techer.open-in-browser",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "xabikos.JavaScriptSnippets",
     "ecmel.vscode-html-css",
     "pranaygp.vscode-css-peek",
     "VisualStudioExptTeam.intellicode-api-usage-examples",
@@ -20,6 +23,7 @@
     "mikestead.dotenv",
     "eamodio.gitlens",
     "NicholasHsiang.vscode-javascript-comment",
-    "Vue.volar"
+    "Vue.volar",
+    "VisualStudioExptTeam.vscodeintellicode"
   ]
 }
