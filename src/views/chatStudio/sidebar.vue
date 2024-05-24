@@ -1,42 +1,44 @@
 <template>
-  <el-aside width="68px">
-    <div class="touxiang">
-      <UserAvatar type="self" isdot :size="40" shape="square" @click="openUploadAvatarDialog" />
-      <!-- <div class="mask-out">
-        <span>上传头像</span>
-      </div> -->
-    </div>
-    <div class="aside-item" v-for="item in outsideList" :key="item.only">
-      <div
-        v-show="visibile(item)"
-        @click="toggle(item)"
-        class="aside-list"
-        :class="{ current: outside == item.only }"
-      >
-        <el-badge :value="unreadMsg" :hidden="item.only !== 'message' || unreadMsg == 0">
-          <FontIcon v-if="item?.type == 'el-icon'" :iconName="item.icon" class="style-svg" />
-          <svg-icon v-else :iconClass="item.icon" class="style-svg" />
-        </el-badge>
-        <div class="icon-title" :title="item.title">
-          {{ item.locale ? $t(`chat.${item.locale}`) : item.title }}
+  <div class="sidebar">
+    <div>
+      <div class="touxiang">
+        <UserAvatar type="self" isdot :size="40" shape="square" @click="openUploadAvatarDialog" />
+      </div>
+      <div class="aside-item" v-for="item in outsideList" :key="item.only">
+        <div
+          v-show="visibile(item)"
+          @click="toggle(item)"
+          class="aside-list"
+          :class="{ current: outside == item.only }"
+        >
+          <el-badge :value="unreadMsg" :hidden="item.only !== 'message' || unreadMsg == 0">
+            <FontIcon v-if="item?.type == 'el-icon'" :iconName="item.icon" class="style-svg" />
+            <svg-icon v-else :iconClass="item.icon" class="style-svg" />
+          </el-badge>
+          <div class="icon-title" :title="item.title">
+            {{ item.locale ? $t(`chat.${item.locale}`) : item.title }}
+          </div>
         </div>
       </div>
     </div>
+    <div class="operation">
+      <el-icon @click="operation"><Operation /></el-icon>
+    </div>
     <!-- 上传头像弹框 -->
-    <UploadAvatarDialog />
+    <!-- <UploadAvatarDialog /> -->
     <!-- 侧边栏拖拽排序弹框 -->
     <SidebarEditDialog />
-  </el-aside>
+  </div>
 </template>
 
 <script setup>
 import { useState } from "@/utils/hooks/useMapper";
 import emitter from "@/utils/mitt-bus";
-import UploadAvatarDialog from "@/views/chatStudio/components/UploadAvatarDialog.vue";
+// import UploadAvatarDialog from "@/views/chatStudio/components/UploadAvatarDialog.vue";
 import SidebarEditDialog from "@/views/components/MoreSidebar/index.vue";
 import { useStore } from "vuex";
 
-const { commit } = useStore();
+const { commit, dispatch } = useStore();
 const { outside, unreadMsg, outsideList } = useState({
   outsideList: (state) => state.sidebar.outsideList,
   unreadMsg: (state) => state.conversation.totalUnreadMsg,
@@ -58,12 +60,24 @@ function toggle(item) {
     commit("TAGGLE_OUE_SIDE", item.only);
   }
 }
+function operation() {
+  commit("UPDATE_USER_SETUP", {
+    key: "setswitch",
+    value: true,
+  });
+}
 </script>
 
 <style lang="scss" scoped>
-.el-aside {
+.sidebar {
+  width: 68px;
+  min-width: 68px;
   user-select: none;
+  position: relative;
   z-index: 9;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   box-shadow: 1px 0px 5px 0px rgb(0 0 0 / 10%);
 }
 .aside-item {
@@ -118,6 +132,13 @@ function toggle(item) {
       transform: scale(0.5);
       white-space: nowrap;
     }
+  }
+}
+.operation {
+  height: 54px;
+  @include flex-center;
+  .el-icon {
+    cursor: pointer;
   }
 }
 </style>

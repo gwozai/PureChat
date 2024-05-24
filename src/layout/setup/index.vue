@@ -1,35 +1,10 @@
 <template>
-  <el-drawer
-    v-model="drawer"
-    size="320px"
-    :title="t('common.setup')"
-    :with-header="true"
-    :show-close="true"
-  >
-    <ul class="setting w-full">
-      <li>
-        <span>{{ t("common.closeSidebar") }}</span>
-        <el-switch
-          v-model="sider"
-          inline-prompt
-          inactive-color="#a6a6a6"
-          :active-icon="Check"
-          :inactive-icon="Close"
-        />
-      </li>
-      <!-- <li>
-        <span>{{ t("common.sidebarLogo") }}</span>
-        <el-switch
-          v-model="logoVal"
-          inline-prompt
-          inactive-color="#a6a6a6"
-          active-text="开"
-          inactive-text="关"
-          @change="LogoChange"
-          :active-icon="Check"
-          :inactive-icon="Close"
-        />
-      </li> -->
+  <el-dialog class="setup-modal" v-model="drawer" :show-close="false" width="700" draggable>
+    <div class="ui-modal-body">
+      <List />
+      <ItemGrid />
+    </div>
+    <ul class="setting w-full" v-if="false">
       <li>
         <span>{{ t("common.theme") }}</span>
         <el-select v-model="themecolor" placeholder="主题颜色">
@@ -62,46 +37,46 @@
           :inactive-icon="Close"
         />
       </li>
+      <li>
+        <el-button class="logout" @click="logout" type="primary">退出登录</el-button>
+      </li>
     </ul>
-  </el-drawer>
+  </el-dialog>
 </template>
 
 <script setup>
 import { setTheme } from "@/utils/common";
 import { useState } from "@/utils/hooks/useMapper";
 import { useWatermark } from "@/utils/hooks/useWatermark";
+import { showConfirmationBox } from "@/utils/message";
 import { Check, Close } from "@element-plus/icons-vue";
 import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
 import { languages, options } from "./enums";
+import ItemGrid from "./itemGrid.vue";
+import List from "./list.vue";
 
 const { locale, t } = useI18n();
-const { commit } = useStore();
+const { commit, dispatch } = useStore();
 const { setWatermark, clear } = useWatermark();
-const { sidebar, appearance, lang, setswitch, watermark } = useState({
+const { appearance, lang, setswitch, watermark } = useState({
   watermark: (state) => state.settings.watermark,
-  sidebar: (state) => state.settings.sidebar,
   appearance: (state) => state.settings.appearance,
   setswitch: (state) => state.settings.setswitch,
   lang: (state) => state.settings.lang,
 });
 
+async function logout() {
+  const result = await showConfirmationBox({ message: "确定退出登录?", iconType: "warning" });
+  if (result === "cancel") return;
+  drawer.value = false;
+  dispatch("LOG_OUT");
+}
+
 onMounted(() => {
   clear();
   watermark.value && setWatermark("PureChat");
-});
-
-const sider = computed({
-  get() {
-    return sidebar.value;
-  },
-  set(val) {
-    commit("UPDATE_USER_SETUP", {
-      key: "sidebar",
-      value: val,
-    });
-  },
 });
 
 const drawer = computed({
@@ -161,13 +136,31 @@ const mark = computed({
 </script>
 
 <style lang="scss" scoped>
+:global(body .setup-modal) {
+  padding: 0;
+}
+:global(body .setup-modal .el-dialog__header) {
+  display: none;
+}
+
+.ui-modal-body {
+  height: 500px;
+  display: flex;
+}
+.setting {
+  height: 500px;
+}
 .setting li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 20px 0;
+
   .el-select {
     max-width: 180px;
   }
+}
+.logout {
+  margin-left: auto;
 }
 </style>

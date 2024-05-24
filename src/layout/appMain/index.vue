@@ -1,10 +1,5 @@
 <template>
-  <div
-    :class="['app-wrapper', sidebar ? '' : 'style-wrapper']"
-    :style="fnStyle(isCollapse)"
-    v-element-size="onResize"
-  >
-    <Header />
+  <div :class="['app-wrapper']">
     <main class="app-main">
       <div class="continer-theme">
         <router-view v-slot="{ Component, route }">
@@ -22,44 +17,18 @@
   </div>
 </template>
 
-<script setup>
-import { vElementSize } from "@vueuse/components";
-import { useState } from "@/utils/hooks/useMapper";
-import Header from "./Header.vue";
-
-const { isCollapse, sidebar } = useState({
-  isCollapse: (state) => state.settings.isCollapse,
-  sidebar: (state) => state.settings.sidebar,
-});
-/**
- * width app-wrapper类容器宽度
- * 0 < width <= 760 隐藏侧边栏
- * 760 < width <= 990 折叠侧边栏
- * width > 990 展开侧边栏
- */
-function onResize({ width, height }) {
-  // console.log(width, height);
-}
-
-const fnStyle = (off) => {
-  return `margin-left:${off ? "64px" : "200px"}`;
-};
-</script>
+<script setup></script>
 <style lang="scss" scoped>
-.style-wrapper {
-  margin: 0 !important;
-}
 .app-wrapper {
   width: 100%;
   transition-duration: 300ms;
-  // transition-delay: 50ms;
 }
 .continer-theme {
   height: 100%;
   background: var(--color-body-bg);
 }
 .app-main {
-  height: calc(100vh - 86px);
+  height: 100vh;
   width: 100%;
   position: relative;
   overflow-x: hidden;

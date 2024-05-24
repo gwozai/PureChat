@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
-import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import en from "element-plus/dist/locale/en.mjs";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import { defineComponent } from "vue";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "app",
@@ -25,7 +25,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    // dispatch("reloadRoute");
     this.loginAgain(this.$route);
   },
   methods: {
@@ -43,10 +42,6 @@ export default defineComponent({
 <style lang="scss">
 #app {
   height: 100%;
-}
-.content-wrap {
-  padding: 24px;
-  height: calc(100vh - 86px);
 }
 .v-contextmenu {
   .v-contextmenu-item--hover {
