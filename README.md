@@ -93,8 +93,8 @@ pnpm build
 
 <img src="./images/login.png">
 
-<img src="./images/chatstudio.png">
-
 <img src="./images/chatgpt.png">
 
-<img src="./images/about.png">
+<img src="./images/config.png">
+
+
