@@ -8,10 +8,6 @@ import { useImageVerify } from "@/utils/hooks/useImageVerify";
 
 const emit = defineEmits();
 
-// defineOptions({
-//   name: "ImageVerify"
-// });
-
 const props = defineProps({
   code: {
     type: [String, Boolean],
@@ -27,9 +23,10 @@ watch(
     setImgCode(newValue);
   }
 );
+
 watch(imgCode, (newValue) => {
   emit("update:code", newValue);
 });
-// eslint-disable-next-line no-undef
+
 defineExpose({ getImgCode });
 </script>

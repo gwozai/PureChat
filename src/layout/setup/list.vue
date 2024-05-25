@@ -1,6 +1,6 @@
 <template>
   <div class="panel-group-panel-wrapper">
-    <div class="title">设置</div>
+    <div class="title">{{ $t("common.setup") }}</div>
     <ul class="ui-menu-vertical">
       <li
         v-for="item in list"
@@ -55,7 +55,8 @@ onClick(list.value[0]);
   position: relative;
   padding: 20px 0;
   flex-direction: column;
-  background-color: #fcfcfd;
+  // background-color: #fcfcfd;
+  border-right: 1px solid var(--color-border-color-split);
 }
 .title {
   padding: 0 20px 20px 20px;

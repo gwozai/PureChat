@@ -204,7 +204,6 @@ const language = computed({
   border-top: 1px solid rgba(16, 24, 40, 0.06);
 }
 .info {
-  color: var(--ui-text-color);
   font-weight: 500;
   font-size: 14px;
   line-height: 22px;

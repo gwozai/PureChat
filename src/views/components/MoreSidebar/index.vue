@@ -243,10 +243,9 @@ export default defineComponent({
     }
   }
   .edit-area {
-    background-color: #f5f5f5;
+    background-color: var(--color-draggable-body);
     height: 384px;
     .chosen {
-      background-color: white;
       color: black;
     }
     .ghost {
