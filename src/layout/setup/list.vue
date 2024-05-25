@@ -20,13 +20,28 @@
 
 <script setup>
 import { ref } from "vue";
+const emit = defineEmits(["active"]);
+
 const active = ref("");
 const list = ref([
   {
     title: "通用",
     icon: "ForkSpoon",
   },
+  {
+    title: "关于PureChat",
+    icon: "WarningFilled",
+  },
+  // {
+  //   title: "外观",
+  //   icon: "IceCreamRound",
+  // },
 ]);
+function onClick(item) {
+  active.value = item.icon;
+  emit("active", item);
+}
+onClick(list.value[0]);
 </script>
 
 <style lang="scss" scoped>
@@ -46,6 +61,10 @@ const list = ref([
   padding: 0 20px 20px 20px;
   font-size: 1.125rem;
 }
+.selectd {
+  color: rgb(147, 115, 238);
+  background-color: rgb(236, 240, 252);
+}
 .ui-menu-vertical {
   margin: 0 20px;
   .menu-list {
@@ -55,7 +74,12 @@ const list = ref([
     align-items: center;
     height: 40px;
     padding: 0 16px;
-    background-color: rgb(236, 240, 252);
+    &:hover .title-content {
+      color: rgb(147, 115, 238);
+    }
+    &:hover .el-icon {
+      color: rgb(147, 115, 238);
+    }
   }
   .title-content {
     margin-left: 10px;

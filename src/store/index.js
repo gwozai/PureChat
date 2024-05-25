@@ -9,7 +9,6 @@ import saveToLocalStorage from "./plugins/localStorage"; // 自定义插件
 const defaultSettings = {
   lang: "zh-CN", // 默认语言
   appearance: "light", // 主题颜色
-  setswitch: false, // 设置按钮开关
   watermark: false, // 水印
   arrowRight: false, // 聊天会话列表折叠 true ？'折叠' : '不折叠'
   fullScreen: false, // 全屏输入框是否启用

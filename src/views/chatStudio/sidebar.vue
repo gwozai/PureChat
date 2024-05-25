@@ -61,10 +61,7 @@ function toggle(item) {
   }
 }
 function operation() {
-  commit("UPDATE_USER_SETUP", {
-    key: "setswitch",
-    value: true,
-  });
+  emitter.emit("openSetup", true);
 }
 </script>
 
