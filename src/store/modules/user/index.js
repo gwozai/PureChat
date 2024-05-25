@@ -1,14 +1,13 @@
-import { nextTick } from "vue";
+import { login, logout, register } from "@/api/node-admin-api/index";
+import { ACCOUNT, TIM_PROXY, USER_MODEL } from "@/constants/index";
 import router from "@/router";
-import { ElMessage } from "element-plus";
-import { timProxy } from "@/utils/IM/index";
-import { login, register, logout, getMenu } from "@/api/node-admin-api/index";
 import chat from "@/utils/IM/im-sdk/tim";
-import emitter from "@/utils/mitt-bus";
-import { verification } from "@/utils/message/index";
-import { USER_MODEL } from "@/constants/index";
-import { TIM_PROXY, ACCOUNT } from "@/constants/index";
+import { timProxy } from "@/utils/IM/index";
 import storage from "@/utils/localforage/index";
+import { verification } from "@/utils/message/index";
+import emitter from "@/utils/mitt-bus";
+import { ElMessage } from "element-plus";
+import { nextTick } from "vue";
 
 const user = {
   state: {
@@ -50,7 +49,7 @@ const user = {
       console.log({ code, msg, result }, "授权登录信息");
       if (code == 200) {
         window.TIMProxy.init();
-        dispatch("GET_MENU");
+        // dispatch("GET_MENU");
         dispatch("TIM_LOG_IN", {
           userID: result.username,
           userSig: result.userSig,
@@ -72,7 +71,6 @@ const user = {
       console.log({ code, msg, result }, "登录信息");
       if (code == 200) {
         window.TIMProxy.init();
-        dispatch("GET_MENU");
         dispatch("TIM_LOG_IN", {
           userID: result.username,
           userSig: result.userSig,
@@ -117,7 +115,6 @@ const user = {
         commit("reset");
         // 清除消息记录
         commit("SET_HISTORYMESSAGE", { type: "CLEAR_HISTORY" });
-        dispatch("CLEAR_EL_TAG"); // 清除 eltag 标签
       }
     },
     // 重新登陆
@@ -135,11 +132,6 @@ const user = {
       } catch (error) {
         console.log(error);
       }
-    },
-    // 菜单列表
-    async GET_MENU({ dispatch }) {
-      let menu = await getMenu();
-      dispatch("updateRoute", menu);
     },
   },
 };

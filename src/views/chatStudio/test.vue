@@ -97,7 +97,7 @@ export default defineComponent({
       });
     },
     openSetup() {
-      this.UPDATE_USER_SETUP({ key: "setswitch", value: true });
+      // emitter.emit("openSetup", true);
     },
     test() {},
     test1() {},

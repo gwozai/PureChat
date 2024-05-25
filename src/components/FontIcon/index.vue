@@ -16,9 +16,4 @@ const props = defineProps({
 });
 </script>
 
-<style lang="scss" scoped>
-// .el-icon {
-// color: rgb(96, 98, 102);
-// cursor: pointer;
-// }
-</style>
+<style lang="scss" scoped></style>
