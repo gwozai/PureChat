@@ -1,15 +1,8 @@
 import { ElMessage, ElMessageBox } from "element-plus";
 import { $t } from "@/plugins/i18n";
-// 消息
-const Message = (message) => {
-  return ElMessage({
-    showClose: true,
-    message,
-  });
-};
 
 // 成功
-const successMessage = (message) => {
+export const successMessage = (message) => {
   return ElMessage({
     showClose: true,
     message,
@@ -18,7 +11,7 @@ const successMessage = (message) => {
 };
 
 // 警告
-const warnMessage = (message) => {
+export const warnMessage = (message) => {
   return ElMessage({
     showClose: true,
     message,
@@ -27,7 +20,7 @@ const warnMessage = (message) => {
 };
 
 // 失败
-const errorMessage = (message) => {
+export const errorMessage = (message) => {
   return ElMessage({
     showClose: true,
     message,
@@ -35,7 +28,7 @@ const errorMessage = (message) => {
   });
 };
 
-const verification = (code, msg) => {
+export const verification = (code, msg) => {
   switch (code) {
     case 200:
       successMessage(msg);
@@ -81,5 +74,3 @@ export const showConfirmationBox = async (data, Type = "confirm") => {
     return error;
   }
 };
-
-export { Message, successMessage, warnMessage, errorMessage, verification };

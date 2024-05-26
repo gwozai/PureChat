@@ -1,5 +1,5 @@
 <template>
-  <div :class="['app-wrapper']">
+  <div class="app-wrapper">
     <main class="app-main">
       <div class="continer-theme">
         <router-view v-slot="{ Component, route }">
@@ -21,7 +21,6 @@
 <style lang="scss" scoped>
 .app-wrapper {
   width: 100%;
-  transition-duration: 300ms;
 }
 .continer-theme {
   height: 100%;
@@ -32,7 +31,6 @@
   width: 100%;
   position: relative;
   overflow-x: hidden;
-  background: #f0f2f5;
   box-sizing: border-box;
 }
 </style>
